@@ -1,0 +1,128 @@
+---
+interface Props {
+  displayTitle: string;
+  hook: string;
+  tags: string[];
+  slug: string;
+  status: string;
+  year: string;
+  order: number;
+  thumbnail?: string;
+}
+
+const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro.props;
+---
+
+<article class="project-card">
+  <span class="project-index">0{order}</span>
+  <div class="project-mockup">
+    {thumbnail
+      ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+      : <span class="project-mockup-placeholder">[mockup]</span>
+    }
+  </div>
+  <h3 class="project-name">{displayTitle}</h3>
+  <p class="project-hook">{hook}</p>
+  <div class="project-tags">
+    {tags.map(t => <span>{t}</span>)}
+  </div>
+  <a href={`/projects/${slug}`} class="project-link">View Project &rarr;</a>
+  <div class="project-meta">{status} &middot; {year}</div>
+</article>
+
+<style>
+  .project-card {
+    padding: 1.8rem;
+    background: var(--bg-card);
+  }
+
+  .project-index {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 1.2rem;
+  }
+
+  .project-mockup {
+    aspect-ratio: 16 / 10;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+  }
+
+  .project-mockup img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-mockup-placeholder {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+  }
+
+  .project-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-hook {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+
+  .project-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .project-link {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--blue);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: letter-spacing 0.2s;
+  }
+
+  .project-link:hover {
+    letter-spacing: 0.16em;
+  }
+
+  .project-meta {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border);
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<div class="project-grid">
+  {projects.map((p, i) => (
+    <div class={`project-grid-item ${i === 0 ? 'featured' : ''} reveal`} style={`transition-delay: ${i * 0.08}s;`}>
+      <ProjectCard
+        displayTitle={p.data.displayTitle}
+        hook={p.data.hook}
+        tags={p.data.tags}
+        slug={p.data.slug}
+        status={p.data.status}
+        year={p.data.year}
+        order={p.data.order}
+        thumbnail={p.data.thumbnail}
+      />
+    </div>
+  ))}
+</div>
+
+<style>
+  .project-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1px;
+    background-color: var(--border);
+  }
+
+  .project-grid-item {
+    background: var(--bg-card);
+  }
+
+  .featured {
+    grid-row: span 2;
+  }
+
+  @media (max-width: 900px) {
+    .project-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .featured {
+      grid-row: auto;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .project-grid {
+      grid-template-columns: 1fr;
+      background: none;
+      gap: 12px;
+    }
+
+    .project-grid-item {
+      border: 1px solid var(--border);
+    }
+  }
+</style>
