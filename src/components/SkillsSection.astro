@@ -1,0 +1,82 @@
+---
+const categories = [
+  {
+    name: 'Strategy',
+    items: ['Brand strategy & positioning', 'Consumer insights & research', 'Content strategy & messaging', 'UX research & interviews'],
+  },
+  {
+    name: 'Design',
+    items: ['Product design (concept → prototype)', 'UI/UX design (Figma)', 'Information architecture', 'Editorial & visual design'],
+  },
+  {
+    name: 'Build',
+    items: ['Frontend (Next.js, Astro, React)', 'AI integration & prompting', 'API integration & data', 'Deployment & version control'],
+  },
+  {
+    name: 'Communicate',
+    items: ['Copywriting & content', 'Cross-functional facilitation', 'Stakeholder management', 'Team leadership'],
+  },
+];
+---
+
+<div class="skills-grid">
+  {categories.map((cat, i) => (
+    <div class="skill-block reveal" style={`transition-delay: ${i * 0.05}s;`}>
+      <h4 class="skill-category">{cat.name}</h4>
+      <ul>
+        {cat.items.map(item => <li>{item}</li>)}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+  }
+
+  .skill-block {
+    background: var(--bg-card);
+    padding: 1.3rem 1.1rem;
+  }
+
+  .skill-category {
+    font-family: var(--font-mono);
+    font-size: 0.52rem;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  li {
+    font-family: var(--font-body);
+    font-size: 0.76rem;
+    font-weight: 300;
+    color: var(--text);
+    padding: 0.22rem 0;
+  }
+
+  @media (max-width: 900px) {
+    .skills-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+      background: none;
+      gap: 8px;
+    }
+
+    .skill-block {
+      border: 1px solid var(--border);
+    }
+  }
+</style>

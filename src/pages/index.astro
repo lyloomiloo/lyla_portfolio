@@ -4,6 +4,8 @@ import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import ProjectGrid from '../components/ProjectGrid.astro';
 import AboutSection from '../components/AboutSection.astro';
+import SkillsSection from '../components/SkillsSection.astro';
+import Contact from '../components/Contact.astro';
 ---
 <BaseLayout>
   <Nav />
@@ -16,6 +18,14 @@ import AboutSection from '../components/AboutSection.astro';
     <section id="about">
       <div class="section-label reveal">About</div>
       <AboutSection />
+    </section>
+    <section id="skills">
+      <div class="section-label reveal">Capabilities</div>
+      <SkillsSection />
+    </section>
+    <section id="contact" style="padding-bottom: 5rem;">
+      <div class="section-label reveal">Contact</div>
+      <Contact />
     </section>
   </main>
 </BaseLayout>
