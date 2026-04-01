@@ -1,5 +1,6 @@
 ---
 import GlitchText from './GlitchText.astro';
+import RetroButton from './RetroButton.astro';
 
 interface Props {
   displayTitle: string;
@@ -29,7 +30,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
   <div class="project-tags">
     {tags.map(t => <span>{t}</span>)}
   </div>
-  <a href={`/projects/${slug}`} class="project-link">View Project &rarr;</a>
+  <RetroButton href={`/projects/${slug}`} text="View Project →" variant="purple" />
   <div class="project-meta">{status} &middot; {year}</div>
 </article>
 
@@ -69,7 +70,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-mockup {
     aspect-ratio: 16 / 10;
-    background: var(--black);
+    background: var(--dark);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,7 +89,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
   .project-mockup-placeholder {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: #444;
+    color: #666;
   }
 
   .project-name {
@@ -135,7 +136,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
   .project-link {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--blue);
+    color: var(--purple);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     transition: letter-spacing 0.2s;

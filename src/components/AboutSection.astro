@@ -1,51 +1,230 @@
 ---
-import SignalLog from './SignalLog.astro';
-import ArchivePanel from './ArchivePanel.astro';
 ---
+<div class="about-terminal">
+  <div class="terminal-bar">
+    <span class="terminal-dots">
+      <span class="dot-purple"></span>
+      <span class="dot-yellow"></span>
+      <span class="dot-grey"></span>
+    </span>
+    <span class="terminal-title">about.exe</span>
+    <span class="terminal-close">&times;</span>
+  </div>
+  <div class="terminal-body">
+    <div class="cmd"><span class="prompt">&gt;</span> whoami</div>
+    <div class="output">Lyla Huang — Strategist turned builder</div>
 
-<div class="about-grid reveal">
-  <SignalLog />
-  <ArchivePanel />
+    <div class="cmd"><span class="prompt">&gt;</span> run career.log</div>
+    <div class="log-entries">
+      <div class="log-row"><span class="log-date">[2015]</span><span class="log-label">SIGNAL_START</span><span class="log-body">Graduated NUS. Started writing ads.</span></div>
+      <div class="log-row"><span class="log-date">[2015–17]</span><span class="log-label">HAVAS_SG</span><span class="log-body">Grew client IG <span class="hl">4000%</span>. First awards.</span></div>
+      <div class="log-row"><span class="log-date">[2018–21]</span><span class="log-label">BLKJ_SENIOR</span><span class="log-body">Senior Writer. Led <span class="hl">8 creatives</span>. Award-winning.</span></div>
+      <div class="log-row"><span class="log-date">[2021–22]</span><span class="log-label">GOOGLE_APAC</span><span class="log-body"><span class="hl">133 SMEs</span> across APAC. Content at scale.</span></div>
+      <div class="log-row"><span class="log-date">[2022–24]</span><span class="log-label">FREELANCE</span><span class="log-body"><span class="hl">20+ clients</span>. Strategy, copy, brand.</span></div>
+      <div class="log-row"><span class="log-date">[2024]</span><span class="log-label">PIVOT</span><span class="log-body">Barcelona. Master's in <span class="hl">HAI</span>.</span></div>
+      <div class="log-row"><span class="log-date">[2025–26]</span><span class="log-label">BUILD_MODE</span><span class="log-body">Code. Products. AI. <span class="dim">// current</span></span></div>
+    </div>
+
+    <div class="cmd"><span class="prompt">&gt;</span> ls /archive/</div>
+    <div class="archive-list">
+      <div class="archive-row"><span class="dir">scoot-savage/</span><span class="note">4× Award Winner</span></div>
+      <div class="archive-row"><span class="dir">onward/</span><span class="note">National TVC</span></div>
+      <div class="archive-row"><span class="dir">passion-stories/</span><span class="note">Brand Film Series</span></div>
+      <div class="archive-row"><span class="dir">fairprice-pun/</span><span class="note">Gold · Markies 2017</span></div>
+      <div class="archive-row"><span class="dir">hipsters/</span><span class="note">Brand Film</span></div>
+      <div class="archive-row"><span class="dir">inflight/</span><span class="note">Video Series</span></div>
+    </div>
+
+    <div class="cmd"><span class="prompt">&gt;</span> cat awards.txt</div>
+    <div class="awards-output">
+      <div>Rising Star · Creative Circles '18</div>
+      <div>Gold · Markies '17</div>
+      <div>2S + 3B · Creative Circles '18</div>
+      <div>Grand Prize · IG Cannes '16</div>
+    </div>
+
+    <div class="cmd"><span class="prompt">&gt;</span> echo "message"</div>
+    <div class="pullquote-output">
+      "I spent a decade learning to turn noise into signal for brands.<br>
+      Now I design the signal itself."
+    </div>
+
+    <span class="cursor-blink">█</span>
+  </div>
 </div>
 
-<p class="pullquote reveal">
-  "I spent a decade learning to turn noise into signal for brands. Now I <span class="pullquote-highlight">design the signal itself.</span>"
-</p>
-
 <style>
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--border);
+  .about-terminal {
+    background: var(--dark);
+    margin: 0 -2.5rem;
+    padding: 0;
   }
 
-  .pullquote {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-style: italic;
-    color: var(--text);
-    max-width: 620px;
-    margin-top: 3rem;
-    line-height: 1.55;
+  .terminal-bar {
+    background: var(--dark-light);
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .terminal-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-purple { background: var(--purple); }
+  .dot-yellow { background: var(--yellow); }
+  .dot-grey { background: #666; }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .terminal-close {
+    font-family: var(--font-mono);
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .terminal-body {
+    padding: 2rem 2.5rem 3rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #ccc;
+  }
+
+  .cmd {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--yellow);
+    font-weight: 700;
+  }
+
+  .cmd:first-child {
+    margin-top: 0;
+  }
+
+  .prompt {
+    color: var(--yellow);
+    margin-right: 0.5rem;
+  }
+
+  .output {
+    color: #ccc;
     padding-left: 1.2rem;
-    border-left: 4px solid var(--yellow);
   }
 
-  .pullquote-highlight {
-    background: linear-gradient(to top, var(--yellow) 40%, transparent 40%);
-    padding: 0 2px;
+  .log-entries {
+    padding-left: 1.2rem;
+  }
+
+  .log-row {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .log-date {
+    color: #888;
+    min-width: 6ch;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .log-label {
+    color: var(--purple);
+    font-weight: 700;
+    min-width: 12ch;
+    flex-shrink: 0;
+    font-size: 0.9rem;
+  }
+
+  .log-body {
+    color: #ccc;
+  }
+
+  .hl {
+    color: var(--yellow);
+    font-weight: 500;
+  }
+
+  .dim {
+    color: #666;
+  }
+
+  .archive-list {
+    padding-left: 1.2rem;
+  }
+
+  .archive-row {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .dir {
+    color: var(--purple);
+    min-width: 18ch;
+    flex-shrink: 0;
+  }
+
+  .note {
+    color: #888;
+  }
+
+  .awards-output {
+    padding-left: 1.2rem;
+    color: #ccc;
+  }
+
+  .pullquote-output {
+    padding-left: 1.2rem;
+    color: var(--yellow);
+    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-style: italic;
+    font-family: var(--font-serif);
+    line-height: 1.6;
+    margin-top: 0.5rem;
+  }
+
+  .cursor-blink {
+    color: var(--yellow);
+    animation: blink 1s step-end infinite;
+    font-size: 1.2rem;
+    display: inline-block;
+    margin-top: 1rem;
   }
 
   @media (max-width: 768px) {
-    .about-grid {
-      grid-template-columns: 1fr;
-      background: none;
-      gap: 12px;
+    .about-terminal {
+      margin: 0 -1.5rem;
     }
 
-    .about-grid > :global(*) {
-      border: 1px solid var(--border);
+    .terminal-body {
+      padding: 1.5rem 1.5rem 2rem;
+      font-size: 0.9rem;
+    }
+
+    .log-row {
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .archive-row {
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 0.3rem;
     }
   }
 </style>

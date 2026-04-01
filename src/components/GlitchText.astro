@@ -28,18 +28,17 @@ parts.forEach((part, i) => {
     html += part;
   }
 });
-
-const entranceClass = playEntrance ? 'glitch-enter' : '';
 ---
-<Fragment set:html={`<${Tag} class="glitch-text ${entranceClass} ${className}" data-glitch-html data-glitch-intensity="${intensity}" data-glitch-interval="${interval}">${html}</${Tag}>`} />
+<Fragment set:html={`<${Tag} class="glitch-text ${className}" data-glitch-html data-glitch-intensity="${intensity}" data-glitch-interval="${interval}" data-glitch-entrance="${playEntrance}">${html}</${Tag}>`} />
 
 <script>
-  const glitchChars = '*#@/\\][01{}<>_|~';
+  const glitchChars = '*#@/\\][01{}<>_|~$%&';
 
   function initGlitch(el: HTMLElement) {
     const originalHTML = el.innerHTML;
     const intensity = el.dataset.glitchIntensity || 'bold';
     const baseInterval = parseInt(el.dataset.glitchInterval || '3500', 10);
+    const playEntrance = el.dataset.glitchEntrance === 'true';
 
     function getTextContent(node: Node): string {
       let result = '';
@@ -58,8 +57,63 @@ const entranceClass = playEntrance ? 'glitch-enter' : '';
       return result;
     }
 
-    function glitch() {
-      const text = getTextContent(el);
+    const originalText = getTextContent(el);
+
+    function randChar(): string {
+      return glitchChars[Math.floor(Math.random() * glitchChars.length)];
+    }
+
+    // ====== SCRAMBLE-TO-LAND ENTRANCE ======
+    function playDecode() {
+      const chars = originalText.split('');
+      const landed = new Array(chars.length).fill(false);
+      // Immediately land spaces, newlines, periods
+      chars.forEach((c, i) => {
+        if (c === ' ' || c === '\n' || c === '.') landed[i] = true;
+      });
+
+      // Display buffer
+      const display = chars.map((c, i) => landed[i] ? c : randChar());
+
+      // Rapid cycling of unresolved chars
+      const cycleInterval = setInterval(() => {
+        for (let i = 0; i < display.length; i++) {
+          if (!landed[i]) display[i] = randChar();
+        }
+        renderDisplay(display);
+      }, 45);
+
+      // Land characters left-to-right with stagger
+      let nextLand = 0;
+      function landNext() {
+        // Find next unresolved
+        while (nextLand < chars.length && landed[nextLand]) nextLand++;
+        if (nextLand >= chars.length) {
+          // All landed
+          clearInterval(cycleInterval);
+          el.innerHTML = originalHTML;
+          startPeriodicGlitch();
+          return;
+        }
+        landed[nextLand] = true;
+        display[nextLand] = chars[nextLand];
+        nextLand++;
+        const delay = 30 + Math.random() * 50;
+        setTimeout(landNext, delay);
+      }
+
+      // Start landing after a brief scramble period
+      setTimeout(landNext, 200);
+    }
+
+    function renderDisplay(display: string[]) {
+      const lines = display.join('').split('\n');
+      el.innerHTML = lines.join('<br>');
+    }
+
+    // ====== MULTI-FLICKER PERIODIC GLITCH ======
+    function flickerGlitch() {
+      const text = originalText;
       const indices: number[] = [];
       for (let i = 0; i < text.length; i++) {
         const c = text[i];
@@ -70,46 +124,60 @@ const entranceClass = playEntrance ? 'glitch-enter' : '';
       const minCount = intensity === 'subtle' ? 1 : 2;
       const maxCount = intensity === 'subtle' ? 2 : 4;
       const count = minCount + Math.floor(Math.random() * (maxCount - minCount + 1));
-
       const shuffled = [...indices].sort(() => Math.random() - 0.5);
       const picks = shuffled.slice(0, Math.min(count, indices.length));
 
-      const chars = text.split('');
-      picks.forEach(i => {
-        chars[i] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
-      });
+      // Flicker 1: swap to random
+      const chars1 = text.split('');
+      picks.forEach(i => { chars1[i] = randChar(); });
+      el.innerHTML = chars1.join('').split('\n').join('<br>');
 
-      const lines = chars.join('').split('\n');
-      el.innerHTML = lines.join('<br>');
-
-      const delay = 80 + Math.random() * 40;
-      setTimeout(() => { el.innerHTML = originalHTML; }, delay);
-    }
-
-    function scheduleNext() {
-      // Randomize ±30% of base interval
-      const jitter = baseInterval * 0.3;
-      const wait = baseInterval - jitter + Math.random() * jitter * 2;
       setTimeout(() => {
-        glitch();
-        scheduleNext();
-      }, wait);
+        // Flicker 2: different random
+        const chars2 = text.split('');
+        picks.forEach(i => { chars2[i] = randChar(); });
+        el.innerHTML = chars2.join('').split('\n').join('<br>');
+
+        setTimeout(() => {
+          // Flicker 3: yet another random
+          const chars3 = text.split('');
+          picks.forEach(i => { chars3[i] = randChar(); });
+          el.innerHTML = chars3.join('').split('\n').join('<br>');
+
+          setTimeout(() => {
+            // Restore
+            el.innerHTML = originalHTML;
+          }, 40);
+        }, 40);
+      }, 40);
     }
 
-    // Random initial delay to stagger instances
-    const initialDelay = Math.random() * baseInterval;
-    setTimeout(scheduleNext, initialDelay);
+    function startPeriodicGlitch() {
+      function scheduleNext() {
+        const jitter = baseInterval * 0.3;
+        const wait = baseInterval - jitter + Math.random() * jitter * 2;
+        setTimeout(() => {
+          flickerGlitch();
+          scheduleNext();
+        }, wait);
+      }
+      const initialDelay = Math.random() * baseInterval;
+      setTimeout(scheduleNext, initialDelay);
+    }
+
+    // ====== INIT ======
+    if (playEntrance) {
+      playDecode();
+    } else {
+      startPeriodicGlitch();
+    }
   }
 
   document.querySelectorAll<HTMLElement>('[data-glitch-html]').forEach(initGlitch);
 </script>
 
 <style is:global>
-  .glitch-enter {
-    animation: glitchIn 0.35s ease-out forwards;
-  }
-
   .glitch-text .accent-dot {
-    color: var(--blue);
+    color: var(--purple);
   }
 </style>

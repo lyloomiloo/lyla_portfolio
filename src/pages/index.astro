@@ -21,8 +21,7 @@ import GlitchText from '../components/GlitchText.astro';
     </section>
     <RetroElements type="pixel-scatter-strip" />
     <RetroElements type="ascii-divider" />
-    <section id="about">
-      <div class="section-label reveal"><GlitchText text="About" tag="span" intensity="subtle" interval={7000} /></div>
+    <section id="about" class="about-section">
       <AboutSection />
     </section>
     <RetroElements type="rec-loader" />
@@ -30,6 +29,7 @@ import GlitchText from '../components/GlitchText.astro';
       <div class="section-label reveal"><GlitchText text="Capabilities" tag="span" intensity="subtle" interval={8000} /></div>
       <SkillsSection />
     </section>
+    <RetroElements type="pixel-creature-strip" />
     <RetroElements type="kaomoji-strip" />
     <section id="contact" style="padding-bottom: 5rem;">
       <div class="section-label reveal">Contact</div>
@@ -40,3 +40,9 @@ import GlitchText from '../components/GlitchText.astro';
     </section>
   </main>
 </BaseLayout>
+
+<style>
+  .about-section {
+    padding: 0 !important;
+  }
+</style>

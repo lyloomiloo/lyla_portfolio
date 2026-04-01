@@ -8,12 +8,10 @@
   --text-mid: #555555;
   --text-dim: #999999;
   --border: #D0CCC4;
-  --blue: #0038FF;
-  --red: #FF2020;
-  --green: #00CC55;
-  --pink: #FF2D8A;
+  --purple: #7B2DFF;
   --yellow: #FFE600;
-  --black: #000000;
+  --dark: #2A2A2A;
+  --dark-light: #3A3A3A;
 
   /* Typography */
   --font-display: 'Space Grotesk', sans-serif;

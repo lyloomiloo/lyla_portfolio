@@ -1,0 +1,16 @@
+#!/bin/bash
+echo "LYLA.SYS — Portfolio Setup"
+echo "=========================="
+echo ""
+npm install
+echo ""
+echo "> READY"
+echo ""
+echo "Workflow:"
+echo "  /spec [idea]     → create a feature spec"
+echo "  /plan [spec]     → turn spec into implementation plan"
+echo "  /task [plan] [N] → implement step N from plan"
+echo "  /review [spec]   → check work against spec"
+echo ""
+echo "Start with: /spec site foundation"
+echo ""

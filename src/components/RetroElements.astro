@@ -1,6 +1,6 @@
 ---
 interface Props {
-  type: 'marquee' | 'pixel-banner' | 'pixel-robot-strip' | 'rec-loader' | 'kaomoji-strip' | 'ascii-divider' | 'loading-text' | 'pixel-scatter-strip';
+  type: 'marquee' | 'pixel-banner' | 'pixel-robot-strip' | 'pixel-creature-strip' | 'rec-loader' | 'kaomoji-strip' | 'ascii-divider' | 'loading-text' | 'pixel-scatter-strip';
 }
 
 const { type } = Astro.props;
@@ -29,7 +29,7 @@ const robotGrid = [
 const robotColors: Record<number, string> = {
   0: 'transparent',
   1: '#FFE600',
-  2: '#0038FF',
+  2: '#7B2DFF',
   3: '#666666',
   4: '#FFFFFF',
 };
@@ -51,8 +51,32 @@ const scatterColors: Record<number, string> = {
   0: 'transparent',
   1: '#FFE600',
   2: '#888',
-  3: '#0038FF',
+  3: '#7B2DFF',
   4: '#333',
+};
+
+// Ghost creature: 12x12 grid, 0=transparent, 1=purple, 2=yellow(eyes), 3=grey, 4=white
+const ghostGrid = [
+  [0,0,0,0,1,1,1,1,0,0,0,0],
+  [0,0,0,1,1,1,1,1,1,0,0,0],
+  [0,0,1,1,1,1,1,1,1,1,0,0],
+  [0,1,1,2,2,1,1,2,2,1,1,0],
+  [0,1,1,2,2,1,1,2,2,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,0],
+  [0,1,1,1,3,1,1,3,1,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,0],
+  [0,1,1,1,1,1,1,1,1,1,1,0],
+  [0,1,0,1,1,0,0,1,1,0,1,0],
+  [0,0,0,1,0,0,0,0,1,0,0,0],
+];
+
+const ghostColors: Record<number, string> = {
+  0: 'transparent',
+  1: '#7B2DFF',
+  2: '#FFE600',
+  3: '#444',
+  4: '#FFFFFF',
 };
 ---
 
@@ -83,7 +107,31 @@ const scatterColors: Record<number, string> = {
         <span class="strip-label">v2.025</span>
         <div class="strip-dots">
           <span class="dot dot-yellow"></span>
-          <span class="dot dot-blue"></span>
+          <span class="dot dot-purple"></span>
+          <span class="dot dot-grey"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{type === 'pixel-creature-strip' && (
+  <div class="pixel-strip">
+    <div class="pixel-strip-inner">
+      <div class="pixel-strip-side">
+        <span class="strip-label">GHOST.EXE</span>
+        <span class="strip-blink">_</span>
+      </div>
+      <div class="pixel-ghost">
+        {ghostGrid.flat().map((cell) => (
+          <div class={cell === 2 ? 'ghost-eye' : ''} style={`background:${ghostColors[cell]};`} />
+        ))}
+      </div>
+      <div class="pixel-strip-side">
+        <span class="strip-label">BOO!</span>
+        <div class="strip-dots">
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-purple"></span>
           <span class="dot dot-grey"></span>
         </div>
       </div>
@@ -206,7 +254,7 @@ const scatterColors: Record<number, string> = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--blue);
+    color: var(--purple);
     padding-right: 3rem;
   }
 
@@ -217,7 +265,7 @@ const scatterColors: Record<number, string> = {
 
   /* ========== PIXEL ROBOT STRIP — full-width black ========== */
   .pixel-strip {
-    background: var(--black);
+    background: var(--dark);
     width: 100%;
     padding: 2rem 0;
   }
@@ -255,6 +303,31 @@ const scatterColors: Record<number, string> = {
     97%, 100% { opacity: 1; }
   }
 
+  /* Pixel Ghost */
+  .pixel-ghost {
+    display: grid;
+    grid-template-columns: repeat(12, 8px);
+    grid-template-rows: repeat(12, 8px);
+    gap: 1px;
+    flex-shrink: 0;
+    animation: ghostFloat 2s ease-in-out infinite;
+  }
+
+  .pixel-ghost div {
+    width: 8px;
+    height: 8px;
+    image-rendering: pixelated;
+  }
+
+  .ghost-eye {
+    animation: eyeBlink 3s step-end infinite;
+  }
+
+  @keyframes ghostFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+
   .pixel-strip-side {
     display: flex;
     flex-direction: column;
@@ -288,12 +361,12 @@ const scatterColors: Record<number, string> = {
   }
 
   .dot-yellow { background: var(--yellow); }
-  .dot-blue { background: var(--blue); }
+  .dot-purple { background: var(--purple); }
   .dot-grey { background: #666; }
 
   /* ========== PIXEL SCATTER STRIP — Vermeer-style pixel mosaic ========== */
   .scatter-strip {
-    background: var(--black);
+    background: var(--dark);
     width: 100%;
     padding: 1.5rem 0;
     overflow: hidden;
@@ -315,7 +388,7 @@ const scatterColors: Record<number, string> = {
 
   /* ========== REC LOADER — full-width black bar ========== */
   .rec-strip {
-    background: var(--black);
+    background: var(--dark);
     width: 100%;
     padding: 12px 0;
   }
@@ -344,13 +417,13 @@ const scatterColors: Record<number, string> = {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--red);
+    background: var(--purple);
     animation: blink 1s step-end infinite;
     flex-shrink: 0;
   }
 
   .rec-text {
-    color: var(--red);
+    color: var(--purple);
     font-weight: 700;
   }
 
@@ -391,7 +464,7 @@ const scatterColors: Record<number, string> = {
 
   /* ========== KAOMOJI STRIP — full-width black ========== */
   .kaomoji-strip {
-    background: var(--black);
+    background: var(--dark);
     width: 100%;
     padding: 1.5rem 0;
   }
@@ -445,7 +518,7 @@ const scatterColors: Record<number, string> = {
     text-align: center;
     padding: 1rem 0;
     overflow: hidden;
-    background: var(--black);
+    background: var(--dark);
     width: 100%;
   }
 
