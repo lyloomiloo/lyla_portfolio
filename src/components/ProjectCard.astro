@@ -19,11 +19,21 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 <article class="project-card">
   <span class="project-index-watermark">0{order}</span>
   <span class="project-index">0{order}</span>
-  <div class="project-mockup">
-    {thumbnail
-      ? <img src={thumbnail} alt={`${displayTitle} preview`} />
-      : <span class="project-mockup-placeholder">[mockup]</span>
-    }
+  <div class="mockup-frame">
+    <div class="mockup-chrome">
+      <span class="chrome-dots">
+        <span style="background: var(--orange)"></span>
+        <span style="background: var(--green)"></span>
+        <span style="background: #666"></span>
+      </span>
+      <span class="chrome-url">{slug}.app</span>
+    </div>
+    <div class="project-mockup">
+      {thumbnail
+        ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+        : <span class="project-mockup-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
+      }
+    </div>
   </div>
   <GlitchText text={displayTitle} tag="h3" class="project-name" intensity="bold" interval={4000 + order * 500} />
   <p class="project-hook">{hook}</p>
@@ -68,16 +78,49 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
     z-index: 1;
   }
 
+  .mockup-frame {
+    margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .mockup-chrome {
+    background: var(--dark);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #444;
+  }
+
+  .chrome-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .chrome-dots span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  .chrome-url {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #888;
+    flex: 1;
+    text-align: center;
+  }
+
   .project-mockup {
     aspect-ratio: 16 / 10;
     background: var(--dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 1.2rem;
     overflow: hidden;
-    position: relative;
-    z-index: 1;
   }
 
   .project-mockup img {
@@ -136,7 +179,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
   .project-link {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--purple);
+    color: var(--orange);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     transition: letter-spacing 0.2s;

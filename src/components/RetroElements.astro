@@ -28,8 +28,8 @@ const robotGrid = [
 
 const robotColors: Record<number, string> = {
   0: 'transparent',
-  1: '#FFE600',
-  2: '#7B2DFF',
+  1: '#00E676',
+  2: '#FF6B00',
   3: '#666666',
   4: '#FFFFFF',
 };
@@ -49,9 +49,9 @@ const scatterPattern = [
 
 const scatterColors: Record<number, string> = {
   0: 'transparent',
-  1: '#FFE600',
+  1: '#00E676',
   2: '#888',
-  3: '#7B2DFF',
+  3: '#FF6B00',
   4: '#333',
 };
 
@@ -73,8 +73,8 @@ const ghostGrid = [
 
 const ghostColors: Record<number, string> = {
   0: 'transparent',
-  1: '#7B2DFF',
-  2: '#FFE600',
+  1: '#FF6B00',
+  2: '#00E676',
   3: '#444',
   4: '#FFFFFF',
 };
@@ -236,7 +236,7 @@ const ghostColors: Record<number, string> = {
   /* ========== MARQUEE — yellow strip, blue text ========== */
   .marquee {
     overflow: hidden;
-    background: var(--yellow);
+    background: var(--green);
     padding: 14px 0;
     width: 100%;
   }
@@ -254,7 +254,7 @@ const ghostColors: Record<number, string> = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--purple);
+    color: var(--orange);
     padding-right: 3rem;
   }
 
@@ -338,7 +338,7 @@ const ghostColors: Record<number, string> = {
   .strip-label {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--yellow);
+    color: var(--green);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
@@ -346,7 +346,7 @@ const ghostColors: Record<number, string> = {
   .strip-blink {
     font-family: var(--font-mono);
     font-size: 1rem;
-    color: var(--yellow);
+    color: var(--green);
     animation: blink 1s step-end infinite;
   }
 
@@ -360,8 +360,8 @@ const ghostColors: Record<number, string> = {
     height: 6px;
   }
 
-  .dot-yellow { background: var(--yellow); }
-  .dot-purple { background: var(--purple); }
+  .dot-yellow { background: var(--green); }
+  .dot-purple { background: var(--orange); }
   .dot-grey { background: #666; }
 
   /* ========== PIXEL SCATTER STRIP — Vermeer-style pixel mosaic ========== */
@@ -417,13 +417,13 @@ const ghostColors: Record<number, string> = {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: var(--purple);
+    background: var(--orange);
     animation: blink 1s step-end infinite;
     flex-shrink: 0;
   }
 
   .rec-text {
-    color: var(--purple);
+    color: var(--orange);
     font-weight: 700;
   }
 
@@ -437,7 +437,7 @@ const ghostColors: Record<number, string> = {
 
   .rec-bar-fill {
     height: 100%;
-    background: var(--yellow);
+    background: var(--green);
     animation: loadFill 4s linear infinite;
   }
 
@@ -450,7 +450,7 @@ const ghostColors: Record<number, string> = {
   .rec-pct {
     font-size: 0.85rem;
     min-width: 4ch;
-    color: var(--yellow);
+    color: var(--green);
   }
 
   .rec-sep {
@@ -500,7 +500,7 @@ const ghostColors: Record<number, string> = {
   .kaomoji-face {
     font-family: var(--font-mono);
     font-size: 1.2rem;
-    color: var(--yellow);
+    color: var(--green);
     position: relative;
     z-index: 1;
   }
@@ -508,7 +508,7 @@ const ghostColors: Record<number, string> = {
   .kaomoji-label {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--yellow);
+    color: var(--green);
     text-transform: uppercase;
     letter-spacing: 0.1em;
   }
