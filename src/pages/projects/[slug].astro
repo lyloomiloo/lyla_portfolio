@@ -1,0 +1,172 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(p => ({
+    params: { slug: p.data.slug },
+    props: { project: p },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+---
+
+<BaseLayout title={project.data.displayTitle} description={project.data.tagline}>
+  <Nav />
+  <main class="project-page">
+    <a href="/#projects" class="back-link">&larr; Back to projects</a>
+
+    <h1 class="project-title">{project.data.displayTitle}</h1>
+    <p class="project-tagline">{project.data.tagline}</p>
+
+    <div class="project-metadata">
+      {project.data.role && <span><strong>Role:</strong> {project.data.role}</span>}
+      {project.data.duration && <span><strong>Duration:</strong> {project.data.duration}</span>}
+      <span><strong>Status:</strong> {project.data.status}</span>
+      <span><strong>Year:</strong> {project.data.year}</span>
+    </div>
+
+    {project.data.tools && project.data.tools.length > 0 && (
+      <div class="project-tools">
+        {project.data.tools.map((tool: string) => <span class="tool-pill">{tool}</span>)}
+      </div>
+    )}
+
+    <div class="prose">
+      <Content />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .project-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 4rem;
+  }
+
+  .back-link {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    transition: color 0.2s;
+    display: inline-block;
+    margin-bottom: 2rem;
+  }
+
+  .back-link:hover {
+    color: var(--text);
+  }
+
+  .project-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 0.92;
+    letter-spacing: -0.04em;
+    margin-bottom: 0.8rem;
+  }
+
+  .project-tagline {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--text-mid);
+    margin-bottom: 1.5rem;
+  }
+
+  .project-metadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .project-metadata strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .project-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 2.5rem;
+  }
+
+  .tool-pill {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .prose :global(h2) {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .prose :global(p) {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.75;
+    margin-bottom: 1.2rem;
+    color: var(--text-mid);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-left: 1.2rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .prose :global(li) {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--text-mid);
+    margin-bottom: 0.4rem;
+  }
+
+  .prose :global(strong) {
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .prose :global(em) {
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .project-page {
+      padding: 5rem 1.5rem 3rem;
+    }
+  }
+</style>
