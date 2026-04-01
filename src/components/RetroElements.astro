@@ -1,30 +1,33 @@
 ---
 interface Props {
-  type: 'marquee' | 'pixel-robot' | 'rec' | 'loading-bar' | 'ascii-divider' | 'kaomoji';
+  type: 'marquee' | 'pixel-robot' | 'rec-loader' | 'kaomoji' | 'ascii-divider' | 'loading-text';
 }
 
 const { type } = Astro.props;
 
-// Pixel robot: 8x8 grid, 0=transparent, 1=green, 2=text, 3=pink
+const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION · UX RESEARCH · FRONTEND DEV · BARCELONA 2025 · ';
+
+// 12x10 pixel robot: 0=black(bg), 1=green, 2=white(eyes), 3=grey, 4=red(antenna)
 const robotGrid = [
-  [0,0,1,1,1,1,0,0],
-  [0,1,1,1,1,1,1,0],
-  [1,2,1,1,1,2,1,1],
-  [1,1,1,1,1,1,1,1],
-  [1,1,0,1,1,0,1,1],
-  [0,1,1,0,0,1,1,0],
-  [0,0,1,1,1,1,0,0],
-  [0,1,0,0,0,0,1,0],
+  [0,0,0,0,0,4,0,0,0,0,0,0],
+  [0,0,0,0,0,3,0,0,0,0,0,0],
+  [0,0,0,1,1,1,1,1,0,0,0,0],
+  [0,0,1,2,1,1,2,1,1,0,0,0],
+  [0,0,1,1,1,1,1,1,1,0,0,0],
+  [0,0,0,1,3,3,3,1,0,0,0,0],
+  [0,1,0,1,1,1,1,1,0,1,0,0],
+  [0,1,0,0,1,1,1,0,0,1,0,0],
+  [0,0,0,0,1,0,1,0,0,0,0,0],
+  [0,0,0,0,3,0,3,0,0,0,0,0],
 ];
 
 const robotColors: Record<number, string> = {
   0: 'transparent',
-  1: 'var(--green)',
-  2: 'var(--text)',
-  3: 'var(--pink)',
+  1: '#00CC55',
+  2: '#FFFFFF',
+  3: '#666666',
+  4: '#FF2020',
 };
-
-const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION · UX RESEARCH · FRONTEND DEV · CONTENT STRATEGY · BARCELONA · 2025–26 · ';
 ---
 
 {type === 'marquee' && (
@@ -32,61 +35,91 @@ const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION 
     <div class="marquee-inner">
       <span>{marqueeText}</span>
       <span>{marqueeText}</span>
+      <span>{marqueeText}</span>
     </div>
   </div>
 )}
 
 {type === 'pixel-robot' && (
-  <div class="pixel-robot-wrap">
+  <div class="pixel-robot-block">
     <div class="pixel-robot">
-      {robotGrid.flat().map(cell => (
-        <div style={`background:${robotColors[cell]};`} />
+      {robotGrid.flat().map((cell) => (
+        <div class={cell === 2 ? 'robot-eye' : cell === 4 ? 'robot-antenna' : ''} style={`background:${robotColors[cell]};`} />
       ))}
     </div>
   </div>
 )}
 
-{type === 'rec' && (
-  <div class="rec-indicator">
-    <span class="rec-dot"></span> REC
+{type === 'rec-loader' && (
+  <div class="rec-loader-block">
+    <span class="rec-dot"></span>
+    <span class="rec-text">REC</span>
+    <div class="rec-bar">
+      <div class="rec-bar-fill"></div>
+    </div>
+    <span class="rec-pct" data-rec-pct>0%</span>
   </div>
 )}
 
-{type === 'loading-bar' && (
-  <div class="loading-bar-wrap">
-    <span class="loading-label">LOADING...</span>
-    <div class="loading-bar">
-      <div class="loading-fill"></div>
-    </div>
+{type === 'kaomoji' && (
+  <div class="kaomoji-block">
+    <div class="kaomoji-flash"></div>
+    <span class="kaomoji-face" data-kaomoji>(◕‿◕)</span>
   </div>
 )}
 
 {type === 'ascii-divider' && (
-  <div class="ascii-divider">─── ◆ ──────────────────────────── ◆ ───</div>
+  <div class="ascii-divider">
+    <span class="ascii-inner">░░▒▒▓▓████████████████████████████▓▓▒▒░░</span>
+  </div>
 )}
 
-{type === 'kaomoji' && (
-  <div class="kaomoji" data-kaomoji>(◕‿◕)</div>
+{type === 'loading-text' && (
+  <span class="loading-text" data-loading-text>LOADING...</span>
 )}
 
 <script>
+  // Kaomoji cycling with flash
   document.querySelectorAll('[data-kaomoji]').forEach(el => {
-    const faces = ['(◕‿◕)', '(◠‿◠)', '(◕ᴗ◕)', '(｡◕‿◕｡)'];
+    const faces = ['(◕‿◕)', '(◕ᴗ◕)', '(#_#)', '(◠‿◠)'];
     let i = 0;
+    const flash = el.parentElement?.querySelector('.kaomoji-flash');
     setInterval(() => {
       i = (i + 1) % faces.length;
+      if (flash) {
+        (flash as HTMLElement).style.opacity = '0.6';
+        setTimeout(() => { (flash as HTMLElement).style.opacity = '0'; }, 50);
+      }
       el.textContent = faces[i];
-    }, 4000);
+    }, 2500);
+  });
+
+  // Loading text cycling
+  document.querySelectorAll('[data-loading-text]').forEach(el => {
+    const texts = ['LOADING...', 'BUILDING...', 'COMPILING...', 'DEPLOYING...'];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % texts.length;
+      el.textContent = texts[i];
+    }, 2000);
+  });
+
+  // REC percentage counter
+  document.querySelectorAll('[data-rec-pct]').forEach(el => {
+    let pct = 0;
+    setInterval(() => {
+      pct = (pct + 1) % 101;
+      el.textContent = pct + '%';
+    }, 40);
   });
 </script>
 
 <style>
-  /* Marquee */
+  /* Marquee — yellow background, blue text */
   .marquee {
     overflow: hidden;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 0.6rem 0;
+    background: var(--yellow);
+    padding: 10px 0;
     width: 100%;
   }
 
@@ -94,54 +127,68 @@ const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION 
     display: flex;
     white-space: nowrap;
     will-change: transform;
-    animation: marqueeScroll 25s linear infinite;
+    animation: marqueeScroll 20s linear infinite;
   }
 
   .marquee-inner span {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--text-dim);
+    color: var(--blue);
     padding-right: 2rem;
   }
 
   @keyframes marqueeScroll {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to { transform: translateX(-33.33%); }
   }
 
-  /* Pixel Robot */
-  .pixel-robot-wrap {
+  /* Pixel Robot — black background block */
+  .pixel-robot-block {
     display: inline-block;
+    background: var(--black);
+    padding: 15px;
   }
 
   .pixel-robot {
     display: grid;
-    grid-template-columns: repeat(8, 6px);
+    grid-template-columns: repeat(12, 10px);
+    grid-template-rows: repeat(10, 10px);
     gap: 1px;
-    animation: robotBounce 3s ease-in-out infinite;
   }
 
   .pixel-robot div {
-    width: 6px;
-    height: 6px;
+    width: 10px;
+    height: 10px;
     image-rendering: pixelated;
   }
 
-  @keyframes robotBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-3px); }
+  .robot-eye {
+    animation: eyeBlink 3s step-end infinite;
   }
 
-  /* REC Indicator */
-  .rec-indicator {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--red);
-    display: flex;
+  .robot-antenna {
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes eyeBlink {
+    0%, 90% { opacity: 1; }
+    92%, 96% { opacity: 0; }
+    98%, 100% { opacity: 1; }
+  }
+
+  /* REC Loader — black block */
+  .rec-loader-block {
+    display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 8px;
+    background: var(--black);
+    padding: 10px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #fff;
   }
 
   .rec-dot {
@@ -151,32 +198,26 @@ const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION 
     border-radius: 50%;
     background: var(--red);
     animation: blink 1s step-end infinite;
+    flex-shrink: 0;
   }
 
-  /* Loading Bar */
-  .loading-bar-wrap {
-    display: inline-block;
+  .rec-text {
+    color: var(--red);
+    font-weight: 700;
   }
 
-  .loading-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    display: block;
-    margin-bottom: 3px;
-  }
-
-  .loading-bar {
-    width: 120px;
-    height: 6px;
-    border: 1px solid var(--border);
+  .rec-bar {
+    width: 100px;
+    height: 8px;
+    border: 1px solid #444;
     overflow: hidden;
+    flex-shrink: 0;
   }
 
-  .loading-fill {
+  .rec-bar-fill {
     height: 100%;
     background: var(--green);
-    animation: loadFill 3s linear infinite;
+    animation: loadFill 4s linear infinite;
   }
 
   @keyframes loadFill {
@@ -185,28 +226,73 @@ const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION 
     100% { width: 0%; }
   }
 
+  .rec-pct {
+    font-size: 0.8rem;
+    min-width: 3ch;
+  }
+
+  /* Kaomoji — black square */
+  .kaomoji-block {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 90px;
+    height: 90px;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kaomoji-flash {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.05s;
+  }
+
+  .kaomoji-face {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+  }
+
   /* ASCII Divider */
   .ascii-divider {
+    text-align: center;
+    padding: 1.5rem 0;
+    overflow: hidden;
+  }
+
+  .ascii-inner {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text-dim);
-    text-align: center;
-    padding: 1.5rem 0;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.1em;
     opacity: 0.5;
   }
 
-  /* Kaomoji */
-  .kaomoji {
+  /* Loading Text */
+  .loading-text {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text-dim);
-    display: inline-block;
   }
 
   @media (max-width: 768px) {
-    .pixel-robot-wrap {
+    .pixel-robot-block {
       display: none;
+    }
+
+    .rec-loader-block {
+      font-size: 0.8rem;
+    }
+
+    .rec-bar {
+      width: 60px;
     }
   }
 </style>

@@ -9,7 +9,7 @@ import ArchivePanel from './ArchivePanel.astro';
 </div>
 
 <p class="pullquote reveal">
-  "I spent a decade learning to turn noise into signal for brands. Now I design the signal itself."
+  "I spent a decade learning to turn noise into signal for brands. Now I <span class="pullquote-highlight">design the signal itself.</span>"
 </p>
 
 <style>
@@ -22,14 +22,19 @@ import ArchivePanel from './ArchivePanel.astro';
 
   .pullquote {
     font-family: var(--font-serif);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-style: italic;
     color: var(--text);
-    max-width: 560px;
+    max-width: 620px;
     margin-top: 3rem;
     line-height: 1.55;
     padding-left: 1.2rem;
-    border-left: 2px solid var(--green);
+    border-left: 3px solid var(--green);
+  }
+
+  .pullquote-highlight {
+    background: linear-gradient(to top, var(--yellow) 40%, transparent 40%);
+    padding: 0 2px;
   }
 
   @media (max-width: 768px) {

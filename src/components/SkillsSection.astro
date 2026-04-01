@@ -2,18 +2,26 @@
 const categories = [
   {
     name: 'Strategy',
+    color: 'var(--blue)',
+    textColor: '#fff',
     items: ['Brand strategy & positioning', 'Consumer insights & research', 'Content strategy & messaging', 'UX research & interviews'],
   },
   {
     name: 'Design',
+    color: 'var(--red)',
+    textColor: '#fff',
     items: ['Product design (concept → prototype)', 'UI/UX design (Figma)', 'Information architecture', 'Editorial & visual design'],
   },
   {
     name: 'Build',
+    color: 'var(--green)',
+    textColor: '#fff',
     items: ['Frontend (Next.js, Astro, React)', 'AI integration & prompting', 'API integration & data', 'Deployment & version control'],
   },
   {
     name: 'Communicate',
+    color: 'var(--yellow)',
+    textColor: 'var(--text)',
     items: ['Copywriting & content', 'Cross-functional facilitation', 'Stakeholder management', 'Team leadership'],
   },
 ];
@@ -22,7 +30,7 @@ const categories = [
 <div class="skills-grid">
   {categories.map((cat, i) => (
     <div class="skill-block reveal" style={`transition-delay: ${i * 0.05}s;`}>
-      <h4 class="skill-category">{cat.name}</h4>
+      <h4 class="skill-category" style={`background: ${cat.color}; color: ${cat.textColor};`}>{cat.name}</h4>
       <ul>
         {cat.items.map(item => <li>{item}</li>)}
       </ul>
@@ -45,18 +53,18 @@ const categories = [
 
   .skill-category {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--green);
+    font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     margin-bottom: 0.8rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
+    padding: 4px 10px;
+    font-weight: 700;
+    display: inline-block;
   }
 
   li {
     font-family: var(--font-body);
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 300;
     color: var(--text);
     padding: 0.22rem 0;

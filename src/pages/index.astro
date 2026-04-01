@@ -22,18 +22,22 @@ import GlitchText from '../components/GlitchText.astro';
     <section id="about">
       <div class="section-label reveal"><GlitchText text="About" tag="span" intensity="subtle" interval={7000} /></div>
       <AboutSection />
+      <div style="margin-top: 2rem;">
+        <RetroElements type="rec-loader" />
+      </div>
     </section>
     <RetroElements type="ascii-divider" />
     <section id="skills">
       <div class="section-label reveal"><GlitchText text="Capabilities" tag="span" intensity="subtle" interval={8000} /></div>
       <SkillsSection />
     </section>
+    <RetroElements type="ascii-divider" />
     <section id="contact" style="padding-bottom: 5rem;">
       <div class="section-label reveal">Contact</div>
       <Contact />
       <div style="margin-top: 2rem; display: flex; align-items: center; gap: 2rem;">
         <RetroElements type="kaomoji" />
-        <RetroElements type="loading-bar" />
+        <RetroElements type="loading-text" />
       </div>
     </section>
   </main>

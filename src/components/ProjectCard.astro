@@ -16,6 +16,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 ---
 
 <article class="project-card">
+  <span class="project-index-watermark">0{order}</span>
   <span class="project-index">0{order}</span>
   <div class="project-mockup">
     {thumbnail
@@ -36,27 +37,46 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
   .project-card {
     padding: 1.8rem;
     background: var(--bg-card);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-index-watermark {
+    position: absolute;
+    top: -0.2rem;
+    right: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 8rem;
+    font-weight: 800;
+    color: var(--text);
+    opacity: 0.05;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 0;
   }
 
   .project-index {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     display: block;
     margin-bottom: 1.2rem;
+    position: relative;
+    z-index: 1;
   }
 
   .project-mockup {
     aspect-ratio: 16 / 10;
-    background: var(--bg);
-    border: 1px solid var(--border);
+    background: var(--black);
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.2rem;
     overflow: hidden;
+    position: relative;
+    z-index: 1;
   }
 
   .project-mockup img {
@@ -67,26 +87,30 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-mockup-placeholder {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: var(--text-dim);
+    font-size: 0.85rem;
+    color: #444;
   }
 
   .project-name {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-size: clamp(2.5rem, 6vw, 5rem);
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.03em;
     margin-bottom: 0.4rem;
+    position: relative;
+    z-index: 1;
   }
 
   .project-hook {
     font-family: var(--font-body);
-    font-size: clamp(1rem, 1.3vw, 1.15rem);
+    font-size: 1.2rem;
     font-weight: 300;
     color: var(--text-mid);
     line-height: 1.65;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
   .project-tags {
@@ -94,11 +118,13 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
     flex-wrap: wrap;
     gap: 4px;
     margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
   }
 
   .project-tags span {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 2px 7px;
@@ -108,11 +134,13 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-link {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     color: var(--blue);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     transition: letter-spacing 0.2s;
+    position: relative;
+    z-index: 1;
   }
 
   .project-link:hover {
@@ -121,10 +149,12 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-meta {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-dim);
     margin-top: 1rem;
     padding-top: 0.7rem;
     border-top: 1px solid var(--border);
+    position: relative;
+    z-index: 1;
   }
 </style>
