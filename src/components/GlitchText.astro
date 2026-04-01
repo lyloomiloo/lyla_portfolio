@@ -1,0 +1,97 @@
+---
+interface Props {
+  text: string;
+  tag?: string;
+  class?: string;
+}
+
+const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
+
+// Build HTML: \n → <br>, trailing period → accent span
+const parts = text.split('\n');
+let html = '';
+parts.forEach((part, i) => {
+  if (i > 0) html += '<br>';
+  // If this is the last part and ends with '.', wrap the dot
+  if (i === parts.length - 1 && part.endsWith('.')) {
+    html += part.slice(0, -1) + '<span class="accent-dot">.</span>';
+  } else {
+    html += part;
+  }
+});
+---
+<Fragment set:html={`<${Tag} class="glitch-text glitch-enter ${className}" data-glitch-html>${html}</${Tag}>`} />
+
+<script>
+  const glitchChars = '*#@/\\][01{}<>_|~';
+
+  function initGlitch(el: HTMLElement) {
+    const originalHTML = el.innerHTML;
+
+    // Extract text-only content for glitching (skip tags)
+    function getTextContent(node: Node): string {
+      let result = '';
+      node.childNodes.forEach(child => {
+        if (child.nodeType === Node.TEXT_NODE) {
+          result += child.textContent || '';
+        } else if (child.nodeType === Node.ELEMENT_NODE) {
+          const tag = (child as HTMLElement).tagName;
+          if (tag === 'BR') {
+            result += '\n';
+          } else {
+            result += getTextContent(child);
+          }
+        }
+      });
+      return result;
+    }
+
+    function glitch() {
+      const text = getTextContent(el);
+      const indices: number[] = [];
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i];
+        if (c !== ' ' && c !== '\n' && c !== '.') indices.push(i);
+      }
+      if (indices.length === 0) return;
+
+      const count = Math.floor(Math.random() * 3) + 1;
+      const shuffled = [...indices].sort(() => Math.random() - 0.5);
+      const picks = shuffled.slice(0, count);
+
+      const chars = text.split('');
+      picks.forEach(i => {
+        chars[i] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
+      });
+
+      // Rebuild with line breaks but plain text (glitch moment)
+      const lines = chars.join('').split('\n');
+      el.innerHTML = lines.join('<br>');
+
+      const delay = 80 + Math.random() * 40;
+      setTimeout(() => { el.innerHTML = originalHTML; }, delay);
+    }
+
+    // Periodic glitch
+    function scheduleNext() {
+      const wait = 3000 + Math.random() * 2000;
+      setTimeout(() => {
+        glitch();
+        scheduleNext();
+      }, wait);
+    }
+    scheduleNext();
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-glitch-html]').forEach(initGlitch);
+</script>
+
+<style is:global>
+  .glitch-enter {
+    animation: glitchIn 0.35s ease-out forwards;
+  }
+
+  .glitch-text .accent-dot {
+    color: var(--blue);
+  }
+</style>

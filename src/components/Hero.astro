@@ -1,0 +1,88 @@
+---
+import PixelArtifacts from './PixelArtifacts.astro';
+import GlitchText from './GlitchText.astro';
+---
+<section id="hero" class="hero">
+  <div class="hero-frame"></div>
+  <PixelArtifacts variant="hero" />
+  <div class="hero-content">
+    <GlitchText text="LYLA\nHUANG." tag="h1" class="hero-title reveal" />
+    <p class="hero-sub reveal" style="transition-delay: 0.08s;">Strategist &rarr; Builder</p>
+    <p class="hero-desc reveal" style="transition-delay: 0.16s;">
+      I spent a decade turning noise into signal for brands.
+      Now I design and build the products myself —
+      using AI as a collaborator, not a crutch.
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 2.5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 12vw, 10rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 0.88;
+    letter-spacing: -0.05em;
+  }
+
+  .accent-dot {
+    color: var(--blue);
+  }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .hero-desc {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text-mid);
+    max-width: 460px;
+    margin-top: 2rem;
+    line-height: 1.75;
+  }
+
+  .hero-frame {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 300px;
+    height: 360px;
+    border: 1px solid var(--green);
+    opacity: 0.3;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 6rem 1.5rem 3rem;
+    }
+
+    .hero-frame {
+      display: none;
+    }
+  }
+</style>

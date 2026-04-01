@@ -4,7 +4,7 @@ interface Props {
 }
 
 interface Artifact {
-  type: 'square' | 'xbutton' | 'scrollbar' | 'smiley' | 'corner';
+  type: 'square' | 'xbutton' | 'scrollbar' | 'smiley';
   color?: string;
   size?: number;
   height?: number;
@@ -42,64 +42,41 @@ const configs: Record<string, Artifact[]> = {
 };
 
 const artifacts = configs[variant] || [];
+
+function buildStyle(a: Artifact): string {
+  let s = 'position:absolute;pointer-events:none;';
+  if (a.top) s += `top:${a.top};`;
+  if (a.right) s += `right:${a.right};`;
+  if (a.bottom) s += `bottom:${a.bottom};`;
+  if (a.left) s += `left:${a.left};`;
+  if (a.opacity !== undefined) s += `opacity:${a.opacity};`;
+
+  if (a.type === 'square') {
+    s += `width:${a.size}px;height:${a.size}px;background:${a.color || '#999'};image-rendering:pixelated;`;
+  } else if (a.type === 'xbutton') {
+    s += 'width:13px;height:13px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:8px;color:#CCC;line-height:1;';
+  } else if (a.type === 'scrollbar') {
+    s += `width:8px;height:${a.height || 50}px;background:repeating-linear-gradient(0deg,var(--border) 0px,var(--border) 1px,transparent 1px,transparent 3px);`;
+  } else if (a.type === 'smiley') {
+    s += 'font-family:var(--font-mono);font-size:10px;color:var(--text-dim);';
+  }
+  return s;
+}
+
+const rendered = artifacts.map(a => ({
+  ...a,
+  style: buildStyle(a),
+}));
 ---
 
 <div class="pixel-artifacts">
-  {artifacts.map((a) => {
-    const pos: Record<string, string> = { position: 'absolute', 'pointer-events': 'none' };
-    if (a.top) pos.top = a.top;
-    if (a.right) pos.right = a.right;
-    if (a.bottom) pos.bottom = a.bottom;
-    if (a.left) pos.left = a.left;
-    if (a.opacity !== undefined) pos.opacity = String(a.opacity);
-
-    if (a.type === 'square') {
-      return <div style={{
-        ...pos,
-        width: `${a.size}px`,
-        height: `${a.size}px`,
-        background: a.color || '#999',
-        imageRendering: 'pixelated',
-      }} />;
-    }
-
-    if (a.type === 'xbutton') {
-      return <div style={{
-        ...pos,
-        width: '13px',
-        height: '13px',
-        border: '1px solid var(--border)',
-        background: 'var(--bg)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '8px',
-        color: '#CCC',
-        lineHeight: '1',
-      }}>&times;</div>;
-    }
-
-    if (a.type === 'scrollbar') {
-      return <div style={{
-        ...pos,
-        width: '8px',
-        height: `${a.height || 50}px`,
-        background: 'repeating-linear-gradient(0deg, var(--border) 0px, var(--border) 1px, transparent 1px, transparent 3px)',
-      }} />;
-    }
-
-    if (a.type === 'smiley') {
-      return <span style={{
-        ...pos,
-        fontFamily: 'var(--font-mono)',
-        fontSize: '10px',
-        color: 'var(--text-dim)',
-      }}>:)</span>;
-    }
-
-    return null;
-  })}
+  {rendered.map((a) => (
+    a.type === 'xbutton'
+      ? <div style={a.style}>&times;</div>
+      : a.type === 'smiley'
+        ? <span style={a.style}>:)</span>
+        : <div style={a.style} />
+  ))}
 </div>
 
 <style>
