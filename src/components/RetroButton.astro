@@ -2,14 +2,13 @@
 interface Props {
   href: string;
   text: string;
-  variant?: 'purple' | 'yellow' | 'outline';
   target?: string;
 }
 
-const { href, text, variant = 'purple', target } = Astro.props;
+const { href, text, target } = Astro.props;
 ---
 
-<a href={href} class={`retro-btn retro-btn-${variant}`} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>{text}</a>
+<a href={href} class="retro-btn" target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>{text}</a>
 
 <style>
   .retro-btn {
@@ -20,43 +19,20 @@ const { href, text, variant = 'purple', target } = Astro.props;
     letter-spacing: 0.1em;
     padding: 8px 16px;
     cursor: pointer;
-    transition: transform 0.1s, box-shadow 0.1s;
     text-decoration: none;
-  }
-
-  .retro-btn-purple {
-    background: var(--orange);
-    color: var(--green);
-    border: 2px solid var(--orange);
-    border-top-color: rgba(255,255,255,0.2);
-    border-left-color: rgba(255,255,255,0.2);
-    border-bottom-color: rgba(0,0,0,0.3);
-    border-right-color: rgba(0,0,0,0.3);
-  }
-
-  .retro-btn-yellow {
-    background: var(--green);
-    color: var(--dark);
-    border: 2px solid var(--green);
-    border-top-color: rgba(255,255,255,0.4);
-    border-left-color: rgba(255,255,255,0.4);
-    border-bottom-color: rgba(0,0,0,0.2);
-    border-right-color: rgba(0,0,0,0.2);
-  }
-
-  .retro-btn-outline {
     background: transparent;
-    color: var(--orange);
-    border: 2px solid var(--orange);
+    color: var(--text);
+    border: 2px solid var(--text);
+    transition: background 0.15s, color 0.15s, transform 0.1s;
   }
 
   .retro-btn:hover {
+    background: var(--text);
+    color: var(--bg);
     transform: translateY(-1px);
-    box-shadow: 0 2px 0 var(--dark);
   }
 
   .retro-btn:active {
     transform: translateY(1px);
-    box-shadow: none;
   }
 </style>

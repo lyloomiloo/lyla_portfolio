@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const mobileApps = ['reroute', 'snapp'];
 ---
 
 <div class="project-grid">
@@ -17,6 +18,7 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
         year={p.data.year}
         order={p.data.order}
         thumbnail={p.data.thumbnail}
+        mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
       />
     </div>
   ))}

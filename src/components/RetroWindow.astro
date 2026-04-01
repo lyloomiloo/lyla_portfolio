@@ -1,0 +1,118 @@
+---
+interface Props {
+  title: string;
+  class?: string;
+  draggable?: boolean;
+}
+
+const { title, class: className = '', draggable = false } = Astro.props;
+---
+
+<div class={`retro-window reveal ${className}`} data-window={draggable ? 'draggable' : ''}>
+  <div class="window-titlebar" data-titlebar>
+    <span class="window-dots">
+      <span class="wd wd-orange"></span>
+      <span class="wd wd-green"></span>
+      <span class="wd wd-grey"></span>
+    </span>
+    <span class="window-title">{title}</span>
+    <span class="window-close">&times;</span>
+  </div>
+  <div class="window-body">
+    <slot />
+  </div>
+</div>
+
+<script>
+  // Draggable windows
+  document.querySelectorAll('[data-window="draggable"]').forEach(win => {
+    const bar = win.querySelector('[data-titlebar]') as HTMLElement;
+    if (!bar || window.innerWidth < 768) return;
+
+    let isDragging = false;
+    let startX = 0, startY = 0, offsetX = 0, offsetY = 0;
+
+    bar.style.cursor = 'grab';
+
+    bar.addEventListener('mousedown', (e: MouseEvent) => {
+      isDragging = true;
+      startX = e.clientX - offsetX;
+      startY = e.clientY - offsetY;
+      bar.style.cursor = 'grabbing';
+      (win as HTMLElement).style.zIndex = '50';
+      e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e: MouseEvent) => {
+      if (!isDragging) return;
+      offsetX = e.clientX - startX;
+      offsetY = e.clientY - startY;
+      (win as HTMLElement).style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (!isDragging) return;
+      isDragging = false;
+      bar.style.cursor = 'grab';
+    });
+  });
+</script>
+
+<style>
+  .retro-window {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.08);
+    transform: scale(0.92) translateY(15px);
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  }
+
+  .retro-window.visible {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+
+  .window-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+
+  .window-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .wd {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .wd-orange { background: var(--orange); }
+  .wd-green { background: var(--green); }
+  .wd-grey { background: #999; }
+
+  .window-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .window-close {
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .window-body {
+    padding: 0;
+  }
+</style>

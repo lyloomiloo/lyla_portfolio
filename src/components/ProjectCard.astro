@@ -11,36 +11,53 @@ interface Props {
   year: string;
   order: number;
   thumbnail?: string;
+  mockupType?: 'phone' | 'browser';
 }
 
-const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro.props;
+const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupType = 'browser' } = Astro.props;
 ---
 
 <article class="project-card">
   <span class="project-index-watermark">0{order}</span>
   <span class="project-index">0{order}</span>
-  <div class="mockup-frame">
-    <div class="mockup-chrome">
-      <span class="chrome-dots">
-        <span style="background: var(--orange)"></span>
-        <span style="background: var(--green)"></span>
-        <span style="background: #666"></span>
-      </span>
-      <span class="chrome-url">{slug}.app</span>
+  {mockupType === 'phone' ? (
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+      <div class="phone-status">
+        <span>9:41</span>
+        <span class="phone-icons">● ● ●</span>
+      </div>
+      <div class="phone-screen">
+        {thumbnail
+          ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+          : <span class="project-mockup-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
+        }
+      </div>
     </div>
-    <div class="project-mockup">
-      {thumbnail
-        ? <img src={thumbnail} alt={`${displayTitle} preview`} />
-        : <span class="project-mockup-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
-      }
+  ) : (
+    <div class="mockup-frame">
+      <div class="mockup-chrome">
+        <span class="chrome-dots">
+          <span style="background: var(--orange)"></span>
+          <span style="background: var(--green)"></span>
+          <span style="background: #666"></span>
+        </span>
+        <span class="chrome-url">{slug}.app</span>
+      </div>
+      <div class="project-mockup">
+        {thumbnail
+          ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+          : <span class="project-mockup-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
+        }
+      </div>
     </div>
-  </div>
+  )}
   <GlitchText text={displayTitle} tag="h3" class="project-name" intensity="bold" interval={4000 + order * 500} />
   <p class="project-hook">{hook}</p>
   <div class="project-tags">
     {tags.map(t => <span>{t}</span>)}
   </div>
-  <RetroButton href={`/projects/${slug}`} text="View Project →" variant="purple" />
+  <RetroButton href={`/projects/${slug}`} text="View Project →" />
   <div class="project-meta">{status} &middot; {year}</div>
 </article>
 
@@ -78,6 +95,56 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
     z-index: 1;
   }
 
+  /* Phone frame */
+  .phone-frame {
+    margin: 0 auto 1.2rem;
+    max-width: 220px;
+    background: var(--dark);
+    border-radius: 20px;
+    border: 3px solid #444;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
+
+  .phone-notch {
+    width: 80px;
+    height: 6px;
+    background: #444;
+    border-radius: 0 0 8px 8px;
+    margin: 0 auto;
+  }
+
+  .phone-status {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 14px 2px;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: #888;
+  }
+
+  .phone-icons {
+    font-size: 0.5rem;
+    letter-spacing: 2px;
+  }
+
+  .phone-screen {
+    aspect-ratio: 9 / 16;
+    background: var(--dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .phone-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Browser frame */
   .mockup-frame {
     margin-bottom: 1.2rem;
     position: relative;
@@ -137,7 +204,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-name {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.03em;

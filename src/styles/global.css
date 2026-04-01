@@ -9,7 +9,7 @@
   --text-dim: #999999;
   --border: #D0CCC4;
   --orange: #FF6B00;
-  --green: #00E676;
+  --green: #39FF14;
   --dark: #1E1E1E;
   --dark-light: #2E2E2E;
 
@@ -36,6 +36,7 @@ body {
   font-family: var(--font-body);
   line-height: 1.6;
   overflow-x: hidden;
+  padding-bottom: 32px;
 }
 
 a {
