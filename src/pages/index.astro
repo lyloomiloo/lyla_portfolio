@@ -6,26 +6,35 @@ import ProjectGrid from '../components/ProjectGrid.astro';
 import AboutSection from '../components/AboutSection.astro';
 import SkillsSection from '../components/SkillsSection.astro';
 import Contact from '../components/Contact.astro';
+import RetroElements from '../components/RetroElements.astro';
+import GlitchText from '../components/GlitchText.astro';
 ---
 <BaseLayout>
   <Nav />
   <main>
     <Hero />
+    <RetroElements type="marquee" />
     <section id="projects">
-      <div class="section-label reveal">Projects</div>
+      <div class="section-label reveal"><GlitchText text="Projects" tag="span" intensity="subtle" interval={6000} /></div>
       <ProjectGrid />
     </section>
+    <RetroElements type="ascii-divider" />
     <section id="about">
-      <div class="section-label reveal">About</div>
+      <div class="section-label reveal"><GlitchText text="About" tag="span" intensity="subtle" interval={7000} /></div>
       <AboutSection />
     </section>
+    <RetroElements type="ascii-divider" />
     <section id="skills">
-      <div class="section-label reveal">Capabilities</div>
+      <div class="section-label reveal"><GlitchText text="Capabilities" tag="span" intensity="subtle" interval={8000} /></div>
       <SkillsSection />
     </section>
     <section id="contact" style="padding-bottom: 5rem;">
       <div class="section-label reveal">Contact</div>
       <Contact />
+      <div style="margin-top: 2rem; display: flex; align-items: center; gap: 2rem;">
+        <RetroElements type="kaomoji" />
+        <RetroElements type="loading-bar" />
+      </div>
     </section>
   </main>
 </BaseLayout>

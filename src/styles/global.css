@@ -4,7 +4,6 @@
   /* Colors */
   --bg: #EEEBE5;
   --bg-card: #F5F3EF;
-  --bg-dark: #0C0C0C;
   --text: #111111;
   --text-mid: #555555;
   --text-dim: #999999;
@@ -100,7 +99,7 @@ img {
 
 .section-label {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.85rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.2em;

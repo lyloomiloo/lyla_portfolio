@@ -1,0 +1,212 @@
+---
+interface Props {
+  type: 'marquee' | 'pixel-robot' | 'rec' | 'loading-bar' | 'ascii-divider' | 'kaomoji';
+}
+
+const { type } = Astro.props;
+
+// Pixel robot: 8x8 grid, 0=transparent, 1=green, 2=text, 3=pink
+const robotGrid = [
+  [0,0,1,1,1,1,0,0],
+  [0,1,1,1,1,1,1,0],
+  [1,2,1,1,1,2,1,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,0,1,1,0,1,1],
+  [0,1,1,0,0,1,1,0],
+  [0,0,1,1,1,1,0,0],
+  [0,1,0,0,0,0,1,0],
+];
+
+const robotColors: Record<number, string> = {
+  0: 'transparent',
+  1: 'var(--green)',
+  2: 'var(--text)',
+  3: 'var(--pink)',
+};
+
+const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION · UX RESEARCH · FRONTEND DEV · CONTENT STRATEGY · BARCELONA · 2025–26 · ';
+---
+
+{type === 'marquee' && (
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>{marqueeText}</span>
+      <span>{marqueeText}</span>
+    </div>
+  </div>
+)}
+
+{type === 'pixel-robot' && (
+  <div class="pixel-robot-wrap">
+    <div class="pixel-robot">
+      {robotGrid.flat().map(cell => (
+        <div style={`background:${robotColors[cell]};`} />
+      ))}
+    </div>
+  </div>
+)}
+
+{type === 'rec' && (
+  <div class="rec-indicator">
+    <span class="rec-dot"></span> REC
+  </div>
+)}
+
+{type === 'loading-bar' && (
+  <div class="loading-bar-wrap">
+    <span class="loading-label">LOADING...</span>
+    <div class="loading-bar">
+      <div class="loading-fill"></div>
+    </div>
+  </div>
+)}
+
+{type === 'ascii-divider' && (
+  <div class="ascii-divider">─── ◆ ──────────────────────────── ◆ ───</div>
+)}
+
+{type === 'kaomoji' && (
+  <div class="kaomoji" data-kaomoji>(◕‿◕)</div>
+)}
+
+<script>
+  document.querySelectorAll('[data-kaomoji]').forEach(el => {
+    const faces = ['(◕‿◕)', '(◠‿◠)', '(◕ᴗ◕)', '(｡◕‿◕｡)'];
+    let i = 0;
+    setInterval(() => {
+      i = (i + 1) % faces.length;
+      el.textContent = faces[i];
+    }, 4000);
+  });
+</script>
+
+<style>
+  /* Marquee */
+  .marquee {
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 0;
+    width: 100%;
+  }
+
+  .marquee-inner {
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marqueeScroll 25s linear infinite;
+  }
+
+  .marquee-inner span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    padding-right: 2rem;
+  }
+
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* Pixel Robot */
+  .pixel-robot-wrap {
+    display: inline-block;
+  }
+
+  .pixel-robot {
+    display: grid;
+    grid-template-columns: repeat(8, 6px);
+    gap: 1px;
+    animation: robotBounce 3s ease-in-out infinite;
+  }
+
+  .pixel-robot div {
+    width: 6px;
+    height: 6px;
+    image-rendering: pixelated;
+  }
+
+  @keyframes robotBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+
+  /* REC Indicator */
+  .rec-indicator {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .rec-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: blink 1s step-end infinite;
+  }
+
+  /* Loading Bar */
+  .loading-bar-wrap {
+    display: inline-block;
+  }
+
+  .loading-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .loading-bar {
+    width: 120px;
+    height: 6px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .loading-fill {
+    height: 100%;
+    background: var(--green);
+    animation: loadFill 3s linear infinite;
+  }
+
+  @keyframes loadFill {
+    0% { width: 0%; }
+    90% { width: 100%; }
+    100% { width: 0%; }
+  }
+
+  /* ASCII Divider */
+  .ascii-divider {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 1.5rem 0;
+    letter-spacing: 0.05em;
+    opacity: 0.5;
+  }
+
+  /* Kaomoji */
+  .kaomoji {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: inline-block;
+  }
+
+  @media (max-width: 768px) {
+    .pixel-robot-wrap {
+      display: none;
+    }
+  }
+</style>

@@ -3,32 +3,44 @@ interface Props {
   text: string;
   tag?: string;
   class?: string;
+  intensity?: 'subtle' | 'bold';
+  interval?: number;
+  playEntrance?: boolean;
 }
 
-const { text, tag: Tag = 'h1', class: className = '' } = Astro.props;
+const {
+  text,
+  tag: Tag = 'span',
+  class: className = '',
+  intensity = 'bold',
+  interval = 3500,
+  playEntrance = false,
+} = Astro.props;
 
 // Build HTML: \n → <br>, trailing period → accent span
 const parts = text.split('\n');
 let html = '';
 parts.forEach((part, i) => {
   if (i > 0) html += '<br>';
-  // If this is the last part and ends with '.', wrap the dot
   if (i === parts.length - 1 && part.endsWith('.')) {
     html += part.slice(0, -1) + '<span class="accent-dot">.</span>';
   } else {
     html += part;
   }
 });
+
+const entranceClass = playEntrance ? 'glitch-enter' : '';
 ---
-<Fragment set:html={`<${Tag} class="glitch-text glitch-enter ${className}" data-glitch-html>${html}</${Tag}>`} />
+<Fragment set:html={`<${Tag} class="glitch-text ${entranceClass} ${className}" data-glitch-html data-glitch-intensity="${intensity}" data-glitch-interval="${interval}">${html}</${Tag}>`} />
 
 <script>
   const glitchChars = '*#@/\\][01{}<>_|~';
 
   function initGlitch(el: HTMLElement) {
     const originalHTML = el.innerHTML;
+    const intensity = el.dataset.glitchIntensity || 'bold';
+    const baseInterval = parseInt(el.dataset.glitchInterval || '3500', 10);
 
-    // Extract text-only content for glitching (skip tags)
     function getTextContent(node: Node): string {
       let result = '';
       node.childNodes.forEach(child => {
@@ -55,16 +67,18 @@ parts.forEach((part, i) => {
       }
       if (indices.length === 0) return;
 
-      const count = Math.floor(Math.random() * 3) + 1;
+      const minCount = intensity === 'subtle' ? 1 : 2;
+      const maxCount = intensity === 'subtle' ? 2 : 4;
+      const count = minCount + Math.floor(Math.random() * (maxCount - minCount + 1));
+
       const shuffled = [...indices].sort(() => Math.random() - 0.5);
-      const picks = shuffled.slice(0, count);
+      const picks = shuffled.slice(0, Math.min(count, indices.length));
 
       const chars = text.split('');
       picks.forEach(i => {
         chars[i] = glitchChars[Math.floor(Math.random() * glitchChars.length)];
       });
 
-      // Rebuild with line breaks but plain text (glitch moment)
       const lines = chars.join('').split('\n');
       el.innerHTML = lines.join('<br>');
 
@@ -72,15 +86,19 @@ parts.forEach((part, i) => {
       setTimeout(() => { el.innerHTML = originalHTML; }, delay);
     }
 
-    // Periodic glitch
     function scheduleNext() {
-      const wait = 3000 + Math.random() * 2000;
+      // Randomize ±30% of base interval
+      const jitter = baseInterval * 0.3;
+      const wait = baseInterval - jitter + Math.random() * jitter * 2;
       setTimeout(() => {
         glitch();
         scheduleNext();
       }, wait);
     }
-    scheduleNext();
+
+    // Random initial delay to stagger instances
+    const initialDelay = Math.random() * baseInterval;
+    setTimeout(scheduleNext, initialDelay);
   }
 
   document.querySelectorAll<HTMLElement>('[data-glitch-html]').forEach(initGlitch);

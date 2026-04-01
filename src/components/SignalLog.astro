@@ -44,15 +44,16 @@
 
 <style>
   .signal-log {
-    background: #0C0C0C;
+    background: var(--bg-card);
+    border: 1px solid var(--green);
   }
 
   .signal-log-header {
     padding: 10px 1.2rem;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.55rem;
-    color: #555;
+    font-size: 0.75rem;
+    color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.1em;
     display: flex;
@@ -61,19 +62,19 @@
   }
 
   .x-close {
-    color: #444;
+    color: var(--text-dim);
   }
 
   .signal-log-body {
     padding: 1.2rem;
     font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: var(--green);
+    font-size: 0.85rem;
+    color: var(--text);
     line-height: 2;
     max-height: 480px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: #1a3320 #0C0C0C;
+    scrollbar-color: var(--border) transparent;
   }
 
   .signal-log-body::-webkit-scrollbar {
@@ -81,11 +82,11 @@
   }
 
   .signal-log-body::-webkit-scrollbar-track {
-    background: #0C0C0C;
+    background: transparent;
   }
 
   .signal-log-body::-webkit-scrollbar-thumb {
-    background: #1a3320;
+    background: var(--border);
   }
 
   .log-entry {
@@ -93,44 +94,44 @@
   }
 
   .log-date {
-    color: #1a6638;
-    font-size: 0.62rem;
+    color: var(--text-dim);
+    font-size: 0.75rem;
     font-weight: 500;
   }
 
   .log-label {
-    color: #00FF66;
+    color: var(--green);
     font-weight: 700;
     margin-left: 0.3rem;
-    font-size: 0.58rem;
+    font-size: 0.75rem;
   }
 
   .log-text {
-    color: #4daa6a;
+    color: var(--text);
   }
 
   .log-text .dim {
-    color: #2a6642;
+    color: var(--text-dim);
   }
 
   .log-text .hl {
-    color: #00FF66;
+    color: var(--green);
     font-weight: 500;
   }
 
   .log-blockquote {
     margin-top: 0.5rem;
     padding-left: 0.8rem;
-    border-left: 2px solid #1a4a2a;
+    border-left: 2px solid var(--green);
     line-height: 2.2;
-    color: #4daa6a;
+    color: var(--text);
   }
 
   .cursor-blink {
     display: inline-block;
     width: 6px;
     height: 0.85em;
-    background: #00FF66;
+    background: var(--green);
     animation: blink 1s step-end infinite;
     margin-top: 0.5rem;
   }

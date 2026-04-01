@@ -1,4 +1,6 @@
 ---
+import GlitchText from './GlitchText.astro';
+
 interface Props {
   displayTitle: string;
   hook: string;
@@ -21,7 +23,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
       : <span class="project-mockup-placeholder">[mockup]</span>
     }
   </div>
-  <h3 class="project-name">{displayTitle}</h3>
+  <GlitchText text={displayTitle} tag="h3" class="project-name" intensity="bold" interval={4000 + order * 500} />
   <p class="project-hook">{hook}</p>
   <div class="project-tags">
     {tags.map(t => <span>{t}</span>)}
@@ -38,7 +40,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-index {
     font-family: var(--font-mono);
-    font-size: 0.52rem;
+    font-size: 0.75rem;
     color: var(--text-dim);
     text-transform: uppercase;
     letter-spacing: 0.15em;
@@ -71,7 +73,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-name {
     font-family: var(--font-display);
-    font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.03em;
@@ -80,7 +82,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-hook {
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: clamp(1rem, 1.3vw, 1.15rem);
     font-weight: 300;
     color: var(--text-mid);
     line-height: 1.65;
@@ -96,7 +98,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-tags span {
     font-family: var(--font-mono);
-    font-size: 0.5rem;
+    font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 2px 7px;
@@ -106,7 +108,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-link {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.8rem;
     color: var(--blue);
     text-transform: uppercase;
     letter-spacing: 0.1em;
@@ -119,7 +121,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail } = Astro
 
   .project-meta {
     font-family: var(--font-mono);
-    font-size: 0.52rem;
+    font-size: 0.75rem;
     color: var(--text-dim);
     margin-top: 1rem;
     padding-top: 0.7rem;
