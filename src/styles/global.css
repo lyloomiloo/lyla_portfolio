@@ -115,8 +115,8 @@ img {
   content: '';
   display: block;
   width: 16px;
-  height: 1px;
-  background: var(--green);
+  height: 2px;
+  background: var(--yellow);
 }
 
 /* Responsive section padding */

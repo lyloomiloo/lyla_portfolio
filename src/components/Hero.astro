@@ -1,10 +1,7 @@
 ---
-import PixelArtifacts from './PixelArtifacts.astro';
 import GlitchText from './GlitchText.astro';
 ---
 <section id="hero" class="hero">
-  <div class="hero-frame"></div>
-  <PixelArtifacts variant="hero" />
   <div class="hero-content">
     <GlitchText text="LYLA\nHUANG." tag="h1" class="hero-title reveal" intensity="bold" interval={3000} playEntrance={true} />
     <p class="hero-sub reveal" style="transition-delay: 0.08s;">Strategist &rarr; Builder</p>
@@ -22,7 +19,7 @@ import GlitchText from './GlitchText.astro';
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 8rem 2.5rem 4rem;
+    padding: 6rem 1.5rem 3rem;
     position: relative;
     overflow: hidden;
   }
@@ -34,51 +31,40 @@ import GlitchText from './GlitchText.astro';
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(7rem, 20vw, 18rem);
+    font-size: clamp(8rem, 22vw, 22rem);
     font-weight: 800;
     color: var(--text);
-    line-height: 0.85;
+    line-height: 0.82;
     letter-spacing: -0.06em;
+    margin-left: -0.04em;
   }
 
   .hero-sub {
     font-family: var(--font-mono);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: var(--text-dim);
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.2em;
   }
 
   .hero-desc {
     font-family: var(--font-body);
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: 300;
     color: var(--text-mid);
-    max-width: 500px;
+    max-width: 520px;
     margin-top: 2rem;
-    line-height: 1.75;
-  }
-
-  .hero-frame {
-    position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 360px;
-    border: 1px solid var(--green);
-    opacity: 0.3;
-    z-index: 1;
+    line-height: 1.7;
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding: 6rem 1.5rem 3rem;
+      padding: 5rem 1rem 2rem;
     }
 
-    .hero-frame {
-      display: none;
+    .hero-desc {
+      font-size: 1.1rem;
     }
   }
 </style>

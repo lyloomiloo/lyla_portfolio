@@ -1,32 +1,58 @@
 ---
 interface Props {
-  type: 'marquee' | 'pixel-robot' | 'rec-loader' | 'kaomoji' | 'ascii-divider' | 'loading-text';
+  type: 'marquee' | 'pixel-banner' | 'pixel-robot-strip' | 'rec-loader' | 'kaomoji-strip' | 'ascii-divider' | 'loading-text' | 'pixel-scatter-strip';
 }
 
 const { type } = Astro.props;
 
 const marqueeText = 'STRATEGIST → BUILDER · PRODUCT DESIGN · AI INTEGRATION · UX RESEARCH · FRONTEND DEV · BARCELONA 2025 · ';
 
-// 12x10 pixel robot: 0=black(bg), 1=green, 2=white(eyes), 3=grey, 4=red(antenna)
+// Robot: 16 cols x 14 rows, bigger and more detailed
+// 0=black, 1=yellow, 2=blue, 3=grey(#666), 4=white
 const robotGrid = [
-  [0,0,0,0,0,4,0,0,0,0,0,0],
-  [0,0,0,0,0,3,0,0,0,0,0,0],
-  [0,0,0,1,1,1,1,1,0,0,0,0],
-  [0,0,1,2,1,1,2,1,1,0,0,0],
-  [0,0,1,1,1,1,1,1,1,0,0,0],
-  [0,0,0,1,3,3,3,1,0,0,0,0],
-  [0,1,0,1,1,1,1,1,0,1,0,0],
-  [0,1,0,0,1,1,1,0,0,1,0,0],
-  [0,0,0,0,1,0,1,0,0,0,0,0],
-  [0,0,0,0,3,0,3,0,0,0,0,0],
+  [0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,3,3,3,0,0,0,0,0,0,0],
+  [0,0,0,0,3,1,1,1,1,1,3,0,0,0,0,0],
+  [0,0,0,3,1,1,1,1,1,1,1,3,0,0,0,0],
+  [0,0,0,1,4,1,1,1,4,1,1,1,0,0,0,0],
+  [0,0,0,1,4,1,2,1,4,1,2,1,0,0,0,0],
+  [0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0],
+  [0,0,0,0,1,1,3,3,1,1,1,0,0,0,0,0],
+  [0,0,1,0,0,1,1,1,1,1,0,0,1,0,0,0],
+  [0,0,1,3,0,1,1,1,1,1,0,3,1,0,0,0],
+  [0,0,1,3,0,0,1,1,1,0,0,3,1,0,0,0],
+  [0,0,0,3,0,0,1,0,1,0,0,3,0,0,0,0],
+  [0,0,0,0,0,1,1,0,1,1,0,0,0,0,0,0],
+  [0,0,0,0,0,3,3,0,3,3,0,0,0,0,0,0],
 ];
 
 const robotColors: Record<number, string> = {
   0: 'transparent',
-  1: '#00CC55',
-  2: '#FFFFFF',
+  1: '#FFE600',
+  2: '#0038FF',
   3: '#666666',
-  4: '#FF2020',
+  4: '#FFFFFF',
+};
+
+// Scatter pattern: random-looking pixel clusters for the Vermeer-style strip
+// 0=black, 1=yellow, 2=grey, 3=blue, 4=dark grey
+const scatterPattern = [
+  [0,0,2,2,1,0,0,0,2,0,0,0,0,1,1,2,2,2,0,0,0,0,2,2,0,0,0,1,0,0,0,2,1,0,0,0,0,2,2,1,0,0,0,0,2,0,1,0,0,0,2,0,0,0,1,2,0,0,0,0],
+  [0,2,1,1,2,2,0,2,2,2,0,0,1,1,2,2,0,0,0,2,0,2,1,0,0,0,2,2,1,0,2,2,0,0,0,2,1,1,0,2,0,0,0,2,2,1,0,0,0,2,0,0,1,2,2,0,0,0,2,0],
+  [2,1,1,1,1,2,2,0,2,1,1,0,1,2,2,0,0,0,2,2,1,1,0,0,0,2,2,1,1,2,0,0,0,2,1,1,1,0,0,0,2,0,2,1,1,0,0,0,2,2,1,0,0,2,0,0,2,1,0,0],
+  [0,2,1,2,2,0,2,1,1,1,2,0,0,2,0,0,0,2,1,1,2,0,0,0,2,1,1,0,2,0,0,0,2,1,1,2,0,0,0,2,1,1,1,2,0,0,0,2,1,0,0,0,2,0,0,2,1,2,0,0],
+  [0,0,2,0,0,2,1,2,2,1,0,0,0,0,0,0,2,1,1,2,0,0,0,2,1,2,0,0,0,0,0,2,1,2,2,0,0,0,2,1,2,2,0,0,0,0,2,1,0,0,0,2,0,0,1,1,2,0,0,0],
+  [0,0,0,0,2,1,1,0,0,0,0,0,0,0,0,2,1,2,0,0,0,0,2,1,0,0,0,0,0,0,2,1,0,0,0,0,0,2,1,0,0,0,0,0,0,2,1,0,0,0,2,0,0,1,2,2,0,0,0,0],
+  [0,0,0,2,1,2,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,2,2,0,0,0,0,0,0],
+  [0,0,0,0,2,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0],
+];
+
+const scatterColors: Record<number, string> = {
+  0: 'transparent',
+  1: '#FFE600',
+  2: '#888',
+  3: '#0038FF',
+  4: '#333',
 };
 ---
 
@@ -36,41 +62,85 @@ const robotColors: Record<number, string> = {
       <span>{marqueeText}</span>
       <span>{marqueeText}</span>
       <span>{marqueeText}</span>
+      <span>{marqueeText}</span>
     </div>
   </div>
 )}
 
-{type === 'pixel-robot' && (
-  <div class="pixel-robot-block">
-    <div class="pixel-robot">
-      {robotGrid.flat().map((cell) => (
-        <div class={cell === 2 ? 'robot-eye' : cell === 4 ? 'robot-antenna' : ''} style={`background:${robotColors[cell]};`} />
+{type === 'pixel-robot-strip' && (
+  <div class="pixel-strip">
+    <div class="pixel-strip-inner">
+      <div class="pixel-strip-side">
+        <span class="strip-label">SYS.READY</span>
+        <span class="strip-blink">_</span>
+      </div>
+      <div class="pixel-robot">
+        {robotGrid.flat().map((cell) => (
+          <div class={cell === 4 ? 'robot-eye' : ''} style={`background:${robotColors[cell]};`} />
+        ))}
+      </div>
+      <div class="pixel-strip-side">
+        <span class="strip-label">v2.025</span>
+        <div class="strip-dots">
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-blue"></span>
+          <span class="dot dot-grey"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+{type === 'pixel-scatter-strip' && (
+  <div class="scatter-strip">
+    <div class="scatter-grid">
+      {scatterPattern.flat().map((cell) => (
+        <div style={`background:${scatterColors[cell]};`} />
       ))}
     </div>
   </div>
 )}
 
 {type === 'rec-loader' && (
-  <div class="rec-loader-block">
-    <span class="rec-dot"></span>
-    <span class="rec-text">REC</span>
-    <div class="rec-bar">
-      <div class="rec-bar-fill"></div>
+  <div class="rec-strip">
+    <div class="rec-strip-inner">
+      <div class="rec-group">
+        <span class="rec-dot"></span>
+        <span class="rec-text">REC</span>
+      </div>
+      <div class="rec-bar">
+        <div class="rec-bar-fill"></div>
+      </div>
+      <span class="rec-pct" data-rec-pct>0%</span>
+      <span class="rec-sep">|</span>
+      <span class="rec-info" data-loading-text>LOADING...</span>
     </div>
-    <span class="rec-pct" data-rec-pct>0%</span>
   </div>
 )}
 
-{type === 'kaomoji' && (
-  <div class="kaomoji-block">
-    <div class="kaomoji-flash"></div>
-    <span class="kaomoji-face" data-kaomoji>(◕‿◕)</span>
+{type === 'kaomoji-strip' && (
+  <div class="kaomoji-strip">
+    <div class="kaomoji-strip-inner">
+      <div class="kaomoji-block">
+        <div class="kaomoji-flash"></div>
+        <span class="kaomoji-face" data-kaomoji>(◕‿◕)</span>
+      </div>
+      <div class="kaomoji-block">
+        <div class="kaomoji-flash"></div>
+        <span class="kaomoji-face" data-kaomoji>(◠‿◠)</span>
+      </div>
+      <div class="kaomoji-block">
+        <div class="kaomoji-flash"></div>
+        <span class="kaomoji-face" data-kaomoji>(#_#)</span>
+      </div>
+      <span class="kaomoji-label">STATUS: ONLINE</span>
+    </div>
   </div>
 )}
 
 {type === 'ascii-divider' && (
   <div class="ascii-divider">
-    <span class="ascii-inner">░░▒▒▓▓████████████████████████████▓▓▒▒░░</span>
+    <span class="ascii-inner">░░▒▒▓▓████████████████████████████████████████████████████████████████▓▓▒▒░░</span>
   </div>
 )}
 
@@ -80,24 +150,24 @@ const robotColors: Record<number, string> = {
 
 <script>
   // Kaomoji cycling with flash
-  document.querySelectorAll('[data-kaomoji]').forEach(el => {
-    const faces = ['(◕‿◕)', '(◕ᴗ◕)', '(#_#)', '(◠‿◠)'];
-    let i = 0;
+  document.querySelectorAll('[data-kaomoji]').forEach((el, idx) => {
+    const faces = ['(◕‿◕)', '(◕ᴗ◕)', '(#_#)', '(◠‿◠)', '(⊙_⊙)', '(ᵔᴥᵔ)'];
+    let i = idx % faces.length;
     const flash = el.parentElement?.querySelector('.kaomoji-flash');
     setInterval(() => {
       i = (i + 1) % faces.length;
       if (flash) {
-        (flash as HTMLElement).style.opacity = '0.6';
-        setTimeout(() => { (flash as HTMLElement).style.opacity = '0'; }, 50);
+        (flash as HTMLElement).style.opacity = '0.8';
+        setTimeout(() => { (flash as HTMLElement).style.opacity = '0'; }, 60);
       }
       el.textContent = faces[i];
-    }, 2500);
+    }, 2000 + idx * 700);
   });
 
   // Loading text cycling
-  document.querySelectorAll('[data-loading-text]').forEach(el => {
-    const texts = ['LOADING...', 'BUILDING...', 'COMPILING...', 'DEPLOYING...'];
-    let i = 0;
+  document.querySelectorAll('[data-loading-text]').forEach((el, idx) => {
+    const texts = ['LOADING...', 'BUILDING...', 'COMPILING...', 'DEPLOYING...', 'RENDERING...'];
+    let i = idx % texts.length;
     setInterval(() => {
       i = (i + 1) % texts.length;
       el.textContent = texts[i];
@@ -115,11 +185,11 @@ const robotColors: Record<number, string> = {
 </script>
 
 <style>
-  /* Marquee — yellow background, blue text */
+  /* ========== MARQUEE — yellow strip, blue text ========== */
   .marquee {
     overflow: hidden;
     background: var(--yellow);
-    padding: 10px 0;
+    padding: 14px 0;
     width: 100%;
   }
 
@@ -127,41 +197,51 @@ const robotColors: Record<number, string> = {
     display: flex;
     white-space: nowrap;
     will-change: transform;
-    animation: marqueeScroll 20s linear infinite;
+    animation: marqueeScroll 18s linear infinite;
   }
 
   .marquee-inner span {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--blue);
-    padding-right: 2rem;
+    padding-right: 3rem;
   }
 
   @keyframes marqueeScroll {
     from { transform: translateX(0); }
-    to { transform: translateX(-33.33%); }
+    to { transform: translateX(-25%); }
   }
 
-  /* Pixel Robot — black background block */
-  .pixel-robot-block {
-    display: inline-block;
+  /* ========== PIXEL ROBOT STRIP — full-width black ========== */
+  .pixel-strip {
     background: var(--black);
-    padding: 15px;
+    width: 100%;
+    padding: 2rem 0;
+  }
+
+  .pixel-strip-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    max-width: 600px;
+    margin: 0 auto;
   }
 
   .pixel-robot {
     display: grid;
-    grid-template-columns: repeat(12, 10px);
-    grid-template-rows: repeat(10, 10px);
+    grid-template-columns: repeat(16, 8px);
+    grid-template-rows: repeat(14, 8px);
     gap: 1px;
+    flex-shrink: 0;
   }
 
   .pixel-robot div {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     image-rendering: pixelated;
   }
 
@@ -169,26 +249,94 @@ const robotColors: Record<number, string> = {
     animation: eyeBlink 3s step-end infinite;
   }
 
-  .robot-antenna {
+  @keyframes eyeBlink {
+    0%, 88% { opacity: 1; }
+    90%, 95% { opacity: 0; }
+    97%, 100% { opacity: 1; }
+  }
+
+  .pixel-strip-side {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .strip-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .strip-blink {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--yellow);
     animation: blink 1s step-end infinite;
   }
 
-  @keyframes eyeBlink {
-    0%, 90% { opacity: 1; }
-    92%, 96% { opacity: 0; }
-    98%, 100% { opacity: 1; }
+  .strip-dots {
+    display: flex;
+    gap: 4px;
   }
 
-  /* REC Loader — black block */
-  .rec-loader-block {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+  .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .dot-yellow { background: var(--yellow); }
+  .dot-blue { background: var(--blue); }
+  .dot-grey { background: #666; }
+
+  /* ========== PIXEL SCATTER STRIP — Vermeer-style pixel mosaic ========== */
+  .scatter-strip {
     background: var(--black);
-    padding: 10px 14px;
+    width: 100%;
+    padding: 1.5rem 0;
+    overflow: hidden;
+  }
+
+  .scatter-grid {
+    display: grid;
+    grid-template-columns: repeat(60, 1fr);
+    grid-template-rows: repeat(8, 8px);
+    gap: 1px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .scatter-grid div {
+    image-rendering: pixelated;
+  }
+
+  /* ========== REC LOADER — full-width black bar ========== */
+  .rec-strip {
+    background: var(--black);
+    width: 100%;
+    padding: 12px 0;
+  }
+
+  .rec-strip-inner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 0 2rem;
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: #fff;
+  }
+
+  .rec-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
   }
 
   .rec-dot {
@@ -207,7 +355,7 @@ const robotColors: Record<number, string> = {
   }
 
   .rec-bar {
-    width: 100px;
+    width: 120px;
     height: 8px;
     border: 1px solid #444;
     overflow: hidden;
@@ -216,7 +364,7 @@ const robotColors: Record<number, string> = {
 
   .rec-bar-fill {
     height: 100%;
-    background: var(--green);
+    background: var(--yellow);
     animation: loadFill 4s linear infinite;
   }
 
@@ -227,20 +375,44 @@ const robotColors: Record<number, string> = {
   }
 
   .rec-pct {
-    font-size: 0.8rem;
-    min-width: 3ch;
+    font-size: 0.85rem;
+    min-width: 4ch;
+    color: var(--yellow);
   }
 
-  /* Kaomoji — black square */
-  .kaomoji-block {
-    display: inline-flex;
+  .rec-sep {
+    color: #444;
+  }
+
+  .rec-info {
+    color: #888;
+    font-size: 0.85rem;
+  }
+
+  /* ========== KAOMOJI STRIP — full-width black ========== */
+  .kaomoji-strip {
+    background: var(--black);
+    width: 100%;
+    padding: 1.5rem 0;
+  }
+
+  .kaomoji-strip-inner {
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 90px;
-    height: 90px;
-    background: var(--black);
+    gap: 1.5rem;
+  }
+
+  .kaomoji-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: #111;
     position: relative;
     overflow: hidden;
+    border: 1px solid #333;
   }
 
   .kaomoji-flash {
@@ -249,50 +421,87 @@ const robotColors: Record<number, string> = {
     background: #fff;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.05s;
+    transition: opacity 0.06s;
   }
 
   .kaomoji-face {
     font-family: var(--font-mono);
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--yellow);
     position: relative;
     z-index: 1;
   }
 
-  /* ASCII Divider */
+  .kaomoji-label {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ========== ASCII DIVIDER ========== */
   .ascii-divider {
     text-align: center;
-    padding: 1.5rem 0;
+    padding: 1rem 0;
     overflow: hidden;
+    background: var(--black);
+    width: 100%;
   }
 
   .ascii-inner {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
-    opacity: 0.5;
+    color: #444;
+    letter-spacing: 0.05em;
   }
 
-  /* Loading Text */
+  /* ========== LOADING TEXT ========== */
   .loading-text {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--text-dim);
   }
 
   @media (max-width: 768px) {
-    .pixel-robot-block {
+    .pixel-strip-side {
       display: none;
     }
 
-    .rec-loader-block {
+    .pixel-robot {
+      grid-template-columns: repeat(16, 6px);
+      grid-template-rows: repeat(14, 6px);
+    }
+
+    .pixel-robot div {
+      width: 6px;
+      height: 6px;
+    }
+
+    .scatter-grid {
+      grid-template-rows: repeat(8, 5px);
+    }
+
+    .kaomoji-block {
+      width: 60px;
+      height: 60px;
+    }
+
+    .kaomoji-face {
+      font-size: 1rem;
+    }
+
+    .kaomoji-label {
+      display: none;
+    }
+
+    .rec-strip-inner {
+      padding: 0 1rem;
       font-size: 0.8rem;
     }
 
     .rec-bar {
-      width: 60px;
+      width: 80px;
     }
   }
 </style>
