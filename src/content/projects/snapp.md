@@ -1,7 +1,7 @@
 ---
-title: "Oh Snapp!"
+title: "Snapp"
 slug: "snapp"
-displayTitle: "OH SNAPP!"
+displayTitle: "SNAPP"
 tagline: "A game about noticing the small stuff."
 hook: "One word. One photo. One day. A city seen through everyone's eyes."
 type: "Location-based photo scavenger hunt"

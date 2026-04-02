@@ -12,15 +12,26 @@ interface Props {
   order: number;
   thumbnail?: string;
   mockupType?: 'phone' | 'browser';
-  total?: number;
 }
 
-const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupType = 'browser', total = 3 } = Astro.props;
+const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupType = 'browser' } = Astro.props;
 ---
 
 <article class="project-card" data-project-card>
   <div class="pc-layout">
-    <!-- Left: mockup -->
+    <!-- Left: text -->
+    <div class="pc-text-col">
+      <span class="pc-index">0{order}</span>
+      <GlitchText text={displayTitle} tag="h3" class="pc-title" intensity="bold" interval={4000 + order * 500} />
+      <p class="pc-hook">{hook}</p>
+      <div class="pc-tags">
+        {tags.map(t => <span>{t}</span>)}
+      </div>
+      <RetroButton href={`/projects/${slug}`} text="View Project →" />
+      <div class="pc-meta">{status} &middot; {year}</div>
+    </div>
+
+    <!-- Right: mockup -->
     <div class="pc-mockup-col">
       {mockupType === 'phone' ? (
         <div class="phone-frame">
@@ -55,29 +66,8 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
         </div>
       )}
     </div>
-
-    <!-- Right: text -->
-    <div class="pc-text-col">
-      <span class="pc-index">0{order}</span>
-      <GlitchText text={displayTitle} tag="h3" class="pc-title" intensity="bold" interval={4000 + order * 500} />
-      <p class="pc-hook">{hook}</p>
-      <div class="pc-tags">
-        {tags.map(t => <span>{t}</span>)}
-      </div>
-      <RetroButton href={`/projects/${slug}`} text="View Project →" />
-      <div class="pc-meta">{status} &middot; {year}</div>
-    </div>
   </div>
 
-  <!-- Retro scroll indicator -->
-  <div class="pc-scroll-indicator">
-    <span class="scroll-track">
-      {Array.from({ length: total }).map((_, i) => (
-        <span class={`scroll-dot ${i === order - 1 ? 'active' : ''}`}></span>
-      ))}
-    </span>
-    <span class="scroll-label">◄ {order}/{total} ►</span>
-  </div>
 </article>
 
 <style is:global>
@@ -262,42 +252,6 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
     margin-top: 1rem;
     padding-top: 0.7rem;
     border-top: 1px solid var(--border);
-  }
-
-  /* Retro scroll indicator */
-  .pc-scroll-indicator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .scroll-track {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .scroll-dot {
-    width: 8px;
-    height: 8px;
-    border: 2px solid var(--text-dim);
-    transition: background 0.2s, border-color 0.2s;
-  }
-
-  .scroll-dot.active {
-    background: var(--orange);
-    border-color: var(--orange);
-  }
-
-  .scroll-label {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    letter-spacing: 0.1em;
   }
 
   @media (max-width: 768px) {

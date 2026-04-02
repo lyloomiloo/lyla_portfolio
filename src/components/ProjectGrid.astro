@@ -8,7 +8,6 @@ const total = projects.length;
 ---
 
 <div class="gallery-wrapper">
-  <!-- Retro gallery chrome -->
   <div class="gallery-chrome">
     <span class="gallery-dots">
       <span style="background: var(--orange)"></span>
@@ -19,81 +18,71 @@ const total = projects.length;
     <span class="gallery-nav-hint">SCROLL ►</span>
   </div>
 
-  <!-- Scroll container -->
-  <div class="gallery-scroll" data-gallery>
-    {projects.map((p, i) => (
-      <div class="gallery-slide" data-slide={i}>
-        <ProjectCard
-          displayTitle={p.data.displayTitle}
-          hook={p.data.hook}
-          tags={p.data.tags}
-          slug={p.data.slug}
-          status={p.data.status}
-          year={p.data.year}
-          order={p.data.order}
-          thumbnail={p.data.thumbnail}
-          mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
-          total={total}
-        />
-      </div>
-    ))}
+  <div class="gallery-viewport" data-gallery>
+    <div class="gallery-track">
+      {projects.map((p, i) => (
+        <div class="gallery-slide" data-slide={i}>
+          <ProjectCard
+            displayTitle={p.data.displayTitle}
+            hook={p.data.hook}
+            tags={p.data.tags}
+            slug={p.data.slug}
+            status={p.data.status}
+            year={p.data.year}
+            order={p.data.order}
+            thumbnail={p.data.thumbnail}
+            mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
+              />
+        </div>
+      ))}
+    </div>
   </div>
 
-  <!-- Retro scroll arrows -->
-  <div class="gallery-arrows">
-    <button class="gallery-arrow gallery-prev" data-gallery-prev aria-label="Previous project">◄ PREV</button>
-    <div class="gallery-scrollbar">
-      <div class="gallery-scrollbar-thumb" data-gallery-thumb></div>
+  <div class="gallery-controls">
+    <button class="gallery-btn" data-gallery-prev aria-label="Previous project">◄ PREV</button>
+    <div class="gallery-progress">
+      <div class="gallery-progress-fill" data-gallery-fill></div>
     </div>
-    <button class="gallery-arrow gallery-next" data-gallery-next aria-label="Next project">NEXT ►</button>
+    <button class="gallery-btn" data-gallery-next aria-label="Next project">NEXT ►</button>
   </div>
 </div>
 
 <script>
-  document.querySelectorAll('[data-gallery]').forEach(gallery => {
-    const wrapper = gallery.closest('.gallery-wrapper');
+  document.querySelectorAll('[data-gallery]').forEach(viewport => {
+    const wrapper = viewport.closest('.gallery-wrapper');
     if (!wrapper) return;
 
     const prevBtn = wrapper.querySelector('[data-gallery-prev]');
     const nextBtn = wrapper.querySelector('[data-gallery-next]');
-    const thumb = wrapper.querySelector('[data-gallery-thumb]') as HTMLElement;
-    const slides = gallery.querySelectorAll('[data-slide]');
-    const slideCount = slides.length;
+    const fill = wrapper.querySelector('[data-gallery-fill]') as HTMLElement;
 
-    function getSlideWidth() {
-      const slide = slides[0] as HTMLElement;
-      return slide ? slide.offsetWidth + 1 : 0; // +1 for gap
-    }
-
-    function updateThumb() {
-      if (!thumb || slideCount <= 1) return;
-      const scrollLeft = (gallery as HTMLElement).scrollLeft;
-      const maxScroll = (gallery as HTMLElement).scrollWidth - (gallery as HTMLElement).clientWidth;
-      const pct = maxScroll > 0 ? scrollLeft / maxScroll : 0;
-      const trackWidth = thumb.parentElement!.clientWidth;
-      const thumbWidth = Math.max(trackWidth / slideCount, 30);
-      thumb.style.width = thumbWidth + 'px';
-      thumb.style.transform = `translateX(${pct * (trackWidth - thumbWidth)}px)`;
+    function update() {
+      if (!fill) return;
+      const el = viewport as HTMLElement;
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const pct = maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0;
+      fill.style.width = pct + '%';
     }
 
     prevBtn?.addEventListener('click', () => {
-      (gallery as HTMLElement).scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
+      const el = viewport as HTMLElement;
+      el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
     });
 
     nextBtn?.addEventListener('click', () => {
-      (gallery as HTMLElement).scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
+      const el = viewport as HTMLElement;
+      el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
     });
 
-    gallery.addEventListener('scroll', updateThumb);
-    updateThumb();
-    window.addEventListener('resize', updateThumb);
+    viewport.addEventListener('scroll', update);
+    update();
   });
 </script>
 
 <style>
   .gallery-wrapper {
     border: 1px solid var(--border);
-    background: var(--bg-card);
+    overflow: hidden;
   }
 
   .gallery-chrome {
@@ -134,11 +123,11 @@ const total = projects.length;
 
   @keyframes hintPulse {
     0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    50% { opacity: 0.3; }
   }
 
-  .gallery-scroll {
-    display: flex;
+  /* The viewport clips, the track holds slides side by side */
+  .gallery-viewport {
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
@@ -146,22 +135,26 @@ const total = projects.length;
     scrollbar-width: none;
   }
 
-  .gallery-scroll::-webkit-scrollbar {
+  .gallery-viewport::-webkit-scrollbar {
     display: none;
   }
 
+  .gallery-track {
+    display: flex;
+    width: max-content;
+  }
+
   .gallery-slide {
-    flex: 0 0 100%;
+    width: 75vw;
+    max-width: 900px;
+    flex-shrink: 0;
     scroll-snap-align: start;
     border-right: 1px solid var(--border);
+    background: var(--bg-card);
   }
 
-  .gallery-slide:last-child {
-    border-right: none;
-  }
-
-  /* Retro scroll arrows + custom scrollbar */
-  .gallery-arrows {
+  /* Bottom controls */
+  .gallery-controls {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -170,7 +163,7 @@ const total = projects.length;
     background: var(--bg);
   }
 
-  .gallery-arrow {
+  .gallery-btn {
     font-family: var(--font-mono);
     font-size: 0.8rem;
     color: var(--text);
@@ -184,12 +177,12 @@ const total = projects.length;
     flex-shrink: 0;
   }
 
-  .gallery-arrow:hover {
+  .gallery-btn:hover {
     background: var(--text);
     color: var(--bg);
   }
 
-  .gallery-scrollbar {
+  .gallery-progress {
     flex: 1;
     height: 6px;
     background: var(--border);
@@ -197,21 +190,23 @@ const total = projects.length;
     overflow: hidden;
   }
 
-  .gallery-scrollbar-thumb {
+  .gallery-progress-fill {
     height: 100%;
     background: var(--orange);
-    position: absolute;
-    top: 0;
-    left: 0;
-    transition: transform 0.15s ease-out;
+    width: 0%;
+    transition: width 0.15s ease-out;
   }
 
   @media (max-width: 768px) {
+    .gallery-slide {
+      width: 85vw;
+    }
+
     .gallery-nav-hint {
       display: none;
     }
 
-    .gallery-arrow {
+    .gallery-btn {
       font-size: 0.7rem;
       padding: 3px 8px;
     }
