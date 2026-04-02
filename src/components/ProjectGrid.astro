@@ -4,68 +4,216 @@ import ProjectCard from './ProjectCard.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const mobileApps = ['reroute', 'snapp'];
+const total = projects.length;
 ---
 
-<div class="project-scroll">
-  {projects.map((p, i) => (
-    <div class="project-scroll-item reveal" style={`transition-delay: ${i * 0.1}s;`}>
-      <ProjectCard
-        displayTitle={p.data.displayTitle}
-        hook={p.data.hook}
-        tags={p.data.tags}
-        slug={p.data.slug}
-        status={p.data.status}
-        year={p.data.year}
-        order={p.data.order}
-        thumbnail={p.data.thumbnail}
-        mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
-      />
+<div class="gallery-wrapper">
+  <!-- Retro gallery chrome -->
+  <div class="gallery-chrome">
+    <span class="gallery-dots">
+      <span style="background: var(--orange)"></span>
+      <span style="background: var(--green)"></span>
+      <span style="background: #666"></span>
+    </span>
+    <span class="gallery-title">gallery.exe — {total} items</span>
+    <span class="gallery-nav-hint">SCROLL ►</span>
+  </div>
+
+  <!-- Scroll container -->
+  <div class="gallery-scroll" data-gallery>
+    {projects.map((p, i) => (
+      <div class="gallery-slide" data-slide={i}>
+        <ProjectCard
+          displayTitle={p.data.displayTitle}
+          hook={p.data.hook}
+          tags={p.data.tags}
+          slug={p.data.slug}
+          status={p.data.status}
+          year={p.data.year}
+          order={p.data.order}
+          thumbnail={p.data.thumbnail}
+          mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
+          total={total}
+        />
+      </div>
+    ))}
+  </div>
+
+  <!-- Retro scroll arrows -->
+  <div class="gallery-arrows">
+    <button class="gallery-arrow gallery-prev" data-gallery-prev aria-label="Previous project">◄ PREV</button>
+    <div class="gallery-scrollbar">
+      <div class="gallery-scrollbar-thumb" data-gallery-thumb></div>
     </div>
-  ))}
+    <button class="gallery-arrow gallery-next" data-gallery-next aria-label="Next project">NEXT ►</button>
+  </div>
 </div>
 
+<script>
+  document.querySelectorAll('[data-gallery]').forEach(gallery => {
+    const wrapper = gallery.closest('.gallery-wrapper');
+    if (!wrapper) return;
+
+    const prevBtn = wrapper.querySelector('[data-gallery-prev]');
+    const nextBtn = wrapper.querySelector('[data-gallery-next]');
+    const thumb = wrapper.querySelector('[data-gallery-thumb]') as HTMLElement;
+    const slides = gallery.querySelectorAll('[data-slide]');
+    const slideCount = slides.length;
+
+    function getSlideWidth() {
+      const slide = slides[0] as HTMLElement;
+      return slide ? slide.offsetWidth + 1 : 0; // +1 for gap
+    }
+
+    function updateThumb() {
+      if (!thumb || slideCount <= 1) return;
+      const scrollLeft = (gallery as HTMLElement).scrollLeft;
+      const maxScroll = (gallery as HTMLElement).scrollWidth - (gallery as HTMLElement).clientWidth;
+      const pct = maxScroll > 0 ? scrollLeft / maxScroll : 0;
+      const trackWidth = thumb.parentElement!.clientWidth;
+      const thumbWidth = Math.max(trackWidth / slideCount, 30);
+      thumb.style.width = thumbWidth + 'px';
+      thumb.style.transform = `translateX(${pct * (trackWidth - thumbWidth)}px)`;
+    }
+
+    prevBtn?.addEventListener('click', () => {
+      (gallery as HTMLElement).scrollBy({ left: -getSlideWidth(), behavior: 'smooth' });
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      (gallery as HTMLElement).scrollBy({ left: getSlideWidth(), behavior: 'smooth' });
+    });
+
+    gallery.addEventListener('scroll', updateThumb);
+    updateThumb();
+    window.addEventListener('resize', updateThumb);
+  });
+</script>
+
 <style>
-  .project-scroll {
+  .gallery-wrapper {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+  }
+
+  .gallery-chrome {
     display: flex;
-    gap: 1px;
+    align-items: center;
+    padding: 8px 14px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .gallery-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .gallery-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .gallery-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+
+  .gallery-nav-hint {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--orange);
+    letter-spacing: 0.1em;
+    animation: hintPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes hintPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .gallery-scroll {
+    display: flex;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
-    margin: 0 -2.5rem;
-    padding: 0 2.5rem;
+    scrollbar-width: none;
   }
 
-  .project-scroll::-webkit-scrollbar {
-    height: 4px;
+  .gallery-scroll::-webkit-scrollbar {
+    display: none;
   }
 
-  .project-scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  .project-scroll::-webkit-scrollbar-thumb {
-    background: var(--border);
-  }
-
-  .project-scroll-item {
-    flex: 0 0 min(420px, 85vw);
+  .gallery-slide {
+    flex: 0 0 100%;
     scroll-snap-align: start;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+
+  .gallery-slide:last-child {
+    border-right: none;
+  }
+
+  /* Retro scroll arrows + custom scrollbar */
+  .gallery-arrows {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .gallery-arrow {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text);
+    background: transparent;
+    border: 2px solid var(--text);
+    padding: 4px 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    transition: background 0.15s, color 0.15s;
+    flex-shrink: 0;
+  }
+
+  .gallery-arrow:hover {
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  .gallery-scrollbar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .gallery-scrollbar-thumb {
+    height: 100%;
+    background: var(--orange);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.15s ease-out;
   }
 
   @media (max-width: 768px) {
-    .project-scroll {
-      margin: 0 -1.5rem;
-      padding: 0 1.5rem;
-      gap: 12px;
+    .gallery-nav-hint {
+      display: none;
     }
 
-    .project-scroll-item {
-      flex: 0 0 85vw;
+    .gallery-arrow {
+      font-size: 0.7rem;
+      padding: 3px 8px;
     }
   }
 </style>
