@@ -26,6 +26,15 @@
   padding: 0;
 }
 
+html, body {
+  cursor: url('/cursor.svg?v=3') 0 0, auto !important;
+}
+
+a, button, [role="button"], input[type="submit"], .retro-btn,
+a *, button *, [role="button"] * {
+  cursor: url('/cursor-pointer.svg?v=10') 4 0, pointer !important;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -133,7 +142,7 @@ img {
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.2em;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -150,11 +159,11 @@ img {
 /* Responsive section padding */
 
 section {
-  padding: 5rem 2.5rem;
+  padding: 2.5rem 2.5rem;
 }
 
 @media (max-width: 768px) {
   section {
-    padding: 3.5rem 1.5rem;
+    padding: 2rem 1.5rem;
   }
 }

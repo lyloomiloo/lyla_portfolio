@@ -27,7 +27,7 @@ const categories = [
 ];
 ---
 
-<div class="skills-grid" data-stagger>
+<div class="skills-grid">
   {categories.map((cat, i) => (
     <div class="skill-block reveal" style={`transition-delay: ${i * 0.05}s;`}>
       <h4 class="skill-category" style={`background: ${cat.color}; color: ${cat.textColor};`}>{cat.name}</h4>

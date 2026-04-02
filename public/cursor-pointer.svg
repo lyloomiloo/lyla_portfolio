@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Fingertip -->
+  <rect x="0" y="0" width="3" height="3" fill="#111"/>
+  <rect x="3" y="0" width="3" height="3" fill="#111"/>
+  <rect x="6" y="0" width="3" height="3" fill="#111"/>
+  <!-- Finger shaft -->
+  <rect x="0" y="3" width="3" height="3" fill="#111"/>
+  <rect x="3" y="3" width="3" height="3" fill="#FFF"/>
+  <rect x="6" y="3" width="3" height="3" fill="#111"/>
+  <rect x="0" y="6" width="3" height="3" fill="#111"/>
+  <rect x="3" y="6" width="3" height="3" fill="#FFF"/>
+  <rect x="6" y="6" width="3" height="3" fill="#111"/>
+  <!-- Knuckle — finger column stays white, rest is black -->
+  <rect x="0" y="9" width="3" height="3" fill="#111"/>
+  <rect x="3" y="9" width="3" height="3" fill="#FFF"/>
+  <rect x="6" y="9" width="3" height="3" fill="#111"/>
+  <rect x="9" y="9" width="3" height="3" fill="#111"/>
+  <rect x="12" y="9" width="3" height="3" fill="#111"/>
+  <rect x="15" y="9" width="3" height="3" fill="#111"/>
+  <!-- Wide palm -->
+  <rect x="0" y="12" width="3" height="3" fill="#111"/>
+  <rect x="3" y="12" width="3" height="3" fill="#FFF"/>
+  <rect x="6" y="12" width="3" height="3" fill="#FFF"/>
+  <rect x="9" y="12" width="3" height="3" fill="#FFF"/>
+  <rect x="12" y="12" width="3" height="3" fill="#FFF"/>
+  <rect x="15" y="12" width="3" height="3" fill="#111"/>
+  <rect x="0" y="15" width="3" height="3" fill="#111"/>
+  <rect x="3" y="15" width="3" height="3" fill="#FFF"/>
+  <rect x="6" y="15" width="3" height="3" fill="#FFF"/>
+  <rect x="9" y="15" width="3" height="3" fill="#FFF"/>
+  <rect x="12" y="15" width="3" height="3" fill="#FFF"/>
+  <rect x="15" y="15" width="3" height="3" fill="#111"/>
+  <!-- Wrist -->
+  <rect x="3" y="18" width="3" height="3" fill="#111"/>
+  <rect x="6" y="18" width="3" height="3" fill="#FFF"/>
+  <rect x="9" y="18" width="3" height="3" fill="#FFF"/>
+  <rect x="12" y="18" width="3" height="3" fill="#111"/>
+  <rect x="3" y="21" width="3" height="3" fill="#111"/>
+  <rect x="6" y="21" width="3" height="3" fill="#111"/>
+  <rect x="9" y="21" width="3" height="3" fill="#111"/>
+  <rect x="12" y="21" width="3" height="3" fill="#111"/>
+</svg>
