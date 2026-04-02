@@ -36,32 +36,21 @@ const mockupIds = ['go', 'explore', 'wander'];
   <Nav />
   <main class="pd">
 
-    <!-- HERO WINDOW — spans 1/9 -->
-    <section class="pd-grid">
-      <div class="pd-cell pd-cell-hero" data-animate="scale-in">
-        <div class="pd-win">
-          <div class="pd-wbar">
-            <span class="pd-wdots"><span></span><span></span><span></span></span>
-            <span class="pd-wtitle">project_0{d.order}.exe</span>
-            <span class="pd-wx">&times;</span>
+    <!-- HERO SECTION -->
+    <section class="pd-hero-section" data-animate="scale-in">
+      <div class="pd-hero-layout">
+        <div class="pd-hero-text">
+          <RetroButton href="/#projects" text="← Back" />
+          <span class="pd-idx">0{d.order}</span>
+          <GlitchText text={d.displayTitle} tag="h1" class="pd-title" intensity="bold" interval={3500} playEntrance={true} />
+          <p class="pd-hook">{d.hook}</p>
+          <div class="pd-tags">
+            {d.tags.map((t: string) => <span>{t}</span>)}
           </div>
-          <div class="pd-wbody">
-            <RetroButton href="/#projects" text="← Back" />
-            <span class="pd-idx">0{d.order}</span>
-            <GlitchText text={d.displayTitle} tag="h1" class="pd-title" intensity="bold" interval={3500} playEntrance={true} />
-            <p class="pd-hook">{d.hook}</p>
-            <div class="pd-tags" data-stagger>
-              {d.tags.map((t: string) => <span>{t}</span>)}
-            </div>
-            {d.type && <div class="pd-loc">{d.type}</div>}
-            <div class="pd-meta">{d.status}</div>
-          </div>
+          {d.type && <div class="pd-loc">{d.type}</div>}
+          <div class="pd-meta">{d.status}</div>
         </div>
-      </div>
-
-      <!-- STICKY MOCKUPS — spans 7/13, rows 2-6 -->
-      <div class="pd-cell pd-cell-mockups" data-animate="fade-right">
-        <div class="pd-mockup-sticky">
+        <div class="pd-hero-mockups">
           {screens.map((label: string, i: number) => (
             <div class={`pd-mockup-frame`} data-mockup={mockupIds[i] || `screen-${i}`} style={i === 0 ? '' : 'opacity:0'}>
               {isMobileApp ? (
@@ -92,6 +81,7 @@ const mockupIds = ['go', 'explore', 'wander'];
           ))}
         </div>
       </div>
+    </section>
 
       <!-- PROSE WINDOWS — scattered across grid, data-prose-source hidden -->
       <div style="display:none;" data-prose-source>
@@ -129,6 +119,7 @@ const mockupIds = ['go', 'explore', 'wander'];
 </BaseLayout>
 
 <script>
+  // @ts-nocheck
   // Split prose into windows and inject onto the grid
   document.addEventListener('DOMContentLoaded', () => {
     const source = document.querySelector('[data-prose-source] .prose');
@@ -253,22 +244,32 @@ const mockupIds = ['go', 'explore', 'wander'];
 
   .pd-cell { min-width: 0; }
 
-  /* Hero window — cols 1-8 */
-  .pd-cell-hero { grid-column: 1 / 9; }
-
-  /* Sticky mockups — cols 7-13, rows 2+ */
-  .pd-cell-mockups {
-    grid-column: 8 / 13;
-    grid-row: 1 / 7;
-    align-self: start;
+  /* Hero section */
+  .pd-hero-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 4vw;
   }
 
-  .pd-mockup-sticky {
-    position: sticky;
-    top: 5rem;
+  .pd-hero-layout {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+  }
+
+  .pd-hero-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pd-hero-mockups {
+    flex: 0 0 200px;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    position: sticky;
+    top: 5rem;
+    align-self: start;
   }
 
   .pd-mockup-frame {
@@ -280,6 +281,7 @@ const mockupIds = ['go', 'explore', 'wander'];
     border: 1px solid var(--border);
     background: var(--bg-card);
     box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
+    max-width: 800px;
   }
 
   .pd-wbar {
@@ -340,7 +342,7 @@ const mockupIds = ['go', 'explore', 'wander'];
   .pd-prose-body strong { font-weight: 500; color: var(--text); }
 
   /* More Projects */
-  .pd-more-section { padding: 2rem 4vw 3rem; max-width: 1400px; margin: 0 auto; }
+  .pd-more-section { padding: 2rem 4vw 3rem; max-width: 900px; margin: 0 auto; }
   .pd-more-row { display: flex; gap: 1px; background: var(--border); }
   .pd-more-card { flex: 1; background: var(--bg-card); padding: 1.5rem; text-decoration: none; display: flex; flex-direction: column; gap: 0.4rem; transition: background 0.15s, transform 0.2s; }
   .pd-more-card:hover { background: var(--bg); transform: translateY(-2px); }
@@ -361,9 +363,13 @@ const mockupIds = ['go', 'explore', 'wander'];
     }
 
     .pd-cell { transform: none !important; }
-    .pd-cell-mockups { order: -1; }
 
-    .pd-mockup-sticky {
+    .pd-hero-layout {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .pd-hero-mockups {
       position: static;
       flex-direction: row;
       overflow-x: auto;
@@ -371,6 +377,8 @@ const mockupIds = ['go', 'explore', 'wander'];
       padding-bottom: 1rem;
       -webkit-overflow-scrolling: touch;
     }
+
+    .pd-hero-section { padding: 1.5rem; }
 
     .pd-mockup-frame { opacity: 1 !important; flex-shrink: 0; }
     .pd-phone { width: 130px; animation: none; }

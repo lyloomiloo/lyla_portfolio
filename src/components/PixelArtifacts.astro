@@ -69,13 +69,13 @@ const rendered = artifacts.map(a => ({
 }));
 ---
 
-<div class="pixel-artifacts">
+<div class="pixel-artifacts" data-parallax="slow">
   {rendered.map((a) => (
     a.type === 'xbutton'
-      ? <div style={a.style}>&times;</div>
+      ? <div class="artifact" style={a.style}>&times;</div>
       : a.type === 'smiley'
-        ? <span style={a.style}>:)</span>
-        : <div style={a.style} />
+        ? <span class="artifact" style={a.style}>:)</span>
+        : <div class="artifact" style={a.style} />
   ))}
 </div>
 
