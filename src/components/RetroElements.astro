@@ -28,7 +28,7 @@ const robotGrid = [
 
 const robotColors: Record<number, string> = {
   0: 'transparent',
-  1: '#00E676',
+  1: '#39FF14',
   2: '#FF6B00',
   3: '#666666',
   4: '#FFFFFF',
@@ -49,7 +49,7 @@ const scatterPattern = [
 
 const scatterColors: Record<number, string> = {
   0: 'transparent',
-  1: '#00E676',
+  1: '#39FF14',
   2: '#888',
   3: '#FF6B00',
   4: '#333',
@@ -74,7 +74,7 @@ const ghostGrid = [
 const ghostColors: Record<number, string> = {
   0: 'transparent',
   1: '#FF6B00',
-  2: '#00E676',
+  2: '#39FF14',
   3: '#444',
   4: '#FFFFFF',
 };
@@ -233,10 +233,10 @@ const ghostColors: Record<number, string> = {
 </script>
 
 <style>
-  /* ========== MARQUEE — yellow strip, blue text ========== */
+  /* ========== MARQUEE — orange strip, dark text ========== */
   .marquee {
     overflow: hidden;
-    background: var(--green);
+    background: var(--orange);
     padding: 14px 0;
     width: 100%;
   }
@@ -254,7 +254,7 @@ const ghostColors: Record<number, string> = {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--orange);
+    color: var(--dark);
     padding-right: 3rem;
   }
 

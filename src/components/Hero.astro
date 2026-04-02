@@ -13,13 +13,13 @@ import GlitchText from './GlitchText.astro';
   </div>
 </section>
 
-<style>
+<style is:global>
   .hero {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 6rem 0.5rem 3rem;
+    padding: 6rem 0 3rem;
     position: relative;
     overflow: hidden;
   }
@@ -27,18 +27,19 @@ import GlitchText from './GlitchText.astro';
   .hero-content {
     position: relative;
     z-index: 2;
-    padding: 0 0.5rem;
+    padding: 0;
   }
 
   .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(10rem, 25vw, 28rem);
-    font-weight: 800;
+    font-size: clamp(6rem, 20vw, 22rem);
+    font-weight: 700;
     color: var(--text);
-    line-height: 0.82;
-    letter-spacing: -0.06em;
-    margin-left: -0.04em;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    padding: 0 0.5rem;
     width: 100%;
+    display: block;
   }
 
   .hero-sub {
@@ -48,7 +49,7 @@ import GlitchText from './GlitchText.astro';
     margin-top: 2rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
   }
 
   .hero-desc {
@@ -59,12 +60,12 @@ import GlitchText from './GlitchText.astro';
     max-width: 520px;
     margin-top: 2rem;
     line-height: 1.7;
-    padding-left: 1rem;
+    padding-left: 1.5rem;
   }
 
   @media (max-width: 768px) {
     .hero {
-      padding: 5rem 0.3rem 2rem;
+      padding: 5rem 0 2rem;
     }
 
     .hero-title {
@@ -73,6 +74,11 @@ import GlitchText from './GlitchText.astro';
 
     .hero-desc {
       font-size: 1.1rem;
+      padding-left: 1rem;
+    }
+
+    .hero-sub {
+      padding-left: 1rem;
     }
   }
 </style>

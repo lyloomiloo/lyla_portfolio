@@ -6,9 +6,9 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const mobileApps = ['reroute', 'snapp'];
 ---
 
-<div class="project-grid">
+<div class="project-scroll">
   {projects.map((p, i) => (
-    <div class={`project-grid-item ${i === 0 ? 'featured' : ''} reveal`} style={`transition-delay: ${i * 0.08}s;`}>
+    <div class="project-scroll-item reveal" style={`transition-delay: ${i * 0.1}s;`}>
       <ProjectCard
         displayTitle={p.data.displayTitle}
         hook={p.data.hook}
@@ -25,41 +25,47 @@ const mobileApps = ['reroute', 'snapp'];
 </div>
 
 <style>
-  .project-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    grid-template-rows: auto auto;
+  .project-scroll {
+    display: flex;
     gap: 1px;
-    background-color: var(--border);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    margin: 0 -2.5rem;
+    padding: 0 2.5rem;
   }
 
-  .project-grid-item {
+  .project-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .project-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .project-scroll::-webkit-scrollbar-thumb {
+    background: var(--border);
+  }
+
+  .project-scroll-item {
+    flex: 0 0 min(420px, 85vw);
+    scroll-snap-align: start;
     background: var(--bg-card);
-  }
-
-  .featured {
-    grid-row: span 2;
-  }
-
-  @media (max-width: 900px) {
-    .project-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .featured {
-      grid-row: auto;
-    }
+    border: 1px solid var(--border);
   }
 
   @media (max-width: 768px) {
-    .project-grid {
-      grid-template-columns: 1fr;
-      background: none;
+    .project-scroll {
+      margin: 0 -1.5rem;
+      padding: 0 1.5rem;
       gap: 12px;
     }
 
-    .project-grid-item {
-      border: 1px solid var(--border);
+    .project-scroll-item {
+      flex: 0 0 85vw;
     }
   }
 </style>

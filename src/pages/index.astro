@@ -19,9 +19,7 @@ import GlitchText from '../components/GlitchText.astro';
 
     <section id="projects">
       <div class="section-label reveal"><GlitchText text="Projects" tag="span" intensity="subtle" interval={6000} /></div>
-      <RetroWindow title="projects.exe">
-        <ProjectGrid />
-      </RetroWindow>
+      <ProjectGrid />
     </section>
 
     <section id="about" class="about-section">
@@ -40,17 +38,12 @@ import GlitchText from '../components/GlitchText.astro';
     <RetroElements type="pixel-creature-strip" />
     <RetroElements type="kaomoji-strip" />
 
-    <section id="contact" style="padding-bottom: 5rem;">
+    <section id="contact">
       <div class="section-label reveal">Contact</div>
-      <RetroWindow title="contact.txt" draggable={true}>
-        <div style="padding: 1.5rem;">
-          <Contact />
-        </div>
-      </RetroWindow>
-      <div style="margin-top: 2rem;">
-        <RetroElements type="loading-text" />
-      </div>
+      <Contact />
     </section>
+
+    <RetroElements type="marquee" />
   </main>
 
   <!-- Floating decorative windows -->
@@ -79,7 +72,6 @@ import GlitchText from '../components/GlitchText.astro';
 </BaseLayout>
 
 <script>
-  // Taskbar active section highlight
   const sections = document.querySelectorAll('section[id]');
   const taskbarItems = document.querySelectorAll('.taskbar-item');
 
@@ -96,7 +88,6 @@ import GlitchText from '../components/GlitchText.astro';
 
   sections.forEach(s => observer.observe(s));
 
-  // Taskbar clock
   const clock = document.querySelector('[data-taskbar-clock]');
   function updateClock() {
     if (!clock) return;
@@ -112,7 +103,6 @@ import GlitchText from '../components/GlitchText.astro';
     padding: 0 !important;
   }
 
-  /* Floating decorative windows */
   .floating-windows {
     position: fixed;
     inset: 0;
@@ -127,7 +117,7 @@ import GlitchText from '../components/GlitchText.astro';
     background: var(--bg-card);
     border: 1px solid var(--border);
     box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
-    opacity: 0.15;
+    opacity: 0.12;
   }
 
   .float-bar {
@@ -141,33 +131,11 @@ import GlitchText from '../components/GlitchText.astro';
     gap: 6px;
   }
 
-  .float-dots {
-    font-size: 0.45rem;
-    color: var(--orange);
-  }
+  .float-dots { font-size: 0.45rem; color: var(--orange); }
+  .float-1 { top: 15%; right: 5%; transform: rotate(3deg); height: 80px; }
+  .float-2 { top: 55%; left: 3%; transform: rotate(-2deg); height: 60px; }
+  .float-3 { top: 78%; right: 8%; transform: rotate(1.5deg); height: 70px; }
 
-  .float-1 {
-    top: 15%;
-    right: 5%;
-    transform: rotate(3deg);
-    height: 80px;
-  }
-
-  .float-2 {
-    top: 55%;
-    left: 3%;
-    transform: rotate(-2deg);
-    height: 60px;
-  }
-
-  .float-3 {
-    top: 78%;
-    right: 8%;
-    transform: rotate(1.5deg);
-    height: 70px;
-  }
-
-  /* Taskbar */
   .taskbar {
     position: fixed;
     bottom: 0;
@@ -175,63 +143,47 @@ import GlitchText from '../components/GlitchText.astro';
     right: 0;
     z-index: 100;
     background: var(--dark);
-    border-top: 1px solid #444;
+    border-top: 2px solid var(--orange);
     display: flex;
     align-items: center;
     padding: 0 1rem;
-    height: 32px;
+    height: 34px;
     gap: 0;
   }
 
   .taskbar-start {
     font-family: var(--font-mono);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--green);
-    padding: 0 12px 0 4px;
+    padding: 0 14px 0 4px;
     border-right: 1px solid #444;
     margin-right: 4px;
   }
 
   .taskbar-item {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: #888;
-    padding: 4px 10px;
+    padding: 5px 12px;
     text-decoration: none;
     border-right: 1px solid #333;
     transition: background 0.15s, color 0.15s;
   }
 
-  .taskbar-item:hover {
-    background: #333;
-    color: #ccc;
-  }
-
-  .taskbar-item.active {
-    background: #444;
-    color: var(--green);
-  }
+  .taskbar-item:hover { background: #333; color: #ccc; }
+  .taskbar-item.active { background: #444; color: var(--green); }
 
   .taskbar-clock {
     margin-left: auto;
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.78rem;
     color: #888;
     padding: 0 8px;
   }
 
   @media (max-width: 768px) {
-    .floating-windows {
-      display: none;
-    }
-
-    .taskbar-item {
-      font-size: 0.65rem;
-      padding: 4px 6px;
-    }
-
-    .taskbar-clock {
-      display: none;
-    }
+    .floating-windows { display: none; }
+    .taskbar-item { font-size: 0.65rem; padding: 4px 6px; }
+    .taskbar-clock { display: none; }
   }
 </style>
