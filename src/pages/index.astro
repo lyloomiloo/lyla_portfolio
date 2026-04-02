@@ -4,6 +4,7 @@ import Desktop from '../components/Desktop.astro';
 import Window from '../components/Window.astro';
 import MobilePanel from '../components/MobilePanel.astro';
 import Taskbar from '../components/Taskbar.astro';
+import LockScreen from '../components/LockScreen.astro';
 import ProjectsWindow from '../components/ProjectsWindow.astro';
 import AboutWindow from '../components/AboutWindow.astro';
 import SkillsWindow from '../components/SkillsWindow.astro';
@@ -11,20 +12,100 @@ import ContactWindow from '../components/ContactWindow.astro';
 ---
 
 <BaseLayout title="Portfolio">
+  <LockScreen />
   <Desktop />
 
   <!-- Desktop Windows -->
-  <Window id="projects" title="projects.exe" width="70vw" height="75vh" top="5vh" left="15vw">
+  <Window id="projects" title="projects.exe" width="65vw" height="70vh" top="3vh" left="5vw">
     <ProjectsWindow />
   </Window>
-  <Window id="about" title="about.exe" width="60vw" height="70vh" top="8vh" left="20vw" darkMode>
+  <Window id="about" title="about.exe" width="55vw" height="65vh" top="5vh" left="5vw" darkMode>
     <AboutWindow />
   </Window>
-  <Window id="skills" title="capabilities.dll" width="55vw" height="55vh" top="15vh" left="22vw">
+  <Window id="skills" title="capabilities.dll" width="50vw" height="50vh" top="8vh" left="8vw">
     <SkillsWindow />
   </Window>
-  <Window id="contact" title="contact.txt" width="35vw" height="auto" top="20vh" left="32vw">
+  <Window id="contact" title="contact.txt" width="30vw" height="auto" top="10vh" left="10vw">
     <ContactWindow />
+  </Window>
+
+  <!-- Easter Egg Windows -->
+  <Window id="readme" title="readme.txt" width="360px" height="240px" top="25vh" left="35vw">
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
+      <p>Hey! You found the readme.</p>
+      <br>
+      <p>This portfolio was built with Astro, too much coffee, and long conversations with Claude.</p>
+      <br>
+      <p>If you're reading this, you're the kind of person I want to work with.</p>
+      <br>
+      <p>Say hi &rarr; <a href="mailto:lyla.huangyanling@gmail.com" style="color: var(--orange);">lyla.huangyanling@gmail.com</a></p>
+    </div>
+  </Window>
+
+  <Window id="todo" title="todo.md" width="480px" height="auto" top="12vh" left="35vw">
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
+      <p>&#9745; Move to Barcelona</p>
+      <p>&#9745; Learn to vibe code (enough to prototype)</p>
+      <p>&#9745; Build a few things I actually like</p>
+      <p>&#9745; Make this portfolio</p>
+      <p style="margin: 0.4rem 0;"></p>
+      <p style="color: var(--orange);">&#9744; Find a role that feels right</p>
+      <p>&#9744; Speak Spanish without crossing wires</p>
+      <p>&#9744; Touch grass</p>
+    </div>
+  </Window>
+
+  <Window id="recycle" title="recycle_bin/" width="280px" height="160px" top="30vh" left="38vw">
+    <div style="font-family: var(--font-mono); font-size: 1rem; color: var(--text-dim); text-align: center; padding: 1.5rem 0;">
+      <p style="font-size: 1.5rem;">&#128465;</p>
+      <p>Empty.</p>
+      <br>
+      <p style="font-size: 0.85rem;">(I deleted my imposter syndrome.)</p>
+    </div>
+  </Window>
+
+  <Window id="selfie" title="selfie.jpg — Preview" width="220px" height="200px" top="22vh" left="42vw">
+    <div style="text-align: center; padding: 1rem;">
+      <div style="width: 80px; height: 80px; background: var(--dark); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; color: var(--orange);">:)</div>
+      <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">close enough.</p>
+    </div>
+  </Window>
+
+  <Window id="playlist" title="playlist.m3u" width="340px" height="320px" top="18vh" left="36vw">
+    <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; color: var(--text);">
+      <p style="color: var(--text-dim); margin-bottom: 0.5rem;">// portfolio building soundtrack</p>
+      <p>1. Boards of Canada &mdash; Dayvan Cowboy</p>
+      <p>2. Tycho &mdash; Awake</p>
+      <p>3. Nujabes &mdash; Feather</p>
+      <p>4. Khruangbin &mdash; Time (You and I)</p>
+      <p>5. Bonobo &mdash; Kerala</p>
+      <p>6. Tame Impala &mdash; Let It Happen</p>
+      <p>7. Tom Misch &mdash; South of the River</p>
+      <p style="color: var(--text-dim); margin-top: 0.5rem;">// replace with your actual playlist</p>
+    </div>
+  </Window>
+
+  <!-- New Easter Eggs -->
+  <Window id="resume" title="resume.pdf — Downloading..." width="360px" height="200px" top="15vh" left="30vw">
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text); text-align: center; padding: 1rem 0;">
+      <p style="font-size: 2rem; margin-bottom: 0.5rem;">&#128196;</p>
+      <p style="font-weight: 700;">Lyla_Huang_Resume_2025.pdf</p>
+      <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 0.3rem;">Downloading...</p>
+      <div style="width: 80%; margin: 1rem auto 0; height: 6px; background: var(--border); overflow: hidden;">
+        <div style="height: 100%; background: var(--orange); animation: loadFill 2s ease-out forwards; width: 0%;"></div>
+      </div>
+    </div>
+  </Window>
+
+  <Window id="coffee" title="coffee.log" width="300px" height="220px" top="20vh" left="35vw">
+    <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8; color: var(--text);">
+      <p style="color: var(--text-dim);">// caffeine intake tracker</p>
+      <p>&#9745; Morning espresso</p>
+      <p>&#9745; Post-lunch cortado</p>
+      <p>&#9745; "Last one" at 4pm</p>
+      <p>&#9745; "OK actually last one" at 6pm</p>
+      <p style="color: var(--orange);">&#9744; Sleep</p>
+    </div>
   </Window>
 
   <!-- Mobile Panels -->
@@ -46,4 +127,39 @@ import ContactWindow from '../components/ContactWindow.astro';
 
 <script>
   document.body.classList.add('os-desktop');
+
+  // Lock screen dismiss
+  const lockScreen = document.getElementById('lockScreen');
+  const lockButton = document.getElementById('lockButton');
+
+  if (lockScreen && !document.documentElement.classList.contains('skip-lock')) {
+    const dismiss = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      lockScreen.classList.add('dismissing');
+      sessionStorage.setItem('lyla-visited', 'true');
+
+      setTimeout(() => {
+        lockScreen.style.display = 'none';
+      }, 450);
+
+      // Wait for window-manager to be ready, then open projects
+      const tryOpen = () => {
+        if (typeof window.openWindow === 'function') {
+          window.openWindow('projects');
+        } else {
+          setTimeout(tryOpen, 100);
+        }
+      };
+      setTimeout(tryOpen, 1500);
+
+      if (lockButton) lockButton.removeEventListener('click', dismiss);
+      document.removeEventListener('keydown', dismissKey);
+    };
+
+    const dismissKey = (e: Event) => dismiss(e);
+
+    if (lockButton) lockButton.addEventListener('click', dismiss);
+    document.addEventListener('keydown', dismissKey);
+  }
 </script>

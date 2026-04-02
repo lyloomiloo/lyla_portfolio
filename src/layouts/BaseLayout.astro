@@ -23,6 +23,11 @@ const {
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <ClientRouter />
+  <script is:inline>
+    if (sessionStorage.getItem('lyla-visited')) {
+      document.documentElement.classList.add('skip-lock');
+    }
+  </script>
 </head>
 <body>
   <slot />
@@ -35,9 +40,6 @@ const {
     }, { threshold: 0.08 });
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
-  <script src="../scripts/scroll-animations.js"></script>
-  <script src="../scripts/parallax.js"></script>
-  <script src="../scripts/cursor-effects.js"></script>
   <script src="../scripts/window-manager.js"></script>
 </body>
 </html>

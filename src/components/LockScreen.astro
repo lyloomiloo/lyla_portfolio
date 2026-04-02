@@ -1,0 +1,133 @@
+---
+// Pixel avatar: simple face, 8x8 grid
+// _=transparent, S=skin, H=hair(dark), E=eye(dark), M=mouth(orange)
+const avatar = [
+  ['_','_','H','H','H','H','_','_'],
+  ['_','H','H','H','H','H','H','_'],
+  ['_','H','S','S','S','S','H','_'],
+  ['_','S','E','S','S','E','S','_'],
+  ['_','S','S','S','S','S','S','_'],
+  ['_','S','S','M','M','S','S','_'],
+  ['_','_','S','S','S','S','_','_'],
+  ['_','_','_','S','S','_','_','_'],
+];
+
+const avatarColors: Record<string, string> = {
+  '_': 'transparent',
+  'S': '#F4C89A',
+  'H': '#222',
+  'E': '#222',
+  'M': '#FF6B00',
+};
+---
+
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-overlay"></div>
+  <div class="lock-content">
+    <div class="lock-avatar-pixel">
+      {avatar.flat().map(c => <div style={`background:${avatarColors[c]};`} />)}
+    </div>
+    <div class="lock-username">user_lyla</div>
+    <div class="lock-field">
+      <span class="lock-dots">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</span>
+    </div>
+    <button class="lock-button" id="lockButton">Log In</button>
+  </div>
+</div>
+
+<noscript>
+  <style>.lock-screen { display: none !important; }</style>
+</noscript>
+
+<style is:global>
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lock-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: opacity 0.4s ease;
+  }
+
+  .lock-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .lock-avatar-pixel {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(8, 10px);
+    grid-template-rows: repeat(8, 10px);
+    image-rendering: pixelated;
+    border: 2px solid #444;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #333;
+  }
+
+  .lock-avatar-pixel div {
+    width: 10px;
+    height: 10px;
+  }
+
+  .lock-username {
+    font-family: var(--font-mono);
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: #ccc;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+  }
+
+  .lock-field {
+    width: 200px;
+    margin: 0 auto 1.2rem;
+    padding: 8px 14px;
+    background: #222;
+    border: 1px solid #444;
+    text-align: left;
+  }
+
+  .lock-dots {
+    font-family: var(--font-mono);
+    font-size: 1.2rem;
+    color: #888;
+    letter-spacing: 3px;
+  }
+
+  .lock-button {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    padding: 10px 32px;
+    background: var(--bg-card);
+    border: 2px solid;
+    border-color: #FFF #888 #888 #FFF;
+    color: var(--text);
+    min-height: 44px;
+    min-width: 120px;
+    letter-spacing: 0.05em;
+  }
+
+  .lock-button:active {
+    border-color: #888 #FFF #FFF #888;
+  }
+
+  .lock-screen.dismissing .lock-overlay { opacity: 0; }
+  .lock-screen.dismissing .lock-content { opacity: 0; transform: translateY(-20px); }
+  .lock-screen.dismissing { pointer-events: none; }
+
+  .skip-lock .lock-screen { display: none !important; }
+</style>

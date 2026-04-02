@@ -1,118 +1,341 @@
 ---
-import GlitchText from './GlitchText.astro';
+import DesktopIcon from './DesktopIcon.astro';
 ---
 
 <div class="desktop">
-  <div class="desktop-content">
-    <GlitchText text="LYLA\nHUANG." tag="h1" class="desktop-title" intensity="bold" interval={3000} playEntrance={true} />
-    <p class="desktop-sub">Strategist &rarr; Builder</p>
-    <p class="desktop-desc">
-      I used to shape messages. Now I shape the systems behind them.
-    </p>
+  <!-- Pixel landscape layers -->
+  <div class="landscape">
+    <!-- Sky -->
+    <div class="sky"></div>
+    <!-- Clouds (pixel blocks) -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+    <!-- Sun (decorative only now) -->
+    <div class="pixel-sun"></div>
+    <!-- Hills -->
+    <div class="hill hill-far"></div>
+    <div class="hill hill-mid"></div>
+    <div class="hill hill-near"></div>
+    <!-- Ground -->
+    <div class="ground"></div>
+    <!-- Pixel trees -->
+    <div class="tree tree-1"></div>
+    <div class="tree tree-2"></div>
+    <div class="tree tree-3"></div>
+    <div class="tree tree-4"></div>
+    <!-- Pixel flowers scattered on ground -->
+    <div class="flower f1"></div>
+    <div class="flower f2"></div>
+    <div class="flower f3"></div>
+    <div class="flower f4"></div>
+    <div class="flower f5"></div>
   </div>
 
-  <!-- Pixel decorations -->
-  <div class="desktop-deco deco-1"></div>
-  <div class="desktop-deco deco-2"></div>
-  <div class="desktop-deco deco-3"></div>
-  <div class="desktop-frame"></div>
+  <!-- Name tag -->
+  <div class="desktop-nametag">
+    <span class="nametag-name">LYLA HUANG</span>
+    <span class="nametag-sub">Strategist &rarr; Builder</span>
+    <span class="nametag-desc">I spent a decade turning noise into signal for brands. Now I design and build the products myself — using AI as a collaborator, not a crutch.</span>
+  </div>
+
+  <!-- Resume overlapping the sun -->
+  <DesktopIcon id="resume" label="resume.pdf" icon="resume" top="8.5%" left="81%" />
+
+  <!-- Main nav — matched from user screenshot -->
+  <DesktopIcon id="about" label="about.exe" icon="terminal" top="3%" left="7%" />
+  <DesktopIcon id="projects" label="projects/" icon="folder" top="28%" left="32%" />
+  <DesktopIcon id="skills" label="capabilities.dll" icon="gear" top="17%" left="63%" />
+  <DesktopIcon id="contact" label="contact.txt" icon="coffee" top="78%" left="90%" />
+
+  <!-- Easter eggs — scattered sky + meadow -->
+  <DesktopIcon id="playlist" label="playlist.m3u" icon="music" top="34%" left="2%" />
+  <DesktopIcon id="recycle" label="recycle_bin/" icon="trash" top="3%" left="92%" />
+  <DesktopIcon id="todo" label="todo.md" icon="checklist" top="32%" left="90%" />
+  <DesktopIcon id="selfie" label="selfie.jpg" icon="image" top="62%" left="30%" />
+  <DesktopIcon id="readme" label="readme.txt" icon="notepad" top="58%" left="72%" />
+
+  <!-- Pixel art duck waddling on the ground -->
+  <div class="walking-duck">
+    <div class="pixel-duck">
+      <!-- 8x6 pixel duck: Y=yellow, O=orange(beak), K=dark(eye), _=transparent -->
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div><div></div>
+      <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div></div><div></div><div></div><div style="background:#FF6B00"></div><div></div><div style="background:#FF6B00"></div><div></div><div></div>
+    </div>
+  </div>
 </div>
 
 <style is:global>
   .desktop {
     position: fixed;
     inset: 0;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 3rem 4rem 5rem;
     z-index: 1;
     overflow: hidden;
   }
 
-  .desktop-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .desktop-title {
-    font-family: var(--font-display);
-    font-size: clamp(5rem, 12vw, 12rem);
-    font-weight: 700;
-    color: var(--text);
-    line-height: 0.85;
-    letter-spacing: -0.05em;
-  }
-
-  .desktop-sub {
-    font-family: var(--font-mono);
-    font-size: 1.1rem;
-    color: var(--text-dim);
-    margin-top: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-  }
-
-  .desktop-desc {
-    font-family: var(--font-body);
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: var(--text-mid);
-    max-width: 480px;
-    margin-top: 0.8rem;
-    line-height: 1.6;
-  }
-
-  /* Pixel decorations */
-  .desktop-deco {
+  /* ========== PIXEL LANDSCAPE ========== */
+  .landscape {
     position: absolute;
+    inset: 0;
     image-rendering: pixelated;
-    z-index: 1;
   }
 
-  .deco-1 {
-    width: 8px; height: 8px;
-    background: var(--orange);
-    top: 20%; right: 15%;
-  }
-
-  .deco-2 {
-    width: 6px; height: 6px;
-    background: var(--green);
-    top: 40%; right: 25%;
-    opacity: 0.6;
-  }
-
-  .deco-3 {
-    width: 10px; height: 10px;
-    background: var(--text-dim);
-    bottom: 30%; right: 10%;
-    opacity: 0.3;
-  }
-
-  .desktop-frame {
+  .sky {
     position: absolute;
-    right: 8%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 250px;
-    height: 300px;
-    border: 1px solid var(--orange);
-    opacity: 0.15;
-    z-index: 1;
+    top: 0; left: 0; right: 0;
+    height: 65%;
+    background: linear-gradient(to bottom, #87CEEB 0%, #B8E0F6 50%, #D4ECF7 100%);
+  }
+
+  .pixel-sun {
+    position: absolute;
+    top: 10%;
+    right: 15%;
+    width: 40px;
+    height: 40px;
+    background: #FFE066;
+    box-shadow:
+      0 0 0 4px #FFD700,
+      0 0 0 8px rgba(255,215,0,0.3),
+      0 0 40px rgba(255,215,0,0.2);
+    image-rendering: pixelated;
+  }
+
+  /* Clouds — blocky pixel rectangles */
+  .cloud {
+    position: absolute;
+    background: rgba(255,255,255,0.85);
+    image-rendering: pixelated;
+  }
+
+  .cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: rgba(255,255,255,0.85);
+  }
+
+  .cloud-1 {
+    top: 15%; left: 10%;
+    width: 80px; height: 16px;
+  }
+  .cloud-1::before { width: 48px; height: 16px; top: -12px; left: 16px; }
+  .cloud-1::after { width: 32px; height: 12px; top: -20px; left: 28px; }
+
+  .cloud-2 {
+    top: 22%; left: 55%;
+    width: 60px; height: 12px;
+  }
+  .cloud-2::before { width: 36px; height: 12px; top: -10px; left: 12px; }
+
+  .cloud-3 {
+    top: 12%; left: 40%;
+    width: 48px; height: 10px;
+  }
+  .cloud-3::before { width: 28px; height: 10px; top: -8px; left: 10px; }
+
+  /* Rolling hills */
+  .hill {
+    position: absolute;
+    left: 0; right: 0;
+    border-radius: 50% 50% 0 0;
+  }
+
+  .hill-far {
+    bottom: 30%;
+    height: 20%;
+    background: #7DB87D;
+    opacity: 0.5;
+  }
+
+  .hill-mid {
+    bottom: 28%;
+    height: 18%;
+    background: #6AAF6A;
+    left: -10%;
+    right: -10%;
+    opacity: 0.7;
+  }
+
+  .hill-near {
+    bottom: 25%;
+    height: 15%;
+    background: #5CA05C;
+    left: -5%;
+    right: -5%;
+  }
+
+  /* Ground */
+  .ground {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 35%;
+    background: linear-gradient(to bottom, #5CA05C 0%, #4A8F4A 30%, #3D7A3D 100%);
+  }
+
+  /* Pixel trees */
+  .tree {
+    position: absolute;
+    width: 20px;
+    height: 32px;
+    image-rendering: pixelated;
+  }
+
+  .tree::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 8px;
+    width: 4px;
+    height: 12px;
+    background: #8B6B3D;
+  }
+
+  .tree::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    background: #2D7A2D;
+    border-radius: 2px;
+  }
+
+  .tree-1 { bottom: 34%; left: 8%; }
+  .tree-2 { bottom: 36%; left: 25%; height: 40px; }
+  .tree-2::after { width: 24px; height: 26px; left: -2px; }
+  .tree-2::before { height: 14px; }
+  .tree-3 { bottom: 33%; right: 20%; }
+  .tree-4 { bottom: 35%; right: 35%; height: 36px; }
+  .tree-4::after { width: 22px; height: 24px; left: -1px; background: #267326; }
+  .tree-4::before { height: 12px; }
+
+  /* Pixel flowers on the ground */
+  .flower {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    image-rendering: pixelated;
+  }
+
+  .flower::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    width: 4px;
+    height: 6px;
+    background: #4A8F4A;
+  }
+
+  .f1 { bottom: 30%; left: 15%; background: #FF6B00; }
+  .f2 { bottom: 28%; left: 45%; background: #FFE066; }
+  .f3 { bottom: 32%; right: 30%; background: #FF6B00; }
+  .f4 { bottom: 26%; right: 15%; background: #FFE066; }
+  .f5 { bottom: 29%; left: 60%; background: #FF6B00; }
+
+  /* Wandering pixel duck */
+  .walking-duck {
+    position: absolute;
+    bottom: 34%;
+    left: 20%;
+    z-index: 4;
+    animation: duckWander 40s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .pixel-duck {
+    display: grid;
+    grid-template-columns: repeat(8, 4px);
+    grid-template-rows: repeat(6, 4px);
+    image-rendering: pixelated;
+    animation: duckWaddle 0.6s ease-in-out infinite alternate;
+  }
+
+  .pixel-duck div {
+    width: 4px;
+    height: 4px;
+  }
+
+  @keyframes duckWander {
+    0%   { left: 15%; bottom: 34%; transform: scaleX(1); }
+    8%   { left: 25%; bottom: 35%; transform: scaleX(1); }
+    12%  { left: 25%; bottom: 35%; transform: scaleX(1); }
+    20%  { left: 35%; bottom: 33%; transform: scaleX(1); }
+    28%  { left: 42%; bottom: 36%; transform: scaleX(1); }
+    32%  { left: 42%; bottom: 36%; transform: scaleX(-1); }
+    40%  { left: 30%; bottom: 34%; transform: scaleX(-1); }
+    44%  { left: 30%; bottom: 34%; transform: scaleX(-1); }
+    52%  { left: 50%; bottom: 32%; transform: scaleX(1); }
+    60%  { left: 65%; bottom: 35%; transform: scaleX(1); }
+    64%  { left: 65%; bottom: 35%; transform: scaleX(1); }
+    72%  { left: 55%; bottom: 33%; transform: scaleX(-1); }
+    80%  { left: 40%; bottom: 36%; transform: scaleX(-1); }
+    84%  { left: 40%; bottom: 36%; transform: scaleX(1); }
+    92%  { left: 22%; bottom: 34%; transform: scaleX(-1); }
+    100% { left: 15%; bottom: 34%; transform: scaleX(1); }
+  }
+
+  @keyframes duckWaddle {
+    0% { transform: rotate(-2deg) translateY(0); }
+    100% { transform: rotate(2deg) translateY(-1px); }
+  }
+
+  /* Name tag — small, bottom-left */
+  .desktop-nametag {
+    position: absolute;
+    bottom: 50px;
+    left: 16px;
+    z-index: 3;
+  }
+
+  .nametag-name {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    display: block;
+    letter-spacing: 0.05em;
+  }
+
+  .nametag-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.7);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .nametag-desc {
+    display: block;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+    max-width: 320px;
+    line-height: 1.5;
+    margin-top: 0.4rem;
+  }
+
+
+  /* Icon labels — white with shadow for sky readability */
+  .desktop-icon-label {
+    color: #fff;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
   }
 
   @media (max-width: 768px) {
-    .desktop {
-      padding: 2rem 1.5rem 4rem;
-    }
-
-    .desktop-title {
-      font-size: clamp(3rem, 12vw, 5rem);
-    }
-
-    .desktop-frame { display: none; }
-    .desktop-deco { display: none; }
+    .desktop-nametag { bottom: 44px; left: 10px; }
+    .nametag-name { font-size: 0.8rem; }
+    .pixel-sun { width: 24px; height: 24px; }
+    .cloud { transform: scale(0.7); }
+    .tree { transform: scale(0.8); }
   }
 </style>

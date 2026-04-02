@@ -15,13 +15,12 @@ const { id, title, width = '60vw', height = '70vh', top = '10vh', left = '20vw',
 
 <div class="os-window" data-window-id={id} style={`width:${width}; height:${height}; top:${top}; left:${left};`}>
   <div class={`os-window-titlebar ${darkMode ? 'os-window-titlebar--dark' : ''}`}>
-    <div class="os-window-dots">
-      <span class="dot dot--green"></span>
-      <span class="dot dot--orange"></span>
-      <span class="dot dot--grey"></span>
+    <div class="os-window-btns">
+      <button class="os-btn os-btn--close" data-close={id} aria-label="Close window" title="Close"></button>
+      <button class="os-btn os-btn--minimize" data-minimize={id} aria-label="Minimize window" title="Minimize"></button>
+      <button class="os-btn os-btn--maximize" data-maximize={id} aria-label="Maximize window" title="Maximize"></button>
     </div>
     <span class="os-window-title">{title}</span>
-    <button class="os-window-close" data-close={id} aria-label="Close window">&times;</button>
   </div>
   <div class={`os-window-body ${darkMode ? 'os-window-body--dark' : ''}`}>
     <slot />
@@ -39,7 +38,7 @@ const { id, title, width = '60vw', height = '70vh', top = '10vh', left = '20vw',
     z-index: 10;
     opacity: 0;
     transform: scale(0.95);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    transition: opacity 0.2s ease, transform 0.2s ease, top 0.2s ease, left 0.2s ease, width 0.2s ease, height 0.2s ease;
     max-width: 95vw;
     max-height: 90vh;
   }
@@ -47,6 +46,15 @@ const { id, title, width = '60vw', height = '70vh', top = '10vh', left = '20vw',
     display: flex;
     opacity: 1;
     transform: scale(1);
+  }
+  .os-window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 38px) !important;
+    max-width: 100vw;
+    max-height: calc(100vh - 38px);
+    border-radius: 0;
   }
   .os-window-titlebar {
     display: flex;
@@ -61,28 +69,57 @@ const { id, title, width = '60vw', height = '70vh', top = '10vh', left = '20vw',
     background: var(--dark-light);
     border-color: #333;
   }
-  .os-window-dots { display: flex; gap: 5px; }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot--green { background: var(--green); }
-  .dot--orange { background: var(--orange); }
-  .dot--grey { background: #999; }
+  .os-window-btns {
+    display: flex;
+    gap: 8px;
+  }
+  .os-btn {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    position: relative;
+  }
+  .os-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.15s;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    color: rgba(0,0,0,0.6);
+    font-weight: 700;
+  }
+  .os-window-btns:hover .os-btn::after {
+    opacity: 1;
+  }
+  .os-btn--close {
+    background: #FF5F57;
+  }
+  .os-btn--close::after { content: '×'; font-size: 12px; }
+  .os-btn--minimize {
+    background: #FFBD2E;
+  }
+  .os-btn--minimize::after { content: '−'; font-size: 12px; }
+  .os-btn--maximize {
+    background: #28C840;
+  }
+  .os-btn--maximize::after { content: '+'; font-size: 11px; }
+
   .os-window-title {
     flex: 1;
     text-align: center;
     font-family: var(--font-mono);
     font-size: 0.75rem;
     color: var(--text-dim);
+    padding-right: 40px; /* balance the buttons on left */
   }
-  .os-window-close {
-    background: none;
-    border: none;
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: var(--text-dim);
-    padding: 0 4px;
-    line-height: 1;
-  }
-  .os-window-close:hover { color: var(--orange); }
   .os-window-body {
     flex: 1;
     overflow-y: auto;

@@ -10,7 +10,10 @@
   <button class="taskbar-tab" data-tab="about">about.exe</button>
   <button class="taskbar-tab" data-tab="skills">capabilities.dll</button>
   <button class="taskbar-tab" data-tab="contact">contact.txt</button>
+  <div class="taskbar-spacer"></div>
   <div class="taskbar-clock" data-taskbar-clock></div>
+  <div class="taskbar-divider"></div>
+  <button class="taskbar-tab taskbar-logoff" id="logoffBtn">&#9211; Log Off</button>
 </nav>
 
 <script>
@@ -63,8 +66,17 @@
     margin: 0 2px;
   }
 
+  .taskbar-spacer { flex: 1; }
+
+  .taskbar-logoff {
+    color: #aaa !important;
+  }
+  .taskbar-logoff:hover {
+    color: #FF5F57 !important;
+    background: rgba(255,95,87,0.1) !important;
+  }
+
   .taskbar-clock {
-    margin-left: auto;
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: #888;
