@@ -9,133 +9,280 @@ import Taskbar from '../../components/Taskbar.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
-  return projects.map(p => ({
+  const sorted = projects.sort((a, b) => a.data.order - b.data.order);
+  return sorted.map((p) => ({
     params: { slug: p.data.slug },
-    props: { project: p },
+    props: { project: p, allProjects: sorted },
   }));
 }
 
-const { project } = Astro.props;
+const { project, allProjects } = Astro.props;
 const { Content } = await render(project);
 const d = project.data;
 const isMobileApp = ['reroute', 'snapp'].includes(d.slug);
-const heroSrc = d.heroImage || '';
-const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
+const otherProjects = allProjects.filter((p: any) => p.data.slug !== d.slug);
+const screenshots = d.screenshots || [];
+
+const screenLabels: Record<string, string[]> = {
+  reroute: ['GO MODE', 'EXPLORE MODE', 'WANDER MODE'],
+  snapp: ['DAILY PROMPT', 'SHARED MAP', 'PHOTO CAPTURE'],
+  planmytrip: ['ITINERARY VIEW', 'WEATHER & DETAILS'],
+};
+const screens = screenLabels[d.slug] || ['SCREEN 1', 'SCREEN 2'];
+const mockupIds = ['go', 'explore', 'wander'];
 ---
 
 <BaseLayout title={d.displayTitle} description={d.tagline}>
   <Nav />
-  <main class="pd-page">
-    <div class="pd-back">
-      <RetroButton href="/#projects" text="← Back" />
-    </div>
+  <main class="pd">
 
-    <!-- Project info in a window frame -->
-    <div class="pd-window">
-      <div class="pd-window-bar">
-        <span class="pd-window-dots">
-          <span style="background: var(--orange)"></span>
-          <span style="background: var(--green)"></span>
-          <span style="background: #999"></span>
-        </span>
-        <span class="pd-window-title">project_0{d.order}.exe — {d.displayTitle.toLowerCase()}</span>
-        <span class="pd-window-x">&times;</span>
-      </div>
-      <div class="pd-window-body">
-        <div class="pd-layout">
-          <div class="pd-info">
-            <span class="pd-index">0{d.order}</span>
+    <!-- HERO WINDOW — spans 1/9 -->
+    <section class="pd-grid">
+      <div class="pd-cell pd-cell-hero" data-animate="scale-in">
+        <div class="pd-win">
+          <div class="pd-wbar">
+            <span class="pd-wdots"><span></span><span></span><span></span></span>
+            <span class="pd-wtitle">project_0{d.order}.exe</span>
+            <span class="pd-wx">&times;</span>
+          </div>
+          <div class="pd-wbody">
+            <RetroButton href="/#projects" text="← Back" />
+            <span class="pd-idx">0{d.order}</span>
             <GlitchText text={d.displayTitle} tag="h1" class="pd-title" intensity="bold" interval={3500} playEntrance={true} />
             <p class="pd-hook">{d.hook}</p>
-            <div class="pd-tags">
+            <div class="pd-tags" data-stagger>
               {d.tags.map((t: string) => <span>{t}</span>)}
             </div>
-            {d.type && <div class="pd-location">{d.type}</div>}
+            {d.type && <div class="pd-loc">{d.type}</div>}
             <div class="pd-meta">{d.status}</div>
           </div>
+        </div>
+      </div>
 
-          {heroSrc && (
-            <div class="pd-mockup">
+      <!-- STICKY MOCKUPS — spans 7/13, rows 2-6 -->
+      <div class="pd-cell pd-cell-mockups" data-animate="fade-right">
+        <div class="pd-mockup-sticky">
+          {screens.map((label: string, i: number) => (
+            <div class={`pd-mockup-frame`} data-mockup={mockupIds[i] || `screen-${i}`} style={i === 0 ? '' : 'opacity:0'}>
               {isMobileApp ? (
-                <div class="pd-phone-tilt">
-                  <div class="pd-phone">
-                    <div class="pd-phone-notch"></div>
-                    <div class="pd-phone-screen">
-                      {isVideo
-                        ? <video src={heroSrc} autoplay loop muted playsinline />
-                        : <img src={heroSrc} alt={`${d.displayTitle} screenshot`} />
-                      }
-                    </div>
+                <div class="pd-phone">
+                  <div class="pd-phone-notch"></div>
+                  <div class="pd-phone-screen">
+                    {screenshots[i]
+                      ? <img src={screenshots[i]} alt={`${d.displayTitle} — ${label}`} />
+                      : <div class="pd-ph"><span>{label}</span></div>
+                    }
                   </div>
                 </div>
               ) : (
                 <div class="pd-browser">
-                  <div class="pd-browser-chrome">
-                    <span class="pd-chrome-dots">
-                      <span style="background: var(--orange)"></span>
-                      <span style="background: var(--green)"></span>
-                      <span style="background: #666"></span>
-                    </span>
-                    <span class="pd-chrome-url">{d.slug}.app</span>
+                  <div class="pd-bbar">
+                    <span class="pd-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span>
+                    <span class="pd-burl">{d.slug}.app</span>
                   </div>
-                  <div class="pd-browser-viewport">
-                    {isVideo
-                      ? <video src={heroSrc} autoplay loop muted playsinline />
-                      : <img src={heroSrc} alt={`${d.displayTitle} screenshot`} />
+                  <div class="pd-bview">
+                    {screenshots[i]
+                      ? <img src={screenshots[i]} alt={`${d.displayTitle} — ${label}`} />
+                      : <div class="pd-ph"><span>{label}</span></div>
                     }
                   </div>
                 </div>
               )}
             </div>
-          )}
+          ))}
         </div>
       </div>
-    </div>
+
+      <!-- PROSE WINDOWS — scattered across grid, data-prose-source hidden -->
+      <div style="display:none;" data-prose-source>
+        <div class="prose"><Content /></div>
+      </div>
+    </section>
 
     <RetroElements type="marquee" />
 
-    <!-- Prose in a window frame -->
-    <div class="pd-window">
-      <div class="pd-window-bar">
-        <span class="pd-window-dots">
-          <span style="background: var(--orange)"></span>
-          <span style="background: var(--green)"></span>
-          <span style="background: #999"></span>
-        </span>
-        <span class="pd-window-title">{d.slug}_writeup.md</span>
-        <span class="pd-window-x">&times;</span>
-      </div>
-      <div class="pd-window-body pd-prose-body">
-        <div class="prose">
-          <Content />
+    <!-- MORE PROJECTS -->
+    <section class="pd-more-section">
+      <div class="pd-win" data-animate="fade-up">
+        <div class="pd-wbar">
+          <span class="pd-wdots"><span></span><span></span><span></span></span>
+          <span class="pd-wtitle">more_projects.exe</span>
+          <span class="pd-wx">&times;</span>
+        </div>
+        <div class="pd-wbody">
+          <div class="pd-more-row" data-stagger>
+            {otherProjects.map((p: any) => (
+              <a href={`/projects/${p.data.slug}`} class="pd-more-card" data-tilt>
+                <span class="pd-more-num">0{p.data.order}</span>
+                <span class="pd-more-name">{p.data.displayTitle}</span>
+                <span class="pd-more-desc">{p.data.hook.split('.')[0]}.</span>
+                <span class="pd-more-go">VIEW →</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   </main>
 
   <Taskbar active="projects" />
 </BaseLayout>
 
+<script>
+  // Split prose into windows and inject onto the grid
+  document.addEventListener('DOMContentLoaded', () => {
+    const source = document.querySelector('[data-prose-source] .prose');
+    const grid = document.querySelector('.pd-grid');
+    if (!source || !grid) return;
+
+    const children = Array.from(source.children);
+    const sections: { title: string; els: Element[] }[] = [];
+    let cur: { title: string; els: Element[] } | null = null;
+
+    children.forEach(el => {
+      if (el.tagName === 'H2') {
+        if (cur) sections.push(cur);
+        cur = { title: el.textContent || 'Section', els: [] };
+      } else if (cur) {
+        cur.els.push(el);
+      }
+    });
+    if (cur) sections.push(cur);
+
+    // Grid placements for each section window
+    const placements = [
+      { col: '1 / 7',  anim: 'fade-left',  rot: '-0.4deg', mockup: 'go' },
+      { col: '2 / 10', anim: 'fade-up',    rot: '0',       mockup: 'explore' },
+      { col: '1 / 7',  anim: 'fade-left',  rot: '0',       mockup: 'explore' },
+      { col: '4 / 12', anim: 'fade-right', rot: '0.3deg',  mockup: 'wander' },
+      { col: '2 / 9',  anim: 'rotate-in',  rot: '0',       mockup: 'wander' },
+      { col: '1 / 7',  anim: 'fade-left',  rot: '-0.3deg', mockup: 'go' },
+      { col: '3 / 11', anim: 'fade-right', rot: '0.4deg',  mockup: 'go' },
+      { col: '1 / 8',  anim: 'scale-in',   rot: '0',       mockup: 'explore' },
+      { col: '4 / 12', anim: 'fade-right', rot: '0.2deg',  mockup: 'wander' },
+    ];
+
+    sections.forEach((section, i) => {
+      const p = placements[i % placements.length];
+      const slug = section.title.toLowerCase().replace(/[^a-z0-9]+/g, '_');
+
+      const cell = document.createElement('div');
+      cell.className = 'pd-cell';
+      cell.style.gridColumn = p.col;
+      if (p.rot !== '0') cell.style.transform = `rotate(${p.rot})`;
+      cell.dataset.animate = p.anim;
+      cell.dataset.delay = String(i * 0.05);
+      cell.dataset.mockupTrigger = p.mockup;
+      cell.style.opacity = '0';
+
+      const win = document.createElement('div');
+      win.className = 'pd-win';
+      win.innerHTML = `
+        <div class="pd-wbar">
+          <span class="pd-wdots"><span></span><span></span><span></span></span>
+          <span class="pd-wtitle">${slug}.md</span>
+          <span class="pd-wx">&times;</span>
+        </div>
+      `;
+
+      const body = document.createElement('div');
+      body.className = 'pd-wbody pd-prose-body';
+      const h2 = document.createElement('h2');
+      h2.textContent = section.title;
+      body.appendChild(h2);
+      section.els.forEach(el => body.appendChild(el.cloneNode(true)));
+
+      win.appendChild(body);
+      cell.appendChild(win);
+      grid.appendChild(cell);
+    });
+
+    // Re-run Motion animations on newly created elements
+    import('motion').then(({ animate, inView }) => {
+      const presets: Record<string, any> = {
+        'fade-up':    { opacity: [0,1], transform: ['translateY(40px)','translateY(0)'] },
+        'fade-left':  { opacity: [0,1], transform: ['translateX(-50px)','translateX(0)'] },
+        'fade-right': { opacity: [0,1], transform: ['translateX(50px)','translateX(0)'] },
+        'scale-in':   { opacity: [0,1], transform: ['scale(0.9)','scale(1)'] },
+        'rotate-in':  { opacity: [0,1], transform: ['rotate(-2deg) translateY(30px)','rotate(0) translateY(0)'] },
+      };
+
+      grid.querySelectorAll('[data-animate]').forEach((el: any) => {
+        const type = el.dataset.animate || 'fade-up';
+        const delay = parseFloat(el.dataset.delay) || 0;
+        inView(el, () => {
+          animate(el, presets[type] || presets['fade-up'], {
+            duration: 0.7, delay, easing: [0.25, 1, 0.5, 1]
+          });
+        }, { margin: '-10%' });
+      });
+
+      // Mockup crossfade
+      const triggers = grid.querySelectorAll('[data-mockup-trigger]');
+      const frames = document.querySelectorAll('[data-mockup]');
+      if (triggers.length && frames.length) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = (entry.target as HTMLElement).dataset.mockupTrigger;
+              frames.forEach(m => {
+                (m as HTMLElement).style.opacity = (m as HTMLElement).dataset.mockup === id ? '1' : '0';
+                (m as HTMLElement).style.transition = 'opacity 0.5s ease';
+              });
+            }
+          });
+        }, { threshold: 0.5 });
+        triggers.forEach(t => obs.observe(t));
+      }
+    });
+  });
+</script>
+
 <style is:global>
-  .pd-page {
-    max-width: 960px;
+  .pd { padding: 6rem 0 4rem; overflow-x: hidden; }
+
+  /* 12-column grid */
+  .pd-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem 2rem;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 6rem 2.5rem 5rem;
+    padding: 2rem 4vw;
   }
 
-  .pd-back {
-    margin-bottom: 1.5rem;
+  .pd-cell { min-width: 0; }
+
+  /* Hero window — cols 1-8 */
+  .pd-cell-hero { grid-column: 1 / 9; }
+
+  /* Sticky mockups — cols 7-13, rows 2+ */
+  .pd-cell-mockups {
+    grid-column: 8 / 13;
+    grid-row: 1 / 7;
+    align-self: start;
   }
 
-  /* Window frame */
-  .pd-window {
+  .pd-mockup-sticky {
+    position: sticky;
+    top: 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .pd-mockup-frame {
+    transition: opacity 0.5s ease;
+  }
+
+  /* Window chrome */
+  .pd-win {
     border: 1px solid var(--border);
     background: var(--bg-card);
     box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
-    margin-bottom: 2rem;
   }
 
-  .pd-window-bar {
+  .pd-wbar {
     display: flex;
     align-items: center;
     padding: 6px 12px;
@@ -143,270 +290,93 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     border-bottom: 1px solid var(--border);
   }
 
-  .pd-window-dots {
-    display: flex;
-    gap: 5px;
-  }
+  .pd-wdots { display: flex; gap: 5px; }
+  .pd-wdots span { width: 8px; height: 8px; border-radius: 50%; animation: dotPulse 3s ease-in-out infinite; }
+  .pd-wdots span:nth-child(1) { background: var(--orange); }
+  .pd-wdots span:nth-child(2) { background: var(--green); animation-delay: 0.5s; }
+  .pd-wdots span:nth-child(3) { background: #999; animation-delay: 1s; }
 
-  .pd-window-dots span {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
+  .pd-wtitle { flex: 1; text-align: center; font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-dim); }
+  .pd-wx { font-family: var(--font-mono); color: var(--text-dim); font-size: 1rem; transition: transform 0.2s; cursor: default; }
+  .pd-wx:hover { transform: rotate(90deg); }
+  .pd-wbody { padding: 2rem; }
 
-  .pd-window-title {
-    flex: 1;
-    text-align: center;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-dim);
-  }
+  /* Project info */
+  .pd-idx { font-family: var(--font-mono); font-size: 1rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.15em; display: block; margin: 1.5rem 0 0.5rem; }
+  .pd-title { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem); font-weight: 700; color: var(--text); letter-spacing: -0.04em; line-height: 0.9; margin-bottom: 0.8rem; }
+  .pd-hook { font-family: var(--font-body); font-size: 1.3rem; font-weight: 300; color: var(--text-mid); line-height: 1.6; margin-bottom: 1.2rem; }
+  .pd-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.5rem; }
+  .pd-tags span { font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 3px 8px; border: 1px solid var(--border); color: var(--text-dim); }
+  .pd-loc { font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.8rem; }
+  .pd-meta { font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-dim); padding-top: 0.8rem; border-top: 1px solid var(--border); max-width: 300px; }
 
-  .pd-window-x {
-    font-family: var(--font-mono);
-    color: var(--text-dim);
-    font-size: 1rem;
-  }
+  /* Phone frames */
+  .pd-phone { width: 180px; background: var(--dark); border-radius: 22px; border: 3px solid #444; overflow: hidden; box-shadow: 8px 12px 28px rgba(0,0,0,0.18); animation: floatBob 5s ease-in-out infinite; }
+  .pd-phone-notch { width: 55px; height: 4px; background: #444; border-radius: 0 0 5px 5px; margin: 0 auto; }
+  .pd-phone-screen { aspect-ratio: 9 / 16; overflow: hidden; }
+  .pd-phone-screen img { width: 100%; height: 100%; object-fit: cover; }
 
-  .pd-window-body {
-    padding: 2rem;
-  }
+  /* Browser frames */
+  .pd-browser { width: 280px; border: 1px solid var(--border); overflow: hidden; box-shadow: 6px 10px 22px rgba(0,0,0,0.1); background: var(--bg-card); animation: floatBob 6s ease-in-out infinite; animation-delay: 1s; }
+  .pd-bbar { background: var(--dark); padding: 4px 8px; display: flex; align-items: center; gap: 5px; border-bottom: 1px solid #444; }
+  .pd-bdots { display: flex; gap: 3px; }
+  .pd-bdots span { width: 5px; height: 5px; border-radius: 50%; }
+  .pd-burl { font-family: var(--font-mono); font-size: 0.6rem; color: #888; flex: 1; text-align: center; }
+  .pd-bview { aspect-ratio: 16 / 10; overflow: hidden; }
+  .pd-bview img { width: 100%; height: 100%; object-fit: cover; }
 
-  .pd-prose-body {
-    padding: 2rem 2.5rem 2.5rem;
-  }
+  .pd-ph { width: 100%; height: 100%; background: var(--dark); display: flex; align-items: center; justify-content: center; }
+  .pd-phone .pd-ph { aspect-ratio: 9 / 16; }
+  .pd-browser .pd-ph { aspect-ratio: 16 / 10; }
+  .pd-ph span { font-family: var(--font-mono); font-size: 0.75rem; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  .pd-layout {
-    display: flex;
-    gap: 3rem;
-    align-items: flex-start;
-  }
+  /* Prose body */
+  .pd-prose-body { padding: 1.5rem 2rem 2rem; }
+  .pd-prose-body h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 600; color: var(--text); margin-bottom: 1rem; }
+  .pd-prose-body h3 { font-family: var(--font-display); font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 600; color: var(--text); margin-top: 2rem; margin-bottom: 0.8rem; }
+  .pd-prose-body p { font-family: var(--font-body); font-size: 1.1rem; font-weight: 300; line-height: 1.75; margin-bottom: 1.3rem; color: var(--text-mid); }
+  .pd-prose-body ul, .pd-prose-body ol { margin-left: 1.2rem; margin-bottom: 1.3rem; }
+  .pd-prose-body li { font-family: var(--font-body); font-size: 1.1rem; font-weight: 300; line-height: 1.75; color: var(--text-mid); margin-bottom: 0.4rem; }
+  .pd-prose-body strong { font-weight: 500; color: var(--text); }
 
-  .pd-info {
-    flex: 1;
-    min-width: 0;
-  }
+  /* More Projects */
+  .pd-more-section { padding: 2rem 4vw 3rem; max-width: 1400px; margin: 0 auto; }
+  .pd-more-row { display: flex; gap: 1px; background: var(--border); }
+  .pd-more-card { flex: 1; background: var(--bg-card); padding: 1.5rem; text-decoration: none; display: flex; flex-direction: column; gap: 0.4rem; transition: background 0.15s, transform 0.2s; }
+  .pd-more-card:hover { background: var(--bg); transform: translateY(-2px); }
+  .pd-more-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); }
+  .pd-more-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; color: var(--text); }
+  .pd-more-desc { font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; flex: 1; }
+  .pd-more-go { font-family: var(--font-mono); font-size: 0.9rem; color: var(--orange); font-weight: 700; }
 
-  .pd-mockup {
-    flex: 0 0 auto;
-  }
-
-  /* Card-style info */
-  .pd-index {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: block;
-    margin-bottom: 0.6rem;
-  }
-
-  .pd-title {
-    font-family: var(--font-display);
-    font-size: clamp(3rem, 8vw, 6rem);
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.03em;
-    line-height: 0.95;
-    margin-bottom: 0.8rem;
-  }
-
-  .pd-hook {
-    font-family: var(--font-body);
-    font-size: 1.3rem;
-    font-weight: 300;
-    color: var(--text-mid);
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
-  }
-
-  .pd-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 0.5rem;
-  }
-
-  .pd-tags span {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 3px 8px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-  }
-
-  .pd-location {
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-    color: var(--text-dim);
-    margin-bottom: 1rem;
-  }
-
-  .pd-meta {
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-    color: var(--text-dim);
-    padding-top: 0.8rem;
-    border-top: 1px solid var(--border);
-  }
-
-  /* Phone mockup — tilted right */
-  .pd-phone-tilt {
-    transform: rotate(6deg);
-  }
-
-  .pd-phone {
-    width: 220px;
-    background: var(--dark);
-    border-radius: 24px;
-    border: 3px solid #444;
-    overflow: hidden;
-    box-shadow: 10px 16px 30px rgba(0,0,0,0.18);
-  }
-
-  .pd-phone-notch {
-    width: 80px;
-    height: 5px;
-    background: #444;
-    border-radius: 0 0 8px 8px;
-    margin: 0 auto;
-  }
-
-  .pd-phone-screen {
-    aspect-ratio: 9 / 16;
-    overflow: hidden;
-  }
-
-  .pd-phone-screen img,
-  .pd-phone-screen video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Browser mockup */
-  .pd-browser {
-    width: 360px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    box-shadow: 8px 12px 24px rgba(0,0,0,0.12);
-  }
-
-  .pd-browser-chrome {
-    background: var(--dark);
-    padding: 6px 12px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    border-bottom: 1px solid #444;
-  }
-
-  .pd-chrome-dots {
-    display: flex;
-    gap: 4px;
-  }
-
-  .pd-chrome-dots span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-
-  .pd-chrome-url {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    color: #888;
-    flex: 1;
-    text-align: center;
-  }
-
-  .pd-browser-viewport {
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-  }
-
-  .pd-browser-viewport img,
-  .pd-browser-viewport video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Prose */
-  .prose h2 {
-    font-family: var(--font-display);
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 600;
-    color: var(--text);
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .prose h3 {
-    font-family: var(--font-display);
-    font-size: clamp(1.2rem, 2vw, 1.5rem);
-    font-weight: 600;
-    color: var(--text);
-    margin-top: 2.5rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .prose p {
-    font-family: var(--font-body);
-    font-size: 1.15rem;
-    font-weight: 300;
-    line-height: 1.75;
-    margin-bottom: 1.4rem;
-    color: var(--text-mid);
-  }
-
-  .prose ul,
-  .prose ol {
-    margin-left: 1.2rem;
-    margin-bottom: 1.4rem;
-  }
-
-  .prose li {
-    font-family: var(--font-body);
-    font-size: 1.15rem;
-    font-weight: 300;
-    line-height: 1.75;
-    color: var(--text-mid);
-    margin-bottom: 0.5rem;
-  }
-
-  .prose strong {
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .prose em {
-    font-style: italic;
-  }
-
+  /* Responsive */
   @media (max-width: 768px) {
-    .pd-page {
-      padding: 5rem 1.5rem 3rem;
-    }
+    .pd { padding: 5rem 0 3rem; }
 
-    .pd-layout {
+    .pd-grid {
+      display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 1.2rem;
+      padding: 1rem 1.5rem;
     }
 
-    .pd-mockup {
-      align-self: center;
+    .pd-cell { transform: none !important; }
+    .pd-cell-mockups { order: -1; }
+
+    .pd-mockup-sticky {
+      position: static;
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 0.8rem;
+      padding-bottom: 1rem;
+      -webkit-overflow-scrolling: touch;
     }
 
-    .pd-phone {
-      width: 180px;
-    }
+    .pd-mockup-frame { opacity: 1 !important; flex-shrink: 0; }
+    .pd-phone { width: 130px; animation: none; }
+    .pd-browser { width: 200px; animation: none; }
 
-    .pd-browser {
-      width: 100%;
-    }
+    .pd-more-section { padding: 1.5rem; }
+    .pd-more-row { flex-direction: column; }
   }
 </style>

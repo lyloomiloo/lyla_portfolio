@@ -15,7 +15,7 @@ interface Props {
 const { displayTitle, hook, tags, slug, status, order, type } = Astro.props;
 ---
 
-<article class="project-card">
+<article class="project-card" data-tilt>
   <span class="pc-index">0{order}</span>
   <GlitchText text={displayTitle} tag="h3" class="pc-title" intensity="bold" interval={4000 + order * 500} />
   <p class="pc-hook">{hook}</p>

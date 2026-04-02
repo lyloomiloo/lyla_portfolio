@@ -19,6 +19,7 @@ const projects = defineCollection({
     role: z.string().optional(),
     duration: z.string().optional(),
     tools: z.array(z.string()).optional(),
+    screenshots: z.array(z.string()).optional(),
   }),
 });
 

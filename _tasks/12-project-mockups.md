@@ -157,3 +157,12 @@ Update: `src/content/config.ts`
 - All responsive on mobile
 - Animations are smooth, no jank
 - Placeholder content works until real screenshots/videos are added
+
+## Status: Done
+- Mockup auto-pan animation (translateY 0 → -25% over 10s, infinite alternate)
+- Snapp: crossfade gallery cycling 3 screenshots (12s loop, 4s per slide)
+- Reroute: video support + ▶ DEMO placeholder when no file exists
+- PlanMyTrip: browser frame with auto-pan
+- Schema updated with `screenshots` array field
+- Prev/Next project navigation buttons at bottom of each project page
+- All wrapped in retro window frames with shared Taskbar

@@ -14,6 +14,10 @@ order: 2
 role: "Designer & developer (concept to product)"
 duration: "3 months"
 tools: ["Figma", "Next.js", "Supabase", "Leaflet", "Vercel"]
+screenshots:
+  - "/images/projects/snapp/daily-prompt.png"
+  - "/images/projects/snapp/shared-map.png"
+  - "/images/projects/snapp/photo-capture.png"
 ---
 
 ## The Insight
