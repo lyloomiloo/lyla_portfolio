@@ -9,6 +9,7 @@ import Contact from '../components/Contact.astro';
 import RetroElements from '../components/RetroElements.astro';
 import RetroWindow from '../components/RetroWindow.astro';
 import GlitchText from '../components/GlitchText.astro';
+import Taskbar from '../components/Taskbar.astro';
 ---
 <BaseLayout>
   <Nav />
@@ -40,22 +41,17 @@ import GlitchText from '../components/GlitchText.astro';
 
     <section id="contact">
       <div class="section-label reveal">Contact</div>
-      <Contact />
+      <RetroWindow title="contact.txt">
+        <div style="padding: 1.5rem;">
+          <Contact />
+        </div>
+      </RetroWindow>
     </section>
 
     <RetroElements type="marquee" />
   </main>
 
-  <!-- Taskbar -->
-  <nav class="taskbar" data-taskbar>
-    <span class="taskbar-start">▸</span>
-    <a href="#hero" class="taskbar-item" data-section="hero">home.exe</a>
-    <a href="#projects" class="taskbar-item" data-section="projects">projects.exe</a>
-    <a href="#about" class="taskbar-item" data-section="about">about.exe</a>
-    <a href="#skills" class="taskbar-item" data-section="skills">capabilities.dll</a>
-    <a href="#contact" class="taskbar-item" data-section="contact">contact.txt</a>
-    <span class="taskbar-clock" data-taskbar-clock></span>
-  </nav>
+  <Taskbar />
 </BaseLayout>
 
 <script>
@@ -67,77 +63,19 @@ import GlitchText from '../components/GlitchText.astro';
       if (entry.isIntersecting) {
         const id = entry.target.id;
         taskbarItems.forEach(item => {
-          item.classList.toggle('active', item.getAttribute('data-section') === id);
+          const href = item.getAttribute('href') || '';
+          const sectionId = href.replace('/#', '').replace('#', '');
+          item.classList.toggle('active', sectionId === id);
         });
       }
     });
   }, { threshold: 0.3 });
 
   sections.forEach(s => observer.observe(s));
-
-  const clock = document.querySelector('[data-taskbar-clock]');
-  function updateClock() {
-    if (!clock) return;
-    const now = new Date();
-    clock.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  }
-  updateClock();
-  setInterval(updateClock, 30000);
 </script>
 
 <style>
   .about-section {
     padding: 0 !important;
-  }
-
-  .taskbar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: var(--dark);
-    border-top: 2px solid var(--orange);
-    display: flex;
-    align-items: center;
-    padding: 0 1rem;
-    height: 34px;
-    gap: 0;
-  }
-
-  .taskbar-start {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--green);
-    padding: 0 14px 0 4px;
-    border-right: 1px solid #444;
-    margin-right: 4px;
-  }
-
-  .taskbar-item {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: #888;
-    padding: 5px 12px;
-    text-decoration: none;
-    border-right: 1px solid #333;
-    transition: background 0.15s, color 0.15s;
-  }
-
-  .taskbar-item:hover { background: #333; color: #ccc; }
-  .taskbar-item.active { background: #444; color: var(--green); }
-
-  .taskbar-clock {
-    margin-left: auto;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: #888;
-    padding: 0 8px;
-  }
-
-  @media (max-width: 768px) {
-    .floating-windows { display: none; }
-    .taskbar-item { font-size: 0.65rem; padding: 4px 6px; }
-    .taskbar-clock { display: none; }
   }
 </style>
