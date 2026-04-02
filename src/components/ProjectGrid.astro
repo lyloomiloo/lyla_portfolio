@@ -3,109 +3,66 @@ import { getCollection } from 'astro:content';
 import ProjectCard from './ProjectCard.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const mobileApps = ['reroute', 'snapp'];
-const total = projects.length;
 ---
 
-<div class="gallery-wrapper">
-  <div class="gallery-chrome">
-    <span class="gallery-dots">
+<div class="columns-window">
+  <!-- Window title bar -->
+  <div class="columns-titlebar">
+    <span class="columns-dots">
       <span style="background: var(--orange)"></span>
       <span style="background: var(--green)"></span>
-      <span style="background: #666"></span>
+      <span style="background: #999"></span>
     </span>
-    <span class="gallery-title">gallery.exe — {total} items</span>
-    <span class="gallery-nav-hint">SCROLL ►</span>
+    <span class="columns-title">vibe-coding/ — {projects.length} items</span>
+    <span class="columns-view">|||</span>
   </div>
 
-  <div class="gallery-viewport" data-gallery>
-    <div class="gallery-track">
-      {projects.map((p, i) => (
-        <div class="gallery-slide" data-slide={i}>
-          <ProjectCard
-            displayTitle={p.data.displayTitle}
-            hook={p.data.hook}
-            tags={p.data.tags}
-            slug={p.data.slug}
-            status={p.data.status}
-            year={p.data.year}
-            order={p.data.order}
-            thumbnail={p.data.thumbnail}
-            mockupType={mobileApps.includes(p.data.slug) ? 'phone' : 'browser'}
-              />
-        </div>
-      ))}
-    </div>
-  </div>
-
-  <div class="gallery-controls">
-    <button class="gallery-btn" data-gallery-prev aria-label="Previous project">◄ PREV</button>
-    <div class="gallery-progress">
-      <div class="gallery-progress-fill" data-gallery-fill></div>
-    </div>
-    <button class="gallery-btn" data-gallery-next aria-label="Next project">NEXT ►</button>
+  <!-- Column panels -->
+  <div class="columns-body">
+    {projects.map((p, i) => (
+      <div class={`columns-col ${i === projects.length - 1 ? '' : 'columns-col-border'}`}>
+        <ProjectCard
+          displayTitle={p.data.displayTitle}
+          hook={p.data.hook}
+          tags={p.data.tags}
+          slug={p.data.slug}
+          status={p.data.status}
+          order={p.data.order}
+          type={p.data.type}
+        />
+      </div>
+    ))}
   </div>
 </div>
 
-<script>
-  document.querySelectorAll('[data-gallery]').forEach(viewport => {
-    const wrapper = viewport.closest('.gallery-wrapper');
-    if (!wrapper) return;
-
-    const prevBtn = wrapper.querySelector('[data-gallery-prev]');
-    const nextBtn = wrapper.querySelector('[data-gallery-next]');
-    const fill = wrapper.querySelector('[data-gallery-fill]') as HTMLElement;
-
-    function update() {
-      if (!fill) return;
-      const el = viewport as HTMLElement;
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      const pct = maxScroll > 0 ? (el.scrollLeft / maxScroll) * 100 : 0;
-      fill.style.width = pct + '%';
-    }
-
-    prevBtn?.addEventListener('click', () => {
-      const el = viewport as HTMLElement;
-      el.scrollBy({ left: -el.clientWidth, behavior: 'smooth' });
-    });
-
-    nextBtn?.addEventListener('click', () => {
-      const el = viewport as HTMLElement;
-      el.scrollBy({ left: el.clientWidth, behavior: 'smooth' });
-    });
-
-    viewport.addEventListener('scroll', update);
-    update();
-  });
-</script>
-
 <style>
-  .gallery-wrapper {
+  .columns-window {
     border: 1px solid var(--border);
+    background: var(--bg-card);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
     overflow: hidden;
   }
 
-  .gallery-chrome {
+  .columns-titlebar {
     display: flex;
     align-items: center;
-    padding: 8px 14px;
+    padding: 7px 12px;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
-    gap: 8px;
   }
 
-  .gallery-dots {
+  .columns-dots {
     display: flex;
     gap: 5px;
   }
 
-  .gallery-dots span {
+  .columns-dots span {
     width: 8px;
     height: 8px;
     border-radius: 50%;
   }
 
-  .gallery-title {
+  .columns-title {
     flex: 1;
     text-align: center;
     font-family: var(--font-mono);
@@ -113,102 +70,34 @@ const total = projects.length;
     color: var(--text-dim);
   }
 
-  .gallery-nav-hint {
+  .columns-view {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--orange);
-    letter-spacing: 0.1em;
-    animation: hintPulse 2s ease-in-out infinite;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    letter-spacing: 1px;
   }
 
-  @keyframes hintPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* The viewport clips, the track holds slides side by side */
-  .gallery-viewport {
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .gallery-viewport::-webkit-scrollbar {
-    display: none;
-  }
-
-  .gallery-track {
+  .columns-body {
     display: flex;
-    width: max-content;
   }
 
-  .gallery-slide {
-    width: 75vw;
-    max-width: 900px;
-    flex-shrink: 0;
-    scroll-snap-align: start;
-    border-right: 1px solid var(--border);
-    background: var(--bg-card);
-  }
-
-  /* Bottom controls */
-  .gallery-controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 10px 14px;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-  }
-
-  .gallery-btn {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--text);
-    background: transparent;
-    border: 2px solid var(--text);
-    padding: 4px 12px;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    transition: background 0.15s, color 0.15s;
-    flex-shrink: 0;
-  }
-
-  .gallery-btn:hover {
-    background: var(--text);
-    color: var(--bg);
-  }
-
-  .gallery-progress {
+  .columns-col {
     flex: 1;
-    height: 6px;
-    background: var(--border);
-    position: relative;
-    overflow: hidden;
+    min-width: 0;
   }
 
-  .gallery-progress-fill {
-    height: 100%;
-    background: var(--orange);
-    width: 0%;
-    transition: width 0.15s ease-out;
+  .columns-col-border {
+    border-right: 1px solid var(--border);
   }
 
   @media (max-width: 768px) {
-    .gallery-slide {
-      width: 85vw;
+    .columns-body {
+      flex-direction: column;
     }
 
-    .gallery-nav-hint {
-      display: none;
-    }
-
-    .gallery-btn {
-      font-size: 0.7rem;
-      padding: 3px 8px;
+    .columns-col-border {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
     }
   }
 </style>

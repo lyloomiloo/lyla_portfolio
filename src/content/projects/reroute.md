@@ -3,11 +3,11 @@ title: "(re)Route"
 slug: "reroute"
 displayTitle: "(RE)ROUTE"
 tagline: "Navigation designed around experience, not efficiency."
-hook: "What if your walking app asked 'what kind of walk do you need?' instead of 'where are you going?'"
-type: "AI-powered walking navigation app"
-status: "Master's Thesis — Prototype"
+hook: "What if navigation optimised for how you feel, not just where you go? Reimagining walking as an experience with routing for safety, discovery, and human-ness."
+type: "Barcelona"
+status: "Master's Thesis · Prototype · On-going"
 year: "2025"
-tags: ["AI", "UX Research", "Product Design", "Data", "Barcelona"]
+tags: ["AI", "UX Research", "Product Design", "Data"]
 thumbnail: "/images/projects/reroute/thumb.png"
 heroImage: "/images/projects/reroute/hero.png"
 order: 1

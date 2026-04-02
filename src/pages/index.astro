@@ -46,19 +46,6 @@ import GlitchText from '../components/GlitchText.astro';
     <RetroElements type="marquee" />
   </main>
 
-  <!-- Floating decorative windows -->
-  <div class="floating-windows">
-    <div class="float-win float-1">
-      <div class="float-bar"><span class="float-dots">● ● ●</span> <span>secrets.txt</span></div>
-    </div>
-    <div class="float-win float-2">
-      <div class="float-bar"><span class="float-dots">● ● ●</span> <span>todo.md</span></div>
-    </div>
-    <div class="float-win float-3">
-      <div class="float-bar"><span class="float-dots">● ● ●</span> <span>not_a_virus.exe</span></div>
-    </div>
-  </div>
-
   <!-- Taskbar -->
   <nav class="taskbar" data-taskbar>
     <span class="taskbar-start">▸</span>
@@ -102,39 +89,6 @@ import GlitchText from '../components/GlitchText.astro';
   .about-section {
     padding: 0 !important;
   }
-
-  .floating-windows {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .float-win {
-    position: absolute;
-    width: 140px;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    box-shadow: 3px 3px 0 rgba(0,0,0,0.05);
-    opacity: 0.12;
-  }
-
-  .float-bar {
-    padding: 4px 8px;
-    font-family: var(--font-mono);
-    font-size: 0.6rem;
-    color: var(--text-dim);
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-    display: flex;
-    gap: 6px;
-  }
-
-  .float-dots { font-size: 0.45rem; color: var(--orange); }
-  .float-1 { top: 15%; right: 5%; transform: rotate(3deg); height: 80px; }
-  .float-2 { top: 55%; left: 3%; transform: rotate(-2deg); height: 60px; }
-  .float-3 { top: 78%; right: 8%; transform: rotate(1.5deg); height: 70px; }
 
   .taskbar {
     position: fixed;

@@ -3,11 +3,11 @@ title: "PlanMyTrip"
 slug: "planmytrip"
 displayTitle: "PLANMYTRIP"
 tagline: "Trip planning that looks as good as the trip."
-hook: "A personal planning tool with editorial design — live weather, image search, inline editing."
-type: "Interactive trip itinerary builder"
-status: "Personal project — in use"
-year: "2026"
-tags: ["Frontend Dev", "API Integration", "Editorial Design", "Personal Project"]
+hook: "A planning tool that thinks like an editor, not a spreadsheet. Live weather, image search, and inline editing — all in one flow."
+type: "Personal Project"
+status: "In use · Mar 2025"
+year: "2025"
+tags: ["Frontend", "APIs", "Editorial Design"]
 thumbnail: "/images/projects/planmytrip/thumb.png"
 heroImage: "/images/projects/planmytrip/hero.png"
 order: 3
