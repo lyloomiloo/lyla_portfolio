@@ -17,84 +17,130 @@ interface Props {
 const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupType = 'browser' } = Astro.props;
 ---
 
-<article class="project-card" data-project-card>
-  <div class="pc-layout">
-    <!-- Left: text -->
-    <div class="pc-text-col">
-      <span class="pc-index">0{order}</span>
-      <GlitchText text={displayTitle} tag="h3" class="pc-title" intensity="bold" interval={4000 + order * 500} />
-      <p class="pc-hook">{hook}</p>
-      <div class="pc-tags">
-        {tags.map(t => <span>{t}</span>)}
-      </div>
-      <RetroButton href={`/projects/${slug}`} text="View Project →" />
-      <div class="pc-meta">{status} &middot; {year}</div>
-    </div>
-
-    <!-- Right: mockup -->
-    <div class="pc-mockup-col">
-      {mockupType === 'phone' ? (
-        <div class="phone-frame">
-          <div class="phone-notch"></div>
-          <div class="phone-status">
-            <span>9:41</span>
-            <span class="phone-icons">● ● ●</span>
-          </div>
-          <div class="phone-screen">
-            {thumbnail
-              ? <img src={thumbnail} alt={`${displayTitle} preview`} />
-              : <span class="pc-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
-            }
-          </div>
-        </div>
-      ) : (
-        <div class="browser-frame">
-          <div class="browser-chrome">
-            <span class="chrome-dots">
-              <span style="background: var(--orange)"></span>
-              <span style="background: var(--green)"></span>
-              <span style="background: #666"></span>
-            </span>
-            <span class="chrome-url">{slug}.app</span>
-          </div>
-          <div class="browser-viewport">
-            {thumbnail
-              ? <img src={thumbnail} alt={`${displayTitle} preview`} />
-              : <span class="pc-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
-            }
-          </div>
-        </div>
-      )}
-    </div>
+<article class="project-card">
+  <!-- Window title bar -->
+  <div class="pc-titlebar">
+    <span class="pc-dots">
+      <span style="background: var(--orange)"></span>
+      <span style="background: var(--green)"></span>
+      <span style="background: #999"></span>
+    </span>
+    <span class="pc-win-title">project_0{order}.exe</span>
+    <span class="pc-win-x">&times;</span>
   </div>
 
+  <div class="pc-body">
+    <div class="pc-layout">
+      <!-- Left: text -->
+      <div class="pc-text-col">
+        <span class="pc-index">0{order}</span>
+        <GlitchText text={displayTitle} tag="h3" class="pc-title" intensity="bold" interval={4000 + order * 500} />
+        <p class="pc-hook">{hook}</p>
+        <div class="pc-tags">
+          {tags.map(t => <span>{t}</span>)}
+        </div>
+        <RetroButton href={`/projects/${slug}`} text="View Project →" variant="primary" />
+        <div class="pc-meta">{status} &middot; {year}</div>
+      </div>
+
+      <!-- Right: mockup -->
+      <div class="pc-mockup-col">
+        {mockupType === 'phone' ? (
+          <div class="phone-tilt">
+            <div class="phone-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-status">
+                <span>9:41</span>
+                <span class="phone-icons">● ● ●</span>
+              </div>
+              <div class="phone-screen">
+                {thumbnail
+                  ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+                  : <span class="pc-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
+                }
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="browser-frame">
+            <div class="browser-chrome">
+              <span class="chrome-dots">
+                <span style="background: var(--orange)"></span>
+                <span style="background: var(--green)"></span>
+                <span style="background: #666"></span>
+              </span>
+              <span class="chrome-url">{slug}.app</span>
+            </div>
+            <div class="browser-viewport">
+              {thumbnail
+                ? <img src={thumbnail} alt={`${displayTitle} preview`} />
+                : <span class="pc-placeholder">&gt;_ {displayTitle.toLowerCase()}</span>
+              }
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
 </article>
 
 <style is:global>
   .project-card {
-    padding: 2rem;
     background: var(--bg-card);
-    position: relative;
-    overflow: hidden;
+    border: 1px solid var(--border);
+    box-shadow: 4px 4px 0 rgba(0,0,0,0.06);
+  }
+
+  .pc-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pc-dots {
+    display: flex;
+    gap: 5px;
+  }
+
+  .pc-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  .pc-win-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+
+  .pc-win-x {
+    font-family: var(--font-mono);
+    color: var(--text-dim);
+    font-size: 1rem;
+  }
+
+  .pc-body {
+    padding: 2rem;
   }
 
   .pc-layout {
     display: flex;
     gap: 2.5rem;
-    align-items: flex-start;
-  }
-
-  .pc-mockup-col {
-    flex: 0 0 auto;
-    position: relative;
-    z-index: 1;
+    align-items: center;
   }
 
   .pc-text-col {
     flex: 1;
     min-width: 0;
-    position: relative;
-    z-index: 1;
+  }
+
+  .pc-mockup-col {
+    flex: 0 0 auto;
   }
 
   .pc-index {
@@ -104,16 +150,71 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
     text-transform: uppercase;
     letter-spacing: 0.15em;
     display: block;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
   }
 
-  /* Phone frame */
+  .pc-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    line-height: 0.95;
+  }
+
+  .pc-hook {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: var(--text-mid);
+    line-height: 1.65;
+    margin-bottom: 1rem;
+  }
+
+  .pc-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 1.2rem;
+  }
+
+  .pc-tags span {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 2px 7px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .pc-meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 1rem;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Phone — tilted */
+  .phone-tilt {
+    transform: rotate(-5deg);
+    transition: transform 0.3s ease;
+  }
+
+  .phone-tilt:hover {
+    transform: rotate(0deg) scale(1.02);
+  }
+
   .phone-frame {
-    width: 200px;
+    width: 180px;
     background: var(--dark);
     border-radius: 22px;
     border: 3px solid #444;
     overflow: hidden;
+    box-shadow: 8px 12px 24px rgba(0,0,0,0.15);
   }
 
   .phone-notch {
@@ -155,9 +256,10 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
 
   /* Browser frame */
   .browser-frame {
-    width: 320px;
+    width: 300px;
     border: 1px solid var(--border);
     overflow: hidden;
+    box-shadow: 6px 8px 20px rgba(0,0,0,0.1);
   }
 
   .browser-chrome {
@@ -206,52 +308,7 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
   .pc-placeholder {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: #666;
-  }
-
-  .pc-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 5vw, 4rem);
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.03em;
-    margin-bottom: 0.6rem;
-    line-height: 0.95;
-  }
-
-  .pc-hook {
-    font-family: var(--font-body);
-    font-size: 1.15rem;
-    font-weight: 300;
-    color: var(--text-mid);
-    line-height: 1.65;
-    margin-bottom: 1rem;
-  }
-
-  .pc-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 1.2rem;
-  }
-
-  .pc-tags span {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 2px 7px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-  }
-
-  .pc-meta {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    margin-top: 1rem;
-    padding-top: 0.7rem;
-    border-top: 1px solid var(--border);
+    color: #555;
   }
 
   @media (max-width: 768px) {
@@ -260,9 +317,17 @@ const { displayTitle, hook, tags, slug, status, year, order, thumbnail, mockupTy
       gap: 1.5rem;
     }
 
+    .pc-mockup-col {
+      order: -1;
+      align-self: center;
+    }
+
+    .phone-tilt {
+      transform: rotate(-3deg);
+    }
+
     .phone-frame {
-      width: 160px;
-      margin: 0 auto;
+      width: 150px;
     }
 
     .browser-frame {

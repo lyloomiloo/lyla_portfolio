@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import RetroButton from '../../components/RetroButton.astro';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -13,28 +14,62 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const isMobileApp = ['reroute', 'snapp'].includes(project.data.slug);
 ---
 
 <BaseLayout title={project.data.displayTitle} description={project.data.tagline}>
   <Nav />
   <main class="project-page">
-    <a href="/#projects" class="back-link">&larr; Back to projects</a>
+    <RetroButton href="/#projects" text="← Back to projects" />
 
-    <h1 class="project-title">{project.data.displayTitle}</h1>
-    <p class="project-tagline">{project.data.tagline}</p>
+    <div class="project-hero-layout">
+      <div class="project-hero-text">
+        <h1 class="project-title">{project.data.displayTitle}</h1>
+        <p class="project-tagline">{project.data.tagline}</p>
 
-    <div class="project-metadata">
-      {project.data.role && <span><strong>Role:</strong> {project.data.role}</span>}
-      {project.data.duration && <span><strong>Duration:</strong> {project.data.duration}</span>}
-      <span><strong>Status:</strong> {project.data.status}</span>
-      <span><strong>Year:</strong> {project.data.year}</span>
-    </div>
+        <div class="project-metadata">
+          {project.data.role && <span><strong>Role:</strong> {project.data.role}</span>}
+          {project.data.duration && <span><strong>Duration:</strong> {project.data.duration}</span>}
+          <span><strong>Status:</strong> {project.data.status}</span>
+          <span><strong>Year:</strong> {project.data.year}</span>
+        </div>
 
-    {project.data.tools && project.data.tools.length > 0 && (
-      <div class="project-tools">
-        {project.data.tools.map((tool: string) => <span class="tool-pill">{tool}</span>)}
+        {project.data.tools && project.data.tools.length > 0 && (
+          <div class="project-tools">
+            {project.data.tools.map((tool: string) => <span class="tool-pill">{tool}</span>)}
+          </div>
+        )}
       </div>
-    )}
+
+      {project.data.heroImage && (
+        <div class="project-hero-mockup">
+          {isMobileApp ? (
+            <div class="detail-phone-tilt">
+              <div class="detail-phone">
+                <div class="detail-phone-notch"></div>
+                <div class="detail-phone-screen">
+                  <img src={project.data.heroImage} alt={`${project.data.displayTitle} screenshot`} />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div class="detail-browser">
+              <div class="detail-browser-chrome">
+                <span class="detail-chrome-dots">
+                  <span style="background: var(--orange)"></span>
+                  <span style="background: var(--green)"></span>
+                  <span style="background: #666"></span>
+                </span>
+                <span class="detail-chrome-url">{project.data.slug}.app</span>
+              </div>
+              <div class="detail-browser-viewport">
+                <img src={project.data.heroImage} alt={`${project.data.displayTitle} screenshot`} />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
 
     <div class="prose">
       <Content />
@@ -44,39 +79,45 @@ const { Content } = await render(project);
 
 <style>
   .project-page {
-    max-width: 720px;
+    max-width: 960px;
     margin: 0 auto;
-    padding: 6rem 2.5rem 4rem;
+    padding: 6rem 2.5rem 5rem;
   }
 
-  .back-link {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: var(--text-dim);
-    transition: color 0.2s;
-    display: inline-block;
-    margin-bottom: 2rem;
+  .project-hero-layout {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    margin-top: 2.5rem;
+    margin-bottom: 3rem;
   }
 
-  .back-link:hover {
-    color: var(--text);
+  .project-hero-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .project-hero-mockup {
+    flex: 0 0 auto;
   }
 
   .project-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-size: clamp(3.5rem, 10vw, 7rem);
     font-weight: 700;
     color: var(--text);
-    line-height: 0.92;
+    line-height: 0.9;
     letter-spacing: -0.04em;
     margin-bottom: 0.8rem;
   }
 
   .project-tagline {
     font-family: var(--font-body);
-    font-size: 1rem;
+    font-size: 1.3rem;
+    font-weight: 300;
     color: var(--text-mid);
     margin-bottom: 1.5rem;
+    line-height: 1.5;
   }
 
   .project-metadata {
@@ -84,7 +125,7 @@ const { Content } = await render(project);
     flex-wrap: wrap;
     gap: 0.4rem 1.5rem;
     font-family: var(--font-mono);
-    font-size: 0.58rem;
+    font-size: 0.85rem;
     color: var(--text-dim);
     margin-bottom: 1rem;
     padding-bottom: 1rem;
@@ -100,12 +141,11 @@ const { Content } = await render(project);
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
-    margin-bottom: 2.5rem;
   }
 
   .tool-pill {
     font-family: var(--font-mono);
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 2px 7px;
@@ -113,46 +153,127 @@ const { Content } = await render(project);
     color: var(--text-dim);
   }
 
+  /* Phone mockup — tilted */
+  .detail-phone-tilt {
+    transform: rotate(-6deg);
+  }
+
+  .detail-phone {
+    width: 220px;
+    background: var(--dark);
+    border-radius: 24px;
+    border: 3px solid #444;
+    overflow: hidden;
+    box-shadow: 10px 16px 30px rgba(0,0,0,0.18);
+  }
+
+  .detail-phone-notch {
+    width: 80px;
+    height: 5px;
+    background: #444;
+    border-radius: 0 0 8px 8px;
+    margin: 0 auto;
+  }
+
+  .detail-phone-screen {
+    aspect-ratio: 9 / 16;
+    overflow: hidden;
+  }
+
+  .detail-phone-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Browser mockup */
+  .detail-browser {
+    width: 360px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 8px 12px 24px rgba(0,0,0,0.12);
+  }
+
+  .detail-browser-chrome {
+    background: var(--dark);
+    padding: 6px 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #444;
+  }
+
+  .detail-chrome-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .detail-chrome-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .detail-chrome-url {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: #888;
+    flex: 1;
+    text-align: center;
+  }
+
+  .detail-browser-viewport {
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+
+  .detail-browser-viewport img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Prose — bigger text */
   .prose :global(h2) {
     font-family: var(--font-display);
-    font-size: 1.4rem;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(h3) {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-weight: 600;
     color: var(--text);
     margin-top: 2.5rem;
     margin-bottom: 0.8rem;
   }
 
-  .prose :global(h3) {
-    font-family: var(--font-display);
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text);
-    margin-top: 2rem;
-    margin-bottom: 0.6rem;
-  }
-
   .prose :global(p) {
     font-family: var(--font-body);
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     font-weight: 300;
     line-height: 1.75;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.4rem;
     color: var(--text-mid);
   }
 
   .prose :global(ul),
   .prose :global(ol) {
     margin-left: 1.2rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1.4rem;
   }
 
   .prose :global(li) {
     font-family: var(--font-body);
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     font-weight: 300;
     line-height: 1.75;
     color: var(--text-mid);
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.5rem;
   }
 
   .prose :global(strong) {
@@ -167,6 +288,23 @@ const { Content } = await render(project);
   @media (max-width: 768px) {
     .project-page {
       padding: 5rem 1.5rem 3rem;
+    }
+
+    .project-hero-layout {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .project-hero-mockup {
+      align-self: center;
+    }
+
+    .detail-phone {
+      width: 180px;
+    }
+
+    .detail-browser {
+      width: 100%;
     }
   }
 </style>

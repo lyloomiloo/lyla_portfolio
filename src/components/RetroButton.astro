@@ -2,13 +2,14 @@
 interface Props {
   href: string;
   text: string;
+  variant?: 'default' | 'primary';
   target?: string;
 }
 
-const { href, text, target } = Astro.props;
+const { href, text, variant = 'default', target } = Astro.props;
 ---
 
-<a href={href} class="retro-btn" target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>{text}</a>
+<a href={href} class={`retro-btn ${variant === 'primary' ? 'retro-btn-primary' : ''}`} target={target} rel={target === '_blank' ? 'noopener noreferrer' : undefined}>{text}</a>
 
 <style>
   .retro-btn {
@@ -30,6 +31,18 @@ const { href, text, target } = Astro.props;
     background: var(--text);
     color: var(--bg);
     transform: translateY(-1px);
+  }
+
+  .retro-btn-primary {
+    background: var(--orange);
+    color: #fff;
+    border-color: var(--orange);
+  }
+
+  .retro-btn-primary:hover {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
   }
 
   .retro-btn:active {
