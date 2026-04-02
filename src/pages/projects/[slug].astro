@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
+import GlitchText from '../../components/GlitchText.astro';
 import RetroButton from '../../components/RetroButton.astro';
 
 export async function getStaticPaths() {
@@ -14,63 +15,57 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const isMobileApp = ['reroute', 'snapp'].includes(project.data.slug);
-const heroSrc = project.data.heroImage || '';
+const d = project.data;
+const isMobileApp = ['reroute', 'snapp'].includes(d.slug);
+const heroSrc = d.heroImage || '';
 const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
 ---
 
-<BaseLayout title={project.data.displayTitle} description={project.data.tagline}>
+<BaseLayout title={d.displayTitle} description={d.tagline}>
   <Nav />
-  <main class="project-page">
-    <RetroButton href="/#projects" text="← Back to projects" />
+  <main class="pd-page">
+    <RetroButton href="/#projects" text="← Back" />
 
-    <div class="project-hero-layout">
-      <div class="project-hero-text">
-        <h1 class="project-title">{project.data.displayTitle}</h1>
-        <p class="project-tagline">{project.data.tagline}</p>
-
-        <div class="project-metadata">
-          {project.data.role && <span><strong>Role:</strong> {project.data.role}</span>}
-          {project.data.duration && <span><strong>Duration:</strong> {project.data.duration}</span>}
-          <span><strong>Status:</strong> {project.data.status}</span>
-          <span><strong>Year:</strong> {project.data.year}</span>
+    <div class="pd-layout">
+      <div class="pd-info">
+        <span class="pd-index">0{d.order}</span>
+        <GlitchText text={d.displayTitle} tag="h1" class="pd-title" intensity="bold" interval={3500} playEntrance={true} />
+        <p class="pd-hook">{d.hook}</p>
+        <div class="pd-tags">
+          {d.tags.map((t: string) => <span>{t}</span>)}
         </div>
-
-        {project.data.tools && project.data.tools.length > 0 && (
-          <div class="project-tools">
-            {project.data.tools.map((tool: string) => <span class="tool-pill">{tool}</span>)}
-          </div>
-        )}
+        {d.type && <div class="pd-location">{d.type}</div>}
+        <div class="pd-meta">{d.status}</div>
       </div>
 
-      {project.data.heroImage && (
-        <div class="project-hero-mockup">
+      {heroSrc && (
+        <div class="pd-mockup">
           {isMobileApp ? (
-            <div class="detail-phone-tilt">
-              <div class="detail-phone">
-                <div class="detail-phone-notch"></div>
-                <div class="detail-phone-screen">
+            <div class="pd-phone-tilt">
+              <div class="pd-phone">
+                <div class="pd-phone-notch"></div>
+                <div class="pd-phone-screen">
                   {isVideo
                     ? <video src={heroSrc} autoplay loop muted playsinline />
-                    : <img src={heroSrc} alt={`${project.data.displayTitle} screenshot`} />
+                    : <img src={heroSrc} alt={`${d.displayTitle} screenshot`} />
                   }
                 </div>
               </div>
             </div>
           ) : (
-            <div class="detail-browser">
-              <div class="detail-browser-chrome">
-                <span class="detail-chrome-dots">
+            <div class="pd-browser">
+              <div class="pd-browser-chrome">
+                <span class="pd-chrome-dots">
                   <span style="background: var(--orange)"></span>
                   <span style="background: var(--green)"></span>
                   <span style="background: #666"></span>
                 </span>
-                <span class="detail-chrome-url">{project.data.slug}.app</span>
+                <span class="pd-chrome-url">{d.slug}.app</span>
               </div>
-              <div class="detail-browser-viewport">
+              <div class="pd-browser-viewport">
                 {isVideo
                   ? <video src={heroSrc} autoplay loop muted playsinline />
-                  : <img src={heroSrc} alt={`${project.data.displayTitle} screenshot`} />
+                  : <img src={heroSrc} alt={`${d.displayTitle} screenshot`} />
                 }
               </div>
             </div>
@@ -85,88 +80,98 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
   </main>
 </BaseLayout>
 
-<style>
-  .project-page {
+<style is:global>
+  .pd-page {
     max-width: 960px;
     margin: 0 auto;
     padding: 6rem 2.5rem 5rem;
   }
 
-  .project-hero-layout {
+  .pd-layout {
     display: flex;
     gap: 3rem;
     align-items: flex-start;
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     margin-bottom: 3rem;
   }
 
-  .project-hero-text {
+  .pd-info {
     flex: 1;
     min-width: 0;
   }
 
-  .project-hero-mockup {
+  .pd-mockup {
     flex: 0 0 auto;
   }
 
-  .project-title {
+  /* Mirror card styles, scaled up */
+  .pd-index {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-bottom: 0.6rem;
+  }
+
+  .pd-title {
     font-family: var(--font-display);
-    font-size: clamp(3.5rem, 10vw, 7rem);
+    font-size: clamp(3rem, 8vw, 6rem);
     font-weight: 700;
     color: var(--text);
-    line-height: 0.9;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
+    line-height: 0.95;
     margin-bottom: 0.8rem;
   }
 
-  .project-tagline {
+  .pd-hook {
     font-family: var(--font-body);
     font-size: 1.3rem;
     font-weight: 300;
     color: var(--text-mid);
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-  }
-
-  .project-metadata {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1.5rem;
-    font-family: var(--font-mono);
-    font-size: 1.05rem;
-    color: var(--text-dim);
+    line-height: 1.6;
     margin-bottom: 1.2rem;
-    padding-bottom: 1.2rem;
-    border-bottom: 1px solid var(--border);
   }
 
-  .project-metadata strong {
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  .project-tools {
+  .pd-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
+    margin-bottom: 0.5rem;
   }
 
-  .tool-pill {
+  .pd-tags span {
     font-family: var(--font-mono);
-    font-size: 1rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    padding: 4px 10px;
+    padding: 3px 8px;
     border: 1px solid var(--border);
     color: var(--text-dim);
   }
 
-  /* Phone mockup — tilted */
-  .detail-phone-tilt {
+  .pd-location {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    margin-bottom: 1rem;
+  }
+
+  .pd-meta {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Phone mockup — tilted right */
+  .pd-phone-tilt {
     transform: rotate(6deg);
   }
 
-  .detail-phone {
+  .pd-phone {
     width: 220px;
     background: var(--dark);
     border-radius: 24px;
@@ -175,7 +180,7 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     box-shadow: 10px 16px 30px rgba(0,0,0,0.18);
   }
 
-  .detail-phone-notch {
+  .pd-phone-notch {
     width: 80px;
     height: 5px;
     background: #444;
@@ -183,27 +188,27 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     margin: 0 auto;
   }
 
-  .detail-phone-screen {
+  .pd-phone-screen {
     aspect-ratio: 9 / 16;
     overflow: hidden;
   }
 
-  .detail-phone-screen img,
-  .detail-phone-screen video {
+  .pd-phone-screen img,
+  .pd-phone-screen video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
   /* Browser mockup */
-  .detail-browser {
+  .pd-browser {
     width: 360px;
     border: 1px solid var(--border);
     overflow: hidden;
     box-shadow: 8px 12px 24px rgba(0,0,0,0.12);
   }
 
-  .detail-browser-chrome {
+  .pd-browser-chrome {
     background: var(--dark);
     padding: 6px 12px;
     display: flex;
@@ -212,18 +217,18 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     border-bottom: 1px solid #444;
   }
 
-  .detail-chrome-dots {
+  .pd-chrome-dots {
     display: flex;
     gap: 4px;
   }
 
-  .detail-chrome-dots span {
+  .pd-chrome-dots span {
     width: 6px;
     height: 6px;
     border-radius: 50%;
   }
 
-  .detail-chrome-url {
+  .pd-chrome-url {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     color: #888;
@@ -231,20 +236,20 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     text-align: center;
   }
 
-  .detail-browser-viewport {
+  .pd-browser-viewport {
     aspect-ratio: 16 / 10;
     overflow: hidden;
   }
 
-  .detail-browser-viewport img,
-  .detail-browser-viewport video {
+  .pd-browser-viewport img,
+  .pd-browser-viewport video {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
 
-  /* Prose — bigger text */
-  .prose :global(h2) {
+  /* Prose */
+  .prose h2 {
     font-family: var(--font-display);
     font-size: clamp(1.6rem, 3vw, 2.2rem);
     font-weight: 600;
@@ -253,7 +258,7 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     margin-bottom: 1rem;
   }
 
-  .prose :global(h3) {
+  .prose h3 {
     font-family: var(--font-display);
     font-size: clamp(1.2rem, 2vw, 1.5rem);
     font-weight: 600;
@@ -262,7 +267,7 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     margin-bottom: 0.8rem;
   }
 
-  .prose :global(p) {
+  .prose p {
     font-family: var(--font-body);
     font-size: 1.15rem;
     font-weight: 300;
@@ -271,13 +276,13 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     color: var(--text-mid);
   }
 
-  .prose :global(ul),
-  .prose :global(ol) {
+  .prose ul,
+  .prose ol {
     margin-left: 1.2rem;
     margin-bottom: 1.4rem;
   }
 
-  .prose :global(li) {
+  .prose li {
     font-family: var(--font-body);
     font-size: 1.15rem;
     font-weight: 300;
@@ -286,34 +291,34 @@ const isVideo = heroSrc.endsWith('.mp4') || heroSrc.endsWith('.webm');
     margin-bottom: 0.5rem;
   }
 
-  .prose :global(strong) {
+  .prose strong {
     font-weight: 500;
     color: var(--text);
   }
 
-  .prose :global(em) {
+  .prose em {
     font-style: italic;
   }
 
   @media (max-width: 768px) {
-    .project-page {
+    .pd-page {
       padding: 5rem 1.5rem 3rem;
     }
 
-    .project-hero-layout {
+    .pd-layout {
       flex-direction: column;
       gap: 2rem;
     }
 
-    .project-hero-mockup {
+    .pd-mockup {
       align-self: center;
     }
 
-    .detail-phone {
+    .pd-phone {
       width: 180px;
     }
 
-    .detail-browser {
+    .pd-browser {
       width: 100%;
     }
   }
