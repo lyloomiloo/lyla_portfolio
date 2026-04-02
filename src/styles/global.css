@@ -44,8 +44,12 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   line-height: 1.6;
-  overflow-x: hidden;
-  padding-bottom: 32px;
+}
+
+body.os-desktop {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
 }
 
 a {

@@ -1,19 +1,16 @@
 ---
-interface Props {
-  active?: string;
-}
-
-const { active = '' } = Astro.props;
 ---
 
 <nav class="taskbar">
-  <span class="taskbar-start">▸</span>
-  <a href="/" class={`taskbar-item ${active === 'home' ? 'active' : ''}`}>home.exe</a>
-  <a href="/#projects" class={`taskbar-item ${active === 'projects' ? 'active' : ''}`}>projects.exe</a>
-  <a href="/#about" class={`taskbar-item ${active === 'about' ? 'active' : ''}`}>about.exe</a>
-  <a href="/#skills" class={`taskbar-item ${active === 'skills' ? 'active' : ''}`}>capabilities.dll</a>
-  <a href="/#contact" class={`taskbar-item ${active === 'contact' ? 'active' : ''}`}>contact.txt</a>
-  <span class="taskbar-clock" data-taskbar-clock></span>
+  <button class="taskbar-tab" data-tab="home">
+    <span class="taskbar-play">▶</span> home.exe
+  </button>
+  <div class="taskbar-divider"></div>
+  <button class="taskbar-tab" data-tab="projects">projects.exe</button>
+  <button class="taskbar-tab" data-tab="about">about.exe</button>
+  <button class="taskbar-tab" data-tab="skills">capabilities.dll</button>
+  <button class="taskbar-tab" data-tab="contact">contact.txt</button>
+  <div class="taskbar-clock" data-taskbar-clock></div>
 </nav>
 
 <script>
@@ -33,48 +30,60 @@ const { active = '' } = Astro.props;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 100;
+    z-index: 200;
     background: var(--dark);
     border-top: 2px solid var(--orange);
     display: flex;
     align-items: center;
-    padding: 0 1rem;
-    height: 34px;
-    gap: 0;
+    padding: 0 0.5rem;
+    height: 38px;
   }
 
-  .taskbar-start {
-    font-family: var(--font-mono);
-    font-size: 0.9rem;
-    color: var(--green);
-    padding: 0 14px 0 4px;
-    border-right: 1px solid #444;
-    margin-right: 4px;
-  }
-
-  .taskbar-item {
+  .taskbar-tab {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: #888;
-    padding: 5px 12px;
-    text-decoration: none;
+    background: none;
+    border: none;
+    padding: 6px 12px;
     border-right: 1px solid #333;
     transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
   }
 
-  .taskbar-item:hover { background: #333; color: #ccc; }
-  .taskbar-item.active { background: #444; color: var(--green); }
+  .taskbar-tab:hover { background: #333; color: #ccc; }
+  .taskbar-tab.active { background: rgba(255,107,0,0.15); color: var(--orange); border-bottom: 2px solid var(--orange); }
+
+  .taskbar-play { color: var(--green); margin-right: 4px; }
+
+  .taskbar-divider {
+    width: 1px;
+    height: 20px;
+    background: #444;
+    margin: 0 2px;
+  }
 
   .taskbar-clock {
     margin-left: auto;
     font-family: var(--font-mono);
     font-size: 0.78rem;
     color: #888;
-    padding: 0 8px;
+    padding: 0 10px;
   }
 
   @media (max-width: 768px) {
-    .taskbar-item { font-size: 0.65rem; padding: 4px 6px; }
+    .taskbar { padding: 2px; gap: 1px; }
+    .taskbar-tab {
+      font-size: 0.68rem;
+      padding: 10px 6px;
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .taskbar-clock { display: none; }
+    .taskbar-play { display: none; }
+    .taskbar-divider { display: none; }
   }
 </style>

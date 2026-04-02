@@ -1,330 +1,49 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Nav from '../components/Nav.astro';
-import Hero from '../components/Hero.astro';
-import AboutSection from '../components/AboutSection.astro';
-import SkillsSection from '../components/SkillsSection.astro';
-import Contact from '../components/Contact.astro';
-import RetroElements from '../components/RetroElements.astro';
-import RetroWindow from '../components/RetroWindow.astro';
-import RetroButton from '../components/RetroButton.astro';
-import GlitchText from '../components/GlitchText.astro';
+import Desktop from '../components/Desktop.astro';
+import Window from '../components/Window.astro';
+import MobilePanel from '../components/MobilePanel.astro';
 import Taskbar from '../components/Taskbar.astro';
-
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+import ProjectsWindow from '../components/ProjectsWindow.astro';
+import AboutWindow from '../components/AboutWindow.astro';
+import SkillsWindow from '../components/SkillsWindow.astro';
+import ContactWindow from '../components/ContactWindow.astro';
 ---
-<BaseLayout>
-  <Nav />
-  <main>
-    <Hero />
-    <div data-parallax="fast"><RetroElements type="marquee" /></div>
-    <RetroElements type="pixel-robot-strip" />
 
-    <!-- STICKY CARD STACK -->
-    <section id="projects" class="card-stack-section">
-      <div class="section-label reveal" style="padding: 0 2.5rem;"><GlitchText text="Projects" tag="span" intensity="subtle" interval={6000} /></div>
-      <div class="card-stack-container">
-        {projects.map((p, i) => (
-          <div class="stack-card" data-card={i}>
-            <div class="stack-card-inner">
-              <div class="stack-card-text">
-                <span class="stack-card-bg-index">0{p.data.order}</span>
-                <span class="stack-card-index">0{p.data.order}</span>
-                <h2 class="stack-card-title">{p.data.displayTitle}</h2>
-                <p class="stack-card-hook">{p.data.hook}</p>
-                <div class="stack-card-tags">
-                  {p.data.tags.map((t: string) => <span>{t}</span>)}
-                </div>
-                {p.data.type && <div class="stack-card-location">{p.data.type}</div>}
-                <RetroButton href={`/projects/${p.data.slug}`} text="View Project →" variant="primary" />
-                <div class="stack-card-meta">{p.data.status}</div>
-              </div>
-              <div class="stack-card-mockup">
-                <div class="stack-card-mockup-ph">
-                  <span>{p.data.displayTitle}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </section>
+<BaseLayout title="Portfolio">
+  <Desktop />
 
-    <section id="about" class="about-section">
-      <AboutSection />
-    </section>
+  <!-- Desktop Windows -->
+  <Window id="projects" title="projects.exe" width="70vw" height="75vh" top="5vh" left="15vw">
+    <ProjectsWindow />
+  </Window>
+  <Window id="about" title="about.exe" width="60vw" height="70vh" top="8vh" left="20vw" darkMode>
+    <AboutWindow />
+  </Window>
+  <Window id="skills" title="capabilities.dll" width="55vw" height="55vh" top="15vh" left="22vw">
+    <SkillsWindow />
+  </Window>
+  <Window id="contact" title="contact.txt" width="35vw" height="auto" top="20vh" left="32vw">
+    <ContactWindow />
+  </Window>
 
-    <div data-parallax="fast"><RetroElements type="rec-loader" /></div>
-
-    <section id="skills">
-      <div class="section-label reveal"><GlitchText text="Capabilities" tag="span" intensity="subtle" interval={8000} /></div>
-      <RetroWindow title="capabilities.dll">
-        <SkillsSection />
-      </RetroWindow>
-    </section>
-
-    <RetroElements type="pixel-creature-strip" />
-
-    <section id="contact">
-      <div class="section-label reveal">Contact</div>
-      <RetroWindow title="contact.txt">
-        <div style="padding: 1.5rem;">
-          <Contact />
-        </div>
-      </RetroWindow>
-    </section>
-
-    <div data-parallax="fast"><RetroElements type="marquee" /></div>
-    <RetroElements type="kaomoji-strip" />
-  </main>
+  <!-- Mobile Panels -->
+  <MobilePanel id="projects" title="projects.exe">
+    <ProjectsWindow />
+  </MobilePanel>
+  <MobilePanel id="about" title="about.exe">
+    <AboutWindow />
+  </MobilePanel>
+  <MobilePanel id="skills" title="capabilities.dll">
+    <SkillsWindow />
+  </MobilePanel>
+  <MobilePanel id="contact" title="contact.txt">
+    <ContactWindow />
+  </MobilePanel>
 
   <Taskbar />
 </BaseLayout>
 
 <script>
-  // Taskbar active section
-  const sections = document.querySelectorAll('section[id]');
-  const taskbarItems = document.querySelectorAll('.taskbar-item');
-  const sectionObs = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        taskbarItems.forEach(item => {
-          const href = item.getAttribute('href') || '';
-          const sectionId = href.replace('/#', '').replace('#', '');
-          item.classList.toggle('active', sectionId === id);
-        });
-      }
-    });
-  }, { threshold: 0.3 });
-  sections.forEach(s => sectionObs.observe(s));
-
-  // Card stack scroll animation — vanilla JS, no library
-  if (window.innerWidth > 768) {
-    const stackSection = document.querySelector('.card-stack-section') as HTMLElement;
-    const cards = document.querySelectorAll('.stack-card') as NodeListOf<HTMLElement>;
-
-    if (stackSection && cards.length > 1) {
-      const totalCards = cards.length;
-
-      function updateCards() {
-        const rect = stackSection.getBoundingClientRect();
-        const sectionTop = -rect.top;
-        const sectionHeight = stackSection.offsetHeight - window.innerHeight;
-        const progress = Math.max(0, Math.min(1, sectionTop / sectionHeight));
-
-        cards.forEach((card, i) => {
-          if (i === 0) {
-            // First card: visible, scales down as card 1 arrives
-            const cardProgress = Math.max(0, Math.min(1, progress * totalCards));
-            const scale = 1 - Math.min(cardProgress, 1) * 0.07;
-            const opacity = 1 - Math.min(cardProgress, 1) * 0.4;
-            card.style.transform = `translateY(0) scale(${scale})`;
-            card.style.opacity = String(opacity);
-            return;
-          }
-
-          // Each subsequent card slides up based on scroll progress
-          const cardStart = (i - 0.3) / totalCards;
-          const cardEnd = i / totalCards;
-          const cardProgress = Math.max(0, Math.min(1, (progress - cardStart) / (cardEnd - cardStart)));
-
-          const translateY = (1 - cardProgress) * 100;
-          card.style.transform = `translateY(${translateY}%)`;
-
-          // Scale down previous card when this one arrives
-          if (cardProgress > 0 && i > 0) {
-            const prevScale = 1 - cardProgress * 0.07;
-            const prevOpacity = 1 - cardProgress * 0.4;
-            cards[i - 1].style.transform = `translateY(0) scale(${prevScale})`;
-            cards[i - 1].style.opacity = String(prevOpacity);
-          }
-        });
-      }
-
-      window.addEventListener('scroll', () => requestAnimationFrame(updateCards), { passive: true });
-      updateCards();
-    }
-  }
+  document.body.classList.add('os-desktop');
 </script>
-
-<style>
-  .about-section { padding: 0 !important; }
-
-  /* ========== CARD STACK ========== */
-  .card-stack-section {
-    position: relative;
-    height: 250vh;
-    padding-top: 1.5rem;
-  }
-
-  .card-stack-container {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .stack-card {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    padding: 4rem 3rem;
-    background: var(--bg);
-    will-change: transform;
-  }
-
-  .stack-card[data-card="0"] { z-index: 1; transform: translateY(0); opacity: 1; }
-  .stack-card[data-card="1"] { z-index: 2; transform: translateY(100%); }
-  .stack-card[data-card="2"] { z-index: 3; transform: translateY(100%); }
-
-  .stack-card-inner {
-    display: flex;
-    gap: 3rem;
-    align-items: center;
-    width: 100%;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .stack-card-text {
-    flex: 1;
-    min-width: 0;
-    position: relative;
-  }
-
-  .stack-card-mockup {
-    flex: 0 0 40%;
-  }
-
-  .stack-card-bg-index {
-    position: absolute;
-    top: -2rem;
-    right: 0;
-    font-family: var(--font-display);
-    font-size: 10rem;
-    font-weight: 800;
-    color: var(--text);
-    opacity: 0.04;
-    line-height: 1;
-    pointer-events: none;
-  }
-
-  .stack-card-index {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    display: block;
-    margin-bottom: 0.5rem;
-  }
-
-  .stack-card-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.03em;
-    line-height: 0.95;
-    margin-bottom: 0.8rem;
-  }
-
-  .stack-card-hook {
-    font-family: var(--font-body);
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: var(--text-mid);
-    line-height: 1.6;
-    margin-bottom: 1.2rem;
-    max-width: 500px;
-  }
-
-  .stack-card-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 0.5rem;
-  }
-
-  .stack-card-tags span {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 2px 7px;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-  }
-
-  .stack-card-location {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    margin-bottom: 1rem;
-  }
-
-  .stack-card-meta {
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--text-dim);
-    margin-top: 1rem;
-    padding-top: 0.6rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .stack-card-mockup-ph {
-    aspect-ratio: 3 / 4;
-    background: var(--dark);
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .stack-card-mockup-ph span {
-    font-family: var(--font-mono);
-    font-size: 1rem;
-    color: #555;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-  }
-
-  @media (max-width: 768px) {
-    .card-stack-section {
-      height: auto;
-      padding-top: 2rem;
-    }
-
-    .card-stack-container {
-      position: relative;
-      height: auto;
-    }
-
-    .stack-card {
-      position: relative;
-      transform: none !important;
-      opacity: 1 !important;
-      height: auto;
-      min-height: 80vh;
-      padding: 2rem 1.5rem;
-      margin-bottom: 2rem;
-    }
-
-    .stack-card-inner {
-      flex-direction: column;
-    }
-
-    .stack-card-mockup {
-      flex: none;
-      width: 60%;
-      max-width: 250px;
-    }
-
-    .stack-card-bg-index {
-      font-size: 5rem;
-    }
-  }
-</style>

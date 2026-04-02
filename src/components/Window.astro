@@ -1,0 +1,99 @@
+---
+interface Props {
+  id: string;
+  title: string;
+  width?: string;
+  height?: string;
+  top?: string;
+  left?: string;
+  initiallyOpen?: boolean;
+  darkMode?: boolean;
+}
+
+const { id, title, width = '60vw', height = '70vh', top = '10vh', left = '20vw', initiallyOpen = false, darkMode = false } = Astro.props;
+---
+
+<div class="os-window" data-window-id={id} style={`width:${width}; height:${height}; top:${top}; left:${left};`}>
+  <div class={`os-window-titlebar ${darkMode ? 'os-window-titlebar--dark' : ''}`}>
+    <div class="os-window-dots">
+      <span class="dot dot--green"></span>
+      <span class="dot dot--orange"></span>
+      <span class="dot dot--grey"></span>
+    </div>
+    <span class="os-window-title">{title}</span>
+    <button class="os-window-close" data-close={id} aria-label="Close window">&times;</button>
+  </div>
+  <div class={`os-window-body ${darkMode ? 'os-window-body--dark' : ''}`}>
+    <slot />
+  </div>
+</div>
+
+<style is:global>
+  .os-window {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    z-index: 10;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+  .os-window.open {
+    display: flex;
+    opacity: 1;
+    transform: scale(1);
+  }
+  .os-window-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .os-window-titlebar--dark {
+    background: var(--dark-light);
+    border-color: #333;
+  }
+  .os-window-dots { display: flex; gap: 5px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot--green { background: var(--green); }
+  .dot--orange { background: var(--orange); }
+  .dot--grey { background: #999; }
+  .os-window-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .os-window-close {
+    background: none;
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--text-dim);
+    padding: 0 4px;
+    line-height: 1;
+  }
+  .os-window-close:hover { color: var(--orange); }
+  .os-window-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+  .os-window-body--dark {
+    background: var(--dark);
+    color: #ccc;
+  }
+
+  @media (max-width: 768px) {
+    .os-window { display: none !important; }
+  }
+</style>

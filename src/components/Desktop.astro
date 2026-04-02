@@ -1,0 +1,118 @@
+---
+import GlitchText from './GlitchText.astro';
+---
+
+<div class="desktop">
+  <div class="desktop-content">
+    <GlitchText text="LYLA\nHUANG." tag="h1" class="desktop-title" intensity="bold" interval={3000} playEntrance={true} />
+    <p class="desktop-sub">Strategist &rarr; Builder</p>
+    <p class="desktop-desc">
+      I used to shape messages. Now I shape the systems behind them.
+    </p>
+  </div>
+
+  <!-- Pixel decorations -->
+  <div class="desktop-deco deco-1"></div>
+  <div class="desktop-deco deco-2"></div>
+  <div class="desktop-deco deco-3"></div>
+  <div class="desktop-frame"></div>
+</div>
+
+<style is:global>
+  .desktop {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 4rem 5rem;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .desktop-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .desktop-title {
+    font-family: var(--font-display);
+    font-size: clamp(5rem, 12vw, 12rem);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+  }
+
+  .desktop-sub {
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+  }
+
+  .desktop-desc {
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin-top: 0.8rem;
+    line-height: 1.6;
+  }
+
+  /* Pixel decorations */
+  .desktop-deco {
+    position: absolute;
+    image-rendering: pixelated;
+    z-index: 1;
+  }
+
+  .deco-1 {
+    width: 8px; height: 8px;
+    background: var(--orange);
+    top: 20%; right: 15%;
+  }
+
+  .deco-2 {
+    width: 6px; height: 6px;
+    background: var(--green);
+    top: 40%; right: 25%;
+    opacity: 0.6;
+  }
+
+  .deco-3 {
+    width: 10px; height: 10px;
+    background: var(--text-dim);
+    bottom: 30%; right: 10%;
+    opacity: 0.3;
+  }
+
+  .desktop-frame {
+    position: absolute;
+    right: 8%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 300px;
+    border: 1px solid var(--orange);
+    opacity: 0.15;
+    z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    .desktop {
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    .desktop-title {
+      font-size: clamp(3rem, 12vw, 5rem);
+    }
+
+    .desktop-frame { display: none; }
+    .desktop-deco { display: none; }
+  }
+</style>

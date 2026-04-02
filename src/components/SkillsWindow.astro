@@ -1,0 +1,30 @@
+---
+const categories = [
+  { name: 'Strategy', color: 'var(--dark)', textColor: 'var(--green)', items: ['Brand strategy & positioning', 'Consumer insights & research', 'Content strategy & messaging'] },
+  { name: 'Design', color: 'var(--green)', textColor: 'var(--dark)', items: ['Product design (concept → prototype)', 'UI/UX design', 'Editorial & interaction design'] },
+  { name: 'Build', color: 'var(--orange)', textColor: '#fff', items: ['Frontend design', 'AI workflows & prompting', 'APIs, data, and integrations'] },
+  { name: 'Communicate', color: 'var(--dark)', textColor: 'var(--green)', items: ['Writing & storytelling', 'Cross-functional collaboration', 'Stakeholder alignment'] },
+];
+---
+
+<div class="sw-grid">
+  {categories.map(cat => (
+    <div class="sw-block">
+      <h4 class="sw-cat" style={`background:${cat.color}; color:${cat.textColor};`}>{cat.name}</h4>
+      <ul>
+        {cat.items.map(item => <li>{item}</li>)}
+      </ul>
+    </div>
+  ))}
+</div>
+
+<style>
+  .sw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
+  .sw-block { background: var(--bg-card); padding: 1.2rem; }
+  .sw-cat { font-family: var(--font-mono); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; padding: 3px 8px; font-weight: 700; display: inline-block; margin-bottom: 0.6rem; }
+  li { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text); padding: 0.2rem 0; }
+
+  @media (max-width: 500px) {
+    .sw-grid { grid-template-columns: 1fr; }
+  }
+</style>
