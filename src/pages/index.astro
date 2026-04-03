@@ -31,58 +31,52 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Easter Egg Windows -->
-  <Window id="readme" title="readme.txt" width="360px" height="240px" top="25vh" left="35vw">
+  <Window id="readme" title="readme.txt" width="360px" height="380px" top="25vh" left="35vw">
     <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
       <p>Hey! You found the readme.</p>
       <br>
-      <p>This portfolio was built with Astro, too much coffee, and long conversations with Claude.</p>
+      <p>This portfolio was built with Astro, too many sleepless nights, and long conversations with Claude.</p>
       <br>
-      <p>If you're reading this, you're the kind of person I want to work with.</p>
+      <p>If you're reading this, you're the kind of person I want to work with!</p>
       <br>
       <p>Say hi &rarr; <a href="mailto:lyla.huangyanling@gmail.com" style="color: var(--orange);">lyla.huangyanling@gmail.com</a></p>
     </div>
   </Window>
 
-  <Window id="todo" title="todo.md" width="480px" height="auto" top="12vh" left="35vw">
+  <Window id="todo" title="todo.md" width="420px" height="auto" top="12vh" left="35vw">
     <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
       <p>&#9745; Move to Barcelona</p>
       <p>&#9745; Learn to vibe code (enough to prototype)</p>
       <p>&#9745; Build a few things I actually like</p>
-      <p>&#9745; Make this portfolio</p>
+      <p>&#9745; Make a new portfolio</p>
       <p style="margin: 0.4rem 0;"></p>
       <p style="color: var(--orange);">&#9744; Find a role that feels right</p>
-      <p>&#9744; Speak Spanish without crossing wires</p>
+      <p>&#9744; Improve Spanish (beyond survival)</p>
       <p>&#9744; Touch grass</p>
     </div>
   </Window>
 
-  <Window id="recycle" title="recycle_bin/" width="280px" height="160px" top="30vh" left="38vw">
+  <Window id="recycle" title="recycle_bin/" width="280px" height="200px" top="30vh" left="38vw">
     <div style="font-family: var(--font-mono); font-size: 1rem; color: var(--text-dim); text-align: center; padding: 1.5rem 0;">
       <p style="font-size: 1.5rem;">&#128465;</p>
-      <p>Empty.</p>
-      <br>
-      <p style="font-size: 0.85rem;">(I deleted my imposter syndrome.)</p>
+      <p style="font-size: 0.85rem;">(empty - i deleted my imposter syndrome.)</p>
     </div>
   </Window>
 
-  <Window id="selfie" title="selfie.jpg — Preview" width="220px" height="200px" top="22vh" left="42vw">
+  <Window id="selfie" title="selfie.jpg — Preview" width="220px" height="240px" top="22vh" left="42vw">
     <div style="text-align: center; padding: 1rem;">
       <div style="width: 80px; height: 80px; background: var(--dark); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; color: var(--orange);">:)</div>
       <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">close enough.</p>
     </div>
   </Window>
 
-  <Window id="playlist" title="playlist.m3u" width="340px" height="320px" top="18vh" left="36vw">
+  <Window id="playlist" title="playlist.m3u" width="320px" height="230px" top="18vh" left="36vw">
     <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; color: var(--text);">
-      <p style="color: var(--text-dim); margin-bottom: 0.5rem;">// portfolio building soundtrack</p>
-      <p>1. Boards of Canada &mdash; Dayvan Cowboy</p>
-      <p>2. Tycho &mdash; Awake</p>
+      <p>1. Tití Me Preguntó &mdash; Bad Bunny</p>
+      <p>2. TURiSTA &mdash; Bad Bunny</p>
       <p>3. Nujabes &mdash; Feather</p>
-      <p>4. Khruangbin &mdash; Time (You and I)</p>
-      <p>5. Bonobo &mdash; Kerala</p>
-      <p>6. Tame Impala &mdash; Let It Happen</p>
-      <p>7. Tom Misch &mdash; South of the River</p>
-      <p style="color: var(--text-dim); margin-top: 0.5rem;">// replace with your actual playlist</p>
+      <p>4. NUEVAYoL &mdash; Bad Bunny</p>
+      <p>5. DtMF &mdash; Bad Bunny</p>
     </div>
   </Window>
 
@@ -98,31 +92,20 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     </div>
   </Window>
 
-  <Window id="coffee" title="coffee.log" width="300px" height="220px" top="20vh" left="35vw">
-    <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.8; color: var(--text);">
-      <p style="color: var(--text-dim);">// caffeine intake tracker</p>
-      <p>&#9745; Morning espresso</p>
-      <p>&#9745; Post-lunch cortado</p>
-      <p>&#9745; "Last one" at 4pm</p>
-      <p>&#9745; "OK actually last one" at 6pm</p>
-      <p style="color: var(--orange);">&#9744; Sleep</p>
-    </div>
-  </Window>
-
   <!-- Project Detail Windows -->
-  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="78vh" top="6vh" left="16vw">
+  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="6vh" left="16vw">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
       hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking as an experience with routing for safety, discovery, and human-ness."
-      tags="AI · UX Research · Product Design · Data"
+      tags="Agentic Workflows · UX Research · Product Design · Data"
       location="Barcelona" status="Master's Thesis · Prototype · 2025"
       isMobile={true}
-      stats={[{ number: '119K', label: 'street segments scored' }, { number: '386', label: 'hand-curated POIs' }, { number: '89%', label: 'of walkers vary routes' }]}
-      problem='"Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking?"'
+      stats={[{ number: '119K', label: 'street segments scored' }, { number: '372', label: 'hand-curated POIs' }, { number: '3', label: 'modes of navigation' }]}
+      problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
-        { label: 'GO', desc: 'Destination search with routes that explain why each is different.' },
-        { label: 'EXPLORE', desc: 'Type a vibe. AI curates an experience — architecture trail to evening out.' },
-        { label: 'WANDER', desc: 'A compass and curated pins. No route. No destination. Just direction.' },
+        { label: 'GO MODE', desc: 'The old maps but with new route options and smarter.' },
+        { label: 'EXPLORE MODE', desc: 'Discover, plan, or experience the city with AI-powered recommendations.' },
+        { label: 'WANDER MODE', desc: 'No destination, no route line. Just a compass and POIs nearby.' },
       ]}
       features={[
         { title: '119K street segments scored', desc: 'Noise, greenery, cleanliness, cultural richness, safety — real data, not guesses.' },
@@ -138,19 +121,19 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="75vh" top="8vh" left="18vw">
+  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="8vh" left="18vw">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="One word. One photo. One day. A shared visual diary of a city. Built through small, daily moments."
+      hook="What if we turned a map into a daily quest for beauty? A word a day. A shared visual diary for all."
       tags="Product Design · Full-Stack · UX · Gamification"
       location="Barcelona" status="In use · Feb 2026"
       isMobile={true}
-      stats={[{ number: '1', label: 'word per day' }, { number: '1', label: 'photo per prompt' }, { number: '∞', label: 'perspectives' }]}
-      problem='"We walk past a thousand interesting things every day without seeing them."'
+      stats={[{ number: 'X', label: 'XXX' }, { number: 'X', label: 'XXX' }, { number: 'X', label: 'XXXX' }]}
+      problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
-        { label: 'PROMPT', desc: 'One word each day — texture, tiny, bright. Everyone in the city gets the same one.' },
-        { label: 'CAPTURE', desc: 'Step outside, find it, snap a photo. A cracked tile becomes the answer to pattern.' },
-        { label: 'SHARE', desc: 'Photos drop on a shared city map. At midnight, the map resets. No likes, no followers.' },
+        { label: 'PROMPT', desc: 'One word each day (e.g., texture, tiny, bright). Every user gets the same theme.' },
+        { label: 'CAPTURE', desc: 'Step outside, look around, and snap a relevant image to capture the everyday beauty.' },
+        { label: 'SHARE', desc: 'Photos drop on a shared city map. At midnight (UTC+1), the map resets. No pretense.' },
       ]}
       features={[
         { title: 'Anti-social media', desc: 'No algorithm, no followers, no likes. Using a phone to make you look up from it.' },
@@ -166,14 +149,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="76vh" top="7vh" left="17vw">
+  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="7vh" left="17vw">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
       hook="A planning tool that thinks like an editor, not a spreadsheet. Live weather, image search, and inline editing — all in one flow."
-      tags="Frontend · APIs · Editorial Design"
+      tags="Frontend · APIs · Editorial Design · Interactivity"
       location="Personal Project" status="In use · Mar 2025"
       isMobile={false}
-      stats={[{ number: '15', label: 'days planned' }, { number: '9', label: 'cities covered' }, { number: 'LIVE', label: 'weather per destination' }]}
+      stats={[{ number: 'XX', label: 'XX' }, { number: 'XXX', label: 'XXX' }, { number: 'XXX', label: 'XXX' }]}
       problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
       approaches={[
         { label: 'EDITORIAL', desc: 'Layout inspired by travel magazines. City intros, photo galleries, timelines.' },
@@ -184,7 +167,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         { title: 'Editorial design meets utility', desc: 'City intro slides with split typography, day pages with photo galleries and timelines.' },
         { title: 'Live weather integration', desc: 'Real-time weather data per destination via Open-Meteo API.' },
         { title: 'Built-in image search', desc: 'Find and place photos without leaving the tool.' },
-        { title: 'First AI-assisted project', desc: 'Designed the visual system, wrote the spec, then used Claude Code to build it.' },
+        { title: 'AI-assisted planning', desc: 'Generate itinerary suggestions based on user preferences and real-time data with AI.' },
       ]}
       mockups={[
         { label: 'ITINERARY VIEW', caption: 'City intro + day overview' },
