@@ -1,13 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import RetroButton from './RetroButton.astro';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <div class="pw-grid">
   {projects.map(p => (
-    <a href={`/projects/${p.data.slug}`} class="pw-card">
+    <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
       <span class="pw-num">0{p.data.order}</span>
       <h3 class="pw-title">{p.data.displayTitle}</h3>
       <p class="pw-hook">{p.data.hook}</p>
@@ -17,28 +16,14 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
       {p.data.type && <div class="pw-location">{p.data.type}</div>}
       <div class="pw-meta">{p.data.status}</div>
       <span class="pw-arrow">VIEW PROJECT →</span>
-    </a>
+    </div>
   ))}
 </div>
 
 <style>
-  .pw-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    background: var(--border);
-  }
-
-  .pw-card {
-    background: var(--bg-card);
-    padding: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    transition: background 0.15s;
-  }
-
+  .pw-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .pw-card { background: var(--bg-card); padding: 1.5rem; transition: background 0.15s; cursor: pointer; }
   .pw-card:hover { background: var(--bg); }
-
   .pw-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 0.3rem; }
   .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.4rem; line-height: 1; }
   .pw-hook { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.8rem; }

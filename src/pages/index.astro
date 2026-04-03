@@ -9,6 +9,7 @@ import ProjectsWindow from '../components/ProjectsWindow.astro';
 import AboutWindow from '../components/AboutWindow.astro';
 import SkillsWindow from '../components/SkillsWindow.astro';
 import ContactWindow from '../components/ContactWindow.astro';
+import ProjectDetail from '../components/ProjectDetail.astro';
 ---
 
 <BaseLayout title="Portfolio">
@@ -108,6 +109,90 @@ import ContactWindow from '../components/ContactWindow.astro';
     </div>
   </Window>
 
+  <!-- Project Detail Windows -->
+  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="78vh" top="6vh" left="16vw">
+    <ProjectDetail
+      slug="reroute" order={1} title="(RE)ROUTE"
+      hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking as an experience with routing for safety, discovery, and human-ness."
+      tags="AI · UX Research · Product Design · Data"
+      location="Barcelona" status="Master's Thesis · Prototype · 2025"
+      isMobile={true}
+      stats={[{ number: '119K', label: 'street segments scored' }, { number: '386', label: 'hand-curated POIs' }, { number: '89%', label: 'of walkers vary routes' }]}
+      problem='"Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking?"'
+      approaches={[
+        { label: 'GO', desc: 'Destination search with routes that explain why each is different.' },
+        { label: 'EXPLORE', desc: 'Type a vibe. AI curates an experience — architecture trail to evening out.' },
+        { label: 'WANDER', desc: 'A compass and curated pins. No route. No destination. Just direction.' },
+      ]}
+      features={[
+        { title: '119K street segments scored', desc: 'Noise, greenery, cleanliness, cultural richness, safety — real data, not guesses.' },
+        { title: 'AI-powered discovery', desc: '"Artsy date" → experimental galleries, design bookshops, natural wine bars. Verified against real place data.' },
+        { title: 'Safety as baseline', desc: 'After dark, every route shifts to well-lit, active streets. Not a mode — always on.' },
+        { title: '386 hand-curated POIs', desc: `Places that don't appear on commercial platforms. Themed walks, bloom calendars, hidden courtyards.` },
+      ]}
+      mockups={[
+        { label: 'GO MODE', caption: 'GO — destination routing' },
+        { label: 'EXPLORE MODE', caption: 'EXPLORE — vibe-based discovery' },
+        { label: 'WANDER MODE', caption: 'WANDER — compass + curated pins' },
+      ]}
+    />
+  </Window>
+
+  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="75vh" top="8vh" left="18vw">
+    <ProjectDetail
+      slug="snapp" order={2} title="SNAPP"
+      hook="One word. One photo. One day. A shared visual diary of a city. Built through small, daily moments."
+      tags="Product Design · Full-Stack · UX · Gamification"
+      location="Barcelona" status="In use · Feb 2026"
+      isMobile={true}
+      stats={[{ number: '1', label: 'word per day' }, { number: '1', label: 'photo per prompt' }, { number: '∞', label: 'perspectives' }]}
+      problem='"We walk past a thousand interesting things every day without seeing them."'
+      approaches={[
+        { label: 'PROMPT', desc: 'One word each day — texture, tiny, bright. Everyone in the city gets the same one.' },
+        { label: 'CAPTURE', desc: 'Step outside, find it, snap a photo. A cracked tile becomes the answer to pattern.' },
+        { label: 'SHARE', desc: 'Photos drop on a shared city map. At midnight, the map resets. No likes, no followers.' },
+      ]}
+      features={[
+        { title: 'Anti-social media', desc: 'No algorithm, no followers, no likes. Using a phone to make you look up from it.' },
+        { title: 'Ephemeral by design', desc: `The map resets at midnight. Today's gallery lives for exactly one day.` },
+        { title: 'Deliberate constraints', desc: 'One word + one day = focus. The shared map creates connection without competition.' },
+        { title: 'City-wide collaboration', desc: 'Barcelona becomes a collaborative, ever-changing gallery that lives for one day.' },
+      ]}
+      mockups={[
+        { label: 'DAILY PROMPT', caption: 'Daily word prompt' },
+        { label: 'PHOTO CAPTURE', caption: 'Camera + location tagging' },
+        { label: 'SHARED MAP', caption: 'City-wide shared gallery' },
+      ]}
+    />
+  </Window>
+
+  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="76vh" top="7vh" left="17vw">
+    <ProjectDetail
+      slug="planmytrip" order={3} title="PLANMYTRIP"
+      hook="A planning tool that thinks like an editor, not a spreadsheet. Live weather, image search, and inline editing — all in one flow."
+      tags="Frontend · APIs · Editorial Design"
+      location="Personal Project" status="In use · Mar 2025"
+      isMobile={false}
+      stats={[{ number: '15', label: 'days planned' }, { number: '9', label: 'cities covered' }, { number: 'LIVE', label: 'weather per destination' }]}
+      problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
+      approaches={[
+        { label: 'EDITORIAL', desc: 'Layout inspired by travel magazines. City intros, photo galleries, timelines.' },
+        { label: 'LIVE DATA', desc: 'Weather API per destination. Image search built in. Real-time, not static.' },
+        { label: 'INLINE EDIT', desc: `Click to edit everything. A planning tool that's also beautiful enough to screenshot.` },
+      ]}
+      features={[
+        { title: 'Editorial design meets utility', desc: 'City intro slides with split typography, day pages with photo galleries and timelines.' },
+        { title: 'Live weather integration', desc: 'Real-time weather data per destination via Open-Meteo API.' },
+        { title: 'Built-in image search', desc: 'Find and place photos without leaving the tool.' },
+        { title: 'First AI-assisted project', desc: 'Designed the visual system, wrote the spec, then used Claude Code to build it.' },
+      ]}
+      mockups={[
+        { label: 'ITINERARY VIEW', caption: 'City intro + day overview' },
+        { label: 'WEATHER & DETAILS', caption: 'Weather widgets + timeline' },
+      ]}
+    />
+  </Window>
+
   <!-- Mobile Panels -->
   <MobilePanel id="projects" title="projects.exe">
     <ProjectsWindow />
@@ -120,6 +205,45 @@ import ContactWindow from '../components/ContactWindow.astro';
   </MobilePanel>
   <MobilePanel id="contact" title="contact.txt">
     <ContactWindow />
+  </MobilePanel>
+  <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE">
+    <ProjectDetail
+      slug="reroute" order={1} title="(RE)ROUTE"
+      hook="What if navigation optimised for how you feel, not just where you go?"
+      tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2025"
+      isMobile={true}
+      stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '89%', label: 'vary routes' }]}
+      problem={`"Every navigation app gets you there fast. But what about making the walk worth taking?"`}
+      approaches={[{ label: 'GO', desc: 'Destination routing.' }, { label: 'EXPLORE', desc: 'Vibe-based discovery.' }, { label: 'WANDER', desc: 'Compass + pins.' }]}
+      features={[{ title: '119K segments scored', desc: 'Real data on noise, greenery, safety.' }, { title: 'AI discovery', desc: 'Verified place recommendations.' }, { title: 'Safety baseline', desc: 'Well-lit routes after dark.' }]}
+      mockups={[{ label: 'GO', caption: 'GO mode' }, { label: 'EXPLORE', caption: 'EXPLORE mode' }, { label: 'WANDER', caption: 'WANDER mode' }]}
+    />
+  </MobilePanel>
+  <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP">
+    <ProjectDetail
+      slug="snapp" order={2} title="SNAPP"
+      hook="One word. One photo. One day."
+      tags="Product Design · Full-Stack · UX" location="Barcelona" status="In use · 2026"
+      isMobile={true}
+      stats={[{ number: '1', label: 'word/day' }, { number: '1', label: 'photo' }, { number: '∞', label: 'perspectives' }]}
+      problem={`"We walk past interesting things every day without seeing them."`}
+      approaches={[{ label: 'PROMPT', desc: 'One word per day.' }, { label: 'CAPTURE', desc: 'Find it, snap it.' }, { label: 'SHARE', desc: 'City map, resets at midnight.' }]}
+      features={[{ title: 'Anti-social media', desc: 'No algorithm, no followers.' }, { title: 'Ephemeral', desc: 'Resets at midnight.' }, { title: 'Constraints = focus', desc: 'One word, one day.' }]}
+      mockups={[{ label: 'PROMPT', caption: 'Daily prompt' }, { label: 'MAP', caption: 'Shared map' }, { label: 'CAPTURE', caption: 'Photo capture' }]}
+    />
+  </MobilePanel>
+  <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP">
+    <ProjectDetail
+      slug="planmytrip" order={3} title="PLANMYTRIP"
+      hook="A planning tool that thinks like an editor, not a spreadsheet."
+      tags="Frontend · APIs · Editorial Design" location="Personal Project" status="In use · 2025"
+      isMobile={false}
+      stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
+      problem={`"Trip planning tools are ugly spreadsheets or rigid templates."`}
+      approaches={[{ label: 'EDITORIAL', desc: 'Magazine-style layout.' }, { label: 'LIVE DATA', desc: 'Weather + images.' }, { label: 'INLINE', desc: 'Click to edit.' }]}
+      features={[{ title: 'Editorial design', desc: 'City intros, photo galleries, timelines.' }, { title: 'Live weather', desc: 'Open-Meteo API per destination.' }, { title: 'AI-assisted build', desc: 'Designed system, Claude Code built it.' }]}
+      mockups={[{ label: 'ITINERARY', caption: 'Day overview' }, { label: 'WEATHER', caption: 'Weather widgets' }]}
+    />
   </MobilePanel>
 
   <Taskbar />

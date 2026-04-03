@@ -235,5 +235,33 @@ document.addEventListener('mouseup', () => {
   dragIcon = null;
 });
 
+// --- Project card click → open project detail window ---
+document.addEventListener('click', (e) => {
+  const card = e.target.closest('[data-open-project]');
+  if (card) {
+    const id = card.dataset.openProject;
+    openWindow(id);
+  }
+});
+
+// --- Simple tab switching inside project detail windows ---
+document.querySelectorAll('.proj-detail').forEach(detail => {
+  const tabs = detail.querySelectorAll('.proj-tab');
+  const sections = detail.querySelectorAll('.proj-section');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.projSection;
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      sections.forEach(s => {
+        s.style.display = s.dataset.projSection === target ? 'block' : 'none';
+      });
+      const content = detail.querySelector('.proj-content');
+      if (content) content.scrollTop = 0;
+    });
+  });
+});
+
 // Expose globally
 window.openWindow = openWindow;
