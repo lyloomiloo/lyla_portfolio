@@ -275,10 +275,11 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   const lockScreen = document.getElementById('lockScreen');
   const lockButton = document.getElementById('lockButton');
 
-  if (lockScreen && !document.documentElement.classList.contains('skip-lock')) {
+  function setupLockListeners() {
+    if (!lockScreen || !lockButton) return;
+
     const dismiss = (e: Event) => {
       e.preventDefault();
-      e.stopPropagation();
       lockScreen.classList.add('dismissing');
       sessionStorage.setItem('lyla-visited', 'true');
 
@@ -286,24 +287,21 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         lockScreen.style.display = 'none';
       }, 450);
 
-      // Wait for window-manager to be ready, then open about
-      const tryOpen = () => {
-        if (typeof window.openWindow === 'function') {
-          window.openWindow('about');
-        } else {
-          setTimeout(tryOpen, 100);
-        }
-      };
-      setTimeout(tryOpen, 1500);
-
-      if (lockButton) lockButton.removeEventListener('click', dismiss);
+      lockButton.removeEventListener('click', dismiss);
       document.removeEventListener('keydown', dismissKey);
     };
 
-    const dismissKey = (e: Event) => dismiss(e);
+    const dismissKey = (e: KeyboardEvent) => dismiss(e);
 
-    if (lockButton) lockButton.addEventListener('click', dismiss);
+    lockButton.addEventListener('click', dismiss);
     document.addEventListener('keydown', dismissKey);
+  }
+
+  // Expose so logoff can re-attach listeners
+  (window as any).__setupLockListeners = setupLockListeners;
+
+  if (!document.documentElement.classList.contains('skip-lock')) {
+    setupLockListeners();
   }
 
   // Mini player
