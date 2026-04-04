@@ -3,59 +3,78 @@ import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
-// Pixel art icons — 8x8 grids
-// _=transparent, O=orange(#FF6B00), G=green(#39FF14), W=white(#fff), B=blue(#4A9EFF), D=dark(#222)
-const pixelIcons: Record<string, string[][]> = {
-  reroute: [
-    ['_','_','_','O','O','_','_','_'],
-    ['_','_','O','_','_','O','_','_'],
-    ['_','O','_','_','_','_','O','_'],
-    ['O','_','_','G','G','_','_','O'],
-    ['O','_','_','G','G','_','_','O'],
-    ['_','O','_','G','_','_','O','_'],
-    ['_','_','O','G','_','O','_','_'],
-    ['_','_','_','G','O','_','_','_'],
-  ],
-  snapp: [
-    ['_','O','O','O','O','O','O','_'],
-    ['O','D','D','D','D','D','D','O'],
-    ['O','D','W','W','W','W','D','O'],
-    ['O','D','W','D','D','W','D','O'],
-    ['O','D','W','D','D','W','D','O'],
-    ['O','D','W','W','W','W','D','O'],
-    ['O','D','D','D','D','D','D','O'],
-    ['_','O','O','O','O','O','O','_'],
-  ],
-  planmytrip: [
-    ['_','_','B','B','B','B','_','_'],
-    ['_','B','B','B','B','B','B','_'],
-    ['B','B','O','B','B','O','B','B'],
-    ['B','B','B','B','B','B','B','B'],
-    ['B','O','B','B','B','B','O','B'],
-    ['B','B','O','O','O','O','B','B'],
-    ['_','B','B','B','B','B','B','_'],
-    ['_','_','B','B','B','B','_','_'],
-  ],
+// Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
+// G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
+const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
+  // Map pin / location marker — 8×10
+  reroute: {
+    cols: 8, rows: 10, grid: [
+      ['_','_','_','G','G','_','_','_'],
+      ['_','_','G','G','G','G','_','_'],
+      ['_','G','G','G','G','G','G','_'],
+      ['_','G','G','_','_','G','G','_'],
+      ['_','G','G','_','_','G','G','_'],
+      ['_','G','G','G','G','G','G','_'],
+      ['_','_','G','G','G','G','_','_'],
+      ['_','_','_','G','G','_','_','_'],
+      ['_','_','_','G','G','_','_','_'],
+      ['_','_','_','_','_','_','_','_'],
+    ]
+  },
+  // Viewfinder / crosshair — 8×8
+  snapp: {
+    cols: 8, rows: 8, grid: [
+      ['O','O','_','_','_','_','O','O'],
+      ['O','_','_','_','_','_','_','O'],
+      ['_','_','_','O','O','_','_','_'],
+      ['_','_','O','O','O','O','_','_'],
+      ['_','_','O','O','O','O','_','_'],
+      ['_','_','_','O','O','_','_','_'],
+      ['O','_','_','_','_','_','_','O'],
+      ['O','O','_','_','_','_','O','O'],
+    ]
+  },
+  // Calendar — 8×10
+  planmytrip: {
+    cols: 8, rows: 10, grid: [
+      ['_','_','B','_','_','B','_','_'],
+      ['_','_','B','_','_','B','_','_'],
+      ['B','B','B','B','B','B','B','B'],
+      ['B','B','B','B','B','B','B','B'],
+      ['B','_','_','_','_','_','_','B'],
+      ['B','_','B','_','B','_','B','B'],
+      ['B','_','_','_','_','_','_','B'],
+      ['B','_','B','_','B','_','B','B'],
+      ['B','_','_','_','_','_','_','B'],
+      ['B','B','B','B','B','B','B','B'],
+    ]
+  },
 };
 
 const iconColors: Record<string, string> = {
   '_': 'transparent',
   'O': '#FF6B00',
-  'G': '#39FF14',
-  'W': '#fff',
-  'D': '#222',
-  'B': '#4A9EFF',
+  'G': '#00CC55',
+  'B': '#0038FF',
+};
+
+// Mockup preview config per project
+const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }> = {
+  reroute: { label: 'GO MODE', type: 'phone' },
+  snapp: { label: 'DAILY PROMPT', type: 'phone' },
+  planmytrip: { label: 'ITINERARY VIEW', type: 'browser' },
 };
 ---
 
 <div class="pw-grid">
   {projects.map(p => {
     const icon = pixelIcons[p.data.slug];
+    const mockup = mockupConfig[p.data.slug];
     return (
       <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
         {icon && (
-          <div class="pw-pixel-icon">
-            {icon.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+          <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+            {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
           </div>
         )}
         <span class="pw-num">0{p.data.order}</span>
@@ -67,6 +86,27 @@ const iconColors: Record<string, string> = {
         {p.data.type && <div class="pw-location">{p.data.type}</div>}
         <div class="pw-meta">{p.data.status}</div>
         <span class="pw-arrow">VIEW PROJECT →</span>
+
+        {mockup && (
+          <div class="pw-preview">
+            {mockup.type === 'phone' ? (
+              <div class="pw-phone">
+                <div class="pw-phone-notch"></div>
+                <div class="pw-phone-screen"><span>{mockup.label}</span></div>
+              </div>
+            ) : (
+              <div class="pw-browser">
+                <div class="pw-bbar">
+                  <span class="pw-bdot" style="background:#FF6B00"></span>
+                  <span class="pw-bdot" style="background:#39FF14"></span>
+                  <span class="pw-bdot" style="background:#666"></span>
+                  <span class="pw-burl">{p.data.slug}.app</span>
+                </div>
+                <div class="pw-bscreen"><span>{mockup.label}</span></div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     );
   })}
@@ -93,11 +133,7 @@ const iconColors: Record<string, string> = {
 
   /* Pixel art icon */
   .pw-pixel-icon {
-    width: 40px;
-    height: 40px;
     display: grid;
-    grid-template-columns: repeat(8, 5px);
-    grid-template-rows: repeat(8, 5px);
     image-rendering: pixelated;
     margin-bottom: 1rem;
   }
@@ -110,10 +146,95 @@ const iconColors: Record<string, string> = {
   .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.4rem; line-height: 1; }
   .pw-hook { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.8rem; }
   .pw-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.4rem; }
-  .pw-tags span { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border: 1px solid var(--border); color: var(--text-dim); }
+  .pw-tags span { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; background: #FF6B00; color: #fff; border: none; }
   .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
   .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
-  .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; margin-top: auto; }
+  .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; }
+
+  /* Mockup preview at bottom of card */
+  .pw-preview {
+    margin-top: auto;
+    padding-top: 1rem;
+    background: #111;
+    border: 1px solid #333;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Phone frame */
+  .pw-phone {
+    width: 70px;
+    background: #1E1E1E;
+    border-radius: 10px;
+    border: 2px solid #444;
+    overflow: hidden;
+  }
+  .pw-phone-notch {
+    width: 28px;
+    height: 2px;
+    background: #444;
+    border-radius: 0 0 3px 3px;
+    margin: 0 auto;
+  }
+  .pw-phone-screen {
+    aspect-ratio: 9 / 16;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1E1E1E;
+  }
+  .pw-phone-screen span {
+    font-family: var(--font-mono);
+    font-size: 0.45rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  /* Browser frame */
+  .pw-browser {
+    width: 100%;
+    max-width: 200px;
+    background: #1E1E1E;
+    border: 1px solid #444;
+    overflow: hidden;
+  }
+  .pw-bbar {
+    padding: 3px 5px;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    border-bottom: 1px solid #444;
+  }
+  .pw-bdot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .pw-burl {
+    font-family: var(--font-mono);
+    font-size: 0.45rem;
+    color: #666;
+    flex: 1;
+    text-align: center;
+  }
+  .pw-bscreen {
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1E1E1E;
+  }
+  .pw-bscreen span {
+    font-family: var(--font-mono);
+    font-size: 0.5rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
 
   @media (max-width: 768px) {
     .pw-grid {
