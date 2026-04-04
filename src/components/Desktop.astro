@@ -42,7 +42,7 @@ import DesktopIcon from './DesktopIcon.astro';
   <DesktopIcon id="resume" label="resume.pdf" icon="resume" top="8.5%" left="81%" />
 
   <!-- Main nav — matched from user screenshot -->
-  <DesktopIcon id="about" label="about.exe" icon="terminal" top="3%" left="7%" />
+  <DesktopIcon id="about" label="about.exe" icon="terminal" top="10%" left="16%" />
   <DesktopIcon id="projects" label="projects/" icon="folder" top="28%" left="32%" />
   <DesktopIcon id="skills" label="capabilities.dll" icon="gear" top="17%" left="63%" />
   <DesktopIcon id="contact" label="contact.txt" icon="coffee" top="78%" left="90%" />
@@ -53,6 +53,9 @@ import DesktopIcon from './DesktopIcon.astro';
   <DesktopIcon id="todo" label="todo.md" icon="checklist" top="32%" left="90%" />
   <DesktopIcon id="selfie" label="selfie.jpg" icon="image" top="62%" left="30%" />
   <DesktopIcon id="readme" label="readme.txt" icon="notepad" top="58%" left="72%" />
+
+  <!-- Duck click counter -->
+  <div class="duck-counter" id="duckCounter">QUACK COUNT: <span id="duckCountNum">000</span></div>
 
   <!-- Desktop pet duck — walks behind icons (z-index:3, icons are z-index:5) -->
 <div class="duck walking" id="deskDuck">
@@ -333,6 +336,38 @@ import DesktopIcon from './DesktopIcon.astro';
     50% { transform: scaleY(1.1) scaleX(0.9); }
     100% { transform: scaleY(1) scaleX(1); }
   }
+
+  @keyframes duck-sneeze {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(15px) scaleX(1.2); }
+  }
+  @keyframes duck-wave {
+    0%, 100% { transform: rotate(0); }
+    50% { transform: rotate(-10deg); }
+  }
+  @keyframes duck-dizzy {
+    to { transform: rotate(1080deg); }
+  }
+  @keyframes duck-angry {
+    0% { transform: translate(-1px, -1px); }
+    100% { transform: translate(1px, 1px); }
+  }
+
+  /* Duck click counter */
+  .duck-counter {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 7;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #FF6B00;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+  }
+  .duck-counter.visible { opacity: 1; }
 
   /* Name tag — small, bottom-left */
   .desktop-nametag {

@@ -159,8 +159,40 @@ if (duck) {
     pickNewTarget();
   }
 
+  // --- CLICK COUNTER ---
+  let duckClicks = 0;
+  const counter = document.getElementById('duckCounter');
+  const countNum = document.getElementById('duckCountNum');
+
+  function updateCounter() {
+    duckClicks++;
+    if (countNum) {
+      countNum.textContent = String(duckClicks).padStart(3, '0');
+      countNum.style.transform = 'scale(1.3)';
+      setTimeout(() => countNum.style.transform = '', 100);
+    }
+    if (counter) counter.classList.add('visible');
+    // Milestones
+    if (duckClicks === 10) showBubble('...really?', '#999');
+    if (duckClicks === 25) showBubble("I'm getting dizzy", '#999');
+    if (duckClicks === 50) showBubble("you know I'm not real right?", '#999');
+    if (duckClicks === 100) {
+      showBubble('🏆 ACHIEVEMENT UNLOCKED', '#FFE600');
+      duckState = 'clicked';
+      duck.classList.remove('walking', 'idle', 'frame-2');
+      let flips = 0;
+      const danceInterval = setInterval(() => {
+        duck.style.transform = flips % 2 === 0 ? 'scaleX(-1)' : 'scaleX(1)';
+        flips++;
+        if (flips > 20) { clearInterval(danceInterval); resumeWalk(); }
+      }, 100);
+    }
+  }
+
+
   // --- CLICK REACTIONS ---
-  const reactions = ['jump', 'spin', 'shake', 'dead', 'peck', 'heart', 'zap', 'dance'];
+  const reactions = ['jump', 'spin', 'shake', 'dead', 'peck', 'heart', 'zap', 'dance',
+    'nap', 'sneeze', 'wave', 'moonwalk', 'dizzy', 'angry', 'sing', 'shrink', 'duplicate', 'rainbow'];
 
   function showBubble(text, color) {
     color = color || '#FF6B00';
@@ -190,6 +222,7 @@ if (duck) {
   function handleClick() {
     if (duckState === 'grabbed') return;
 
+    updateCounter();
     const reaction = reactions[Math.floor(Math.random() * reactions.length)];
     duckState = 'clicked';
     duck.classList.remove('walking', 'idle', 'frame-2');
@@ -260,6 +293,104 @@ if (duck) {
           flips++;
           if (flips > 6) { clearInterval(danceInterval); resumeWalk(); }
         }, 150);
+        break;
+      }
+
+      case 'nap':
+        duck.style.transition = 'transform 0.5s steps(3)';
+        duck.style.transform += ' rotate(30deg)';
+        showBubble('zzZ', '#999');
+        setTimeout(() => {
+          duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+          duck.style.transition = '';
+          resumeWalk();
+        }, 2500);
+        break;
+
+      case 'sneeze':
+        frames.forEach(f => f.style.animation = 'duck-sneeze 0.3s steps(3)');
+        showBubble('achoo!', '#FF6B00');
+        setTimeout(resumeWalk, 500);
+        break;
+
+      case 'wave':
+        frames.forEach(f => f.style.animation = 'duck-wave 0.15s steps(2) 5');
+        showBubble('hi!', '#00CC55');
+        setTimeout(resumeWalk, 800);
+        break;
+
+      case 'moonwalk': {
+        duck.style.transition = 'left 0.8s linear';
+        const moonDist = duckDir * 4;
+        duckX -= moonDist;
+        duckX = Math.max(2, Math.min(95, duckX));
+        duck.style.left = duckX + '%';
+        showBubble('♪', '#9B59B6');
+        setTimeout(() => { duck.style.transition = ''; resumeWalk(); }, 1000);
+        break;
+      }
+
+      case 'dizzy':
+        frames.forEach(f => f.style.animation = 'duck-dizzy 0.6s steps(8)');
+        showBubble('*_*', '#FFE600');
+        setTimeout(resumeWalk, 800);
+        break;
+
+      case 'angry':
+        frames.forEach(f => f.style.animation = 'duck-angry 0.05s steps(2) 10');
+        showBubble('!!!', '#FF2020');
+        setTimeout(resumeWalk, 600);
+        break;
+
+      case 'sing':
+        ['♪', '♫', '♬'].forEach((note, i) => {
+          setTimeout(() => showBubble(note, '#9B59B6'), i * 300);
+        });
+        setTimeout(resumeWalk, 1200);
+        break;
+
+      case 'shrink':
+        duck.style.transition = 'transform 0.15s steps(2)';
+        duck.style.transform = 'scale(0.3)';
+        setTimeout(() => {
+          duck.style.transform = 'scale(1.2)';
+          setTimeout(() => {
+            duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+            duck.style.transition = '';
+            resumeWalk();
+          }, 150);
+        }, 600);
+        break;
+
+      case 'duplicate': {
+        const ghost = duck.cloneNode(true);
+        ghost.style.opacity = '0.4';
+        ghost.style.left = (parseFloat(duck.style.left) + 3) + '%';
+        ghost.style.pointerEvents = 'none';
+        ghost.id = '';
+        duck.parentElement.appendChild(ghost);
+        showBubble('??', '#0038FF');
+        setTimeout(() => {
+          ghost.style.transition = 'opacity 0.3s';
+          ghost.style.opacity = '0';
+          setTimeout(() => ghost.remove(), 400);
+          resumeWalk();
+        }, 800);
+        break;
+      }
+
+      case 'rainbow': {
+        let ci = 0;
+        const rainbowInterval = setInterval(() => {
+          duck.style.filter = `hue-rotate(${ci * 51}deg)`;
+          ci++;
+          if (ci >= 14) {
+            clearInterval(rainbowInterval);
+            duck.style.filter = '';
+            resumeWalk();
+          }
+        }, 80);
+        showBubble('✨', '#FFE600');
         break;
       }
     }
