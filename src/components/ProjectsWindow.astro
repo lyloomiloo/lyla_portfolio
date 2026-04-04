@@ -60,7 +60,7 @@ const iconColors: Record<string, string> = {
 const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; image?: string }> = {
   reroute: { label: 'GO MODE', type: 'phone', image: '/images/projects/reroute/preview.jpg' },
   snapp: { label: 'DAILY PROMPT', type: 'phone', image: '/images/projects/snapp/daily_prompt.jpg' },
-  planmytrip: { label: 'ITINERARY VIEW', type: 'browser' },
+  planmytrip: { label: 'ITINERARY VIEW', type: 'browser', image: '/images/projects/planmytrip/preview.jpg' },
 };
 ---
 
@@ -77,7 +77,14 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
         )}
         <span class="pw-num">0{p.data.order}</span>
         <h3 class="pw-title">{p.data.displayTitle}</h3>
-        <p class="pw-hook">{p.data.hook}</p>
+        {p.data.hook.includes('|') ? (
+          <div class="pw-hook">
+            <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+            <p>{p.data.hook.split('|')[1]}</p>
+          </div>
+        ) : (
+          <p class="pw-hook">{p.data.hook}</p>
+        )}
         <div class="pw-tags">
           {p.data.tags.map((t: string) => <span>{t}</span>)}
         </div>
@@ -109,7 +116,13 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                     <span class="pw-bdot" style="background:#666"></span>
                     <span class="pw-burl">{p.data.slug}.app</span>
                   </div>
-                  <div class="pw-bscreen"><span>{mockup.label}</span></div>
+                  <div class="pw-bscreen">
+                    {mockup.image ? (
+                      <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                    ) : (
+                      <span>{mockup.label}</span>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -132,7 +145,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   }
   .pw-card {
     background: var(--bg-card);
-    padding: 1.5rem 1.5rem 0;
+    padding: 1.5rem 2.5rem 0;
     transition: background 0.15s;
     cursor: url('/cursor-project.svg') 0 0, crosshair;
     display: flex;
@@ -152,13 +165,15 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     height: 5px;
   }
 
-  .pw-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 0.3rem; }
-  .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.4rem; line-height: 1; }
-  .pw-hook { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--text-mid); line-height: 1.4; margin-bottom: 0.5rem; }
-  .pw-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.4rem; }
+  .pw-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 0.5rem; }
+  .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.6rem; line-height: 1; }
+  .pw-hook { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.8rem; }
+  .pw-hook-tagline { font-size: 0.95rem; color: var(--text); margin-bottom: 0.3rem; }
+  .pw-hook p { margin: 0; }
+  .pw-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 0.7rem; }
   .pw-tags span { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; background: #FF6B00; color: #fff; border: none; }
-  .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.3rem; }
-  .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.4rem; }
+  .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.5rem; }
   .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; }
 
   /* Mockup preview at bottom of card */
@@ -167,8 +182,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     overflow: hidden;
     flex: 1;
     display: flex;
-    align-items: flex-start;
-    padding-top: 2rem;
+    align-items: center;
+    padding-top: 1rem;
   }
 
   /* Slide-up wrapper — handles entrance animation */
@@ -180,6 +195,10 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     animation-delay: 0.3s;
     opacity: 0;
     perspective: 600px;
+  }
+  .pw-phone-wrap:has(.pw-phone) {
+    transform: translateY(60px);
+    animation-name: pw-slide-up-phone;
   }
 
   /* Phone frame — handles hover tilt */
@@ -199,6 +218,10 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   @keyframes pw-slide-up {
     0% { opacity: 0; transform: translateY(100%); }
     100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pw-slide-up-phone {
+    0% { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 1; transform: translateY(60px); }
   }
   .pw-phone-notch {
     width: 32px;
@@ -229,11 +252,15 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
 
   /* Browser frame */
   .pw-browser {
-    width: 100%;
-    max-width: 260px;
+    width: 90%;
     background: #1E1E1E;
-    border: 1px solid #444;
+    border: 2px solid #444;
+    border-radius: 6px;
     overflow: hidden;
+    transition: transform 0.05s steps(1);
+  }
+  .pw-card:hover .pw-browser {
+    transform: rotate(2deg);
   }
   .pw-bbar {
     padding: 3px 5px;
@@ -268,6 +295,12 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     color: #555;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+  }
+  .pw-browser-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   @media (max-width: 768px) {

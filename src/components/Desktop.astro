@@ -35,7 +35,6 @@ import DesktopIcon from './DesktopIcon.astro';
   <!-- Name tag -->
   <div class="desktop-nametag">
     <span class="nametag-name">LYLA HUANG</span>
-    <span class="nametag-sub">Strategist &rarr; Builder</span>
     <span class="nametag-desc">I spent a decade selling stuff for brands. <br> Now, I create products for people.</span>
   </div>
 
@@ -339,7 +338,7 @@ import DesktopIcon from './DesktopIcon.astro';
   /* Name tag — small, bottom-left */
   .desktop-nametag {
     position: absolute;
-    bottom: 50px;
+    bottom: 80px;
     left: 16px;
     z-index: 3;
   }
@@ -352,15 +351,6 @@ import DesktopIcon from './DesktopIcon.astro';
     text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
     display: block;
     letter-spacing: 0.05em;
-  }
-
-  .nametag-sub {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: rgba(255,255,255,0.7);
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
   }
 
   .nametag-desc {
@@ -382,7 +372,7 @@ import DesktopIcon from './DesktopIcon.astro';
   }
 
   @media (max-width: 768px) {
-    .desktop-nametag { bottom: 44px; left: 10px; }
+    .desktop-nametag { bottom: 72px; left: 10px; }
     .nametag-name { font-size: 0.8rem; }
     .pixel-sun { width: 24px; height: 24px; }
     .cloud { transform: scale(0.7); }

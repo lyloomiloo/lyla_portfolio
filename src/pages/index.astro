@@ -114,7 +114,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="4vh" left="10vw">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
-      hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking as an experience with routing for safety, discovery, and human-ness."
+      hook="What if navigation optimised for how you feel, not just where you go? This web app reimagines walking as an experience with routing for safety, discovery, and human-ness."
       tags="Agentic Workflows · UX Research · Product Design · Data"
       location="Barcelona" status="Master's Thesis · Prototype · 2025"
       isMobile={true}
@@ -143,7 +143,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="7vh" left="14vw">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="What if we turned a map into a daily quest for beauty? A word a day. A shared visual diary for all."
+      hook="A word a day. Infinite discovery. This web app helps humans look up from their screens to discover the beauty around them through daily quests."
       tags="Product Design · Full-Stack · UX · Gamification"
       location="Barcelona" status="In use · Feb 2026"
       isMobile={true}
@@ -172,10 +172,11 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="10vh" left="18vw">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="A planning tool that thinks like an editor, not a spreadsheet. Live weather, image search, and inline editing — all in one flow."
+      hook="A planning tool that thinks like an editor, not a spreadsheet. This online editor turns yearly family trip planning into interactive editorial-style content."
       tags="Frontend · APIs · Editorial Design · Interactivity"
       location="Personal Project" status="In use · Mar 2025"
       isMobile={false}
+      video="/images/projects/planmytrip/main.mov"
       stats={[{ number: 'XX', label: 'XX' }, { number: 'XXX', label: 'XXX' }, { number: 'XXX', label: 'XXX' }]}
       problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
       approaches={[
@@ -212,7 +213,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
-      hook="What if navigation optimised for how you feel, not just where you go?"
+      hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking with routing for safety, discovery, and human-ness."
       tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2025"
       isMobile={true}
       stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '89%', label: 'vary routes' }]}
@@ -225,7 +226,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="One word. One photo. One day."
+      hook="A word a day. Infinite discovery."
       tags="Product Design · Full-Stack · UX" location="Barcelona" status="In use · 2026"
       isMobile={true}
       stats={[{ number: '1', label: 'word/day' }, { number: '1', label: 'photo' }, { number: '∞', label: 'perspectives' }]}
@@ -238,7 +239,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="A planning tool that thinks like an editor, not a spreadsheet."
+      hook="A planning tool that thinks like an editor, not a spreadsheet. Editorial-style trip planning."
       tags="Frontend · APIs · Editorial Design" location="Personal Project" status="In use · 2025"
       isMobile={false}
       stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
@@ -249,11 +250,26 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </MobilePanel>
 
+  <!-- Scrolling marquee bar -->
+  <div class="marquee-bar">
+    <div class="marquee-inner">
+      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
+      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
+      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
+      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
+    </div>
+  </div>
+
   <Taskbar />
 </BaseLayout>
 
 <script>
   document.body.classList.add('os-desktop');
+
+  // Speed up project detail videos (2x playback)
+  document.querySelectorAll('.proj-detail video, .proj-mockup-viewer video').forEach(v => {
+    (v as HTMLVideoElement).playbackRate = 2;
+  });
 
   // Lock screen dismiss
   const lockScreen = document.getElementById('lockScreen');
@@ -367,6 +383,37 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 </script>
 
 <style is:global>
+  /* Scrolling orange marquee bar */
+  .marquee-bar {
+    position: fixed;
+    bottom: 32px;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+    overflow: hidden;
+    background: #FF6B00;
+    padding: 6px 0;
+  }
+  .marquee-inner {
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+    animation: marqueeScroll 18s linear infinite;
+  }
+  .marquee-inner span {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #1E1E1E;
+    padding-right: 3rem;
+  }
+  @keyframes marqueeScroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-25%); }
+  }
+
   /* Mini player — flat, retro, pixel art */
   .mp {
     padding: 1rem 1.2rem;
