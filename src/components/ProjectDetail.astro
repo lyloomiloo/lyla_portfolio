@@ -13,13 +13,15 @@ interface Props {
   approaches: { label: string; desc: string }[];
   features: { title: string; desc: string }[];
   mockups: { label: string; caption: string; video?: string; image?: string }[];
+  gallery?: { src: string; name: string; type: 'video' | 'image' }[];
+  link?: string;
   video?: string;
   appType?: string;
   context?: string;
   year?: string;
 }
 
-const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, mockups, video, appType, context, year } = Astro.props;
+const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, video, appType, context, year } = Astro.props;
 
 const allProjects = [
   { slug: 'reroute', title: 'project_01.exe — (RE)ROUTE', order: 1 },
@@ -37,30 +39,19 @@ const allProjects = [
       >{p.title}</button>
     ))}
   </div>
-  <div class="proj-tabs">
-    <button class="proj-tab active" data-proj-section="overview">General</button>
-    <button class="proj-tab" data-proj-section="approach">Details</button>
-  </div>
-
   <div class="proj-content">
-    <!-- GENERAL (Properties dialog) -->
-    <div class="proj-section" data-proj-section="overview" style="display:block;">
       <div class="props-main">
         <div class="props-fields">
           <div class="props-file-header">
             <div class="props-file-name">{title}</div>
+            {appType && <div class="props-file-kind">{appType}</div>}
           </div>
 
           <hr class="props-divider" />
 
-          {appType && (
-            <div class="props-field">
-              <span class="props-key">Type:</span>
-              <span class="props-value">{appType}</span>
-            </div>
-          )}
+          <div class="props-section-label">General</div>
           <div class="props-field">
-            <span class="props-key">Stack:</span>
+            <span class="props-key">Info:</span>
             <span class="props-value">
               {tags.split('·').map(t => <span class="props-tag">{t.trim()}</span>)}
             </span>
@@ -88,39 +79,8 @@ const allProjects = [
 
           <hr class="props-divider" />
 
-          <div class="props-field props-field--desc">
-            <span class="props-key">Description:</span>
-            <span class="props-value">{hook}</span>
-          </div>
-        </div>
-
-        <div class="props-preview">
-          <div class="props-mockup">
-            {isMobile ? (
-              <div class="proj-phone">
-                <div class="proj-phone-notch"></div>
-                <div class="proj-phone-screen">
-                  {video ? (
-                    <video src={video} autoplay loop muted playsinline class="proj-phone-video"></video>
-                  ) : (
-                    <div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div class="proj-browser">
-                <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                <div class="proj-bview">
-                  {video ? (
-                    <video src={video} autoplay loop muted playsinline class="proj-browser-video"></video>
-                  ) : (
-                    <div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-          <div class="props-stats">
+          <div class="props-section-label">Stats</div>
+          <div class="props-stats-row">
             {stats.map(s => (
               <div class="props-stat">
                 <span class="props-stat-num">{s.number}</span>
@@ -128,61 +88,86 @@ const allProjects = [
               </div>
             ))}
           </div>
+
+          <hr class="props-divider" />
+
+          <div class="props-section-label">Description</div>
+          <p class="props-desc">{hook}</p>
+          {link && (
+            <a href={link} target="_blank" rel="noopener noreferrer" class="props-link-btn">
+              TRY IT ↗
+            </a>
+          )}
+        </div>
+
+        <div class="props-gallery-panel" data-gallery-panel data-is-mobile={isMobile ? 'true' : 'false'} data-slug={slug}>
+          <div class="gallery-preview" data-gallery-preview data-gallery-src={gallery[0]?.src} data-gallery-type={gallery[0]?.type} data-gallery-name={gallery[0]?.name}>
+            {gallery.length > 0 && (
+              isMobile ? (
+                <div class="proj-phone gallery-phone">
+                  <div class="proj-phone-notch"></div>
+                  <div class="proj-phone-screen">
+                    {gallery[0].type === 'video' ? (
+                      <video src={gallery[0].src} autoplay loop muted playsinline class="proj-phone-video"></video>
+                    ) : (
+                      <img src={gallery[0].src} alt={gallery[0].name} class="proj-phone-video" />
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div class="proj-browser gallery-browser">
+                  <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
+                  <div class="proj-bview">
+                    {gallery[0].type === 'video' ? (
+                      <video src={gallery[0].src} autoplay loop muted playsinline class="proj-browser-video"></video>
+                    ) : (
+                      <img src={gallery[0].src} alt={gallery[0].name} class="proj-browser-video" />
+                    )}
+                  </div>
+                </div>
+              )
+            )}
+            <span class="gallery-label">{gallery[0]?.name}</span>
+          </div>
+          <div class="gallery-filmstrip">
+            {gallery.slice(1, 4).map(item => (
+              <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
+                {item.type === 'video' ? (
+                  <video src={item.src} muted playsinline preload="metadata" class="gallery-thumb-media"></video>
+                ) : (
+                  <img src={item.src} alt={item.name} loading="lazy" class="gallery-thumb-media" />
+                )}
+                <span class="gallery-label">{item.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div class="props-col3">
+          <div class="props-section-label">Problem</div>
+          <p class="props-desc">{problem}</p>
+
+          <hr class="props-divider" />
+
+          <div class="props-section-label">Approach</div>
+          {approaches.map(a => (
+            <div class="props-approach-item">
+              <span class="props-approach-label">{a.label}</span>
+              <p>{a.desc}</p>
+            </div>
+          ))}
+
+          <hr class="props-divider" />
+
+          <div class="props-section-label">Differentiators</div>
+          {features.map(f => (
+            <div class="props-feature-item">
+              <span class="props-feature-title">{f.title}</span>
+              <p>{f.desc}</p>
+            </div>
+          ))}
         </div>
       </div>
-    </div>
-
-    <!-- DETAILS -->
-    <div class="proj-section" data-proj-section="approach" style="display:none;">
-      <h3>PROBLEM</h3>
-      <p>{problem}</p>
-
-      <h3>APPROACH</h3>
-      <div class="approach-cards">
-        {approaches.map(a => (
-          <div class="approach-card">
-            <span class="approach-label">{a.label}</span>
-            <p>{a.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div class="approach-mockups">
-        {mockups.map(m => (
-          <div class="approach-mockup-item">
-            {isMobile ? (
-              <div class="proj-phone proj-phone--sm">
-                <div class="proj-phone-notch"></div>
-                <div class="proj-phone-screen">
-                  {m.video ? (
-                    <video src={m.video} autoplay loop muted playsinline class="proj-phone-video"></video>
-                  ) : m.image ? (
-                    <img src={m.image} alt={m.label} class="proj-phone-video" />
-                  ) : (
-                    <div class="proj-ph"><span>{m.label}</span></div>
-                  )}
-                </div>
-              </div>
-            ) : (
-              <div class="proj-browser proj-browser--sm">
-                <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                <div class="proj-bview">
-                  {m.video ? (
-                    <video src={m.video} autoplay loop muted playsinline class="proj-browser-video"></video>
-                  ) : m.image ? (
-                    <img src={m.image} alt={m.label} class="proj-browser-video" />
-                  ) : (
-                    <div class="proj-ph"><span>{m.label}</span></div>
-                  )}
-                </div>
-              </div>
-            )}
-            <span class="mockup-caption">{m.caption}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -190,14 +175,9 @@ const allProjects = [
   .proj-detail { display: flex; flex-direction: column; height: 100%; margin: -1.5rem; }
 
   .proj-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
-  .proj-nav-tab { font-family: var(--font-mono); font-size: 0.72rem; padding: 8px 16px; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; border-right: 1px solid var(--border); }
+  .proj-nav-tab { font-family: var(--font-mono); font-size: 0.72rem; padding: 10px 16px; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; border-right: 1px solid var(--border); }
   .proj-nav-tab:hover { color: var(--text); background: var(--bg-card); }
   .proj-nav-tab.active { color: var(--text); background: var(--bg-card); border-bottom-color: var(--orange); }
-
-  .proj-tabs { display: flex; border-bottom: 1px solid var(--border); background: var(--bg-card); flex-shrink: 0; }
-  .proj-tab { font-family: var(--font-mono); font-size: 0.7rem; padding: 8px 16px; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; }
-  .proj-tab:hover { color: var(--text); }
-  .proj-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
 
   .proj-content { flex: 1; overflow-y: auto; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
   .proj-content::-webkit-scrollbar { width: 12px; }
@@ -207,95 +187,195 @@ const allProjects = [
   .proj-content::-webkit-scrollbar-button { height: 12px; background: var(--bg); border-left: 1px solid var(--border); }
   .proj-nav, .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair; }
 
-  /* ========== GENERAL TAB — Properties dialog ========== */
+  /* ========== GENERAL TAB — 3 columns: fields | mockup | details ========== */
   .props-main {
     display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 2rem;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
     height: 100%;
-    padding: 1.5rem 2rem;
   }
 
-  .props-fields { min-width: 0; }
+  /* Center panel — floating mockup + filmstrip */
+  .props-gallery-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    gap: 1rem;
+    overflow: hidden;
+  }
+
+  .gallery-preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+  .gallery-phone { width: 200px; }
+  .gallery-browser { max-width: 300px; }
+
+  .gallery-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .gallery-filmstrip {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    justify-content: center;
+  }
+
+  .gallery-thumb {
+    width: 60px;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: 0;
+    overflow: hidden;
+    cursor: pointer;
+    background: var(--bg);
+    padding: 0;
+    transition: border-color 0.15s, opacity 0.15s;
+    opacity: 0.7;
+    display: flex;
+    flex-direction: column;
+  }
+  .gallery-thumb:hover { border-color: var(--orange); opacity: 1; }
+
+  .gallery-thumb-media {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .gallery-thumb .gallery-label {
+    padding: 2px 4px;
+    font-size: 0.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+
+  /* Right panel — fields */
+  .props-fields {
+    min-width: 0;
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+  }
 
   .props-file-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
     margin-bottom: 0.3rem;
   }
   .props-file-name {
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 700;
     color: var(--text);
     letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .props-file-kind {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 0.2rem;
   }
 
   .props-divider {
     border: none;
     border-top: 1px solid var(--border);
-    margin: 0.8rem 0;
+    margin: 0.7rem 0;
   }
 
+  /* Collapsible section labels like macOS disclosure triangles */
+  .props-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .props-section-label::before {
+    content: '▸ ';
+    color: var(--text-dim);
+  }
+
+  /* Field rows */
   .props-field {
     display: grid;
-    grid-template-columns: 90px 1fr;
-    gap: 8px;
-    padding: 3px 0;
+    grid-template-columns: 100px 1fr;
+    gap: 10px;
+    padding: 4px 0;
     align-items: baseline;
   }
   .props-key {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     color: var(--text-dim);
     text-align: right;
   }
   .props-value {
     font-family: var(--font-body);
-    font-size: 0.85rem;
+    font-size: 1rem;
     color: var(--text);
-  }
-  .props-field--desc {
-    align-items: start;
-  }
-  .props-field--desc .props-value {
-    line-height: 1.6;
-    color: var(--text-mid);
   }
 
   .props-tag {
     background: #FF6B00;
     color: #FFF;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
-    padding: 2px 8px;
+    font-size: 0.75rem;
+    padding: 2px 6px;
     display: inline-block;
     margin: 1px 2px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    border: none;
   }
 
-  /* Right side — mockup + stats */
-  .props-preview {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
+  .props-link-btn {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    margin-top: 0.8rem;
+    background: var(--orange);
+    color: #fff;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s;
   }
-  .props-mockup { display: flex; justify-content: center; }
-  .props-mockup .proj-phone { width: 180px; }
-  .props-mockup .proj-browser { max-width: 260px; }
+  .props-link-btn:hover { background: #e55e00; }
 
-  .props-stats {
+  /* Stats row */
+  .props-stats-row {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
+    padding: 0.3rem 0;
   }
   .props-stat { text-align: center; }
   .props-stat-num {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     display: block;
     line-height: 1;
@@ -303,10 +383,60 @@ const allProjects = [
   }
   .props-stat-label {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     color: var(--text-dim);
     margin-top: 0.3rem;
     display: block;
+  }
+
+  /* Column 3 — description, problem, approach */
+  .props-col3 {
+    padding: 1.5rem 2rem;
+    overflow-y: auto;
+  }
+  .props-desc {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-mid);
+    margin: 0;
+  }
+  .props-approach-item {
+    margin-bottom: 0.6rem;
+  }
+  .props-approach-label {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--orange);
+    display: block;
+    margin-bottom: 0.2rem;
+  }
+  .props-approach-item p {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .props-feature-item {
+    margin-bottom: 0.5rem;
+  }
+  .props-feature-title {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .props-feature-item p {
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    line-height: 1.5;
+    margin: 0;
   }
 
   /* ========== Shared mockup frames ========== */
@@ -327,39 +457,82 @@ const allProjects = [
   .proj-phone-video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proj-browser-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* ========== DETAILS TAB ========== */
-  .approach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
-  .approach-card { border: 1px solid var(--border); padding: 1rem; background: var(--bg); }
-  .approach-label { font-family: var(--font-display); font-size: 1rem; font-weight: 700; display: block; margin-bottom: 0.4rem; color: var(--orange); }
-  .approach-card p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.5; margin: 0; }
-
-  .approach-mockups {
-    display: flex;
-    gap: 1.5rem;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    padding: 1rem 0;
-  }
-  .approach-mockup-item { text-align: center; }
-  .mockup-caption { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); margin-top: 0.8rem; display: block; }
-
-  .proj-section h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text); margin-bottom: 0.8rem; }
-  .proj-section p { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.6; margin-bottom: 1rem; }
-
-  /* Details tab needs its own padding since proj-content no longer has it */
-  .proj-section[data-proj-section="approach"] { padding: 1.5rem 2rem; }
-
   @media (max-width: 768px) {
     .proj-nav { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .proj-nav-tab { white-space: nowrap; min-height: 44px; padding: 8px 12px; font-size: 0.65rem; }
-    .proj-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-    .proj-tab { white-space: nowrap; min-height: 44px; padding: 8px 12px; }
-    .props-main { grid-template-columns: 1fr; padding: 1.2rem; }
-    .props-preview { order: -1; }
+    .props-main { grid-template-columns: 1fr; }
+    .props-gallery-panel { border-left: none; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; }
+    .gallery-phone { width: 140px; }
+    .gallery-browser { max-width: 220px; }
+    .gallery-thumb { width: 44px; height: 44px; }
+    .props-fields { padding: 1.2rem; }
     .props-field { grid-template-columns: 80px 1fr; }
-    .approach-cards { grid-template-columns: 1fr; }
-    .approach-mockups { flex-direction: column; align-items: center; }
-    .proj-section[data-proj-section="approach"] { padding: 1.2rem; }
+    .props-col3 { padding: 1.2rem; border-left: none; border-top: 1px solid var(--border); }
   }
 </style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('[data-gallery-panel]').forEach(panel => {
+      const preview = panel.querySelector('[data-gallery-preview]') as HTMLElement;
+      const isMobile = (panel as HTMLElement).dataset.isMobile === 'true';
+
+      panel.querySelectorAll('.gallery-thumb').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+          if (!preview) return;
+          const btn = thumb as HTMLElement;
+
+          // Capture what's currently in the preview
+          const prevSrc = preview.dataset.gallerySrc!;
+          const prevType = preview.dataset.galleryType!;
+          const prevName = preview.dataset.galleryName!;
+
+          // Capture what's in the clicked thumb
+          const newSrc = btn.dataset.gallerySrc!;
+          const newType = btn.dataset.galleryType!;
+          const newName = btn.dataset.galleryName!;
+
+          // Put new item into the preview frame
+          const mediaContainer = isMobile
+            ? preview.querySelector('.proj-phone-screen')
+            : preview.querySelector('.proj-bview');
+          if (mediaContainer) {
+            const cls = isMobile ? 'proj-phone-video' : 'proj-browser-video';
+            mediaContainer.innerHTML = newType === 'video'
+              ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
+              : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+          }
+          preview.dataset.gallerySrc = newSrc;
+          preview.dataset.galleryType = newType;
+          preview.dataset.galleryName = newName;
+          const previewLabel = preview.querySelector('.gallery-label');
+          if (previewLabel) previewLabel.textContent = newName;
+
+          // Put old preview item into the thumb slot
+          const thumbMedia = btn.querySelector('.gallery-thumb-media');
+          if (thumbMedia) {
+            const replacement = prevType === 'video'
+              ? document.createElement('video')
+              : document.createElement('img');
+            replacement.setAttribute('src', prevSrc);
+            replacement.className = 'gallery-thumb-media';
+            if (prevType === 'video') {
+              (replacement as HTMLVideoElement).muted = true;
+              replacement.setAttribute('preload', 'metadata');
+              replacement.setAttribute('playsinline', '');
+            } else {
+              replacement.setAttribute('alt', prevName);
+              replacement.setAttribute('loading', 'lazy');
+            }
+            thumbMedia.replaceWith(replacement);
+          }
+          btn.dataset.gallerySrc = prevSrc;
+          btn.dataset.galleryType = prevType;
+          btn.dataset.galleryName = prevName;
+          const thumbLabel = btn.querySelector('.gallery-label');
+          if (thumbLabel) thumbLabel.textContent = prevName;
+        });
+      });
+    });
+  });
+</script>

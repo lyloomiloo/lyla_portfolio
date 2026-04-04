@@ -7,7 +7,7 @@ hook: "A planning tool that thinks like an editor.|This online builder turns tri
 type: "Personal Project"
 status: "In use · Mar 2026"
 year: "2026"
-tags: ["Frontend", "APIs", "Editorial Design"]
+tags: ["Frontend", "Editorial Design", "Reactive Interface"]
 thumbnail: "/images/projects/planmytrip/thumb.png"
 heroImage: "/images/projects/planmytrip/hero.png"
 order: 3

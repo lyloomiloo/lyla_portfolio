@@ -114,12 +114,19 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="4vh" left="10vw">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
-      hook="What if navigation optimised for how you feel, not just where you go? This web app reimagines walking as an experience with routing for safety, discovery, and human-ness."
-      tags="Agentic Workflows · UX Research · Product Design · Data"
+      hook="(re)Route is a walking app that asks a different question. 'What kind of walk do you need right now?' Type a mood, a vibe, or a destination in natural language. The AI routes you through Barcelona's most interesting, safest, or calmest streets depending on what the moment calls for."
+      tags="AI · UX Research · Product Design · Data"
       location="Barcelona" status="Prototype · On-going"
-      appType="Web Application" context="Master's Thesis — ELISAVA" year="2025"
+      appType="Web Application" context="Master's Thesis — ELISAVA" year="2026"
       isMobile={true}
       video="/images/projects/reroute/main.mov"
+      link="https://rerouted.vercel.app/"
+      gallery={[
+        { src: '/images/projects/reroute/explore_mode.mov', name: 'explore_mode.mov', type: 'video' },
+        { src: '/images/projects/reroute/smart_search.mov', name: 'smart_search.mov', type: 'video' },
+        { src: '/images/projects/reroute/themed_walks.mov', name: 'themed_walks.mov', type: 'video' },
+        { src: '/images/projects/reroute/wander_mode.jpg', name: 'wander_mode.jpg', type: 'image' },
+      ]}
       stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '3', label: 'modes' }]}
       problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
@@ -144,12 +151,17 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="7vh" left="14vw">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="A word a day. Infinite discovery. This web app helps humans look up from their screens to discover the beauty around them through daily quests."
+      hook="Snapp! is a location-based photo scavenger hunt. Each day, players get a single word prompt to search for around them. Photos land on a shared map, then disappear at midnight. It's a game about noticing the small stuff and sharing them with zero pretense."
       tags="Product Design · Full-Stack · UX · Gamification"
       location="Barcelona" status="In use · Feb 2026"
       appType="Mobile Web App" context="Personal Project" year="2026"
       isMobile={true}
       video="/images/projects/snapp/preview.mov"
+      link="https://ohsnapp.vercel.app/"
+      gallery={[
+        { src: '/images/projects/snapp/preview.mov', name: 'preview.mov', type: 'video' },
+        { src: '/images/projects/snapp/daily_prompt.jpg', name: 'daily_prompt.jpg', type: 'image' },
+      ]}
       stats={[{ number: '1', label: 'prompt/day' }, { number: '0', label: 'likes by design' }, { number: '∞', label: 'perspectives' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
@@ -174,12 +186,18 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="10vh" left="18vw">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="A planning tool that thinks like an editor, not a spreadsheet. This online editor turns yearly family trip planning into interactive editorial-style content."
-      tags="Frontend · APIs · Editorial Design"
+      hook="Trip planning tools are either ugly spreadsheets or rigid templates. PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary skeleton in full editorial layout with live weather, auto-generated images."
+      tags="Frontend · Editorial Design · Reactive Interface"
       location="Personal" status="In use · Mar 2026"
-      appType="Web Application" context="Personal Project — AI-assisted build" year="2025"
+      appType="Web Application" context="Personal Project — AI-assisted build" year="2026"
       isMobile={false}
       video="/images/projects/planmytrip/main.mov"
+      link="https://mytrippp.vercel.app/"
+      gallery={[
+        { src: '/images/projects/planmytrip/main.mov', name: 'main.mov', type: 'video' },
+        { src: '/images/projects/planmytrip/preview.jpg', name: 'preview.jpg', type: 'image' },
+        { src: '/images/projects/planmytrip/download.jpg', name: 'download.jpg', type: 'image' },
+      ]}
       stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
       problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
       approaches={[
@@ -216,9 +234,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
-      hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking with routing for safety, discovery, and human-ness."
-      tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2025"
+      hook="(re)Route is a walking app that asks a different question - What kind of walk do you need right now? Type a mood, a vibe, or a destination in natural language. The AI figures out the rest."
+      tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2026"
       isMobile={true}
+      link="https://rerouted.vercel.app/"
       stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '89%', label: 'vary routes' }]}
       problem={`"Every navigation app gets you there fast. But what about making the walk worth taking?"`}
       approaches={[{ label: 'INTENT OVER INPUT', desc: 'Mood as navigation intent.' }, { label: 'DATA-INFORMED', desc: 'Routes from real street data.' }, { label: 'SAFETY DEFAULT', desc: 'Well-lit streets after dark.' }]}
@@ -229,9 +248,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="A word a day. Infinite discovery."
+      hook="Snapp is a location-based photo scavenger hunt. Each day, players get a single word prompt. Photos land on a shared map, then disappear at midnight."
       tags="Product Design · Full-Stack · UX" location="Barcelona" status="In use · 2026"
       isMobile={true}
+      link="https://ohsnapp.vercel.app/"
       stats={[{ number: '1', label: 'word/day' }, { number: '1', label: 'photo' }, { number: '∞', label: 'perspectives' }]}
       problem={`"We walk past interesting things every day without seeing them."`}
       approaches={[{ label: 'ONE CONSTRAINT', desc: 'Limits create focus.' }, { label: 'EPHEMERAL', desc: 'Resets at midnight.' }, { label: 'COLLECTIVE', desc: 'Shared interpretation.' }]}
@@ -242,9 +262,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="A planning tool that thinks like an editor, not a spreadsheet. Editorial-style trip planning."
-      tags="Frontend · APIs · Editorial Design" location="Personal Project" status="In use · 2025"
+      hook="PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary in full editorial layout."
+      tags="Frontend · Editorial Design · Reactive Interface" location="Personal Project" status="In use · 2026"
       isMobile={false}
+      link="https://mytrippp.vercel.app/"
       stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
       problem={`"Trip planning tools are ugly spreadsheets or rigid templates."`}
       approaches={[{ label: 'EDITOR NOT SPREADSHEET', desc: 'Editorial layout as interface.' }, { label: 'LIVE DATA LAYER', desc: 'Real-time weather + images.' }, { label: 'AI-ASSISTED BUILD', desc: 'Clear spec, prompted build.' }]}
