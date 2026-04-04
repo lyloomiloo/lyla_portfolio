@@ -25,13 +25,8 @@
   padding: 0;
 }
 
-html, body {
-  cursor: url('/cursor.svg?v=3') 0 0, auto !important;
-}
-
-a, button, [role="button"], input[type="submit"], .retro-btn,
-a *, button *, [role="button"] * {
-  cursor: url('/cursor-pointer.svg?v=10') 4 0, pointer !important;
+html, body, *, *::before, *::after {
+  cursor: url('/cursor-blank.png') 0 0, none !important;
 }
 
 html {
