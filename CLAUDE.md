@@ -4,108 +4,78 @@
 
 A personal portfolio website for Lyla Huang — a strategist and writer who spent 10 years in advertising, then moved to Barcelona to study Human Interaction & AI, and started building real products.
 
-**Framework:** Astro (static site, content collections via markdown)
+**Framework:** Astro (static site, single page)
 **Deploy:** Vercel or Netlify
 
 ---
 
-## Product Principles
+## Architecture
 
-1. **The portfolio IS the proof.** The way it's built should demonstrate the same skills it describes — clear thinking, strong design instincts, technical ability.
-2. **Controlled chaos.** The visual identity is deliberately messy-looking but the underlying structure is tight. Every "random" element has a purpose.
-3. **Content-first.** The design serves the work, not the other way around. Projects and the transition story are the point — the aesthetic amplifies but never obscures.
-4. **Performance matters.** Astro ships zero JS by default. Only add client islands where absolutely necessary (glitch animation, scroll reveals). Static-first.
+Desktop OS simulation — everything is a window on a virtual desktop.
+
+- **Lock screen** → dismiss to enter desktop
+- **Desktop** with draggable icons (double-click to open on desktop, single-tap on mobile)
+- **Windows** (`.os-window`) with title bar, close/minimize/maximize buttons, z-index stacking
+- **Mobile panels** (`.mobile-panel`) replace windows on small screens
+- **Taskbar** at the bottom with tabs for open windows
+
+All content lives on a single page: `src/pages/index.astro`.
+
+### Key files
+
+- `src/scripts/window-manager.js` — open/close/focus/drag logic, project tab switching
+- `src/components/Window.astro` — reusable window shell
+- `src/components/Desktop.astro` — desktop surface with icons and windows
+- `src/components/ProjectDetail.astro` — tabbed project view (overview, approach, solution, mockups)
+- `src/styles/global.css` — CSS variables, keyframes, base styles
+
+### Windows
+
+| ID | Title | Component |
+|---|---|---|
+| projects | projects.exe | ProjectsWindow |
+| about | about.exe | AboutWindow |
+| skills | capabilities.dll | SkillsWindow |
+| contact | contact.txt | ContactWindow |
+| reroute, snapp, planmytrip | project names | ProjectDetail |
+| resume | resume.pdf | Auto-downloads PDF |
+| readme, todo, recycle, selfie, playlist | Easter eggs | Inline content |
 
 ---
 
-## Design Direction
+## Design
 
-### Aesthetic: Cyberfuturist Neo-Brutalism
+### Aesthetic
 
-A modern, sparse, gallery-like portfolio with retro UI fragments scattered as decorative artifacts — pixel squares, × close buttons, scrollbar pieces, smiley faces. These float in the layout like debris from an old operating system.
-
-NOT a literal retro desktop. NOT a Windows 98 recreation. The retro references are texture, not structure.
+Retro desktop OS with warm brutalist palette. Deliberately looks like an old operating system.
 
 ### Color
 
-- **Base:** Warm light grey (#EEEBE5). Cards: #F5F3EF. Never pure white.
-- **Accents:** Primary, saturated, sharp contrast. Electric blue (#0038FF), signal red (#FF2020), electric green (#00CC55), hot pink (#FF2D8A for artifacts only).
-- **About section is BLACK** (#0C0C0C) with green terminal text. The one dark element on the page.
+- **Base:** Warm grey `#EEEBE5`, cards `#F5F3EF`
+- **Dark:** `#1E1E1E` (window bodies with dark mode, about terminal)
+- **Orange:** `#FF6B00` (primary accent)
+- **Green:** `#39FF14` (secondary accent, terminal highlights)
 
-### Typography (Mixed — not all retro)
+### Typography
 
-- **Display/Headlines:** `Space Grotesk` — modern geometric sans-serif. ALL CAPS for project titles.
-- **Body:** `IBM Plex Sans` — clean, readable.
-- **Labels/Metadata/Terminal:** `IBM Plex Mono` — monospace for technical elements only.
-- **Pullquote:** `Instrument Serif` — one serif moment for warmth.
-
-### Key Visual Elements
-
-- **Glitch text animation** on hero title — characters randomly swap to symbols (* # @ / \ ] [) every 3-5 seconds, snap back after ~100ms.
-- **Pixel artifacts** — scattered decorative fragments (colored squares, × buttons, scrollbar pieces, smileys, cursor arrows, partial window corners). Positioned absolutely, non-interactive.
-- **1px grid dividers** — cards separated by 1px borders, not gaps.
-- **Green-bordered frame** — decorative rectangle floating in hero area.
-- **Dark terminal panel** — the signal log in the about section stays black with green monospace text.
-
----
-
-## Functional Domains
-
-### 1. Navigation
-The site nav, section anchoring, scroll behavior, mobile menu.
-
-### 2. Hero
-Landing section — title, subtitle, description, glitch animation, pixel artifacts, green frame.
-
-### 3. Projects
-Project grid, project cards, project detail pages, content collections, mockup frames.
-
-### 4. About
-Two-column section — signal log (dark terminal with career timeline) and archive panel (past advertising work cluster).
-
-### 5. Skills
-Four-column capabilities grid.
-
-### 6. Contact
-Contact box with links and status line.
-
-### 7. Pixel Artifacts System
-The reusable system for placing decorative retro UI fragments throughout the site.
-
-### 8. Animations & Interactions
-Glitch text, scroll reveals, hover states, the CSS clip-path intro animation.
-
-### 9. Project Detail Pages
-Dynamic Astro pages for each project, rendered from markdown content collections.
-
-### 10. Layout & Responsive
-Base layout, global styles, responsive breakpoints, mobile adaptations.
+- **Display:** `Space Grotesk`
+- **Body:** `IBM Plex Sans`
+- **Mono:** `IBM Plex Mono`
 
 ---
 
 ## Content
 
-All project content lives in `src/content/projects/*.md` as Astro content collections. These files are pre-written and should not be modified during implementation unless the schema changes.
-
 ### Projects
 
-1. **(RE)ROUTE** — AI-powered walking navigation app. Master's thesis prototype. Solo project.
-2. **OH SNAPP!** — Location-based photo scavenger hunt. Concept to beta. Solo project.
-3. **PLANMYTRIP** — Interactive trip itinerary builder. Personal project, editorial design.
+1. **(RE)ROUTE** — AI walking navigation app (master's thesis)
+2. **OH SNAPP!** — Location-based photo scavenger hunt
+3. **PLANMYTRIP** — Interactive trip itinerary builder
 
-### About / Signal Log
+### About
 
-Career timeline told as headline beats in a terminal-style panel:
-- 2015: NUS → ads
-- 2015–17: Havas (grew client IG 4000%)
-- 2018–21: BLKJ Senior Writer (led 8 creatives, award-winning)
-- 2021–22: Google (133 SMEs, APAC)
-- 2022–24: Freelance (20+ clients)
-- 2024: Barcelona, Master's in HAI
-- 2025–26: Code, products, AI
+Career timeline as terminal log entries inside about.exe window.
 
-### Archive (Past Advertising Work)
+### Archive
 
-Key works: Scoot is F*cking Savage (4× awards), Onward (national TVC), Passion Stories (brand films), Pun with FairPrice (Gold Markies), See It Before The Hipsters, Inflight Amusement Guide.
-
-Awards: Rising Star Creative Circles '18, Gold Markies '17, 2S+3B Creative Circles '18, Grand Prize IG Cannes '16.
+Key ad works: Scoot Savage (4× awards), Onward (TVC), Passion Stories, Pun with FairPrice (Gold Markies), Hipsters, Inflight Guide.
