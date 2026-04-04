@@ -275,7 +275,12 @@ const slugFeatureIcons = featureIcons[slug] || [];
   .proj-tab:hover { color: var(--text); }
   .proj-tab.active { color: var(--orange); border-bottom-color: var(--orange); background: var(--bg-card); }
 
-  .proj-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair; }
+  .proj-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
+  .proj-content::-webkit-scrollbar { width: 12px; }
+  .proj-content::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
+  .proj-content::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--bg); min-height: 40px; }
+  .proj-content::-webkit-scrollbar-thumb:hover { background: #999; }
+  .proj-content::-webkit-scrollbar-button { height: 12px; background: var(--bg); border-left: 1px solid var(--border); }
   .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair; }
 
   /* Overview */

@@ -70,45 +70,37 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     </div>
   </Window>
 
-  <Window id="playlist" title="playlist.m3u" width="300px" height="340px" top="18vh" left="36vw">
-    <div class="record-player">
-      <div class="rp-stage">
-        <div class="pixel-vinyl">
-          <!-- 12x12 pixel art record: D=dark groove, G=mid groove, O=orange label, K=center hole -->
-          <div></div><div></div><div></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div></div><div></div><div></div>
-          <div></div><div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div></div><div></div>
-          <div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div></div>
-          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div>
-          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div>
-          <div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-k"></div><div class="pv-k"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div>
-          <div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-k"></div><div class="pv-k"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div>
-          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div>
-          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div>
-          <div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div></div>
-          <div></div><div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div></div><div></div>
-          <div></div><div></div><div></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div></div><div></div><div></div>
+  <Window id="playlist" title="playlist.m3u" width="320px" height="auto" top="18vh" left="36vw">
+    <div class="mp" style="margin:-1.5rem;">
+      <div class="mp-title" id="playerTitle">Tití Me Preguntó</div>
+      <div class="mp-artist" id="playerArtist">Bad Bunny</div>
+      <div class="mp-progress">
+        <span class="mp-time" id="playerElapsed">0:00</span>
+        <div class="mp-bar">
+          <div class="mp-bar-fill" id="playerFill"></div>
         </div>
-        <div class="pixel-arm">
-          <div class="pa-p"></div><div></div><div></div>
-          <div></div><div class="pa-p"></div><div></div>
-          <div></div><div class="pa-p"></div><div></div>
-          <div></div><div></div><div class="pa-p"></div>
-          <div></div><div></div><div class="pa-t"></div>
-        </div>
+        <span class="mp-time" id="playerDuration">-5:21</span>
       </div>
-      <div class="rp-info">
-        <div class="rp-now">&gt; NOW PLAYING:</div>
-        <div class="rp-track" id="rp-track">Tycho &mdash; Awake</div>
-        <div class="rp-divider">- - - - - - - - - - -</div>
-        <div class="rp-next">&gt; NEXT UP:</div>
-        <div class="rp-queue" id="rp-queue">Bonobo &mdash; Kerala</div>
+      <div class="mp-controls">
+        <button class="mp-btn" id="playerPrev" aria-label="Previous">
+          <div class="px-prev"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </button>
+        <button class="mp-btn mp-btn--play" id="playerPlay" aria-label="Play">
+          <div class="px-play" id="playerPlayIcon"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </button>
+        <button class="mp-btn" id="playerNext" aria-label="Next">
+          <div class="px-next"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+        </button>
+      </div>
+      <div class="mp-next">
+        <span class="mp-next-label">NEXT</span> <span id="playerNextTrack">TURiSTA &mdash; Bad Bunny</span>
       </div>
     </div>
   </Window>
 
   <!-- New Easter Eggs -->
-  <Window id="resume" title="resume.pdf — Downloading..." width="360px" height="200px" top="15vh" left="30vw">
-    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text); text-align: center; padding: 1rem 0;">
+  <Window id="resume" title="resume.pdf — Downloading..." width="360px" height="220px" top="15vh" left="30vw">
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text); text-align: center; padding: 0.5rem 0; margin: -1rem;">
       <p style="font-size: 2rem; margin-bottom: 0.5rem;">&#128196;</p>
       <p style="font-weight: 700;">Lyla_Huang_Resume_2025.pdf</p>
       <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 0.3rem;">Downloading...</p>
@@ -296,118 +288,263 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     document.addEventListener('keydown', dismissKey);
   }
 
-  // Record player track cycling
-  const playlist = [
-    { track: 'Tycho \u2014 Awake', next: 'Bonobo \u2014 Kerala' },
-    { track: 'Bonobo \u2014 Kerala', next: 'Khruangbin \u2014 Time (You and I)' },
-    { track: 'Khruangbin \u2014 Time (You and I)', next: 'Nujabes \u2014 Feather' },
-    { track: 'Nujabes \u2014 Feather', next: 'Tití Me Preguntó \u2014 Bad Bunny' },
-    { track: 'Tití Me Preguntó \u2014 Bad Bunny', next: 'Tycho \u2014 Awake' },
+  // Mini player
+  const plTracks = [
+    { title: 'Tití Me Preguntó', artist: 'Bad Bunny', duration: '5:21', secs: 321 },
+    { title: 'TURiSTA', artist: 'Bad Bunny', duration: '3:45', secs: 225 },
+    { title: 'NUEVAYoL', artist: 'Bad Bunny', duration: '3:30', secs: 210 },
+    { title: 'DtMF', artist: 'Bad Bunny', duration: '3:15', secs: 195 },
   ];
-  let rpIdx = 0;
-  const rpTrack = document.getElementById('rp-track');
-  const rpQueue = document.getElementById('rp-queue');
-  if (rpTrack && rpQueue) {
-    setInterval(() => {
-      rpIdx = (rpIdx + 1) % playlist.length;
-      rpTrack.textContent = playlist[rpIdx].track;
-      rpQueue.textContent = playlist[rpIdx].next;
-    }, 5000);
+  let plIdx = 0;
+  let plPlaying = true;
+  let plProgress = 0;
+  const plTitle = document.getElementById('playerTitle');
+  const plArtist = document.getElementById('playerArtist');
+  const plDuration = document.getElementById('playerDuration');
+  const plElapsed = document.getElementById('playerElapsed');
+  const plFill = document.getElementById('playerFill');
+  const plNext = document.getElementById('playerNextTrack');
+  const plPlayBtn = document.getElementById('playerPlay');
+  const plPrevBtn = document.getElementById('playerPrev');
+  const plNextBtn = document.getElementById('playerNext');
+
+  const plPlayIcon = document.getElementById('playerPlayIcon');
+
+  function plUpdate() {
+    const t = plTracks[plIdx];
+    const nx = plTracks[(plIdx + 1) % plTracks.length];
+    if (plTitle) plTitle.textContent = t.title;
+    if (plArtist) plArtist.textContent = t.artist;
+    if (plDuration) plDuration.textContent = '-' + t.duration;
+    if (plNext) plNext.textContent = nx.title + ' \u2014 ' + nx.artist;
+    plProgress = 0;
+  }
+
+  function plFormatTime(s: number) {
+    return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+  }
+
+  setInterval(() => {
+    if (!plPlaying) return;
+    const t = plTracks[plIdx];
+    plProgress += 0.5;
+    const pct = Math.min((plProgress / 30) * 100, 100);
+    if (plFill) plFill.style.width = pct + '%';
+    const fakeElapsed = Math.floor((pct / 100) * t.secs);
+    if (plElapsed) plElapsed.textContent = plFormatTime(fakeElapsed);
+    const remaining = t.secs - fakeElapsed;
+    if (plDuration) plDuration.textContent = '-' + plFormatTime(remaining);
+    if (pct >= 100) {
+      plIdx = (plIdx + 1) % plTracks.length;
+      plUpdate();
+    }
+  }, 500);
+
+  if (plPlayBtn) {
+    plPlayBtn.addEventListener('click', () => {
+      plPlaying = !plPlaying;
+      if (plPlayIcon) {
+        plPlayIcon.className = plPlaying ? 'px-pause' : 'px-play';
+      }
+    });
+    // Start as playing
+    if (plPlayIcon) plPlayIcon.className = 'px-pause';
+  }
+  if (plNextBtn) {
+    plNextBtn.addEventListener('click', () => {
+      plIdx = (plIdx + 1) % plTracks.length;
+      plUpdate();
+    });
+  }
+  if (plPrevBtn) {
+    plPrevBtn.addEventListener('click', () => {
+      plIdx = (plIdx - 1 + plTracks.length) % plTracks.length;
+      plUpdate();
+    });
   }
 </script>
 
 <style is:global>
-  .record-player {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    background: #1E1E1E;
-    margin: -1.5rem;
-    padding: 1.2rem;
-    image-rendering: pixelated;
+  /* Mini player — flat, retro, pixel art */
+  .mp {
+    padding: 1rem 1.2rem;
+    font-family: var(--font-mono);
+    background: var(--bg-card);
+  }
+  .mp-title {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .mp-artist {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.8rem;
   }
 
-  .rp-stage {
-    position: relative;
+  /* Progress bar */
+  .mp-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+  }
+  .mp-time {
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    min-width: 28px;
+    font-variant-numeric: tabular-nums;
+  }
+  .mp-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+  }
+  .mp-bar-fill {
+    height: 100%;
+    width: 0%;
+    background: #FF6B00;
+    transition: width 0.4s linear;
+  }
+
+  /* Controls */
+  .mp-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+  }
+  .mp-btn {
+    width: 32px;
+    height: 32px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem 0 0.6rem;
-  }
-
-  /* Pixel art vinyl — 12x12 grid */
-  .pixel-vinyl {
-    display: grid;
-    grid-template-columns: repeat(12, 10px);
-    grid-template-rows: repeat(12, 10px);
+    padding: 0;
     image-rendering: pixelated;
-    animation: vinyl-spin 4s linear infinite;
   }
-  .pixel-vinyl div { width: 10px; height: 10px; }
-  .pv-d { background: #222; }
-  .pv-g { background: #333; }
-  .pv-o { background: #FF6B00; }
-  .pv-k { background: #111; }
+  .mp-btn:hover {
+    border-color: #FF6B00;
+  }
+  .mp-btn:active {
+    background: var(--border);
+  }
+  .mp-btn--play {
+    width: 36px;
+    height: 36px;
+    border-width: 2px;
+  }
 
-  /* Pixel tone arm — 5x3 grid */
-  .pixel-arm {
+  /* Pixel art transport icons — 5x5 grids */
+  .px-prev, .px-next, .px-play, .px-pause {
     display: grid;
-    grid-template-columns: repeat(3, 6px);
-    grid-template-rows: repeat(5, 6px);
+    grid-template-columns: repeat(5, 3px);
+    grid-template-rows: repeat(5, 3px);
     image-rendering: pixelated;
-    position: absolute;
-    top: 8px;
-    right: 20px;
   }
-  .pixel-arm div { width: 6px; height: 6px; }
-  .pa-p { background: #888; }
-  .pa-t { background: #FF6B00; }
-
-  @keyframes vinyl-spin {
-    to { transform: rotate(360deg); }
+  .px-prev div, .px-next div, .px-play div, .px-pause div {
+    width: 3px;
+    height: 3px;
   }
 
-  .rp-info {
-    text-align: left;
-    font-family: var(--font-mono);
-    padding: 0.6rem 0.4rem 0;
-    width: 100%;
-    border-top: 2px solid #333;
-  }
+  /*
+    Play ▶ (right-pointing triangle):
+    X . . . .
+    X X . . .
+    X X X . .
+    X X . . .
+    X . . . .
+  */
+  .px-play div:nth-child(1)  { background: var(--text); }
+  .px-play div:nth-child(6)  { background: var(--text); }
+  .px-play div:nth-child(7)  { background: var(--text); }
+  .px-play div:nth-child(11) { background: var(--text); }
+  .px-play div:nth-child(12) { background: var(--text); }
+  .px-play div:nth-child(13) { background: var(--text); }
+  .px-play div:nth-child(16) { background: var(--text); }
+  .px-play div:nth-child(17) { background: var(--text); }
+  .px-play div:nth-child(21) { background: var(--text); }
 
-  .rp-now {
+  /*
+    Pause ❚❚ (two bars):
+    X . X . .
+    X . X . .
+    X . X . .
+    X . X . .
+    X . X . .
+  */
+  .px-pause div:nth-child(1)  { background: var(--text); }
+  .px-pause div:nth-child(3)  { background: var(--text); }
+  .px-pause div:nth-child(6)  { background: var(--text); }
+  .px-pause div:nth-child(8)  { background: var(--text); }
+  .px-pause div:nth-child(11) { background: var(--text); }
+  .px-pause div:nth-child(13) { background: var(--text); }
+  .px-pause div:nth-child(16) { background: var(--text); }
+  .px-pause div:nth-child(18) { background: var(--text); }
+  .px-pause div:nth-child(21) { background: var(--text); }
+  .px-pause div:nth-child(23) { background: var(--text); }
+
+  /*
+    Prev ◄◄ (left triangle + bar):
+    . . X . X
+    . X X . X
+    X X X . X
+    . X X . X
+    . . X . X
+  */
+  .px-prev div:nth-child(3)  { background: var(--text); }
+  .px-prev div:nth-child(5)  { background: var(--text); }
+  .px-prev div:nth-child(7)  { background: var(--text); }
+  .px-prev div:nth-child(8)  { background: var(--text); }
+  .px-prev div:nth-child(10) { background: var(--text); }
+  .px-prev div:nth-child(11) { background: var(--text); }
+  .px-prev div:nth-child(12) { background: var(--text); }
+  .px-prev div:nth-child(13) { background: var(--text); }
+  .px-prev div:nth-child(15) { background: var(--text); }
+  .px-prev div:nth-child(17) { background: var(--text); }
+  .px-prev div:nth-child(18) { background: var(--text); }
+  .px-prev div:nth-child(20) { background: var(--text); }
+  .px-prev div:nth-child(23) { background: var(--text); }
+  .px-prev div:nth-child(25) { background: var(--text); }
+
+  /*
+    Next ►► (right triangle + bar):
+    X . X . .
+    X . X X .
+    X . X X X
+    X . X X .
+    X . X . .
+  */
+  .px-next div:nth-child(1)  { background: var(--text); }
+  .px-next div:nth-child(3)  { background: var(--text); }
+  .px-next div:nth-child(6)  { background: var(--text); }
+  .px-next div:nth-child(8)  { background: var(--text); }
+  .px-next div:nth-child(9)  { background: var(--text); }
+  .px-next div:nth-child(11) { background: var(--text); }
+  .px-next div:nth-child(13) { background: var(--text); }
+  .px-next div:nth-child(14) { background: var(--text); }
+  .px-next div:nth-child(15) { background: var(--text); }
+  .px-next div:nth-child(16) { background: var(--text); }
+  .px-next div:nth-child(18) { background: var(--text); }
+  .px-next div:nth-child(19) { background: var(--text); }
+  .px-next div:nth-child(21) { background: var(--text); }
+  .px-next div:nth-child(23) { background: var(--text); }
+
+  /* Next track */
+  .mp-next {
     font-size: 0.65rem;
-    color: #39FF14;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.15rem;
+    color: var(--text-dim);
+    border-top: 1px solid var(--border);
+    padding-top: 0.5rem;
   }
-
-  .rp-track {
-    font-size: 0.85rem;
+  .mp-next-label {
     color: #FF6B00;
     font-weight: 700;
-    min-height: 1.2em;
-    margin-bottom: 0.4rem;
-  }
-
-  .rp-divider {
-    font-size: 0.6rem;
-    color: #333;
-    margin-bottom: 0.4rem;
-    letter-spacing: 2px;
-  }
-
-  .rp-next {
-    font-size: 0.6rem;
-    color: #39FF14;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.15rem;
-  }
-
-  .rp-queue {
-    font-size: 0.75rem;
-    color: #888;
-    min-height: 1em;
   }
 </style>

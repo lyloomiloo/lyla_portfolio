@@ -6,19 +6,17 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
 const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
-  // Map pin / location marker — 8×10
+  // Direction arrow — 8×8
   reroute: {
-    cols: 8, rows: 10, grid: [
-      ['_','_','_','G','G','_','_','_'],
-      ['_','_','G','G','G','G','_','_'],
-      ['_','G','G','G','G','G','G','_'],
-      ['_','G','G','_','_','G','G','_'],
-      ['_','G','G','_','_','G','G','_'],
-      ['_','G','G','G','G','G','G','_'],
-      ['_','_','G','G','G','G','_','_'],
-      ['_','_','_','G','G','_','_','_'],
-      ['_','_','_','G','G','_','_','_'],
-      ['_','_','_','_','_','_','_','_'],
+    cols: 8, rows: 8, grid: [
+      ['_','_','_','G','G','G','G','G'],
+      ['_','_','_','_','G','G','G','G'],
+      ['_','_','_','_','_','G','G','G'],
+      ['_','_','_','_','G','G','G','_'],
+      ['_','_','_','G','G','_','G','_'],
+      ['_','_','G','G','_','_','_','_'],
+      ['_','G','G','_','_','_','_','_'],
+      ['G','G','_','_','_','_','_','_'],
     ]
   },
   // Viewfinder / crosshair — 8×8
