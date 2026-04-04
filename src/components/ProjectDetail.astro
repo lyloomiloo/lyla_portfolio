@@ -12,10 +12,11 @@ interface Props {
   problem: string;
   approaches: { label: string; desc: string }[];
   features: { title: string; desc: string }[];
-  mockups: { label: string; caption: string }[];
+  mockups: { label: string; caption: string; video?: string; image?: string }[];
+  video?: string;
 }
 
-const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, mockups } = Astro.props;
+const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, mockups, video } = Astro.props;
 
 // 6x6 pixel art icons for approach cards, keyed by slug then card index
 // Colors: G=#39FF14(green), O=#FF6B00(orange), B=#4A9EFF(blue), W=#fff, D=#222
@@ -161,7 +162,6 @@ const slugFeatureIcons = featureIcons[slug] || [];
   <div class="proj-tabs">
     <button class="proj-tab active" data-proj-section="overview">Overview</button>
     <button class="proj-tab" data-proj-section="approach">Design Thinking</button>
-    <button class="proj-tab" data-proj-section="solution">Solution</button>
   </div>
 
   <div class="proj-content">
@@ -183,18 +183,49 @@ const slugFeatureIcons = featureIcons[slug] || [];
             {tags.split('·').map(t => <span class="proj-tag">{t.trim()}</span>)}
           </div>
           <div class="proj-meta-text">{location} · {status}</div>
+          <div class="proj-differentiators">
+            <div class="feature-list">
+              {features.map((f, i) => (
+                <div class="feature-item">
+                  {slugFeatureIcons[i] ? (
+                    <div class="feature-pixel-icon">
+                      {slugFeatureIcons[i].flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                    </div>
+                  ) : (
+                    <span class="feature-icon">&#9670;</span>
+                  )}
+                  <div>
+                    <strong>{f.title}</strong>
+                    <p>{f.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         <div class="proj-overview-mockup">
           <div class="proj-mockup-viewer">
             {isMobile ? (
               <div class="proj-phone">
                 <div class="proj-phone-notch"></div>
-                <div class="proj-phone-screen"><div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div></div>
+                <div class="proj-phone-screen">
+                  {video ? (
+                    <video src={video} autoplay loop muted playsinline class="proj-phone-video"></video>
+                  ) : (
+                    <div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div>
+                  )}
+                </div>
               </div>
             ) : (
               <div class="proj-browser">
                 <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                <div class="proj-bview"><div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div></div>
+                <div class="proj-bview">
+                  {video ? (
+                    <video src={video} autoplay loop muted playsinline class="proj-browser-video"></video>
+                  ) : (
+                    <div class="proj-ph"><span>{mockups[0]?.label || 'PREVIEW'}</span></div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -228,12 +259,28 @@ const slugFeatureIcons = featureIcons[slug] || [];
               {isMobile ? (
                 <div class="proj-phone proj-phone--sm">
                   <div class="proj-phone-notch"></div>
-                  <div class="proj-phone-screen"><div class="proj-ph"><span>{m.label}</span></div></div>
+                  <div class="proj-phone-screen">
+                    {m.video ? (
+                      <video src={m.video} autoplay loop muted playsinline class="proj-phone-video"></video>
+                    ) : m.image ? (
+                      <img src={m.image} alt={m.label} class="proj-phone-video" />
+                    ) : (
+                      <div class="proj-ph"><span>{m.label}</span></div>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div class="proj-browser proj-browser--sm">
                   <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                  <div class="proj-bview"><div class="proj-ph"><span>{m.label}</span></div></div>
+                  <div class="proj-bview">
+                    {m.video ? (
+                      <video src={m.video} autoplay loop muted playsinline class="proj-browser-video"></video>
+                    ) : m.image ? (
+                      <img src={m.image} alt={m.label} class="proj-browser-video" />
+                    ) : (
+                      <div class="proj-ph"><span>{m.label}</span></div>
+                    )}
+                  </div>
                 </div>
               )}
               <span class="mockup-caption">{m.caption}</span>
@@ -243,27 +290,6 @@ const slugFeatureIcons = featureIcons[slug] || [];
       </div>
     </div>
 
-    <!-- SOLUTION -->
-    <div class="proj-section" data-proj-section="solution" style="display:none;">
-      <h3>DIFFERENTIATOR</h3>
-      <div class="feature-list">
-        {features.map((f, i) => (
-          <div class="feature-item">
-            {slugFeatureIcons[i] ? (
-              <div class="feature-pixel-icon">
-                {slugFeatureIcons[i].flat().map(c => <div style={`background:${iconColors[c]};`} />)}
-              </div>
-            ) : (
-              <span class="feature-icon">&#9670;</span>
-            )}
-            <div>
-              <strong>{f.title}</strong>
-              <p>{f.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
   </div>
 </div>
 
@@ -297,11 +323,11 @@ const slugFeatureIcons = featureIcons[slug] || [];
   .proj-meta-text { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim); }
 
   /* Mockup viewer */
-  .proj-mockup-viewer { background: var(--dark); border: 1px solid #444; padding: 1rem; border-radius: 2px; }
-  .proj-phone { width: 140px; background: var(--dark); border-radius: 18px; border: 2px solid #555; overflow: hidden; margin: 0 auto; }
-  .proj-phone-notch { width: 45px; height: 3px; background: #555; border-radius: 0 0 4px 4px; margin: 0 auto; }
-  .proj-phone-screen { aspect-ratio: 9 / 16; overflow: hidden; }
-  .proj-phone--sm { width: 100px; border-radius: 12px; }
+  .proj-mockup-viewer { background: transparent; padding: 1rem; border-radius: 2px; }
+  .proj-phone { width: 180px; background: #1E1E1E; border-radius: 22px; border: 4px solid #444; overflow: hidden; margin: 0 auto; }
+  .proj-phone-notch { width: 45px; height: 3px; background: #444; border-radius: 0 0 4px 4px; margin: 0 auto; }
+  .proj-phone-screen { aspect-ratio: 9 / 19.5; overflow: hidden; }
+  .proj-phone--sm { width: 140px; border-radius: 16px; border-width: 3px; }
   .proj-browser { width: 100%; border: 1px solid #555; overflow: hidden; background: var(--dark); }
   .proj-browser--sm { max-width: 240px; }
   .proj-bbar { padding: 3px 6px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid #555; }
@@ -312,6 +338,8 @@ const slugFeatureIcons = featureIcons[slug] || [];
   .proj-ph { width: 100%; height: 100%; background: var(--dark); display: flex; align-items: center; justify-content: center; aspect-ratio: 9/16; }
   .proj-browser .proj-ph { aspect-ratio: 16/10; }
   .proj-ph span { font-family: var(--font-mono); font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em; }
+  .proj-phone-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .proj-browser-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* Approach cards + mockups layout */
   .approach-with-mockups { display: flex; flex-direction: column; gap: 2rem; }
@@ -335,16 +363,14 @@ const slugFeatureIcons = featureIcons[slug] || [];
     justify-content: center;
     align-items: flex-start;
     flex-wrap: wrap;
-    background: var(--dark);
-    border: 1px solid #444;
-    padding: 1.5rem;
-    border-radius: 2px;
+    padding: 1.5rem 0;
   }
   .approach-mockup-item { text-align: center; }
 
   /* Feature list */
-  .feature-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-  .feature-item { display: flex; gap: 0.8rem; align-items: flex-start; }
+  .proj-differentiators { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+  .feature-list { display: flex; flex-direction: column; gap: 0.4rem; }
+  .feature-item { display: flex; gap: 0.6rem; align-items: flex-start; }
   .feature-icon { color: var(--orange); font-size: 0.7rem; margin-top: 3px; flex-shrink: 0; }
   .feature-pixel-icon {
     display: grid;

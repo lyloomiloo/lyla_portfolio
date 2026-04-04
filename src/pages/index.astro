@@ -118,6 +118,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       tags="Agentic Workflows · UX Research · Product Design · Data"
       location="Barcelona" status="Master's Thesis · Prototype · 2025"
       isMobile={true}
+      video="/images/projects/reroute/main.mov"
       stats={[{ number: '119K', label: 'street segments scored' }, { number: '372', label: 'hand-curated POIs' }, { number: '3', label: 'modes of navigation' }]}
       problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
@@ -132,9 +133,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         { title: '386 hand-curated POIs', desc: `Places that don't appear on commercial platforms. Themed walks, bloom calendars, hidden courtyards.` },
       ]}
       mockups={[
-        { label: 'GO MODE', caption: 'GO — destination routing' },
-        { label: 'EXPLORE MODE', caption: 'EXPLORE — vibe-based discovery' },
-        { label: 'WANDER MODE', caption: 'WANDER — compass + curated pins' },
+        { label: 'GO MODE', caption: 'GO — destination routing', video: '/images/projects/reroute/go-mode.mov' },
+        { label: 'EXPLORE MODE', caption: 'EXPLORE — vibe-based discovery', video: '/images/projects/reroute/explore-mode.mov' },
+        { label: 'WANDER MODE', caption: 'WANDER — compass + curated pins', image: '/images/projects/reroute/wander-mode.jpg' },
       ]}
     />
   </Window>
@@ -146,6 +147,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       tags="Product Design · Full-Stack · UX · Gamification"
       location="Barcelona" status="In use · Feb 2026"
       isMobile={true}
+      video="/images/projects/snapp/preview.mov"
       stats={[{ number: 'X', label: 'XXX' }, { number: 'X', label: 'XXX' }, { number: 'X', label: 'XXXX' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
@@ -547,4 +549,5 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     color: #FF6B00;
     font-weight: 700;
   }
+
 </style>

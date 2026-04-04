@@ -57,9 +57,9 @@ const iconColors: Record<string, string> = {
 };
 
 // Mockup preview config per project
-const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }> = {
-  reroute: { label: 'GO MODE', type: 'phone' },
-  snapp: { label: 'DAILY PROMPT', type: 'phone' },
+const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; image?: string }> = {
+  reroute: { label: 'GO MODE', type: 'phone', image: '/images/projects/reroute/preview.jpg' },
+  snapp: { label: 'DAILY PROMPT', type: 'phone', image: '/images/projects/snapp/daily_prompt.jpg' },
   planmytrip: { label: 'ITINERARY VIEW', type: 'browser' },
 };
 ---
@@ -88,19 +88,29 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }>
         {mockup && (
           <div class="pw-preview">
             {mockup.type === 'phone' ? (
-              <div class="pw-phone">
-                <div class="pw-phone-notch"></div>
-                <div class="pw-phone-screen"><span>{mockup.label}</span></div>
+              <div class="pw-phone-wrap">
+                <div class="pw-phone">
+                  <div class="pw-phone-notch"></div>
+                  <div class="pw-phone-screen">
+                    {mockup.image ? (
+                      <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                    ) : (
+                      <span>{mockup.label}</span>
+                    )}
+                  </div>
+                </div>
               </div>
             ) : (
-              <div class="pw-browser">
-                <div class="pw-bbar">
-                  <span class="pw-bdot" style="background:#FF6B00"></span>
-                  <span class="pw-bdot" style="background:#39FF14"></span>
-                  <span class="pw-bdot" style="background:#666"></span>
-                  <span class="pw-burl">{p.data.slug}.app</span>
+              <div class="pw-phone-wrap">
+                <div class="pw-browser">
+                  <div class="pw-bbar">
+                    <span class="pw-bdot" style="background:#FF6B00"></span>
+                    <span class="pw-bdot" style="background:#39FF14"></span>
+                    <span class="pw-bdot" style="background:#666"></span>
+                    <span class="pw-burl">{p.data.slug}.app</span>
+                  </div>
+                  <div class="pw-bscreen"><span>{mockup.label}</span></div>
                 </div>
-                <div class="pw-bscreen"><span>{mockup.label}</span></div>
               </div>
             )}
           </div>
@@ -116,16 +126,18 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }>
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
-    height: 100%;
+    height: calc(100% + 3rem);
+    margin: -1.5rem;
     cursor: url('/cursor-project.svg') 0 0, crosshair;
   }
   .pw-card {
     background: var(--bg-card);
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 0;
     transition: background 0.15s;
     cursor: url('/cursor-project.svg') 0 0, crosshair;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
   }
   .pw-card:hover { background: var(--bg); }
 
@@ -133,7 +145,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }>
   .pw-pixel-icon {
     display: grid;
     image-rendering: pixelated;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   .pw-pixel-icon div {
     width: 5px;
@@ -142,42 +154,60 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }>
 
   .pw-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 0.3rem; }
   .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.4rem; line-height: 1; }
-  .pw-hook { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.8rem; }
+  .pw-hook { font-family: var(--font-body); font-size: 0.9rem; font-weight: 300; color: var(--text-mid); line-height: 1.4; margin-bottom: 0.5rem; }
   .pw-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 0.4rem; }
   .pw-tags span { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; background: #FF6B00; color: #fff; border: none; }
-  .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
-  .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
+  .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.3rem; }
+  .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.3rem; }
   .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; }
 
   /* Mockup preview at bottom of card */
   .pw-preview {
     margin-top: auto;
-    padding-top: 1rem;
-    background: #111;
-    border: 1px solid #333;
-    padding: 8px;
+    overflow: hidden;
+    flex: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
+    padding-top: 2rem;
   }
 
-  /* Phone frame */
+  /* Slide-up wrapper — handles entrance animation */
+  .pw-phone-wrap {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    animation: pw-slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.3s;
+    opacity: 0;
+    perspective: 600px;
+  }
+
+  /* Phone frame — handles hover tilt */
   .pw-phone {
-    width: 70px;
+    width: 60%;
     background: #1E1E1E;
-    border-radius: 10px;
-    border: 2px solid #444;
+    border-radius: 20px 20px 0 0;
+    border: 5px solid #444;
+    border-bottom: none;
     overflow: hidden;
+    transition: transform 0.05s steps(1);
+  }
+  .pw-card:hover .pw-phone {
+    transform: rotate(3deg);
+  }
+
+  @keyframes pw-slide-up {
+    0% { opacity: 0; transform: translateY(100%); }
+    100% { opacity: 1; transform: translateY(0); }
   }
   .pw-phone-notch {
-    width: 28px;
-    height: 2px;
+    width: 32px;
+    height: 3px;
     background: #444;
     border-radius: 0 0 3px 3px;
     margin: 0 auto;
   }
   .pw-phone-screen {
-    aspect-ratio: 9 / 16;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -190,11 +220,17 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser' }>
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
+  .pw-phone-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
   /* Browser frame */
   .pw-browser {
     width: 100%;
-    max-width: 200px;
+    max-width: 260px;
     background: #1E1E1E;
     border: 1px solid #444;
     overflow: hidden;
