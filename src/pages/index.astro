@@ -111,7 +111,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Project Detail Windows -->
-  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="4vh" left="10vw">
+  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="82vw" height="78vh" top="4vh" left="6vw">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
       hook="(re)Route is a walking app that asks a different question. 'What kind of walk do you need right now?' Type a mood, a vibe, or a destination in natural language. The AI routes you through Barcelona's most interesting, safest, or calmest streets depending on what the moment calls for."
@@ -127,7 +127,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         { src: '/images/projects/reroute/themed_walks.mov', name: 'themed_walks.mov', type: 'video' },
         { src: '/images/projects/reroute/wander_mode.jpg', name: 'wander_mode.jpg', type: 'image' },
       ]}
-      stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '3', label: 'modes' }]}
+      stats={[{ number: '119K', label: 'street segments\nscored' }, { number: '386', label: 'curated\nPOIs' }, { number: '3', label: 'new ways\nto walk' }]}
       problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
         { label: 'INTENT OVER INPUT', desc: 'Users type feelings, not addresses. One AI call interprets mood as navigation intent.' },
@@ -148,21 +148,21 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="7vh" left="14vw">
+  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="78vw" height="78vh" top="4vh" left="8vw">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
-      hook="Snapp! is a location-based photo scavenger hunt. Each day, players get a single word prompt to search for around them. Photos land on a shared map, then disappear at midnight. It's a game about noticing the small stuff and sharing them with zero pretense."
+      hook="Snapp is a location-based photo scavenger hunt. Each day, players get a single word prompt to search for around them. Photos land on a shared map, then disappear at midnight. It's a game about noticing the small stuff and sharing them with zero pretense."
       tags="Product Design · Full-Stack · UX · Gamification"
-      location="Barcelona" status="In use · Feb 2026"
+      location="Global" status="Deployed"
       appType="Mobile Web App" context="Personal Project" year="2026"
       isMobile={true}
-      video="/images/projects/snapp/preview.mov"
+      video="/images/projects/snapp/beta_test.mov"
       link="https://ohsnapp.vercel.app/"
       gallery={[
-        { src: '/images/projects/snapp/preview.mov', name: 'preview.mov', type: 'video' },
+        { src: '/images/projects/snapp/beta_test.mov', name: 'beta_test.mov', type: 'video' },
         { src: '/images/projects/snapp/daily_prompt.jpg', name: 'daily_prompt.jpg', type: 'image' },
       ]}
-      stats={[{ number: '1', label: 'prompt/day' }, { number: '0', label: 'likes by design' }, { number: '∞', label: 'perspectives' }]}
+      stats={[{ number: '1', label: 'word\na day' }, { number: '24hr', label: 'challenge' }, { number: '∞', label: 'moments\nof beauty' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
         { label: 'ONE CONSTRAINT', desc: 'One word per day. The constraint IS the creativity. Limits create focus.' },
@@ -183,33 +183,34 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="10vh" left="18vw">
+  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="90vw" height="82vh" top="2vh" left="5vw">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="Trip planning tools are either ugly spreadsheets or rigid templates. PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary skeleton in full editorial layout with live weather, auto-generated images."
-      tags="Frontend · Editorial Design · Reactive Interface"
-      location="Personal" status="In use · Mar 2026"
+      hook="Trip planning tools are either ugly spreadsheets or rigid templates. PlanMyTrip is a planning surface that's editable, data-connected, and pretty enough to download directly. AI can even generate a base to help you get started."
+      tags="Frontend · Editorial Design · Interactive"
+      location="Global" status="Deployed"
       appType="Web Application" context="Personal Project — AI-assisted build" year="2026"
       isMobile={false}
       video="/images/projects/planmytrip/main.mov"
       link="https://mytrippp.vercel.app/"
       gallery={[
         { src: '/images/projects/planmytrip/main.mov', name: 'main.mov', type: 'video' },
+        { src: '/images/projects/planmytrip/euro_alps_tour.pdf', name: 'euro_alps_tour.pdf', type: 'pdf', preview: '/images/projects/planmytrip/euro_alps_tour.pdf.png' },
+        { src: '/images/projects/planmytrip/trip_overview.pdf', name: 'trip_overview.pdf', type: 'pdf', preview: '/images/projects/planmytrip/trip_overview.pdf.png' },
         { src: '/images/projects/planmytrip/preview.jpg', name: 'preview.jpg', type: 'image' },
-        { src: '/images/projects/planmytrip/download.jpg', name: 'download.jpg', type: 'image' },
       ]}
-      stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
-      problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
+      stats={[{ number: 'LIVE', label: 'weather' }, { number: 'AI', label: 'recommendations' }, { number: 'PDF', label: 'downloads' }]}
+      problem={`Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at.`}
       approaches={[
-        { label: 'EDITOR NOT SPREADSHEET', desc: 'Planning should feel like designing a magazine, not filling cells. Editorial layout as interface.' },
-        { label: 'LIVE DATA LAYER', desc: 'Weather, images, and schedules update in real-time. A planning tool that knows what\'s happening.' },
-        { label: 'AI-ASSISTED BUILD', desc: 'Designed the spec, prompted the build. A proof that clear thinking produces working products.' },
+        { label: 'EDITOR NOT SPREADSHEET', desc: 'Planning should feel like designing a magazine, not filling cells. The interface IS the experience.' },
+        { label: 'LIVE DATA LAYER', desc: 'Weather, images, and schedules pull in real-time. The tool stays current so you don\'t have to.' },
+        { label: 'DESIGN-FIRST WORKFLOW', desc: 'Start with how it looks, then fill in the details. Visual hierarchy drives the planning process, not the other way around.' },
       ]}
       features={[
-        { title: 'Editorial design meets utility', desc: 'City intro slides with split typography, day pages with photo galleries and timelines.' },
-        { title: 'Live weather integration', desc: 'Real-time weather data per destination via Open-Meteo API.' },
-        { title: 'Built-in image search', desc: 'Find and place photos without leaving the tool.' },
-        { title: 'AI-assisted planning', desc: 'Generate itinerary suggestions based on user preferences and real-time data with AI.' },
+        { title: 'Magazine-quality layouts', desc: 'City intro slides, photo galleries, day timelines — planning you\'d actually screenshot and share.' },
+        { title: 'Multi-provider image search', desc: 'Find and place destination photos or auto-fill to populate the itinerary instantly.' },
+        { title: 'Weather-aware itineraries', desc: 'Live Open-Meteo data per destination. See conditions for every day of the trip, updated in real-time.' },
+        { title: 'Inline everything', desc: 'Click any text to edit. Drag to reorder. No modals, no forms — just direct manipulation.' },
       ]}
       mockups={[
         { label: 'ITINERARY VIEW', caption: 'City intro + day overview' },
@@ -238,7 +239,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2026"
       isMobile={true}
       link="https://rerouted.vercel.app/"
-      stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '89%', label: 'vary routes' }]}
+      stats={[{ number: '119K', label: 'street segments\nscored' }, { number: '386', label: 'curated\nPOIs' }, { number: '3', label: 'new ways\nto walk' }]}
       problem={`"Every navigation app gets you there fast. But what about making the walk worth taking?"`}
       approaches={[{ label: 'INTENT OVER INPUT', desc: 'Mood as navigation intent.' }, { label: 'DATA-INFORMED', desc: 'Routes from real street data.' }, { label: 'SAFETY DEFAULT', desc: 'Well-lit streets after dark.' }]}
       features={[{ title: '119K segments scored', desc: 'Real data on noise, greenery, safety.' }, { title: 'AI discovery', desc: 'Verified place recommendations.' }, { title: 'Safety baseline', desc: 'Well-lit routes after dark.' }]}
@@ -249,10 +250,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
       hook="Snapp is a location-based photo scavenger hunt. Each day, players get a single word prompt. Photos land on a shared map, then disappear at midnight."
-      tags="Product Design · Full-Stack · UX" location="Barcelona" status="In use · 2026"
+      tags="Product Design · Full-Stack · UX" location="Global" status="Deployed · 2026"
       isMobile={true}
       link="https://ohsnapp.vercel.app/"
-      stats={[{ number: '1', label: 'word/day' }, { number: '1', label: 'photo' }, { number: '∞', label: 'perspectives' }]}
+      stats={[{ number: '1', label: 'word\na day' }, { number: '24hr', label: 'challenge' }, { number: '∞', label: 'moments\nof beauty' }]}
       problem={`"We walk past interesting things every day without seeing them."`}
       approaches={[{ label: 'ONE CONSTRAINT', desc: 'Limits create focus.' }, { label: 'EPHEMERAL', desc: 'Resets at midnight.' }, { label: 'COLLECTIVE', desc: 'Shared interpretation.' }]}
       features={[{ title: 'Anti-social media', desc: 'No algorithm, no followers.' }, { title: 'Ephemeral', desc: 'Resets at midnight.' }, { title: 'Constraints = focus', desc: 'One word, one day.' }]}
@@ -263,13 +264,13 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
       hook="PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary in full editorial layout."
-      tags="Frontend · Editorial Design · Reactive Interface" location="Personal Project" status="In use · 2026"
+      tags="Frontend · Editorial Design · Interactive" location="Global" status="Deployed · 2026"
       isMobile={false}
       link="https://mytrippp.vercel.app/"
-      stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
-      problem={`"Trip planning tools are ugly spreadsheets or rigid templates."`}
-      approaches={[{ label: 'EDITOR NOT SPREADSHEET', desc: 'Editorial layout as interface.' }, { label: 'LIVE DATA LAYER', desc: 'Real-time weather + images.' }, { label: 'AI-ASSISTED BUILD', desc: 'Clear spec, prompted build.' }]}
-      features={[{ title: 'Editorial design', desc: 'City intros, photo galleries, timelines.' }, { title: 'Live weather', desc: 'Open-Meteo API per destination.' }, { title: 'AI-assisted build', desc: 'Designed system, Claude Code built it.' }]}
+      stats={[{ number: 'LIVE', label: 'weather' }, { number: 'AI', label: 'recommendations' }, { number: 'PDF', label: 'downloads' }]}
+      problem={`Trip planning tools are ugly spreadsheets or rigid templates.`}
+      approaches={[{ label: 'EDITOR NOT SPREADSHEET', desc: 'The interface IS the experience.' }, { label: 'LIVE DATA LAYER', desc: 'The tool stays current so you don\'t have to.' }, { label: 'DESIGN-FIRST WORKFLOW', desc: 'Visual hierarchy drives the planning process.' }]}
+      features={[{ title: 'Magazine-quality layouts', desc: 'Planning you\'d actually screenshot and share.' }, { title: 'Multi-provider image search', desc: 'Auto-fill to populate the itinerary instantly.' }, { title: 'Weather-aware itineraries', desc: 'Live conditions for every day of the trip.' }, { title: 'Inline everything', desc: 'Click to edit, drag to reorder. No modals.' }]}
       mockups={[{ label: 'ITINERARY', caption: 'Day overview' }, { label: 'WEATHER', caption: 'Weather widgets' }]}
     />
   </MobilePanel>

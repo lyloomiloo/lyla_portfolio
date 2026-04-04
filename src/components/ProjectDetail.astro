@@ -13,7 +13,7 @@ interface Props {
   approaches: { label: string; desc: string }[];
   features: { title: string; desc: string }[];
   mockups: { label: string; caption: string; video?: string; image?: string }[];
-  gallery?: { src: string; name: string; type: 'video' | 'image' }[];
+  gallery?: { src: string; name: string; type: 'video' | 'image' | 'pdf'; preview?: string }[];
   link?: string;
   video?: string;
   appType?: string;
@@ -117,9 +117,11 @@ const allProjects = [
               ) : (
                 <div class="proj-browser gallery-browser">
                   <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                  <div class="proj-bview">
+                  <div class={`proj-bview ${gallery[0].type === 'pdf' ? 'proj-bview--scroll' : ''}`}>
                     {gallery[0].type === 'video' ? (
                       <video src={gallery[0].src} autoplay loop muted playsinline class="proj-browser-video"></video>
+                    ) : gallery[0].type === 'pdf' ? (
+                      <iframe src={`${gallery[0].src}#toolbar=0&navpanes=0&scrollbar=1`} class="proj-browser-pdf"></iframe>
                     ) : (
                       <img src={gallery[0].src} alt={gallery[0].name} class="proj-browser-video" />
                     )}
@@ -130,10 +132,16 @@ const allProjects = [
             <span class="gallery-label">{gallery[0]?.name}</span>
           </div>
           <div class="gallery-filmstrip">
-            {gallery.slice(1, 4).map(item => (
+            {gallery.slice(1, 3).map(item => (
               <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
                 {item.type === 'video' ? (
                   <video src={item.src} muted playsinline preload="metadata" class="gallery-thumb-media"></video>
+                ) : item.type === 'pdf' ? (
+                  item.preview ? (
+                    <img src={item.preview} alt={item.name} loading="lazy" class="gallery-thumb-media" />
+                  ) : (
+                    <div class="gallery-thumb-pdf">PDF</div>
+                  )
                 ) : (
                   <img src={item.src} alt={item.name} loading="lazy" class="gallery-thumb-media" />
                 )}
@@ -143,29 +151,32 @@ const allProjects = [
           </div>
         </div>
 
-        <div class="props-col3">
-          <div class="props-section-label">Problem</div>
-          <p class="props-desc">{problem}</p>
+        <div class={`props-col3 ${!isMobile ? 'props-col3--collapsible' : ''}`} data-col3={!isMobile ? 'true' : undefined}>
+          {!isMobile && <button class="col3-toggle" data-col3-toggle aria-label="Toggle details panel">›</button>}
+          <div class="col3-inner">
+            <div class="props-section-label">Problem</div>
+            <p class="props-desc">{problem}</p>
 
-          <hr class="props-divider" />
+            <hr class="props-divider" />
 
-          <div class="props-section-label">Approach</div>
-          {approaches.map(a => (
-            <div class="props-approach-item">
-              <span class="props-approach-label">{a.label}</span>
-              <p>{a.desc}</p>
-            </div>
-          ))}
+            <div class="props-section-label">Approach</div>
+            {approaches.map(a => (
+              <div class="props-approach-item">
+                <span class="props-approach-label">{a.label}</span>
+                <p>{a.desc}</p>
+              </div>
+            ))}
 
-          <hr class="props-divider" />
+            <hr class="props-divider" />
 
-          <div class="props-section-label">Differentiators</div>
-          {features.map(f => (
-            <div class="props-feature-item">
-              <span class="props-feature-title">{f.title}</span>
-              <p>{f.desc}</p>
-            </div>
-          ))}
+            <div class="props-section-label">Differentiators</div>
+            {features.map(f => (
+              <div class="props-feature-item">
+                <span class="props-feature-title">{f.title}</span>
+                <p>{f.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
   </div>
@@ -179,13 +190,14 @@ const allProjects = [
   .proj-nav-tab:hover { color: var(--text); background: var(--bg-card); }
   .proj-nav-tab.active { color: var(--text); background: var(--bg-card); border-bottom-color: var(--orange); }
 
-  .proj-content { flex: 1; overflow-y: auto; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
+  .proj-content { flex: 1; overflow-y: auto; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair !important; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
   .proj-content::-webkit-scrollbar { width: 12px; }
   .proj-content::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
   .proj-content::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--bg); min-height: 40px; }
   .proj-content::-webkit-scrollbar-thumb:hover { background: #999; }
   .proj-content::-webkit-scrollbar-button { height: 12px; background: var(--bg); border-left: 1px solid var(--border); }
-  .proj-nav, .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair; }
+  .proj-nav, .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair !important; }
+  .proj-content *, .proj-nav * { cursor: url('/cursor-project.svg') 0 0, crosshair !important; }
 
   /* ========== GENERAL TAB — 3 columns: fields | mockup | details ========== */
   .props-main {
@@ -206,6 +218,8 @@ const allProjects = [
     padding: 1.5rem 2rem;
     gap: 1rem;
     overflow: hidden;
+    width: 280px;
+    box-sizing: content-box;
   }
 
   .gallery-preview {
@@ -275,6 +289,8 @@ const allProjects = [
     min-width: 0;
     padding: 1.5rem 2rem;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
   }
 
   .props-file-header {
@@ -356,7 +372,8 @@ const allProjects = [
     text-transform: uppercase;
     letter-spacing: 0.06em;
     padding: 6px 14px;
-    margin-top: 0.8rem;
+    margin-top: auto;
+    align-self: flex-end;
     background: var(--orange);
     color: #fff;
     text-decoration: none;
@@ -387,13 +404,89 @@ const allProjects = [
     color: var(--text-dim);
     margin-top: 0.3rem;
     display: block;
+    white-space: pre-line;
+    line-height: 1.2;
   }
 
-  /* Column 3 — description, problem, approach */
-  .props-col3 {
-    padding: 1.5rem 2rem;
-    overflow-y: auto;
+  /* PDF in browser frame */
+  .proj-bview--scroll {
+    aspect-ratio: auto;
+    height: 100%;
   }
+  .proj-browser-pdf {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+  }
+  .gallery-browser { display: flex; flex-direction: column; height: 100%; }
+  .gallery-browser .proj-bview { flex: 1; min-height: 0; }
+  .gallery-browser .proj-bview--scroll { overflow: hidden; }
+
+  /* When col3 is collapsed, let the gallery panel and browser mockup expand */
+  .props-main--expanded .props-gallery-panel { width: auto; }
+  .props-main--expanded .gallery-browser { max-width: none; width: 100%; }
+
+  /* PDF thumbnail */
+  .gallery-thumb-pdf {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* Column 3 */
+  .props-col3 {
+    padding: 0;
+    overflow-y: auto;
+    position: relative;
+  }
+  /* Collapsible variant (desktop non-mobile projects) */
+  .props-col3--collapsible {
+    transition: width 0.3s ease, min-width 0.3s ease;
+    min-width: 220px;
+  }
+  .props-col3--collapsible.collapsed {
+    min-width: 0;
+    width: 28px;
+    overflow: hidden;
+  }
+  .props-col3--collapsible.collapsed .col3-inner { opacity: 0; pointer-events: none; }
+  .props-col3--collapsible.collapsed .col3-toggle { transform: rotate(180deg); }
+
+  .col3-inner {
+    padding: 1.5rem 2rem;
+    transition: opacity 0.2s ease;
+  }
+
+  .col3-toggle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 28px;
+    height: 28px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-left: none;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--orange);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  .col3-toggle:hover { color: #e55e00; }
   .props-desc {
     font-family: var(--font-body);
     font-size: 0.95rem;
@@ -467,7 +560,10 @@ const allProjects = [
     .gallery-thumb { width: 44px; height: 44px; }
     .props-fields { padding: 1.2rem; }
     .props-field { grid-template-columns: 80px 1fr; }
-    .props-col3 { padding: 1.2rem; border-left: none; border-top: 1px solid var(--border); }
+    .props-col3 { border-left: none; border-top: 1px solid var(--border); }
+    .props-col3 .col3-inner { padding: 1.2rem; }
+    .col3-toggle { display: none; }
+    .props-col3--collapsible { min-width: 0; }
   }
 </style>
 
@@ -498,9 +594,15 @@ const allProjects = [
             : preview.querySelector('.proj-bview');
           if (mediaContainer) {
             const cls = isMobile ? 'proj-phone-video' : 'proj-browser-video';
-            mediaContainer.innerHTML = newType === 'video'
-              ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
-              : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+            if (newType === 'pdf') {
+              mediaContainer.innerHTML = `<iframe src="${newSrc}#toolbar=0&navpanes=0&scrollbar=1" class="proj-browser-pdf"></iframe>`;
+              mediaContainer.classList.add('proj-bview--scroll');
+            } else {
+              mediaContainer.classList.remove('proj-bview--scroll');
+              mediaContainer.innerHTML = newType === 'video'
+                ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
+                : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+            }
           }
           preview.dataset.gallerySrc = newSrc;
           preview.dataset.galleryType = newType;
@@ -509,18 +611,24 @@ const allProjects = [
           if (previewLabel) previewLabel.textContent = newName;
 
           // Put old preview item into the thumb slot
-          const thumbMedia = btn.querySelector('.gallery-thumb-media');
+          const thumbMedia = btn.querySelector('.gallery-thumb-media') || btn.querySelector('.gallery-thumb-pdf');
           if (thumbMedia) {
-            const replacement = prevType === 'video'
-              ? document.createElement('video')
-              : document.createElement('img');
-            replacement.setAttribute('src', prevSrc);
-            replacement.className = 'gallery-thumb-media';
-            if (prevType === 'video') {
+            let replacement: HTMLElement;
+            if (prevType === 'pdf') {
+              replacement = document.createElement('div');
+              replacement.className = 'gallery-thumb-pdf';
+              replacement.textContent = 'PDF';
+            } else if (prevType === 'video') {
+              replacement = document.createElement('video');
+              replacement.setAttribute('src', prevSrc);
+              replacement.className = 'gallery-thumb-media';
               (replacement as HTMLVideoElement).muted = true;
               replacement.setAttribute('preload', 'metadata');
               replacement.setAttribute('playsinline', '');
             } else {
+              replacement = document.createElement('img');
+              replacement.setAttribute('src', prevSrc);
+              replacement.className = 'gallery-thumb-media';
               replacement.setAttribute('alt', prevName);
               replacement.setAttribute('loading', 'lazy');
             }
@@ -532,6 +640,31 @@ const allProjects = [
           const thumbLabel = btn.querySelector('.gallery-label');
           if (thumbLabel) thumbLabel.textContent = prevName;
         });
+      });
+    });
+
+    // Col3 collapse toggle + auto-collapse (only for collapsible panels)
+    document.querySelectorAll('.props-col3--collapsible[data-col3]').forEach(col3 => {
+      const toggle = col3.querySelector('[data-col3-toggle]');
+      const propsMain = col3.closest('.props-main') as HTMLElement;
+      const fieldsCol = propsMain?.querySelector('.props-fields') as HTMLElement;
+      if (!toggle || !propsMain || !fieldsCol) return;
+
+      const collapse = () => {
+        // Lock col1 width, give all remaining space to col2
+        const col1Width = fieldsCol.offsetWidth;
+        propsMain.style.gridTemplateColumns = `${col1Width}px 1fr 28px`;
+        propsMain.classList.add('props-main--expanded');
+        col3.classList.add('collapsed');
+      };
+      const expand = () => {
+        propsMain.style.gridTemplateColumns = '';
+        propsMain.classList.remove('props-main--expanded');
+        col3.classList.remove('collapsed');
+      };
+
+      toggle.addEventListener('click', () => {
+        col3.classList.contains('collapsed') ? expand() : collapse();
       });
     });
   });

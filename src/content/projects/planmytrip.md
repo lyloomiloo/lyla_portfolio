@@ -4,10 +4,10 @@ slug: "planmytrip"
 displayTitle: "PLANMYTRIP"
 tagline: "Trip planning that looks as good as the trip."
 hook: "A planning tool that thinks like an editor.|This online builder turns trip itineraries into interactive editorials."
-type: "Personal Project"
-status: "In use · Mar 2026"
+type: "Global"
+status: "Deployed · Mar 2026"
 year: "2026"
-tags: ["Frontend", "Editorial Design", "Reactive Interface"]
+tags: ["Frontend", "Editorial Design", "Interactive"]
 thumbnail: "/images/projects/planmytrip/thumb.png"
 heroImage: "/images/projects/planmytrip/hero.png"
 order: 3
