@@ -24,8 +24,8 @@ function openWindow(id) {
   if (isDesktop()) {
     const win = document.querySelector(`[data-window-id="${id}"]`);
     if (!win) return;
-    // Only scatter if not already maximized
-    if (!win.classList.contains('maximized')) {
+    // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
+    if (!win.classList.contains('maximized') && !id.endsWith('-detail')) {
       scatterWindow(win);
     }
     win.style.display = 'flex';
@@ -93,8 +93,12 @@ function closeAllWindows() {
 }
 
 function updateTaskbar(activeId) {
+  // If opening a project detail, also highlight the projects tab
+  const isDetail = activeId && activeId.endsWith('-detail');
   document.querySelectorAll('[data-tab]').forEach(tab => {
-    tab.classList.toggle('active', tab.dataset.tab === activeId);
+    const isActive = tab.dataset.tab === activeId ||
+      (isDetail && tab.dataset.tab === 'projects');
+    tab.classList.toggle('active', isActive);
   });
 }
 

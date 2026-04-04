@@ -2,28 +2,109 @@
 import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+
+// Pixel art icons — 8x8 grids
+// _=transparent, O=orange(#FF6B00), G=green(#39FF14), W=white(#fff), B=blue(#4A9EFF), D=dark(#222)
+const pixelIcons: Record<string, string[][]> = {
+  reroute: [
+    ['_','_','_','O','O','_','_','_'],
+    ['_','_','O','_','_','O','_','_'],
+    ['_','O','_','_','_','_','O','_'],
+    ['O','_','_','G','G','_','_','O'],
+    ['O','_','_','G','G','_','_','O'],
+    ['_','O','_','G','_','_','O','_'],
+    ['_','_','O','G','_','O','_','_'],
+    ['_','_','_','G','O','_','_','_'],
+  ],
+  snapp: [
+    ['_','O','O','O','O','O','O','_'],
+    ['O','D','D','D','D','D','D','O'],
+    ['O','D','W','W','W','W','D','O'],
+    ['O','D','W','D','D','W','D','O'],
+    ['O','D','W','D','D','W','D','O'],
+    ['O','D','W','W','W','W','D','O'],
+    ['O','D','D','D','D','D','D','O'],
+    ['_','O','O','O','O','O','O','_'],
+  ],
+  planmytrip: [
+    ['_','_','B','B','B','B','_','_'],
+    ['_','B','B','B','B','B','B','_'],
+    ['B','B','O','B','B','O','B','B'],
+    ['B','B','B','B','B','B','B','B'],
+    ['B','O','B','B','B','B','O','B'],
+    ['B','B','O','O','O','O','B','B'],
+    ['_','B','B','B','B','B','B','_'],
+    ['_','_','B','B','B','B','_','_'],
+  ],
+};
+
+const iconColors: Record<string, string> = {
+  '_': 'transparent',
+  'O': '#FF6B00',
+  'G': '#39FF14',
+  'W': '#fff',
+  'D': '#222',
+  'B': '#4A9EFF',
+};
 ---
 
 <div class="pw-grid">
-  {projects.map(p => (
-    <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
-      <span class="pw-num">0{p.data.order}</span>
-      <h3 class="pw-title">{p.data.displayTitle}</h3>
-      <p class="pw-hook">{p.data.hook}</p>
-      <div class="pw-tags">
-        {p.data.tags.map((t: string) => <span>{t}</span>)}
+  {projects.map(p => {
+    const icon = pixelIcons[p.data.slug];
+    return (
+      <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
+        {icon && (
+          <div class="pw-pixel-icon">
+            {icon.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+          </div>
+        )}
+        <span class="pw-num">0{p.data.order}</span>
+        <h3 class="pw-title">{p.data.displayTitle}</h3>
+        <p class="pw-hook">{p.data.hook}</p>
+        <div class="pw-tags">
+          {p.data.tags.map((t: string) => <span>{t}</span>)}
+        </div>
+        {p.data.type && <div class="pw-location">{p.data.type}</div>}
+        <div class="pw-meta">{p.data.status}</div>
+        <span class="pw-arrow">VIEW PROJECT →</span>
       </div>
-      {p.data.type && <div class="pw-location">{p.data.type}</div>}
-      <div class="pw-meta">{p.data.status}</div>
-      <span class="pw-arrow">VIEW PROJECT →</span>
-    </div>
-  ))}
+    );
+  })}
 </div>
 
 <style>
-  .pw-grid { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
-  .pw-card { background: var(--bg-card); padding: 1.5rem; transition: background 0.15s; cursor: pointer; }
+  .pw-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    height: 100%;
+  }
+  .pw-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    transition: background 0.15s;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
   .pw-card:hover { background: var(--bg); }
+
+  /* Pixel art icon */
+  .pw-pixel-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    grid-template-columns: repeat(8, 5px);
+    grid-template-rows: repeat(8, 5px);
+    image-rendering: pixelated;
+    margin-bottom: 1rem;
+  }
+  .pw-pixel-icon div {
+    width: 5px;
+    height: 5px;
+  }
+
   .pw-num { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); display: block; margin-bottom: 0.3rem; }
   .pw-title { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; color: var(--text); letter-spacing: -0.03em; margin-bottom: 0.4rem; line-height: 1; }
   .pw-hook { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.8rem; }
@@ -31,5 +112,11 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
   .pw-tags span { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; padding: 2px 6px; border: 1px solid var(--border); color: var(--text-dim); }
   .pw-location { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
   .pw-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dim); margin-bottom: 0.6rem; }
-  .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; }
+  .pw-arrow { font-family: var(--font-mono); font-size: 0.85rem; color: var(--orange); font-weight: 700; margin-top: auto; }
+
+  @media (max-width: 768px) {
+    .pw-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

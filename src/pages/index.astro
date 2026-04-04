@@ -17,7 +17,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Desktop />
 
   <!-- Desktop Windows -->
-  <Window id="projects" title="projects.exe" width="65vw" height="70vh" top="3vh" left="5vw">
+  <Window id="projects" title="projects.exe" width="90vw" height="85vh" top="4vh" left="5vw">
     <ProjectsWindow />
   </Window>
   <Window id="about" title="about.exe" width="55vw" height="65vh" top="5vh" left="5vw" darkMode>
@@ -93,7 +93,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Project Detail Windows -->
-  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="6vh" left="16vw">
+  <Window id="reroute-detail" title="project_01.exe — (RE)ROUTE" width="68vw" height="65vh" top="4vh" left="10vw">
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
       hook="What if navigation optimised for how you feel, not just where you go? Reimagining walking as an experience with routing for safety, discovery, and human-ness."
@@ -121,7 +121,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="8vh" left="18vw">
+  <Window id="snapp-detail" title="project_02.exe — SNAPP" width="65vw" height="65vh" top="7vh" left="14vw">
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
       hook="What if we turned a map into a daily quest for beauty? A word a day. A shared visual diary for all."
@@ -149,7 +149,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="7vh" left="17vw">
+  <Window id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" width="66vw" height="65vh" top="10vh" left="18vw">
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
       hook="A planning tool that thinks like an editor, not a spreadsheet. Live weather, image search, and inline editing — all in one flow."
@@ -250,10 +250,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         lockScreen.style.display = 'none';
       }, 450);
 
-      // Wait for window-manager to be ready, then open projects
+      // Wait for window-manager to be ready, then open about
       const tryOpen = () => {
         if (typeof window.openWindow === 'function') {
-          window.openWindow('projects');
+          window.openWindow('about');
         } else {
           setTimeout(tryOpen, 100);
         }
