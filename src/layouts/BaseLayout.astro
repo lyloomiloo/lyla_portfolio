@@ -13,7 +13,7 @@ const {
 } = Astro.props;
 ---
 <!DOCTYPE html>
-<html lang="en" style="cursor:url(/cursor-blank.png) 0 0,none!important">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,8 +29,7 @@ const {
     }
   </script>
 </head>
-<body style="cursor:url(/cursor-blank.png) 0 0,none!important">
-  <div id="js-cursor" style="position:fixed;top:0;left:0;width:32px;height:32px;pointer-events:none;z-index:99999;image-rendering:pixelated;background:url(/cursor.svg) no-repeat;background-size:32px 32px"></div>
+<body>
   <slot />
   <script>
     // Legacy .reveal observer (keep for elements not yet migrated to Motion)
@@ -43,28 +42,5 @@ const {
   </script>
   <script src="../scripts/window-manager.js"></script>
   <script src="../scripts/duck-pet.js"></script>
-  <script is:inline>
-    (function() {
-      var c = document.getElementById('js-cursor');
-      if (!c || 'ontouchstart' in window) { if(c) c.style.display='none'; return; }
-      var pSel = 'a,button,[role="button"],input[type="submit"],.retro-btn,.desktop-icon,[data-tab],.gallery-thumb,.col3-toggle,.props-link-btn,.mp-btn';
-      var xSel = '.proj-content,.proj-nav,.pw-grid,.pw-card';
-      document.addEventListener('mousemove', function(e) {
-        c.style.left = e.clientX + 'px';
-        c.style.top = e.clientY + 'px';
-        var el = document.elementFromPoint(e.clientX, e.clientY);
-        if (!el) return;
-        if (el.closest(xSel)) {
-          c.style.backgroundImage = "url(/cursor-project.svg)";
-        } else if (el.closest(pSel) || el.matches(pSel)) {
-          c.style.backgroundImage = "url(/cursor-pointer.svg)";
-        } else {
-          c.style.backgroundImage = "url(/cursor.svg)";
-        }
-      });
-      document.addEventListener('mouseleave', function() { c.style.display='none'; });
-      document.addEventListener('mouseenter', function() { c.style.display=''; });
-    })();
-  </script>
 </body>
 </html>

@@ -311,16 +311,6 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         lockScreen.style.display = 'none';
       }, 450);
 
-      // Wait for window-manager to be ready, then open about
-      const tryOpen = () => {
-        if (typeof window.openWindow === 'function') {
-          window.openWindow('about');
-        } else {
-          setTimeout(tryOpen, 100);
-        }
-      };
-      setTimeout(tryOpen, 1500);
-
       if (lockButton) lockButton.removeEventListener('click', dismiss);
       document.removeEventListener('keydown', dismissKey);
     };

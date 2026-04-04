@@ -190,14 +190,12 @@ const allProjects = [
   .proj-nav-tab:hover { color: var(--text); background: var(--bg-card); }
   .proj-nav-tab.active { color: var(--text); background: var(--bg-card); border-bottom-color: var(--orange); }
 
-  .proj-content { flex: 1; overflow-y: auto; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair !important; scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
+  .proj-content { flex: 1; overflow-y: auto; background: var(--bg-card); scrollbar-width: thin; scrollbar-color: var(--border) var(--bg); }
   .proj-content::-webkit-scrollbar { width: 12px; }
   .proj-content::-webkit-scrollbar-track { background: var(--bg); border-left: 1px solid var(--border); }
   .proj-content::-webkit-scrollbar-thumb { background: var(--border); border: 2px solid var(--bg); min-height: 40px; }
   .proj-content::-webkit-scrollbar-thumb:hover { background: #999; }
   .proj-content::-webkit-scrollbar-button { height: 12px; background: var(--bg); border-left: 1px solid var(--border); }
-  .proj-nav, .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair !important; }
-  .proj-content *, .proj-nav * { cursor: url('/cursor-project.svg') 0 0, crosshair !important; }
 
   /* ========== GENERAL TAB — 3 columns: fields | mockup | details ========== */
   .props-main {
