@@ -6,7 +6,7 @@ tagline: "Navigation designed around experience, not efficiency."
 hook: "What if navigation optimised for quality, not just speed? |This web app reimagines walking as an experience with routing for safety, discovery, and human-ness."
 type: "Barcelona"
 status: "Master's Thesis · Prototype · On-going"
-year: "2025"
+year: "2026"
 tags: ["AI", "UX Research", "Product Design", "Data"]
 thumbnail: "/images/projects/reroute/thumb.png"
 heroImage: "/images/projects/reroute/hero.png"

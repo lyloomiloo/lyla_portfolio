@@ -56,7 +56,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     </div>
   </Window>
 
-  <Window id="recycle" title="recycle_bin/" width="280px" height="200px" top="30vh" left="38vw">
+  <Window id="recycle" title="bin/" width="280px" height="200px" top="30vh" left="38vw">
     <div style="font-family: var(--font-mono); font-size: 1rem; color: var(--text-dim); text-align: center; padding: 1.5rem 0;">
       <p style="font-size: 1.5rem;">&#128465;</p>
       <p style="font-size: 0.85rem;">(empty - i deleted my imposter syndrome.)</p>
@@ -116,10 +116,11 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       slug="reroute" order={1} title="(RE)ROUTE"
       hook="What if navigation optimised for how you feel, not just where you go? This web app reimagines walking as an experience with routing for safety, discovery, and human-ness."
       tags="Agentic Workflows · UX Research · Product Design · Data"
-      location="Barcelona" status="Master's Thesis · Prototype · 2025"
+      location="Barcelona" status="Prototype · On-going"
+      appType="Web Application" context="Master's Thesis — ELISAVA" year="2025"
       isMobile={true}
       video="/images/projects/reroute/main.mov"
-      stats={[{ number: '119K', label: 'street segments scored' }, { number: '372', label: 'hand-curated POIs' }, { number: '3', label: 'modes of navigation' }]}
+      stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '3', label: 'modes' }]}
       problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
         { label: 'INTENT OVER INPUT', desc: 'Users type feelings, not addresses. One AI call interprets mood as navigation intent.' },
@@ -146,9 +147,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       hook="A word a day. Infinite discovery. This web app helps humans look up from their screens to discover the beauty around them through daily quests."
       tags="Product Design · Full-Stack · UX · Gamification"
       location="Barcelona" status="In use · Feb 2026"
+      appType="Mobile Web App" context="Personal Project" year="2026"
       isMobile={true}
       video="/images/projects/snapp/preview.mov"
-      stats={[{ number: 'X', label: 'XXX' }, { number: 'X', label: 'XXX' }, { number: 'X', label: 'XXXX' }]}
+      stats={[{ number: '1', label: 'prompt/day' }, { number: '0', label: 'likes by design' }, { number: '∞', label: 'perspectives' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
         { label: 'ONE CONSTRAINT', desc: 'One word per day. The constraint IS the creativity. Limits create focus.' },
@@ -173,11 +175,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
       hook="A planning tool that thinks like an editor, not a spreadsheet. This online editor turns yearly family trip planning into interactive editorial-style content."
-      tags="Frontend · APIs · Editorial Design · Interactivity"
-      location="Personal Project" status="In use · Mar 2025"
+      tags="Frontend · APIs · Editorial Design"
+      location="Personal" status="In use · Mar 2026"
+      appType="Web Application" context="Personal Project — AI-assisted build" year="2025"
       isMobile={false}
       video="/images/projects/planmytrip/main.mov"
-      stats={[{ number: 'XX', label: 'XX' }, { number: 'XXX', label: 'XXX' }, { number: 'XXX', label: 'XXX' }]}
+      stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
       problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
       approaches={[
         { label: 'EDITOR NOT SPREADSHEET', desc: 'Planning should feel like designing a magazine, not filling cells. Editorial layout as interface.' },
@@ -253,10 +256,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <!-- Scrolling marquee bar -->
   <div class="marquee-bar">
     <div class="marquee-inner">
-      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
-      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
-      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
-      <span>STRATEGIST → BUILDER · PRODUCT DESIGN · AI WORKFLOWS · VIBE CODING · COMMUNICATIONS · BARCELONA & SINGAPORE 2026 · </span>
+      <span>LYLA HUANG'S PORTFOLIO &middot; STRATEGIST &rarr; BUILDER &middot; SPENT A DECADE SELLING STUFF FOR BRANDS. NOW MAKING STUFF FOR PEOPLE &middot; PRODUCT &middot; TECH &middot; COMMUNICATIONS &middot; CREATIVITY &middot; BARCELONA & SINGAPORE &middot; </span>
+      <span>LYLA HUANG'S PORTFOLIO &middot; STRATEGIST &rarr; BUILDER &middot; SPENT A DECADE SELLING STUFF FOR BRANDS. NOW MAKING STUFF FOR PEOPLE &middot; PRODUCT &middot; TECH &middot; COMMUNICATIONS &middot; CREATIVITY &middot; BARCELONA & SINGAPORE &middot; </span>
+      <span>LYLA HUANG'S PORTFOLIO &middot; STRATEGIST &rarr; BUILDER &middot; SPENT A DECADE SELLING STUFF FOR BRANDS. NOW MAKING STUFF FOR PEOPLE &middot; PRODUCT &middot; TECH &middot; COMMUNICATIONS &middot; CREATIVITY &middot; BARCELONA & SINGAPORE &middot; </span>
+      <span>LYLA HUANG'S PORTFOLIO &middot; STRATEGIST &rarr; BUILDER &middot; SPENT A DECADE SELLING STUFF FOR BRANDS. NOW MAKING STUFF FOR PEOPLE &middot; PRODUCT &middot; TECH &middot; COMMUNICATIONS &middot; CREATIVITY &middot; BARCELONA & SINGAPORE &middot; </span>
     </div>
   </div>
 
@@ -275,11 +278,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   const lockScreen = document.getElementById('lockScreen');
   const lockButton = document.getElementById('lockButton');
 
-  function setupLockListeners() {
-    if (!lockScreen || !lockButton) return;
-
+  if (lockScreen && !document.documentElement.classList.contains('skip-lock')) {
     const dismiss = (e: Event) => {
       e.preventDefault();
+      e.stopPropagation();
       lockScreen.classList.add('dismissing');
       sessionStorage.setItem('lyla-visited', 'true');
 
@@ -287,21 +289,24 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         lockScreen.style.display = 'none';
       }, 450);
 
-      lockButton.removeEventListener('click', dismiss);
+      // Wait for window-manager to be ready, then open about
+      const tryOpen = () => {
+        if (typeof window.openWindow === 'function') {
+          window.openWindow('about');
+        } else {
+          setTimeout(tryOpen, 100);
+        }
+      };
+      setTimeout(tryOpen, 1500);
+
+      if (lockButton) lockButton.removeEventListener('click', dismiss);
       document.removeEventListener('keydown', dismissKey);
     };
 
-    const dismissKey = (e: KeyboardEvent) => dismiss(e);
+    const dismissKey = (e: Event) => dismiss(e);
 
-    lockButton.addEventListener('click', dismiss);
+    if (lockButton) lockButton.addEventListener('click', dismiss);
     document.addEventListener('keydown', dismissKey);
-  }
-
-  // Expose so logoff can re-attach listeners
-  (window as any).__setupLockListeners = setupLockListeners;
-
-  if (!document.documentElement.classList.contains('skip-lock')) {
-    setupLockListeners();
   }
 
   // Mini player
@@ -396,7 +401,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     display: flex;
     white-space: nowrap;
     will-change: transform;
-    animation: marqueeScroll 18s linear infinite;
+    animation: marqueeScroll 24s linear infinite;
   }
   .marquee-inner span {
     font-family: var(--font-mono);
