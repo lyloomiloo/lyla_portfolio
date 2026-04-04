@@ -24,100 +24,8 @@ const allProjects = [
   { slug: 'planmytrip', title: 'project_03.exe — PLANMYTRIP', order: 3 },
 ];
 
-// 6x6 pixel art icons for approach cards, keyed by slug then card index
-// Colors: G=#39FF14(green), O=#FF6B00(orange), B=#4A9EFF(blue), W=#fff, D=#222
-type PxRow = string[];
-const approachIcons: Record<string, PxRow[][]> = {
-  reroute: [
-    // Arrow right (green) — GO / INTENT OVER INPUT
-    [
-      ['_','_','_','G','_','_'],
-      ['_','_','_','_','G','_'],
-      ['G','G','G','G','G','G'],
-      ['G','G','G','G','G','G'],
-      ['_','_','_','_','G','_'],
-      ['_','_','_','G','_','_'],
-    ],
-    // Compass/star (orange) — EXPLORE / DATA-INFORMED
-    [
-      ['_','_','O','O','_','_'],
-      ['_','_','O','O','_','_'],
-      ['O','O','_','_','O','O'],
-      ['O','O','_','_','O','O'],
-      ['_','_','O','O','_','_'],
-      ['_','_','O','O','_','_'],
-    ],
-    // Shield (blue) — WANDER / SAFETY
-    [
-      ['B','B','B','B','B','B'],
-      ['B','B','B','B','B','B'],
-      ['B','B','B','B','B','B'],
-      ['_','B','B','B','B','_'],
-      ['_','_','B','B','_','_'],
-      ['_','_','B','B','_','_'],
-    ],
-  ],
-  snapp: [
-    // Speech bubble (orange) — PROMPT / ONE CONSTRAINT
-    [
-      ['_','O','O','O','O','_'],
-      ['O','O','O','O','O','O'],
-      ['O','O','O','O','O','O'],
-      ['O','O','O','O','O','O'],
-      ['_','O','O','O','O','_'],
-      ['_','O','O','_','_','_'],
-    ],
-    // Hourglass (green) — CAPTURE / EPHEMERAL
-    [
-      ['G','G','G','G','G','G'],
-      ['_','G','G','G','G','_'],
-      ['_','_','G','G','_','_'],
-      ['_','_','G','G','_','_'],
-      ['_','G','G','G','G','_'],
-      ['G','G','G','G','G','G'],
-    ],
-    // Eye (blue) — SHARE / COLLECTIVE SEEING
-    [
-      ['_','_','B','B','_','_'],
-      ['_','B','B','B','B','_'],
-      ['B','B','D','D','B','B'],
-      ['B','B','D','D','B','B'],
-      ['_','B','B','B','B','_'],
-      ['_','_','B','B','_','_'],
-    ],
-  ],
-  planmytrip: [
-    // Grid/layout (orange) — EDITORIAL / EDITOR NOT SPREADSHEET
-    [
-      ['O','O','O','_','O','O'],
-      ['O','O','O','_','O','O'],
-      ['O','O','O','_','O','O'],
-      ['_','_','_','_','_','_'],
-      ['O','O','_','O','O','O'],
-      ['O','O','_','O','O','O'],
-    ],
-    // Lightning bolt (green) — LIVE DATA
-    [
-      ['_','_','G','G','G','_'],
-      ['_','G','G','G','_','_'],
-      ['G','G','G','G','G','_'],
-      ['_','G','G','G','G','_'],
-      ['_','_','G','G','_','_'],
-      ['_','G','G','_','_','_'],
-    ],
-    // Pencil (blue) — INLINE EDIT / AI-ASSISTED BUILD
-    [
-      ['_','_','_','_','B','B'],
-      ['_','_','_','B','B','_'],
-      ['_','_','B','B','_','_'],
-      ['_','B','B','_','_','_'],
-      ['B','B','_','_','_','_'],
-      ['B','_','_','_','_','_'],
-    ],
-  ],
-};
-
 // 4x4 pixel icons for solution feature items — unique per slug + index
+type PxRow = string[];
 const featureIcons: Record<string, PxRow[][]> = {
   reroute: [
     // Data points
@@ -160,7 +68,6 @@ const iconColors: Record<string, string> = {
   'D': '#222',
 };
 
-const slugApproachIcons = approachIcons[slug] || [];
 const slugFeatureIcons = featureIcons[slug] || [];
 ---
 
@@ -248,60 +155,52 @@ const slugFeatureIcons = featureIcons[slug] || [];
     </div>
 
     <!-- DESIGN THINKING -->
-    <div class="proj-section" data-proj-section="approach" style="display:none;">
-      <h3>PROBLEM</h3>
-      <p>{problem}</p>
+    <div class="proj-section dt-section" data-proj-section="approach" style="display:none;">
+      <div class="dt-problem">
+        <h3>Problem</h3>
+        <p>{problem}</p>
+      </div>
 
-      <h3>APPROACH</h3>
-      <div class="approach-with-mockups">
-        <div class="approach-cards">
-          {approaches.map((a, i) => (
-            <div class="approach-card">
-              {slugApproachIcons[i] && (
-                <div class="approach-pixel-icon">
-                  {slugApproachIcons[i].flat().map(c => <div style={`background:${iconColors[c]};`} />)}
-                </div>
-              )}
-              <span class="approach-label">{a.label}</span>
-              <p>{a.desc}</p>
-            </div>
-          ))}
-        </div>
-        <div class="approach-mockups">
-          {mockups.map(m => (
-            <div class="approach-mockup-item">
+      {approaches.map((a, i) => {
+        const m = mockups[i];
+        return (
+          <div class="dt-pair">
+            <div class="dt-pair-mockup">
               {isMobile ? (
-                <div class="proj-phone proj-phone--sm">
+                <div class="proj-phone proj-phone--dt">
                   <div class="proj-phone-notch"></div>
                   <div class="proj-phone-screen">
-                    {m.video ? (
+                    {m?.video ? (
                       <video src={m.video} autoplay loop muted playsinline class="proj-phone-video"></video>
-                    ) : m.image ? (
+                    ) : m?.image ? (
                       <img src={m.image} alt={m.label} class="proj-phone-video" />
                     ) : (
-                      <div class="proj-ph"><span>{m.label}</span></div>
+                      <div class="proj-ph"><span>{m?.label || a.label}</span></div>
                     )}
                   </div>
                 </div>
               ) : (
-                <div class="proj-browser proj-browser--sm">
+                <div class="proj-browser proj-browser--dt">
                   <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
                   <div class="proj-bview">
-                    {m.video ? (
+                    {m?.video ? (
                       <video src={m.video} autoplay loop muted playsinline class="proj-browser-video"></video>
-                    ) : m.image ? (
+                    ) : m?.image ? (
                       <img src={m.image} alt={m.label} class="proj-browser-video" />
                     ) : (
-                      <div class="proj-ph"><span>{m.label}</span></div>
+                      <div class="proj-ph"><span>{m?.label || a.label}</span></div>
                     )}
                   </div>
                 </div>
               )}
-              <span class="mockup-caption">{m.caption}</span>
             </div>
-          ))}
-        </div>
-      </div>
+            <div class="dt-pair-text">
+              <div class="dt-pair-label">{a.label}</div>
+              <p class="dt-pair-desc">{a.desc}</p>
+            </div>
+          </div>
+        );
+      })}
     </div>
 
   </div>
@@ -360,31 +259,47 @@ const slugFeatureIcons = featureIcons[slug] || [];
   .proj-phone-video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proj-browser-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-  /* Approach cards + mockups layout */
-  .approach-with-mockups { display: flex; flex-direction: column; gap: 1.5rem; }
-  .approach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  .approach-card { border: 1px solid var(--border); padding: 1rem; background: var(--bg); }
-  .approach-pixel-icon {
-    display: grid;
-    grid-template-columns: repeat(6, 5px);
-    grid-template-rows: repeat(6, 5px);
-    image-rendering: pixelated;
-    margin-bottom: 0.6rem;
-  }
-  .approach-pixel-icon div { width: 5px; height: 5px; }
-  .approach-label { font-family: var(--font-display); font-size: 1rem; font-weight: 700; display: block; margin-bottom: 0.4rem; color: var(--orange); }
-  .approach-card p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.5; margin: 0; }
+  /* Design Thinking — zigzag paired layout */
+  .dt-section { padding: 0; }
+  .dt-problem { margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border); }
+  .dt-problem h3 { font-size: 0.85rem; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+  .dt-problem p { font-size: 1rem; max-width: 600px; margin: 0; }
 
-  /* Mockups row inside design thinking tab */
-  .approach-mockups {
-    display: flex;
+  .dt-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
-    justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    padding: 1rem 0;
+    align-items: center;
+    padding: 1.5rem 0;
+    border-bottom: 1px dashed var(--border);
   }
-  .approach-mockup-item { text-align: center; }
+  .dt-pair:last-child { border-bottom: none; }
+
+  /* Alternate layout — flip columns */
+  .dt-pair:nth-child(odd) { direction: rtl; }
+  .dt-pair:nth-child(odd) > * { direction: ltr; }
+
+  .dt-pair-text { padding: 0 0.5rem; }
+  .dt-pair-label {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FF6B00;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .dt-pair-desc {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-mid);
+    margin: 0;
+  }
+  .dt-pair-mockup { display: flex; justify-content: center; }
+
+  /* Phone/browser sizes inside design thinking pairs */
+  .proj-phone--dt { width: 160px; border-radius: 18px; border-width: 3px; }
+  .proj-browser--dt { max-width: 280px; }
 
   /* Feature list */
   .proj-differentiators { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.8rem; }
@@ -403,11 +318,6 @@ const slugFeatureIcons = featureIcons[slug] || [];
   .feature-item strong { font-family: var(--font-display); font-size: 0.95rem; display: block; margin-bottom: 0.2rem; }
   .feature-item p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.5; margin: 0; }
 
-  /* Mockup gallery (kept for any standalone use) */
-  .mockup-gallery { display: flex; gap: 2rem; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
-  .mockup-item { text-align: center; }
-  .mockup-caption { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); margin-top: 0.8rem; display: block; }
-
   .proj-section h3 { font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; color: var(--text); margin-bottom: 0.8rem; }
   .proj-section p { font-family: var(--font-body); font-size: 1rem; font-weight: 300; color: var(--text-mid); line-height: 1.6; margin-bottom: 1rem; }
 
@@ -417,8 +327,10 @@ const slugFeatureIcons = featureIcons[slug] || [];
     .proj-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
     .proj-tab { white-space: nowrap; min-height: 44px; padding: 8px 12px; }
     .proj-overview { grid-template-columns: 1fr; }
-    .approach-cards { grid-template-columns: 1fr; }
-    .approach-mockups { flex-direction: column; align-items: center; }
+    .dt-pair { grid-template-columns: 1fr; gap: 1rem; }
+    .dt-pair:nth-child(odd) { direction: ltr; }
+    .proj-phone--dt { width: 140px; }
+    .proj-browser--dt { max-width: 240px; }
     .proj-highlights { flex-direction: column; gap: 0.8rem; }
     .proj-content { padding: 1.2rem; }
   }
