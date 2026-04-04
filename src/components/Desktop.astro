@@ -55,18 +55,39 @@ import DesktopIcon from './DesktopIcon.astro';
   <DesktopIcon id="selfie" label="selfie.jpg" icon="image" top="62%" left="30%" />
   <DesktopIcon id="readme" label="readme.txt" icon="notepad" top="58%" left="72%" />
 
-  <!-- Pixel art duck waddling on the ground -->
-  <div class="walking-duck">
-    <div class="pixel-duck">
-      <!-- 8x6 pixel duck: Y=yellow, O=orange(beak), K=dark(eye), _=transparent -->
-      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div><div></div>
-      <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
-      <div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
-      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
-      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
-      <div></div><div></div><div></div><div style="background:#FF6B00"></div><div></div><div style="background:#FF6B00"></div><div></div><div></div>
-    </div>
+  <!-- Desktop pet duck — walks behind icons (z-index:3, icons are z-index:5) -->
+<div class="duck walking" id="deskDuck">
+  <!-- Frame 1: feet apart (stride)
+       Row 1: _ _ Y Y Y _ _ _   head top
+       Row 2: _ _ Y K Y O _ _   head with eye + beak
+       Row 3: _ _ Y Y Y _ _ _   neck
+       Row 4: Y Y Y Y Y Y _ _   body wide
+       Row 5: Y Y Y Y Y Y _ _   body wide
+       Row 6: _ Y Y Y Y Y _ _   body
+       Row 7: _ _ Y Y Y _ _ _   tail taper
+       Row 8: _ _ O _ _ O _ _   feet apart -->
+  <div class="duck-frame duck-frame-1">
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FF6B00"></div><div></div><div></div><div style="background:#FF6B00"></div><div></div><div></div>
   </div>
+  <!-- Frame 2: feet together (passing) -->
+  <div class="duck-frame duck-frame-2">
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+    <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div></div><div></div><div></div>
+  </div>
+</div>
 </div>
 
 <style is:global>
@@ -239,51 +260,80 @@ import DesktopIcon from './DesktopIcon.astro';
   .f4 { bottom: 26%; right: 15%; background: #FFE066; }
   .f5 { bottom: 29%; left: 60%; background: #FF6B00; }
 
-  /* Wandering pixel duck */
-  .walking-duck {
+  /* ========== DESKTOP PET DUCK ========== */
+  .duck {
     position: absolute;
     bottom: 34%;
-    left: 20%;
-    z-index: 4;
-    animation: duckWander 40s ease-in-out infinite;
-    pointer-events: none;
-  }
-
-  .pixel-duck {
-    display: grid;
-    grid-template-columns: repeat(8, 4px);
-    grid-template-rows: repeat(6, 4px);
+    left: 200px;
+    z-index: 3;
+    cursor: pointer;
     image-rendering: pixelated;
-    animation: duckWaddle 0.6s ease-in-out infinite alternate;
   }
 
-  .pixel-duck div {
-    width: 4px;
-    height: 4px;
+  .duck-frame {
+    display: grid;
+    grid-template-columns: repeat(8, 6px);
+    grid-template-rows: repeat(8, 6px);
+    image-rendering: pixelated;
+    position: absolute;
+    top: 0; left: 0;
+  }
+  .duck-frame div {
+    width: 6px;
+    height: 6px;
   }
 
-  @keyframes duckWander {
-    0%   { left: 15%; bottom: 34%; transform: scaleX(1); }
-    8%   { left: 25%; bottom: 35%; transform: scaleX(1); }
-    12%  { left: 25%; bottom: 35%; transform: scaleX(1); }
-    20%  { left: 35%; bottom: 33%; transform: scaleX(1); }
-    28%  { left: 42%; bottom: 36%; transform: scaleX(1); }
-    32%  { left: 42%; bottom: 36%; transform: scaleX(-1); }
-    40%  { left: 30%; bottom: 34%; transform: scaleX(-1); }
-    44%  { left: 30%; bottom: 34%; transform: scaleX(-1); }
-    52%  { left: 50%; bottom: 32%; transform: scaleX(1); }
-    60%  { left: 65%; bottom: 35%; transform: scaleX(1); }
-    64%  { left: 65%; bottom: 35%; transform: scaleX(1); }
-    72%  { left: 55%; bottom: 33%; transform: scaleX(-1); }
-    80%  { left: 40%; bottom: 36%; transform: scaleX(-1); }
-    84%  { left: 40%; bottom: 36%; transform: scaleX(1); }
-    92%  { left: 22%; bottom: 34%; transform: scaleX(-1); }
-    100% { left: 15%; bottom: 34%; transform: scaleX(1); }
+  /* Frame toggling — JS adds/removes .frame-2 */
+  .duck-frame-2 { opacity: 0; }
+  .duck.frame-2 .duck-frame-1 { opacity: 0; }
+  .duck.frame-2 .duck-frame-2 { opacity: 1; }
+
+  /* Reserve space for the sprite */
+  .duck { width: 48px; height: 48px; position: absolute; }
+
+  .duck.idle .duck-frame {
+    animation: duck-idle 1s steps(2) infinite;
   }
 
-  @keyframes duckWaddle {
-    0% { transform: rotate(-2deg) translateY(0); }
-    100% { transform: rotate(2deg) translateY(-1px); }
+  .duck.struggling {
+    cursor: grabbing;
+  }
+  .duck.struggling .duck-frame {
+    animation: duck-struggle 0.12s steps(2) infinite;
+  }
+
+  @keyframes duck-idle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-1px); }
+  }
+
+  @keyframes duck-struggle {
+    0% { transform: rotate(-8deg) translateX(-2px); }
+    25% { transform: rotate(6deg) translateX(2px); }
+    50% { transform: rotate(-5deg) translateX(-1px); }
+    75% { transform: rotate(7deg) translateX(1px); }
+  }
+
+  @keyframes duck-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes duck-shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    75% { transform: translateX(3px); }
+  }
+
+  @keyframes duck-peck {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+
+  @keyframes duck-land {
+    0% { transform: scaleY(0.7) scaleX(1.2); }
+    50% { transform: scaleY(1.1) scaleX(0.9); }
+    100% { transform: scaleY(1) scaleX(1); }
   }
 
   /* Name tag — small, bottom-left */
