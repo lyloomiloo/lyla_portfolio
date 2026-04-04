@@ -24,6 +24,29 @@ function openWindow(id) {
   if (isDesktop()) {
     const win = document.querySelector(`[data-window-id="${id}"]`);
     if (!win) return;
+    // Projects window opens maximized with expand-from-icon animation
+    if (id === 'projects' && !win.classList.contains('maximized')) {
+      const icon = document.querySelector('[data-icon-id="projects"]');
+      if (icon) {
+        const rect = icon.getBoundingClientRect();
+        // Start at icon position
+        win.style.transition = 'none';
+        win.style.top = rect.top + 'px';
+        win.style.left = rect.left + 'px';
+        win.style.width = rect.width + 'px';
+        win.style.height = rect.height + 'px';
+        win.style.display = 'flex';
+        win.classList.add('open');
+        // Force reflow so the starting position is painted
+        win.offsetHeight;
+        // Restore transition and expand to fullscreen
+        win.style.transition = '';
+        win.classList.add('maximized');
+        focusWindow(id);
+        updateTaskbar(id);
+        return;
+      }
+    }
     // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
     if (!win.classList.contains('maximized') && !id.endsWith('-detail')) {
       scatterWindow(win);
