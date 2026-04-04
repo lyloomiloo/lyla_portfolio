@@ -16,14 +16,152 @@ interface Props {
 }
 
 const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, mockups } = Astro.props;
+
+// 6x6 pixel art icons for approach cards, keyed by slug then card index
+// Colors: G=#39FF14(green), O=#FF6B00(orange), B=#4A9EFF(blue), W=#fff, D=#222
+type PxRow = string[];
+const approachIcons: Record<string, PxRow[][]> = {
+  reroute: [
+    // Arrow right (green) — GO / INTENT OVER INPUT
+    [
+      ['_','_','_','G','_','_'],
+      ['_','_','_','_','G','_'],
+      ['G','G','G','G','G','G'],
+      ['G','G','G','G','G','G'],
+      ['_','_','_','_','G','_'],
+      ['_','_','_','G','_','_'],
+    ],
+    // Compass/star (orange) — EXPLORE / DATA-INFORMED
+    [
+      ['_','_','O','O','_','_'],
+      ['_','_','O','O','_','_'],
+      ['O','O','_','_','O','O'],
+      ['O','O','_','_','O','O'],
+      ['_','_','O','O','_','_'],
+      ['_','_','O','O','_','_'],
+    ],
+    // Shield (blue) — WANDER / SAFETY
+    [
+      ['B','B','B','B','B','B'],
+      ['B','B','B','B','B','B'],
+      ['B','B','B','B','B','B'],
+      ['_','B','B','B','B','_'],
+      ['_','_','B','B','_','_'],
+      ['_','_','B','B','_','_'],
+    ],
+  ],
+  snapp: [
+    // Speech bubble (orange) — PROMPT / ONE CONSTRAINT
+    [
+      ['_','O','O','O','O','_'],
+      ['O','O','O','O','O','O'],
+      ['O','O','O','O','O','O'],
+      ['O','O','O','O','O','O'],
+      ['_','O','O','O','O','_'],
+      ['_','O','O','_','_','_'],
+    ],
+    // Hourglass (green) — CAPTURE / EPHEMERAL
+    [
+      ['G','G','G','G','G','G'],
+      ['_','G','G','G','G','_'],
+      ['_','_','G','G','_','_'],
+      ['_','_','G','G','_','_'],
+      ['_','G','G','G','G','_'],
+      ['G','G','G','G','G','G'],
+    ],
+    // Eye (blue) — SHARE / COLLECTIVE SEEING
+    [
+      ['_','_','B','B','_','_'],
+      ['_','B','B','B','B','_'],
+      ['B','B','D','D','B','B'],
+      ['B','B','D','D','B','B'],
+      ['_','B','B','B','B','_'],
+      ['_','_','B','B','_','_'],
+    ],
+  ],
+  planmytrip: [
+    // Grid/layout (orange) — EDITORIAL / EDITOR NOT SPREADSHEET
+    [
+      ['O','O','O','_','O','O'],
+      ['O','O','O','_','O','O'],
+      ['O','O','O','_','O','O'],
+      ['_','_','_','_','_','_'],
+      ['O','O','_','O','O','O'],
+      ['O','O','_','O','O','O'],
+    ],
+    // Lightning bolt (green) — LIVE DATA
+    [
+      ['_','_','G','G','G','_'],
+      ['_','G','G','G','_','_'],
+      ['G','G','G','G','G','_'],
+      ['_','G','G','G','G','_'],
+      ['_','_','G','G','_','_'],
+      ['_','G','G','_','_','_'],
+    ],
+    // Pencil (blue) — INLINE EDIT / AI-ASSISTED BUILD
+    [
+      ['_','_','_','_','B','B'],
+      ['_','_','_','B','B','_'],
+      ['_','_','B','B','_','_'],
+      ['_','B','B','_','_','_'],
+      ['B','B','_','_','_','_'],
+      ['B','_','_','_','_','_'],
+    ],
+  ],
+};
+
+// 4x4 pixel icons for solution feature items — unique per slug + index
+const featureIcons: Record<string, PxRow[][]> = {
+  reroute: [
+    // Data points
+    [['O','_','O','_'],['_','O','_','O'],['O','_','O','_'],['_','O','_','O']],
+    // Magnifier
+    [['_','G','G','_'],['G','_','_','G'],['_','G','G','_'],['_','_','_','G']],
+    // Shield
+    [['B','B','B','B'],['B','B','B','B'],['_','B','B','_'],['_','_','B','_']],
+    // Pin
+    [['_','O','O','_'],['O','O','O','O'],['_','O','O','_'],['_','_','O','_']],
+  ],
+  snapp: [
+    // No-bell
+    [['O','_','_','O'],['_','O','O','_'],['_','O','O','_'],['O','_','_','O']],
+    // Clock
+    [['_','G','G','_'],['G','_','G','_'],['G','_','_','G'],['_','G','G','_']],
+    // Focus
+    [['B','_','_','B'],['_','B','B','_'],['_','B','B','_'],['B','_','_','B']],
+    // City
+    [['O','_','_','O'],['O','O','_','O'],['O','O','O','O'],['O','O','O','O']],
+  ],
+  planmytrip: [
+    // Layout
+    [['O','O','_','O'],['O','O','_','O'],['_','_','_','_'],['O','_','O','O']],
+    // Sun/weather
+    [['_','G','G','_'],['G','G','G','G'],['G','G','G','G'],['_','G','G','_']],
+    // Image
+    [['B','B','B','B'],['B','_','B','_'],['B','B','_','B'],['B','B','B','B']],
+    // Sparkle
+    [['_','O','_','O'],['O','O','O','_'],['_','O','O','O'],['O','_','O','_']],
+  ],
+};
+
+const iconColors: Record<string, string> = {
+  '_': 'transparent',
+  'O': '#FF6B00',
+  'G': '#39FF14',
+  'B': '#4A9EFF',
+  'W': '#fff',
+  'D': '#222',
+};
+
+const slugApproachIcons = approachIcons[slug] || [];
+const slugFeatureIcons = featureIcons[slug] || [];
 ---
 
 <div class="proj-detail" data-proj-detail={slug}>
   <div class="proj-tabs">
     <button class="proj-tab active" data-proj-section="overview">Overview</button>
-    <button class="proj-tab" data-proj-section="approach">Problem & Approach</button>
+    <button class="proj-tab" data-proj-section="approach">Design Thinking</button>
     <button class="proj-tab" data-proj-section="solution">Solution</button>
-    <button class="proj-tab" data-proj-section="mockups">Mockups</button>
   </div>
 
   <div class="proj-content">
@@ -64,18 +202,44 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
       </div>
     </div>
 
-    <!-- PROBLEM & APPROACH -->
+    <!-- DESIGN THINKING -->
     <div class="proj-section" data-proj-section="approach" style="display:none;">
       <h3>The Problem</h3>
       <p>{problem}</p>
-      <h3>The Approach</h3>
-      <div class="approach-cards">
-        {approaches.map(a => (
-          <div class="approach-card">
-            <span class="approach-label">{a.label}</span>
-            <p>{a.desc}</p>
-          </div>
-        ))}
+
+      <h3>Design Decisions</h3>
+      <div class="approach-with-mockups">
+        <div class="approach-cards">
+          {approaches.map((a, i) => (
+            <div class="approach-card">
+              {slugApproachIcons[i] && (
+                <div class="approach-pixel-icon">
+                  {slugApproachIcons[i].flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                </div>
+              )}
+              <span class="approach-label">{a.label}</span>
+              <p>{a.desc}</p>
+            </div>
+          ))}
+        </div>
+        <div class="approach-mockups">
+          {mockups.map(m => (
+            <div class="approach-mockup-item">
+              {isMobile ? (
+                <div class="proj-phone proj-phone--sm">
+                  <div class="proj-phone-notch"></div>
+                  <div class="proj-phone-screen"><div class="proj-ph"><span>{m.label}</span></div></div>
+                </div>
+              ) : (
+                <div class="proj-browser proj-browser--sm">
+                  <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
+                  <div class="proj-bview"><div class="proj-ph"><span>{m.label}</span></div></div>
+                </div>
+              )}
+              <span class="mockup-caption">{m.caption}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
 
@@ -83,35 +247,19 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
     <div class="proj-section" data-proj-section="solution" style="display:none;">
       <h3>What Makes It Different</h3>
       <div class="feature-list">
-        {features.map(f => (
+        {features.map((f, i) => (
           <div class="feature-item">
-            <span class="feature-icon">&#9670;</span>
+            {slugFeatureIcons[i] ? (
+              <div class="feature-pixel-icon">
+                {slugFeatureIcons[i].flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+              </div>
+            ) : (
+              <span class="feature-icon">&#9670;</span>
+            )}
             <div>
               <strong>{f.title}</strong>
               <p>{f.desc}</p>
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
-
-    <!-- MOCKUPS -->
-    <div class="proj-section" data-proj-section="mockups" style="display:none;">
-      <div class="mockup-gallery">
-        {mockups.map(m => (
-          <div class="mockup-item">
-            {isMobile ? (
-              <div class="proj-phone">
-                <div class="proj-phone-notch"></div>
-                <div class="proj-phone-screen"><div class="proj-ph"><span>{m.label}</span></div></div>
-              </div>
-            ) : (
-              <div class="proj-browser">
-                <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
-                <div class="proj-bview"><div class="proj-ph"><span>{m.label}</span></div></div>
-              </div>
-            )}
-            <span class="mockup-caption">{m.caption}</span>
           </div>
         ))}
       </div>
@@ -127,8 +275,8 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
   .proj-tab:hover { color: var(--text); }
   .proj-tab.active { color: var(--orange); border-bottom-color: var(--orange); background: var(--bg-card); }
 
-  .proj-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg-card); cursor: url('/cursor-project.svg'), crosshair; }
-  .proj-tabs { cursor: url('/cursor-project.svg'), crosshair; }
+  .proj-content { flex: 1; overflow-y: auto; padding: 2rem; background: var(--bg-card); cursor: url('/cursor-project.svg') 0 0, crosshair; }
+  .proj-tabs { cursor: url('/cursor-project.svg') 0 0, crosshair; }
 
   /* Overview */
   .proj-overview { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; align-items: center; min-height: 40vh; }
@@ -148,7 +296,9 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
   .proj-phone { width: 140px; background: var(--dark); border-radius: 18px; border: 2px solid #555; overflow: hidden; margin: 0 auto; }
   .proj-phone-notch { width: 45px; height: 3px; background: #555; border-radius: 0 0 4px 4px; margin: 0 auto; }
   .proj-phone-screen { aspect-ratio: 9 / 16; overflow: hidden; }
+  .proj-phone--sm { width: 100px; border-radius: 12px; }
   .proj-browser { width: 100%; border: 1px solid #555; overflow: hidden; background: var(--dark); }
+  .proj-browser--sm { max-width: 240px; }
   .proj-bbar { padding: 3px 6px; display: flex; align-items: center; gap: 4px; border-bottom: 1px solid #555; }
   .proj-bdots { display: flex; gap: 3px; }
   .proj-bdots span { width: 4px; height: 4px; border-radius: 50%; }
@@ -158,20 +308,52 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
   .proj-browser .proj-ph { aspect-ratio: 16/10; }
   .proj-ph span { font-family: var(--font-mono); font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em; }
 
-  /* Approach cards */
-  .approach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.2rem; }
+  /* Approach cards + mockups layout */
+  .approach-with-mockups { display: flex; flex-direction: column; gap: 2rem; }
+  .approach-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   .approach-card { border: 1px solid var(--border); padding: 1rem; background: var(--bg); }
+  .approach-pixel-icon {
+    display: grid;
+    grid-template-columns: repeat(6, 5px);
+    grid-template-rows: repeat(6, 5px);
+    image-rendering: pixelated;
+    margin-bottom: 0.6rem;
+  }
+  .approach-pixel-icon div { width: 5px; height: 5px; }
   .approach-label { font-family: var(--font-display); font-size: 1rem; font-weight: 700; display: block; margin-bottom: 0.4rem; color: var(--orange); }
   .approach-card p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.5; margin: 0; }
+
+  /* Mockups row inside design thinking tab */
+  .approach-mockups {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    background: var(--dark);
+    border: 1px solid #444;
+    padding: 1.5rem;
+    border-radius: 2px;
+  }
+  .approach-mockup-item { text-align: center; }
 
   /* Feature list */
   .feature-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
   .feature-item { display: flex; gap: 0.8rem; align-items: flex-start; }
   .feature-icon { color: var(--orange); font-size: 0.7rem; margin-top: 3px; flex-shrink: 0; }
+  .feature-pixel-icon {
+    display: grid;
+    grid-template-columns: repeat(4, 4px);
+    grid-template-rows: repeat(4, 4px);
+    image-rendering: pixelated;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+  .feature-pixel-icon div { width: 4px; height: 4px; }
   .feature-item strong { font-family: var(--font-display); font-size: 0.95rem; display: block; margin-bottom: 0.2rem; }
   .feature-item p { font-size: 0.85rem; color: var(--text-mid); line-height: 1.5; margin: 0; }
 
-  /* Mockup gallery */
+  /* Mockup gallery (kept for any standalone use) */
   .mockup-gallery { display: flex; gap: 2rem; justify-content: center; align-items: flex-start; flex-wrap: wrap; }
   .mockup-item { text-align: center; }
   .mockup-caption { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); margin-top: 0.8rem; display: block; }
@@ -184,7 +366,7 @@ const { slug, order, title, hook, tags, location, status, isMobile, stats, probl
     .proj-tab { white-space: nowrap; min-height: 44px; padding: 10px 14px; }
     .proj-overview { grid-template-columns: 1fr; }
     .approach-cards { grid-template-columns: 1fr; }
-    .mockup-gallery { flex-direction: column; align-items: center; }
+    .approach-mockups { flex-direction: column; align-items: center; }
     .proj-highlights { flex-direction: column; gap: 0.8rem; }
     .proj-content { padding: 1.2rem; }
   }

@@ -70,13 +70,39 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     </div>
   </Window>
 
-  <Window id="playlist" title="playlist.m3u" width="320px" height="230px" top="18vh" left="36vw">
-    <div style="font-family: var(--font-mono); font-size: 0.85rem; line-height: 2; color: var(--text);">
-      <p>1. Tití Me Preguntó &mdash; Bad Bunny</p>
-      <p>2. TURiSTA &mdash; Bad Bunny</p>
-      <p>3. Nujabes &mdash; Feather</p>
-      <p>4. NUEVAYoL &mdash; Bad Bunny</p>
-      <p>5. DtMF &mdash; Bad Bunny</p>
+  <Window id="playlist" title="playlist.m3u" width="300px" height="340px" top="18vh" left="36vw">
+    <div class="record-player">
+      <div class="rp-stage">
+        <div class="pixel-vinyl">
+          <!-- 12x12 pixel art record: D=dark groove, G=mid groove, O=orange label, K=center hole -->
+          <div></div><div></div><div></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div></div><div></div><div></div>
+          <div></div><div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div></div><div></div>
+          <div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div></div>
+          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div>
+          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div>
+          <div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-k"></div><div class="pv-k"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div>
+          <div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-k"></div><div class="pv-k"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div>
+          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div>
+          <div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-o"></div><div class="pv-o"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div>
+          <div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-d"></div><div></div>
+          <div></div><div></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-g"></div><div class="pv-g"></div><div class="pv-d"></div><div></div><div></div>
+          <div></div><div></div><div></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div class="pv-d"></div><div></div><div></div><div></div>
+        </div>
+        <div class="pixel-arm">
+          <div class="pa-p"></div><div></div><div></div>
+          <div></div><div class="pa-p"></div><div></div>
+          <div></div><div class="pa-p"></div><div></div>
+          <div></div><div></div><div class="pa-p"></div>
+          <div></div><div></div><div class="pa-t"></div>
+        </div>
+      </div>
+      <div class="rp-info">
+        <div class="rp-now">&gt; NOW PLAYING:</div>
+        <div class="rp-track" id="rp-track">Tycho &mdash; Awake</div>
+        <div class="rp-divider">- - - - - - - - - - -</div>
+        <div class="rp-next">&gt; NEXT UP:</div>
+        <div class="rp-queue" id="rp-queue">Bonobo &mdash; Kerala</div>
+      </div>
     </div>
   </Window>
 
@@ -103,9 +129,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       stats={[{ number: '119K', label: 'street segments scored' }, { number: '372', label: 'hand-curated POIs' }, { number: '3', label: 'modes of navigation' }]}
       problem='Every navigation app solves the same problem: getting you there fast. But what about making the walk worth taking? (re)Route does more than just get you from A to B — it brings the city to you, with journeys that spark.'
       approaches={[
-        { label: 'GO MODE', desc: 'The old maps but with new route options and smarter.' },
-        { label: 'EXPLORE MODE', desc: 'Discover, plan, or experience the city with AI-powered recommendations.' },
-        { label: 'WANDER MODE', desc: 'No destination, no route line. Just a compass and POIs nearby.' },
+        { label: 'INTENT OVER INPUT', desc: 'Users type feelings, not addresses. One AI call interprets mood as navigation intent.' },
+        { label: 'DATA-INFORMED ROUTES', desc: '119K street segments scored for noise, safety, greenery. Routes built from real characteristics, not just distance.' },
+        { label: 'SAFETY AS DEFAULT', desc: 'After dark, every route auto-shifts to well-lit streets. Not a toggle — a baseline.' },
       ]}
       features={[
         { title: '119K street segments scored', desc: 'Noise, greenery, cleanliness, cultural richness, safety — real data, not guesses.' },
@@ -131,9 +157,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       stats={[{ number: 'X', label: 'XXX' }, { number: 'X', label: 'XXX' }, { number: 'X', label: 'XXXX' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
       approaches={[
-        { label: 'PROMPT', desc: 'One word each day (e.g., texture, tiny, bright). Every user gets the same theme.' },
-        { label: 'CAPTURE', desc: 'Step outside, look around, and snap a relevant image to capture the everyday beauty.' },
-        { label: 'SHARE', desc: 'Photos drop on a shared city map. At midnight (UTC+1), the map resets. No pretense.' },
+        { label: 'ONE CONSTRAINT', desc: 'One word per day. The constraint IS the creativity. Limits create focus.' },
+        { label: 'EPHEMERAL BY DESIGN', desc: 'Map resets at midnight. No archive, no likes. The impermanence creates urgency without anxiety.' },
+        { label: 'COLLECTIVE SEEING', desc: 'Same prompt, different eyes. The city becomes a collaborative gallery through shared interpretation.' },
       ]}
       features={[
         { title: 'Anti-social media', desc: 'No algorithm, no followers, no likes. Using a phone to make you look up from it.' },
@@ -159,9 +185,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       stats={[{ number: 'XX', label: 'XX' }, { number: 'XXX', label: 'XXX' }, { number: 'XXX', label: 'XXX' }]}
       problem={`"Trip planning tools are either ugly spreadsheets or rigid templates. I wanted something useful that also looks like something you'd want to look at."`}
       approaches={[
-        { label: 'EDITORIAL', desc: 'Layout inspired by travel magazines. City intros, photo galleries, timelines.' },
-        { label: 'LIVE DATA', desc: 'Weather API per destination. Image search built in. Real-time, not static.' },
-        { label: 'INLINE EDIT', desc: `Click to edit everything. A planning tool that's also beautiful enough to screenshot.` },
+        { label: 'EDITOR NOT SPREADSHEET', desc: 'Planning should feel like designing a magazine, not filling cells. Editorial layout as interface.' },
+        { label: 'LIVE DATA LAYER', desc: 'Weather, images, and schedules update in real-time. A planning tool that knows what\'s happening.' },
+        { label: 'AI-ASSISTED BUILD', desc: 'Designed the spec, prompted the build. A proof that clear thinking produces working products.' },
       ]}
       features={[
         { title: 'Editorial design meets utility', desc: 'City intro slides with split typography, day pages with photo galleries and timelines.' },
@@ -197,7 +223,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       isMobile={true}
       stats={[{ number: '119K', label: 'segments' }, { number: '386', label: 'POIs' }, { number: '89%', label: 'vary routes' }]}
       problem={`"Every navigation app gets you there fast. But what about making the walk worth taking?"`}
-      approaches={[{ label: 'GO', desc: 'Destination routing.' }, { label: 'EXPLORE', desc: 'Vibe-based discovery.' }, { label: 'WANDER', desc: 'Compass + pins.' }]}
+      approaches={[{ label: 'INTENT OVER INPUT', desc: 'Mood as navigation intent.' }, { label: 'DATA-INFORMED', desc: 'Routes from real street data.' }, { label: 'SAFETY DEFAULT', desc: 'Well-lit streets after dark.' }]}
       features={[{ title: '119K segments scored', desc: 'Real data on noise, greenery, safety.' }, { title: 'AI discovery', desc: 'Verified place recommendations.' }, { title: 'Safety baseline', desc: 'Well-lit routes after dark.' }]}
       mockups={[{ label: 'GO', caption: 'GO mode' }, { label: 'EXPLORE', caption: 'EXPLORE mode' }, { label: 'WANDER', caption: 'WANDER mode' }]}
     />
@@ -210,7 +236,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       isMobile={true}
       stats={[{ number: '1', label: 'word/day' }, { number: '1', label: 'photo' }, { number: '∞', label: 'perspectives' }]}
       problem={`"We walk past interesting things every day without seeing them."`}
-      approaches={[{ label: 'PROMPT', desc: 'One word per day.' }, { label: 'CAPTURE', desc: 'Find it, snap it.' }, { label: 'SHARE', desc: 'City map, resets at midnight.' }]}
+      approaches={[{ label: 'ONE CONSTRAINT', desc: 'Limits create focus.' }, { label: 'EPHEMERAL', desc: 'Resets at midnight.' }, { label: 'COLLECTIVE', desc: 'Shared interpretation.' }]}
       features={[{ title: 'Anti-social media', desc: 'No algorithm, no followers.' }, { title: 'Ephemeral', desc: 'Resets at midnight.' }, { title: 'Constraints = focus', desc: 'One word, one day.' }]}
       mockups={[{ label: 'PROMPT', caption: 'Daily prompt' }, { label: 'MAP', caption: 'Shared map' }, { label: 'CAPTURE', caption: 'Photo capture' }]}
     />
@@ -223,7 +249,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       isMobile={false}
       stats={[{ number: '15', label: 'days' }, { number: '9', label: 'cities' }, { number: 'LIVE', label: 'weather' }]}
       problem={`"Trip planning tools are ugly spreadsheets or rigid templates."`}
-      approaches={[{ label: 'EDITORIAL', desc: 'Magazine-style layout.' }, { label: 'LIVE DATA', desc: 'Weather + images.' }, { label: 'INLINE', desc: 'Click to edit.' }]}
+      approaches={[{ label: 'EDITOR NOT SPREADSHEET', desc: 'Editorial layout as interface.' }, { label: 'LIVE DATA LAYER', desc: 'Real-time weather + images.' }, { label: 'AI-ASSISTED BUILD', desc: 'Clear spec, prompted build.' }]}
       features={[{ title: 'Editorial design', desc: 'City intros, photo galleries, timelines.' }, { title: 'Live weather', desc: 'Open-Meteo API per destination.' }, { title: 'AI-assisted build', desc: 'Designed system, Claude Code built it.' }]}
       mockups={[{ label: 'ITINERARY', caption: 'Day overview' }, { label: 'WEATHER', caption: 'Weather widgets' }]}
     />
@@ -269,4 +295,119 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     if (lockButton) lockButton.addEventListener('click', dismiss);
     document.addEventListener('keydown', dismissKey);
   }
+
+  // Record player track cycling
+  const playlist = [
+    { track: 'Tycho \u2014 Awake', next: 'Bonobo \u2014 Kerala' },
+    { track: 'Bonobo \u2014 Kerala', next: 'Khruangbin \u2014 Time (You and I)' },
+    { track: 'Khruangbin \u2014 Time (You and I)', next: 'Nujabes \u2014 Feather' },
+    { track: 'Nujabes \u2014 Feather', next: 'Tití Me Preguntó \u2014 Bad Bunny' },
+    { track: 'Tití Me Preguntó \u2014 Bad Bunny', next: 'Tycho \u2014 Awake' },
+  ];
+  let rpIdx = 0;
+  const rpTrack = document.getElementById('rp-track');
+  const rpQueue = document.getElementById('rp-queue');
+  if (rpTrack && rpQueue) {
+    setInterval(() => {
+      rpIdx = (rpIdx + 1) % playlist.length;
+      rpTrack.textContent = playlist[rpIdx].track;
+      rpQueue.textContent = playlist[rpIdx].next;
+    }, 5000);
+  }
 </script>
+
+<style is:global>
+  .record-player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    background: #1E1E1E;
+    margin: -1.5rem;
+    padding: 1.2rem;
+    image-rendering: pixelated;
+  }
+
+  .rp-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 0 0.6rem;
+  }
+
+  /* Pixel art vinyl — 12x12 grid */
+  .pixel-vinyl {
+    display: grid;
+    grid-template-columns: repeat(12, 10px);
+    grid-template-rows: repeat(12, 10px);
+    image-rendering: pixelated;
+    animation: vinyl-spin 4s linear infinite;
+  }
+  .pixel-vinyl div { width: 10px; height: 10px; }
+  .pv-d { background: #222; }
+  .pv-g { background: #333; }
+  .pv-o { background: #FF6B00; }
+  .pv-k { background: #111; }
+
+  /* Pixel tone arm — 5x3 grid */
+  .pixel-arm {
+    display: grid;
+    grid-template-columns: repeat(3, 6px);
+    grid-template-rows: repeat(5, 6px);
+    image-rendering: pixelated;
+    position: absolute;
+    top: 8px;
+    right: 20px;
+  }
+  .pixel-arm div { width: 6px; height: 6px; }
+  .pa-p { background: #888; }
+  .pa-t { background: #FF6B00; }
+
+  @keyframes vinyl-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .rp-info {
+    text-align: left;
+    font-family: var(--font-mono);
+    padding: 0.6rem 0.4rem 0;
+    width: 100%;
+    border-top: 2px solid #333;
+  }
+
+  .rp-now {
+    font-size: 0.65rem;
+    color: #39FF14;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.15rem;
+  }
+
+  .rp-track {
+    font-size: 0.85rem;
+    color: #FF6B00;
+    font-weight: 700;
+    min-height: 1.2em;
+    margin-bottom: 0.4rem;
+  }
+
+  .rp-divider {
+    font-size: 0.6rem;
+    color: #333;
+    margin-bottom: 0.4rem;
+    letter-spacing: 2px;
+  }
+
+  .rp-next {
+    font-size: 0.6rem;
+    color: #39FF14;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.15rem;
+  }
+
+  .rp-queue {
+    font-size: 0.75rem;
+    color: #888;
+    min-height: 1em;
+  }
+</style>

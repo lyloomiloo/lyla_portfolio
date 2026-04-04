@@ -72,20 +72,20 @@ const iconColors: Record<string, string> = {
   })}
 </div>
 
-<style>
+<style is:global>
   .pw-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
     height: 100%;
-    cursor: url('/cursor-project.svg'), crosshair;
+    cursor: url('/cursor-project.svg') 0 0, crosshair;
   }
   .pw-card {
     background: var(--bg-card);
     padding: 1.5rem;
     transition: background 0.15s;
-    cursor: pointer;
+    cursor: url('/cursor-project.svg') 0 0, crosshair;
     display: flex;
     flex-direction: column;
   }
