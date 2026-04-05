@@ -2,16 +2,18 @@
 interface Props {
   id: string;
   title: string;
+  fullscreen?: boolean;
 }
 
-const { id, title } = Astro.props;
+const { id, title, fullscreen = false } = Astro.props;
 ---
 
-<div class="mobile-panel" data-panel-id={id}>
+<div class:list={["mobile-panel", { "mobile-panel--fullscreen": fullscreen }]} data-panel-id={id}>
   <div class="mobile-panel-header">
-    <div class="mobile-panel-handle"></div>
+    {!fullscreen && <div class="mobile-panel-handle"></div>}
+    {fullscreen && <button class="mobile-panel-back" data-panel-close={id} aria-label="Back">&larr;</button>}
     <span class="mobile-panel-title">{title}</span>
-    <button class="mobile-panel-close" data-panel-close={id} aria-label="Close">&times;</button>
+    {!fullscreen && <button class="mobile-panel-close" data-panel-close={id} aria-label="Close">&times;</button>}
   </div>
   <div class="mobile-panel-body">
     <slot />
@@ -38,6 +40,15 @@ const { id, title } = Astro.props;
     display: flex;
     transform: translateY(0);
   }
+
+  /* Fullscreen variant */
+  .mobile-panel--fullscreen {
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    border-top: none;
+  }
+
   .mobile-panel-header {
     display: flex;
     align-items: center;
@@ -63,6 +74,9 @@ const { id, title } = Astro.props;
     color: var(--text-dim);
     padding-top: 6px;
   }
+  .mobile-panel--fullscreen .mobile-panel-title {
+    padding-top: 0;
+  }
   .mobile-panel-close {
     background: none;
     border: 1px solid var(--border);
@@ -73,6 +87,18 @@ const { id, title } = Astro.props;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+  .mobile-panel-back {
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: var(--text);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
   .mobile-panel-body {
     flex: 1;

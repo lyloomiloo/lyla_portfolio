@@ -281,6 +281,46 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// --- Mobile home screen app buttons ---
+document.addEventListener('click', (e) => {
+  const appBtn = e.target.closest('[data-open-app]');
+  if (appBtn) {
+    openWindow(appBtn.dataset.openApp);
+  }
+});
+
+// --- Swipe-down to close fullscreen mobile panels ---
+let swipeStartY = 0;
+let swipePanel = null;
+
+document.addEventListener('touchstart', (e) => {
+  const header = e.target.closest('.mobile-panel--fullscreen .mobile-panel-header');
+  if (!header) return;
+  swipeStartY = e.touches[0].clientY;
+  swipePanel = header.closest('.mobile-panel');
+});
+
+document.addEventListener('touchmove', (e) => {
+  if (!swipePanel) return;
+  const deltaY = e.touches[0].clientY - swipeStartY;
+  if (deltaY > 0) {
+    swipePanel.style.transform = `translateY(${deltaY}px)`;
+  }
+}, { passive: true });
+
+document.addEventListener('touchend', (e) => {
+  if (!swipePanel) return;
+  const deltaY = e.changedTouches[0].clientY - swipeStartY;
+  if (deltaY > 80) {
+    const id = swipePanel.dataset.panelId;
+    swipePanel.style.transform = '';
+    if (id) closeWindow(id);
+  } else {
+    swipePanel.style.transform = '';
+  }
+  swipePanel = null;
+});
+
 
 // Expose globally
 window.openWindow = openWindow;

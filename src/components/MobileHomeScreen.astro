@@ -1,0 +1,209 @@
+---
+import { icons, colorMap } from '../data/pixel-icons';
+
+// App grid config: icon key, label, panel ID
+const gridApps = [
+  { icon: 'notepad', label: 'readme.txt', id: 'readme' },
+  { icon: 'image', label: 'selfie.jpg', id: 'selfie' },
+  { icon: 'checklist', label: 'todo.md', id: 'todo' },
+  { icon: 'trash', label: 'recycle_bin/', id: 'recycle' },
+  { icon: 'music', label: 'playlist.m3u', id: 'playlist' },
+  { icon: 'resume', label: 'resume.pdf', id: 'resume' },
+];
+
+const dockApps = [
+  { icon: 'folder', label: 'projects', id: 'projects' },
+  { icon: 'terminal', label: 'about', id: 'about' },
+  { icon: 'gear', label: 'skills', id: 'skills' },
+  { icon: 'coffee', label: 'contact', id: 'contact' },
+];
+---
+
+<div class="phone-home" id="phoneHome">
+  <!-- Status Bar -->
+  <div class="phone-status-bar">
+    <span class="phone-time" data-phone-clock></span>
+    <div class="phone-status-icons">
+      <span>&#9679;</span>
+      <span>&#9650;</span>
+      <span>&#9608;</span>
+    </div>
+  </div>
+
+  <!-- App Grid -->
+  <div class="phone-app-grid">
+    {gridApps.map(app => {
+      const grid = icons[app.icon] || icons['notepad'];
+      return (
+        <button class="phone-app" data-open-app={app.id}>
+          <div class="phone-app-icon">
+            {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+          </div>
+          <span class="phone-app-label">{app.label}</span>
+        </button>
+      );
+    })}
+  </div>
+
+  <!-- Mobile Duck -->
+  <div class="duck walking mobile-duck" id="mobileDuck">
+    <div class="duck-frame duck-frame-1">
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FF6B00"></div><div></div><div></div><div style="background:#FF6B00"></div><div></div><div></div>
+    </div>
+    <div class="duck-frame duck-frame-2">
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#222"></div><div style="background:#FFE066"></div><div style="background:#FF6B00"></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div>
+      <div></div><div></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div style="background:#FFE066"></div><div></div><div></div><div></div>
+      <div></div><div></div><div></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div></div><div></div><div></div>
+    </div>
+  </div>
+
+  <!-- Dock -->
+  <div class="phone-dock">
+    {dockApps.map(app => {
+      const grid = icons[app.icon] || icons['notepad'];
+      return (
+        <button class="phone-dock-app" data-open-app={app.id}>
+          <div class="phone-app-icon">
+            {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+          </div>
+          <span class="phone-app-label">{app.label}</span>
+        </button>
+      );
+    })}
+  </div>
+</div>
+
+<style is:global>
+  .phone-home {
+    position: fixed;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  }
+
+  /* Status Bar */
+  .phone-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 20px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.7);
+    flex-shrink: 0;
+  }
+  .phone-status-icons {
+    display: flex;
+    gap: 6px;
+    font-size: 0.5rem;
+  }
+
+  /* App Grid */
+  .phone-app-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 8px;
+    padding: 32px 20px;
+    align-content: start;
+  }
+
+  .phone-app, .phone-dock-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 0;
+    min-height: 48px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .phone-app:active .phone-app-icon,
+  .phone-dock-app:active .phone-app-icon {
+    transform: scale(0.9);
+  }
+
+  .phone-app-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    display: grid;
+    grid-template-columns: repeat(10, 6px);
+    grid-template-rows: repeat(10, 6px);
+    image-rendering: pixelated;
+    overflow: hidden;
+    transition: transform 0.1s ease;
+  }
+  .phone-app-icon div {
+    width: 6px;
+    height: 6px;
+  }
+
+  .phone-app-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    max-width: 76px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Dock */
+  .phone-dock {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 12px 20px;
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(255,255,255,0.08);
+    flex-shrink: 0;
+  }
+
+  /* Mobile duck positioning */
+  .mobile-duck {
+    position: absolute;
+    bottom: 90px;
+    left: 30%;
+    z-index: 3;
+  }
+
+  /* Hide on desktop */
+  @media (min-width: 769px) {
+    .phone-home { display: none !important; }
+  }
+</style>
+
+<script>
+  // Phone clock
+  function updatePhoneClock() {
+    const el = document.querySelector('[data-phone-clock]');
+    if (!el) return;
+    const now = new Date();
+    el.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+  updatePhoneClock();
+  setInterval(updatePhoneClock, 30000);
+</script>

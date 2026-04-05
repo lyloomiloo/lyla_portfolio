@@ -130,4 +130,8 @@ const avatarColors: Record<string, string> = {
   .lock-screen.dismissing { pointer-events: none; }
 
   .skip-lock .lock-screen { display: none !important; }
+
+  @media (max-width: 768px) {
+    .lock-screen { display: none !important; }
+  }
 </style>

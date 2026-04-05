@@ -1,8 +1,11 @@
-// Desktop pet duck — walks around the meadow with 2-frame leg animation
-const duck = document.getElementById('deskDuck');
+// Pet duck — walks around the meadow (desktop) or above dock (mobile)
+const isMobileView = window.innerWidth <= 768;
+const duck = isMobileView
+  ? document.getElementById('mobileDuck')
+  : document.getElementById('deskDuck');
 if (duck) {
   let duckX = 5 + Math.random() * 85; // % from left
-  let duckY = 26 + Math.random() * 12; // % from bottom (meadow range)
+  let duckY = isMobileView ? 0 : (26 + Math.random() * 12); // mobile: fixed bottom via CSS
   let duckDir = 1; // 1=right, -1=left
   let duckState = 'walking'; // walking, idle, clicked, grabbed
   let isDragging = false;
@@ -101,12 +104,13 @@ if (duck) {
         const moveY = (dy / dist) * duckSpeed * 0.5 * (dt / 16);
 
         duckX += moveX;
-        duckY += moveY;
         duckX = Math.max(2, Math.min(95, duckX));
-        duckY = Math.max(26, Math.min(38, duckY));
-
         duck.style.left = duckX + '%';
-        duck.style.bottom = duckY + '%';
+        if (!isMobileView) {
+          duckY += moveY;
+          duckY = Math.max(26, Math.min(38, duckY));
+          duck.style.bottom = duckY + '%';
+        }
 
         if (Math.abs(dx) > 0.1) {
           duckDir = dx > 0 ? 1 : -1;

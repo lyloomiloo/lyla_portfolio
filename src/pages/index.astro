@@ -5,6 +5,8 @@ import Window from '../components/Window.astro';
 import MobilePanel from '../components/MobilePanel.astro';
 import Taskbar from '../components/Taskbar.astro';
 import LockScreen from '../components/LockScreen.astro';
+import MobileLockScreen from '../components/MobileLockScreen.astro';
+import MobileHomeScreen from '../components/MobileHomeScreen.astro';
 import ProjectsWindow from '../components/ProjectsWindow.astro';
 import AboutWindow from '../components/AboutWindow.astro';
 import SkillsWindow from '../components/SkillsWindow.astro';
@@ -14,7 +16,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
 <BaseLayout title="Portfolio">
   <LockScreen />
+  <MobileLockScreen />
   <Desktop />
+  <MobileHomeScreen />
 
   <!-- Desktop Windows -->
   <Window id="projects" title="projects.exe" width="90vw" height="85vh" top="4vh" left="5vw">
@@ -220,19 +224,19 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Mobile Panels -->
-  <MobilePanel id="projects" title="projects.exe">
+  <MobilePanel id="projects" title="projects.exe" fullscreen>
     <ProjectsWindow />
   </MobilePanel>
-  <MobilePanel id="about" title="about.exe">
+  <MobilePanel id="about" title="about.exe" fullscreen>
     <AboutWindow />
   </MobilePanel>
-  <MobilePanel id="skills" title="capabilities.dll">
+  <MobilePanel id="skills" title="capabilities.dll" fullscreen>
     <SkillsWindow />
   </MobilePanel>
-  <MobilePanel id="contact" title="contact.txt">
+  <MobilePanel id="contact" title="contact.txt" fullscreen>
     <ContactWindow />
   </MobilePanel>
-  <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE">
+  <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE" fullscreen>
     <ProjectDetail
       slug="reroute" order={1} title="(RE)ROUTE"
       hook="(re)Route is a walking app that asks a different question - What kind of walk do you need right now? Type a mood, a vibe, or a destination in natural language. The AI figures out the rest."
@@ -246,7 +250,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       mockups={[{ label: 'GO', caption: 'GO mode' }, { label: 'EXPLORE', caption: 'EXPLORE mode' }, { label: 'WANDER', caption: 'WANDER mode' }]}
     />
   </MobilePanel>
-  <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP">
+  <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP" fullscreen>
     <ProjectDetail
       slug="snapp" order={2} title="SNAPP"
       hook="Snapp is a location-based photo scavenger hunt. Each day, players get a single word prompt. Photos land on a shared map, then disappear at midnight."
@@ -260,7 +264,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       mockups={[{ label: 'PROMPT', caption: 'Daily prompt' }, { label: 'MAP', caption: 'Shared map' }, { label: 'CAPTURE', caption: 'Photo capture' }]}
     />
   </MobilePanel>
-  <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP">
+  <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" fullscreen>
     <ProjectDetail
       slug="planmytrip" order={3} title="PLANMYTRIP"
       hook="PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary in full editorial layout."
@@ -273,6 +277,56 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       features={[{ title: 'Magazine-quality layouts', desc: 'Planning you\'d actually screenshot and share.' }, { title: 'Multi-provider image search', desc: 'Auto-fill to populate the itinerary instantly.' }, { title: 'Weather-aware itineraries', desc: 'Live conditions for every day of the trip.' }, { title: 'Inline everything', desc: 'Click to edit, drag to reorder. No modals.' }]}
       mockups={[{ label: 'ITINERARY', caption: 'Day overview' }, { label: 'WEATHER', caption: 'Weather widgets' }]}
     />
+  </MobilePanel>
+
+  <!-- Easter egg mobile panels -->
+  <MobilePanel id="readme" title="readme.txt" fullscreen>
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
+      <p>Hey! You found the readme.</p>
+      <br>
+      <p>This portfolio was built with Astro, too many sleepless nights, and long conversations with Claude.</p>
+      <br>
+      <p>If you're reading this, you're the kind of person I want to work with!</p>
+      <br>
+      <p>Say hi &rarr; <a href="mailto:lyla.huangyanling@gmail.com" style="color: var(--orange);">lyla.huangyanling@gmail.com</a></p>
+    </div>
+  </MobilePanel>
+  <MobilePanel id="selfie" title="selfie.jpg" fullscreen>
+    <div style="text-align: center; padding: 2rem 1rem;">
+      <div style="width: 80px; height: 80px; background: var(--dark); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; color: var(--orange);">:)</div>
+      <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">close enough.</p>
+    </div>
+  </MobilePanel>
+  <MobilePanel id="todo" title="todo.md" fullscreen>
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text);">
+      <p>&#9745; Move to Barcelona</p>
+      <p>&#9745; Learn to vibe code (enough to prototype)</p>
+      <p>&#9745; Build a few things I actually like</p>
+      <p>&#9745; Make a new portfolio</p>
+      <p style="margin: 0.4rem 0;"></p>
+      <p style="color: var(--orange);">&#9744; Find a role that feels right</p>
+      <p>&#9744; Improve Spanish (beyond survival)</p>
+      <p>&#9744; Touch grass</p>
+    </div>
+  </MobilePanel>
+  <MobilePanel id="recycle" title="recycle_bin/" fullscreen>
+    <div style="font-family: var(--font-mono); font-size: 1rem; color: var(--text-dim); text-align: center; padding: 2rem 0;">
+      <p style="font-size: 2rem;">&#128465;</p>
+      <p style="font-size: 0.85rem;">(empty - i deleted my imposter syndrome.)</p>
+    </div>
+  </MobilePanel>
+  <MobilePanel id="playlist" title="playlist.m3u" fullscreen>
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text-dim); text-align: center; padding: 2rem 0;">
+      <p style="font-size: 1.5rem;">&#127925;</p>
+      <p>Open the desktop version for the full player experience.</p>
+    </div>
+  </MobilePanel>
+  <MobilePanel id="resume" title="resume.pdf" fullscreen>
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text); text-align: center; padding: 2rem 0;">
+      <p style="font-size: 2rem;">&#128196;</p>
+      <p style="font-weight: 700;">Lyla_Huang_Resume_2026.pdf</p>
+      <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 0.5rem;">Resume coming soon.</p>
+    </div>
   </MobilePanel>
 
   <!-- Scrolling marquee bar -->
@@ -408,6 +462,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     overflow: hidden;
     background: #FF6B00;
     padding: 6px 0;
+  }
+  @media (max-width: 768px) {
+    .marquee-bar { display: none !important; }
   }
   .marquee-inner {
     display: flex;
