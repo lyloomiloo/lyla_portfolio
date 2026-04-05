@@ -1,8 +1,8 @@
 // Desktop pet duck — walks around the meadow with 2-frame leg animation
 const duck = document.getElementById('deskDuck');
 if (duck) {
-  let duckX = 15 + Math.random() * 60; // % from left
-  let duckY = 28 + Math.random() * 8;  // % from bottom (meadow range)
+  let duckX = 5 + Math.random() * 85; // % from left
+  let duckY = 26 + Math.random() * 12; // % from bottom (meadow range)
   let duckDir = 1; // 1=right, -1=left
   let duckState = 'walking'; // walking, idle, clicked, grabbed
   let isDragging = false;
@@ -161,17 +161,18 @@ if (duck) {
 
   // --- CLICK COUNTER ---
   let duckClicks = 0;
-  const counter = document.getElementById('duckCounter');
   const countNum = document.getElementById('duckCountNum');
 
   function updateCounter() {
     duckClicks++;
+    const counterEl = document.getElementById('duckCounter');
     if (countNum) {
       countNum.textContent = String(duckClicks).padStart(3, '0');
-      countNum.style.transform = 'scale(1.3)';
-      setTimeout(() => countNum.style.transform = '', 100);
     }
-    if (counter) counter.classList.add('visible');
+    if (counterEl) {
+      counterEl.style.color = '#FF6B00';
+      setTimeout(() => counterEl.style.color = '', 200);
+    }
     // Milestones
     if (duckClicks === 10) showBubble('...really?', '#999');
     if (duckClicks === 25) showBubble("I'm getting dizzy", '#999');
