@@ -224,17 +224,164 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Mobile Panels -->
-  <MobilePanel id="projects" title="projects.exe" fullscreen>
-    <ProjectsWindow />
+  <!-- MOBILE: Projects — app store card style -->
+  <MobilePanel id="projects" title="" fullscreen>
+    <div class="m-projects">
+      <div class="m-proj-card" data-open-project="reroute-detail">
+        <div class="m-proj-text">
+          <div class="m-proj-num">01</div>
+          <div class="m-proj-title">(RE)ROUTE</div>
+          <div class="m-proj-hook">Navigation for how you feel, not where you go</div>
+          <div class="m-proj-tags">AI &middot; UX &middot; Product</div>
+          <div class="m-proj-meta">Thesis &middot; 2026</div>
+        </div>
+        <span class="m-proj-chevron">&rsaquo;</span>
+      </div>
+      <div class="m-proj-card" data-open-project="snapp-detail">
+        <div class="m-proj-text">
+          <div class="m-proj-num">02</div>
+          <div class="m-proj-title">SNAPP</div>
+          <div class="m-proj-hook">A word a day. Infinite discovery.</div>
+          <div class="m-proj-tags">Product &middot; Full-Stack &middot; UX</div>
+          <div class="m-proj-meta">Deployed &middot; 2026</div>
+        </div>
+        <span class="m-proj-chevron">&rsaquo;</span>
+      </div>
+      <div class="m-proj-card" data-open-project="planmytrip-detail">
+        <div class="m-proj-text">
+          <div class="m-proj-num">03</div>
+          <div class="m-proj-title">PLANMYTRIP</div>
+          <div class="m-proj-hook">A planning tool that thinks like an editor</div>
+          <div class="m-proj-tags">Frontend &middot; Editorial &middot; Interactive</div>
+          <div class="m-proj-meta">Deployed &middot; 2026</div>
+        </div>
+        <span class="m-proj-chevron">&rsaquo;</span>
+      </div>
+    </div>
   </MobilePanel>
-  <MobilePanel id="about" title="about.exe" fullscreen>
-    <AboutWindow />
+
+  <!-- MOBILE: About — terminal story -->
+  <MobilePanel id="about" title="" fullscreen>
+    <div class="m-terminal">
+      <div class="m-term-header">
+        <span class="m-term-dot"></span>
+        lyla_huang@portfolio ~ $
+      </div>
+      <div class="m-term-body">
+        <div class="m-about-section">&gt; WHO</div>
+        <p>Strategist turned builder. 10 years in advertising, now making products with AI.</p>
+        <p>Barcelona, ES<br><span class="m-term-dim">Originally from Singapore</span></p>
+
+        <hr class="m-about-divider" />
+
+        <div class="m-about-section">&gt; CAREER.LOG</div>
+        <div class="m-about-entry"><span class="m-about-year">2015</span><div><span class="m-about-co">NUS</span><br>Communications & New Media</div></div>
+        <div class="m-about-entry"><span class="m-about-year">2015-17</span><div><span class="m-about-co">HAVAS_SG</span><br>Copywriter<br><span class="m-about-hl">Scaled client IG 4000%. First award.</span></div></div>
+        <div class="m-about-entry"><span class="m-about-year">2018-21</span><div><span class="m-about-co">BLKJ_SG</span><br>Senior Copywriter<br><span class="m-about-hl">Led 8 creatives. Award-winning campaigns.</span></div></div>
+        <div class="m-about-entry"><span class="m-about-year">2021-22</span><div><span class="m-about-co">GOOGLE_APAC</span><br>Creative Strategist<br><span class="m-about-hl">133 SMEs across APAC.</span></div></div>
+        <div class="m-about-entry"><span class="m-about-year">2022-25</span><div><span class="m-about-co">FREELANCE</span><br>Strategy + Creative<br><span class="m-about-hl">20+ clients.</span></div></div>
+        <div class="m-about-entry"><span class="m-about-year">2025-26</span><div><span class="m-about-co">ELISAVA_BCN</span><br>MSc Human Interaction & AI</div></div>
+        <div class="m-about-entry"><span class="m-about-year">2026</span><div><span class="m-about-co">BUILD_MODE</span> <span class="m-about-now">//now</span><br>Products. Code. Experimentation.</div></div>
+
+        <hr class="m-about-divider" />
+
+        <div class="m-about-section">&gt; ARCHIVE/</div>
+        <div class="m-about-archive"><span class="m-about-file">scoot-savage/</span> 4x Award Winner</div>
+        <div class="m-about-archive"><span class="m-about-file">MCI-onwards/</span> National TVC</div>
+        <div class="m-about-archive"><span class="m-about-file">MWP-passion/</span> Brand Film Series</div>
+        <div class="m-about-archive"><span class="m-about-file">fairprice-pun/</span> Gold Markies 2017</div>
+        <div class="m-about-archive"><span class="m-about-file">scoot-hipsters/</span> Brand Film</div>
+        <div class="m-about-archive"><span class="m-about-file">scoot-inflight/</span> Video Series</div>
+
+        <hr class="m-about-divider" />
+
+        <div class="m-about-section">&gt; AWARDS</div>
+        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Rising Star</strong><br><span class="m-term-dim">Creative Circles '18</span></div>
+        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Gold</strong><br><span class="m-term-dim">Markies '17</span></div>
+        <div class="m-about-award"><span class="m-about-star">*</span> <strong>2 Silver + 3 Bronze</strong><br><span class="m-term-dim">Creative Circles '18</span></div>
+        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Grand Prize</strong><br><span class="m-term-dim">IG Cannes '16</span></div>
+
+        <hr class="m-about-divider" />
+
+        <p class="m-term-dim">I spent a decade selling stuff for brands.</p>
+        <p><span style="color:var(--orange)">Now, I create products for people.</span></p>
+        <div class="m-term-cursor">█</div>
+      </div>
+    </div>
   </MobilePanel>
-  <MobilePanel id="skills" title="capabilities.dll" fullscreen>
-    <SkillsWindow />
+
+  <!-- MOBILE: Skills — Settings app style -->
+  <MobilePanel id="skills" title="" fullscreen>
+    <div class="m-settings">
+      <div class="m-settings-group">
+        <div class="m-settings-header"><span class="m-settings-dot" style="background:#4A9EFF"></span>Strategy</div>
+        <div class="m-settings-item">Brand strategy & positioning</div>
+        <div class="m-settings-item">Consumer insights & research</div>
+        <div class="m-settings-item last">Content strategy & messaging</div>
+      </div>
+      <div class="m-settings-group">
+        <div class="m-settings-header"><span class="m-settings-dot" style="background:#FF6B00"></span>Design</div>
+        <div class="m-settings-item">Product design (concept to prototype)</div>
+        <div class="m-settings-item">UI/UX design</div>
+        <div class="m-settings-item last">Editorial & interaction design</div>
+      </div>
+      <div class="m-settings-group">
+        <div class="m-settings-header"><span class="m-settings-dot" style="background:#00CC55"></span>Build</div>
+        <div class="m-settings-item">Frontend development</div>
+        <div class="m-settings-item">AI workflows & prompting</div>
+        <div class="m-settings-item last">APIs, data, and integrations</div>
+      </div>
+      <div class="m-settings-group">
+        <div class="m-settings-header"><span class="m-settings-dot" style="background:#9B59B6"></span>Communicate</div>
+        <div class="m-settings-item">Writing & storytelling</div>
+        <div class="m-settings-item">Cross-functional collaboration</div>
+        <div class="m-settings-item last">Stakeholder alignment</div>
+      </div>
+    </div>
   </MobilePanel>
-  <MobilePanel id="contact" title="contact.txt" fullscreen>
-    <ContactWindow />
+
+  <!-- MOBILE: Contact — vCard style -->
+  <MobilePanel id="contact" title="" fullscreen>
+    <div class="m-contact">
+      <div class="m-contact-top">
+        <div class="m-contact-avatar">
+          <div class="m-contact-pixel-grid">
+            <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+            <div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div>
+            <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div>
+            <div></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div><div></div>
+          </div>
+        </div>
+        <div class="m-contact-name">LYLA HUANG</div>
+        <div class="m-contact-role">Strategist &rarr; Builder</div>
+      </div>
+      <div class="m-contact-links">
+        <a href="mailto:lyla.huangyanling@gmail.com" class="m-contact-link">
+          <span class="m-contact-label">email</span>
+          <span class="m-contact-value">lyla.huangyanling@gmail.com</span>
+          <span class="m-contact-chevron">&rsaquo;</span>
+        </a>
+        <a href="https://linkedin.com/in/lyla-huang/" target="_blank" rel="noopener" class="m-contact-link">
+          <span class="m-contact-label">linkedin</span>
+          <span class="m-contact-value">/in/lyla-huang/</span>
+          <span class="m-contact-chevron">&rsaquo;</span>
+        </a>
+        <a href="https://calendly.com/lyla-huangyanling/coffee-chat" target="_blank" rel="noopener" class="m-contact-link">
+          <span class="m-contact-label">chat</span>
+          <span class="m-contact-value">15-min coffee chat</span>
+          <span class="m-contact-chevron">&rsaquo;</span>
+        </a>
+        <div class="m-contact-link" style="border:none">
+          <span class="m-contact-label">location</span>
+          <span class="m-contact-value">Barcelona, ES & Singapore, SG</span>
+        </div>
+      </div>
+      <div class="m-contact-status">Open to Product, Creative Tech, Brand Strategy & adjacent roles within EU & APAC.</div>
+    </div>
   </MobilePanel>
   <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE" fullscreen>
     <ProjectDetail
@@ -1049,7 +1196,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   .spotify-nav {
     display: flex;
     justify-content: space-around;
-    padding: 6px 0 16px;
+    padding: 6px 0 8px;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
   }
@@ -1247,6 +1394,271 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     font-family: var(--font-mono);
     font-size: 0.7rem;
     color: var(--text-dim);
+  }
+
+  /* ========== Mobile Projects — Clean text cards ========== */
+  .m-projects { margin: -1.5rem; }
+  .m-proj-card {
+    padding: 1.2rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .m-proj-text { flex: 1; }
+  .m-proj-num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 0.15rem;
+  }
+  .m-proj-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.2rem;
+  }
+  .m-proj-hook {
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--text-mid);
+    line-height: 1.4;
+    margin-bottom: 0.3rem;
+  }
+  .m-proj-tags {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+  }
+  .m-proj-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    margin-top: 0.15rem;
+  }
+  .m-proj-chevron {
+    font-size: 1.5rem;
+    color: var(--text-dim);
+    margin-top: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  /* ========== Mobile About — Terminal story ========== */
+  .m-terminal {
+    margin: -1.5rem;
+    background: #0c0c0c;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .m-term-header {
+    background: #1a1a1a;
+    padding: 10px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #00CC55;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .m-term-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #00CC55;
+    flex-shrink: 0;
+  }
+  .m-term-body {
+    padding: 1.2rem;
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #ccc;
+    line-height: 1.6;
+    text-shadow: 0 0 8px rgba(0,204,85,0.08);
+  }
+  .m-term-body p { margin-bottom: 0.5rem; }
+  .m-term-dim { color: #666; }
+  .m-about-section {
+    color: #00CC55;
+    font-weight: 700;
+    font-size: 0.78rem;
+    margin: 1.5rem 0 0.6rem;
+  }
+  .m-about-section:first-child { margin-top: 0; }
+  .m-about-divider {
+    border: none;
+    border-top: 1px dashed #333;
+    margin: 1rem 0;
+  }
+  .m-about-entry {
+    display: grid;
+    grid-template-columns: 58px 1fr;
+    gap: 8px;
+    margin-bottom: 0.8rem;
+    font-size: 0.78rem;
+  }
+  .m-about-year {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 0.7rem;
+  }
+  .m-about-co {
+    color: var(--orange);
+    font-weight: 700;
+  }
+  .m-about-hl { color: #00CC55; }
+  .m-about-now { color: #00CC55; font-size: 0.65rem; }
+  .m-about-archive {
+    margin-bottom: 0.3rem;
+    font-size: 0.78rem;
+  }
+  .m-about-file { color: var(--orange); }
+  .m-about-award {
+    margin-bottom: 0.5rem;
+    font-size: 0.78rem;
+  }
+  .m-about-star { color: #FFE600; }
+  .m-term-cursor {
+    font-family: var(--font-mono);
+    color: #00CC55;
+    animation: cursor-blink 1s step-end infinite;
+    margin-top: 0.8rem;
+  }
+  @keyframes cursor-blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  /* ========== Mobile Skills — Settings app ========== */
+  .m-settings {
+    margin: -1.5rem;
+    background: #f0ede7;
+    padding: 0.8rem;
+    min-height: 100%;
+  }
+  .m-settings-group {
+    background: var(--bg-card);
+    border-radius: 10px;
+    margin-bottom: 0.6rem;
+    overflow: hidden;
+  }
+  .m-settings-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .m-settings-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .m-settings-item {
+    padding: 10px 14px;
+    font-family: var(--font-body);
+    font-size: 0.86rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+  }
+  .m-settings-item.last { border-bottom: none; }
+
+  /* ========== Mobile Contact — vCard ========== */
+  .m-contact {
+    margin: -1.5rem;
+    min-height: 100%;
+    background: #f0ede7;
+  }
+  .m-contact-top {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+  }
+  .m-contact-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: #333;
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    overflow: hidden;
+  }
+  .m-contact-pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 8px);
+    grid-template-rows: repeat(8, 8px);
+    image-rendering: pixelated;
+  }
+  .m-contact-pixel-grid div {
+    width: 8px;
+    height: 8px;
+  }
+  .m-contact-name {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.04em;
+  }
+  .m-contact-role {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+  .m-contact-links {
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin: 0 1rem 1rem;
+    overflow: hidden;
+  }
+  .m-contact-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    gap: 12px;
+  }
+  .m-contact-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    min-width: 52px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .m-contact-value {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+  .m-contact-chevron {
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .m-contact-status {
+    background: var(--bg-card);
+    border-radius: 12px;
+    margin: 0 1rem;
+    padding: 14px 16px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--orange);
+    line-height: 1.5;
   }
 
   /* Mini player — flat, retro, pixel art */
