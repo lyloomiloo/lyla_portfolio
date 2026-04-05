@@ -1,28 +1,14 @@
 ---
-const avatar = [
-  ['_','_','H','H','H','H','_','_'],
-  ['_','H','H','H','H','H','H','_'],
-  ['_','H','S','S','S','S','H','_'],
-  ['_','S','E','S','S','E','S','_'],
-  ['_','S','S','S','S','S','S','_'],
-  ['_','S','S','M','M','S','S','_'],
-  ['_','_','S','S','S','S','_','_'],
-  ['_','_','_','S','S','_','_','_'],
-];
-const avatarColors: Record<string, string> = {
-  '_': 'transparent', 'S': '#F4C89A', 'H': '#222', 'E': '#222', 'M': '#FF6B00',
-};
 ---
 
 <div class="phone-lock" id="phoneLockScreen">
-  <div class="phone-lock-content">
+  <div class="phone-lock-clock">
     <div class="phone-lock-time" data-phone-lock-clock></div>
     <div class="phone-lock-date" data-phone-lock-date></div>
-    <div class="phone-lock-avatar">
-      {avatar.flat().map(c => <div style={`background:${avatarColors[c]};`} />)}
-    </div>
+  </div>
+  <div class="phone-lock-bottom">
     <div class="phone-lock-name">LYLA HUANG</div>
-    <div class="phone-lock-hint">tap to unlock</div>
+    <div class="phone-lock-swipe">&#9650; swipe up to unlock</div>
   </div>
 </div>
 
@@ -36,20 +22,22 @@ const avatarColors: Record<string, string> = {
     inset: 0;
     z-index: 10000;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: rgba(10, 10, 10, 0.92);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    transition: transform 0.4s ease, opacity 0.4s ease;
+    padding-top: calc(15vh + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom, 0px));
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    touch-action: pan-y;
   }
-  .phone-lock-content {
+
+  .phone-lock-clock {
     text-align: center;
-    transition: opacity 0.3s ease;
   }
   .phone-lock-time {
-    font-family: var(--font-mono);
-    font-size: 4rem;
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 15vw, 5rem);
     font-weight: 700;
     color: #fff;
     letter-spacing: -0.02em;
@@ -58,51 +46,30 @@ const avatarColors: Record<string, string> = {
   .phone-lock-date {
     font-family: var(--font-mono);
     font-size: 0.85rem;
-    color: rgba(255,255,255,0.5);
-    margin-top: 4px;
-    margin-bottom: 2rem;
+    color: #888;
+    margin-top: 0.3rem;
   }
-  .phone-lock-avatar {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 1rem;
-    display: grid;
-    grid-template-columns: repeat(8, 8px);
-    grid-template-rows: repeat(8, 8px);
-    image-rendering: pixelated;
-    border: 2px solid rgba(255,255,255,0.2);
-    border-radius: 50%;
-    overflow: hidden;
-    background: #333;
-  }
-  .phone-lock-avatar div {
-    width: 8px;
-    height: 8px;
+
+  .phone-lock-bottom {
+    margin-top: auto;
+    text-align: center;
   }
   .phone-lock-name {
     font-family: var(--font-mono);
-    font-size: 1rem;
-    font-weight: 600;
-    color: #fff;
-    letter-spacing: 0.08em;
-    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+    color: #666;
+    letter-spacing: 0.15em;
+    margin-bottom: 2rem;
   }
-  .phone-lock-hint {
+  .phone-lock-swipe {
     font-family: var(--font-mono);
     font-size: 0.7rem;
-    color: rgba(255,255,255,0.35);
-    letter-spacing: 0.05em;
-    animation: phone-lock-pulse 2s ease-in-out infinite;
+    color: #555;
+    animation: swipe-hint 2s ease-in-out infinite;
   }
-  @keyframes phone-lock-pulse {
-    0%, 100% { opacity: 0.35; }
-    50% { opacity: 0.7; }
-  }
-
-  .phone-lock.dismissing {
-    transform: translateY(-100%);
-    opacity: 0;
-    pointer-events: none;
+  @keyframes swipe-hint {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-6px); opacity: 1; }
   }
 
   /* Skip on return visits */
@@ -132,20 +99,39 @@ const avatarColors: Record<string, string> = {
     updateLockClock();
     const clockInterval = setInterval(updateLockClock, 30000);
 
-    // Dismiss on tap
     function dismiss() {
-      lock.classList.add('dismissing');
+      lock.style.transition = 'transform 0.3s ease';
+      lock.style.transform = 'translateY(-100%)';
       sessionStorage.setItem('lyla-visited', 'true');
       clearInterval(clockInterval);
-      setTimeout(() => {
-        lock.style.display = 'none';
-      }, 400);
+      setTimeout(() => { lock.style.display = 'none'; }, 300);
     }
 
-    lock.addEventListener('click', dismiss);
+    // Swipe up to dismiss
+    let touchStartY = 0;
+    lock.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0].clientY;
+      lock.style.transition = 'none';
+    }, { passive: true });
+
+    lock.addEventListener('touchmove', (e) => {
+      const diff = touchStartY - e.touches[0].clientY;
+      if (diff > 0) {
+        lock.style.transform = `translateY(${-diff}px)`;
+      }
+    }, { passive: true });
+
     lock.addEventListener('touchend', (e) => {
-      e.preventDefault();
-      dismiss();
-    }, { passive: false });
+      const diff = touchStartY - e.changedTouches[0].clientY;
+      if (diff > 80) {
+        dismiss();
+      } else {
+        lock.style.transition = 'transform 0.2s ease';
+        lock.style.transform = 'translateY(0)';
+      }
+    });
+
+    // Tap fallback
+    lock.addEventListener('click', dismiss);
   });
 </script>

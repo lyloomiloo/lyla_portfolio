@@ -73,8 +73,8 @@ function openWindow(id) {
   if (id === 'resume') {
     setTimeout(() => {
       const a = document.createElement('a');
-      a.href = '/Lyla_Huang_Resume_2025.pdf';
-      a.download = 'Lyla_Huang_Resume_2025.pdf';
+      a.href = '/Lyla_Huang_Resume_2026.pdf';
+      a.download = 'Lyla_Huang_Resume_2026.pdf';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);

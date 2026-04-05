@@ -7,6 +7,8 @@ if (duck) {
   let duckX = 5 + Math.random() * 85; // % from left
   let duckY = isMobileView ? 0 : (26 + Math.random() * 12); // mobile: fixed bottom via CSS
   let duckDir = 1; // 1=right, -1=left
+  const mobileScale = isMobileView ? 'scale(0.7) ' : '';
+  function duckTransform(base) { return mobileScale + base; }
   let duckState = 'walking'; // walking, idle, clicked, grabbed
   let isDragging = false;
   let dragOffsetX = 0;
@@ -30,7 +32,9 @@ if (duck) {
 
   // Position the duck
   duck.style.left = duckX + '%';
-  duck.style.bottom = duckY + '%';
+  if (!isMobileView) {
+    duck.style.bottom = duckY + '%';
+  }
 
   function pickNewTarget() {
     targetX = 8 + Math.random() * 80;
@@ -114,7 +118,7 @@ if (duck) {
 
         if (Math.abs(dx) > 0.1) {
           duckDir = dx > 0 ? 1 : -1;
-          duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+          duck.style.transform = duckTransform(duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)');
         }
 
         // Walk frame toggle
@@ -154,7 +158,7 @@ if (duck) {
     duckState = 'walking';
     duck.classList.remove('idle', 'struggling', 'frame-2');
     duck.classList.add('walking');
-    duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+    duck.style.transform = duckTransform(duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)');
     duck.querySelectorAll('.duck-frame').forEach(f => {
       f.style.animation = '';
       f.style.filter = '';
@@ -187,7 +191,7 @@ if (duck) {
       duck.classList.remove('walking', 'idle', 'frame-2');
       let flips = 0;
       const danceInterval = setInterval(() => {
-        duck.style.transform = flips % 2 === 0 ? 'scaleX(-1)' : 'scaleX(1)';
+        duck.style.transform = duckTransform(flips % 2 === 0 ? 'scaleX(-1)' : 'scaleX(1)');
         flips++;
         if (flips > 20) { clearInterval(danceInterval); resumeWalk(); }
       }, 100);
@@ -263,9 +267,9 @@ if (duck) {
         break;
 
       case 'dead':
-        duck.style.transform += ' rotate(90deg)';
+        duck.style.transform = duckTransform(duck.style.transform.replace(mobileScale, '') + ' rotate(90deg)');
         setTimeout(() => {
-          duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+          duck.style.transform = duckTransform(duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)');
           resumeWalk();
         }, 1500);
         break;
@@ -294,7 +298,7 @@ if (duck) {
       case 'dance': {
         let flips = 0;
         const danceInterval = setInterval(() => {
-          duck.style.transform = flips % 2 === 0 ? 'scaleX(-1)' : 'scaleX(1)';
+          duck.style.transform = duckTransform(flips % 2 === 0 ? 'scaleX(-1)' : 'scaleX(1)');
           flips++;
           if (flips > 6) { clearInterval(danceInterval); resumeWalk(); }
         }, 150);
@@ -303,10 +307,10 @@ if (duck) {
 
       case 'nap':
         duck.style.transition = 'transform 0.5s steps(3)';
-        duck.style.transform += ' rotate(30deg)';
+        duck.style.transform = duckTransform(duck.style.transform.replace(mobileScale, '') + ' rotate(30deg)');
         showBubble('zzZ', '#999');
         setTimeout(() => {
-          duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+          duck.style.transform = duckTransform(duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)');
           duck.style.transition = '';
           resumeWalk();
         }, 2500);
@@ -356,11 +360,11 @@ if (duck) {
 
       case 'shrink':
         duck.style.transition = 'transform 0.15s steps(2)';
-        duck.style.transform = 'scale(0.3)';
+        duck.style.transform = duckTransform('scale(0.3)');
         setTimeout(() => {
-          duck.style.transform = 'scale(1.2)';
+          duck.style.transform = duckTransform('scale(1.2)');
           setTimeout(() => {
-            duck.style.transform = duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)';
+            duck.style.transform = duckTransform(duckDir === -1 ? 'scaleX(-1)' : 'scaleX(1)');
             duck.style.transition = '';
             resumeWalk();
           }, 150);
