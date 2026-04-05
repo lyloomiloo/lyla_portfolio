@@ -69,6 +69,11 @@ function openWindow(id) {
   }
   updateTaskbar(id);
 
+  // Fetch weather when weather panel opens
+  if (id === 'weather') {
+    loadWeather();
+  }
+
   // Auto-download resume PDF when resume window opens
   if (id === 'resume') {
     setTimeout(() => {
@@ -321,6 +326,41 @@ document.addEventListener('touchend', (e) => {
   swipePanel = null;
 });
 
+
+// --- Weather fetch for weather.app ---
+async function loadWeather() {
+  try {
+    const res = await fetch('https://api.open-meteo.com/v1/forecast?latitude=41.39&longitude=2.17&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=Europe/Madrid');
+    const data = await res.json();
+    const c = data.current;
+
+    const tempEl = document.getElementById('weatherTemp');
+    const descEl = document.getElementById('weatherDesc');
+    const humEl = document.getElementById('weatherHumidity');
+    const windEl = document.getElementById('weatherWind');
+    const sceneEl = document.getElementById('weatherScene');
+
+    if (tempEl) tempEl.textContent = Math.round(c.temperature_2m) + '°C';
+    if (humEl) humEl.textContent = c.relative_humidity_2m + '% humidity';
+    if (windEl) windEl.textContent = Math.round(c.wind_speed_10m) + ' km/h wind';
+
+    const code = c.weather_code;
+    let desc = 'Clear sky';
+    let scene = 'sunny';
+    if (code <= 1) { desc = 'Clear sky'; scene = 'sunny'; }
+    else if (code <= 3) { desc = 'Partly cloudy'; scene = 'cloudy'; }
+    else if (code <= 48) { desc = 'Foggy'; scene = 'cloudy'; }
+    else if (code <= 67) { desc = 'Rainy'; scene = 'rainy'; }
+    else if (code <= 77) { desc = 'Snowy'; scene = 'rainy'; }
+    else if (code <= 99) { desc = 'Stormy'; scene = 'rainy'; }
+
+    if (descEl) descEl.textContent = desc;
+    if (sceneEl) sceneEl.className = 'weather-scene weather-' + scene;
+  } catch (e) {
+    const descEl = document.getElementById('weatherDesc');
+    if (descEl) descEl.textContent = "Probably sunny (it's Barcelona)";
+  }
+}
 
 // Expose globally
 window.openWindow = openWindow;

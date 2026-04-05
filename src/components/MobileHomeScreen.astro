@@ -3,12 +3,12 @@ import { icons, colorMap } from '../data/pixel-icons';
 
 // App grid config: icon key, label, panel ID
 const gridApps = [
-  { icon: 'notepad', label: 'readme.txt', id: 'readme' },
-  { icon: 'image', label: 'selfie.jpg', id: 'selfie' },
-  { icon: 'checklist', label: 'todo.md', id: 'todo' },
-  { icon: 'trash', label: 'recycle_bin/', id: 'recycle' },
-  { icon: 'music', label: 'playlist.m3u', id: 'playlist' },
-  { icon: 'resume', label: 'resume.pdf', id: 'resume' },
+  { icon: 'image', label: 'photos', id: 'photos', bg: '#FFFFFF' },
+  { icon: 'messages', label: 'messages', id: 'messages', bg: '#34C759' },
+  { icon: 'weather', label: 'weather', id: 'weather', bg: '#5BC0EB' },
+  { icon: 'checklist', label: 'notes', id: 'notes', bg: '#FFB84D' },
+  { icon: 'music', label: 'playlist', id: 'playlist', bg: '#FF6B00' },
+  { icon: 'resume', label: 'resume', id: 'resume', bg: '#888', bottom: true },
 ];
 
 const dockApps = [
@@ -33,10 +33,11 @@ const dockApps = [
   <!-- App Grid -->
   <div class="phone-app-grid">
     {gridApps.map(app => {
+      if (!app) return <div />;
       const grid = icons[app.icon] || icons['notepad'];
       return (
-        <button class="phone-app" data-open-app={app.id}>
-          <div class="phone-app-icon">
+        <button class={`phone-app ${app.bottom ? 'phone-app--bottom' : ''}`} data-open-app={app.id}>
+          <div class="phone-app-icon" style={`background:${app.bg};`}>
             <div class="phone-app-pixels">
               {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
             </div>
@@ -125,11 +126,17 @@ const dockApps = [
     flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px 8px;
+    grid-template-rows: auto auto 1fr auto;
+    gap: 24px 8px;
     padding: 32px 20px;
     align-content: start;
     position: relative;
     z-index: 2;
+  }
+  .phone-app--bottom {
+    grid-column: 4;
+    grid-row: -1;
+    align-self: end;
   }
 
   .phone-app, .phone-dock-app {
@@ -152,7 +159,6 @@ const dockApps = [
     width: 60px;
     height: 60px;
     border-radius: 14px;
-    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -206,12 +212,12 @@ const dockApps = [
     height: 4px;
   }
 
-  /* Dock */
+  /* Dock — aligned with app grid */
   .phone-dock {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 10px 16px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px 20px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(10px);
