@@ -224,88 +224,63 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </Window>
 
   <!-- Mobile Panels -->
-  <!-- MOBILE: Projects — app store card style -->
-  <MobilePanel id="projects" title="" fullscreen>
-    <div class="m-projects">
-      <div class="m-proj-card" data-open-project="reroute-detail">
-        <div class="m-proj-text">
-          <div class="m-proj-num">01</div>
-          <div class="m-proj-title">(RE)ROUTE</div>
-          <div class="m-proj-hook">Navigation for how you feel, not where you go</div>
-          <div class="m-proj-tags">AI &middot; UX &middot; Product</div>
-          <div class="m-proj-meta">Thesis &middot; 2026</div>
-        </div>
-        <span class="m-proj-chevron">&rsaquo;</span>
-      </div>
-      <div class="m-proj-card" data-open-project="snapp-detail">
-        <div class="m-proj-text">
-          <div class="m-proj-num">02</div>
-          <div class="m-proj-title">SNAPP</div>
-          <div class="m-proj-hook">A word a day. Infinite discovery.</div>
-          <div class="m-proj-tags">Product &middot; Full-Stack &middot; UX</div>
-          <div class="m-proj-meta">Deployed &middot; 2026</div>
-        </div>
-        <span class="m-proj-chevron">&rsaquo;</span>
-      </div>
-      <div class="m-proj-card" data-open-project="planmytrip-detail">
-        <div class="m-proj-text">
-          <div class="m-proj-num">03</div>
-          <div class="m-proj-title">PLANMYTRIP</div>
-          <div class="m-proj-hook">A planning tool that thinks like an editor</div>
-          <div class="m-proj-tags">Frontend &middot; Editorial &middot; Interactive</div>
-          <div class="m-proj-meta">Deployed &middot; 2026</div>
-        </div>
-        <span class="m-proj-chevron">&rsaquo;</span>
-      </div>
-    </div>
-  </MobilePanel>
 
-  <!-- MOBILE: About — terminal story -->
+  <!-- MOBILE: About — Stats Dashboard -->
   <MobilePanel id="about" title="" fullscreen>
-    <div class="m-terminal">
-      <div class="m-term-header">
-        <span class="m-term-dot"></span>
-        lyla_huang@portfolio ~ $
+    <div class="stats-dash">
+      <div class="stats-profile">
+        <div class="stats-avatar">
+          <div class="m-contact-pixel-grid">
+            <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+            <div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div>
+            <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            <div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div>
+            <div></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div><div></div>
+          </div>
+        </div>
+        <div class="stats-name">LYLA HUANG</div>
+        <div class="stats-role">Strategist &rarr; Builder</div>
+        <div class="stats-quote">I spent a decade selling stuff for brands. Now, I create products for people.</div>
       </div>
-      <div class="m-term-body">
-        <div class="m-about-section">&gt; WHO</div>
-        <p>Strategist turned builder. 10 years in advertising, now making products with AI.</p>
-        <p>Barcelona, ES<br><span class="m-term-dim">Originally from Singapore</span></p>
 
-        <hr class="m-about-divider" />
+      <div class="stats-rings">
+        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#00CC55" stroke-width="3" stroke-dasharray="90 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">10</div><div class="stats-ring-label">yrs in industry</div></div>
+        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#FF6B00" stroke-width="3" stroke-dasharray="50 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">3</div><div class="stats-ring-label">products built</div></div>
+        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#4A9EFF" stroke-width="3" stroke-dasharray="30 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">2</div><div class="stats-ring-label">countries</div></div>
+      </div>
 
-        <div class="m-about-section">&gt; CAREER.LOG</div>
-        <div class="m-about-entry"><span class="m-about-year">2015</span><div><span class="m-about-co">NUS</span><br>Communications & New Media</div></div>
-        <div class="m-about-entry"><span class="m-about-year">2015-17</span><div><span class="m-about-co">HAVAS_SG</span><br>Copywriter<br><span class="m-about-hl">Scaled client IG 4000%. First award.</span></div></div>
-        <div class="m-about-entry"><span class="m-about-year">2018-21</span><div><span class="m-about-co">BLKJ_SG</span><br>Senior Copywriter<br><span class="m-about-hl">Led 8 creatives. Award-winning campaigns.</span></div></div>
-        <div class="m-about-entry"><span class="m-about-year">2021-22</span><div><span class="m-about-co">GOOGLE_APAC</span><br>Creative Strategist<br><span class="m-about-hl">133 SMEs across APAC.</span></div></div>
-        <div class="m-about-entry"><span class="m-about-year">2022-25</span><div><span class="m-about-co">FREELANCE</span><br>Strategy + Creative<br><span class="m-about-hl">20+ clients.</span></div></div>
-        <div class="m-about-entry"><span class="m-about-year">2025-26</span><div><span class="m-about-co">ELISAVA_BCN</span><br>MSc Human Interaction & AI</div></div>
-        <div class="m-about-entry"><span class="m-about-year">2026</span><div><span class="m-about-co">BUILD_MODE</span> <span class="m-about-now">//now</span><br>Products. Code. Experimentation.</div></div>
+      <div class="stats-section-title">Experience</div>
+      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">ELISAVA_BCN</span><span class="stats-exp-yr">2025-26</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:33%;background:#9B59B6"></div></div><div class="stats-exp-role">MSc Human Interaction & AI</div></div>
+      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">FREELANCE</span><span class="stats-exp-yr">2022-25</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:100%;background:#4A9EFF"></div></div><div class="stats-exp-role">Strategy + Creative &middot; 20+ clients</div></div>
+      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">GOOGLE_APAC</span><span class="stats-exp-yr">2021-22</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:33%;background:#00CC55"></div></div><div class="stats-exp-role">Creative Strategist &middot; 133 SMEs</div></div>
+      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">BLKJ_SG</span><span class="stats-exp-yr">2018-21</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:100%;background:#FF6B00"></div></div><div class="stats-exp-role">Senior Writer &middot; Led 8 creatives</div></div>
+      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">HAVAS_SG</span><span class="stats-exp-yr">2015-17</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:66%;background:#FF6B00"></div></div><div class="stats-exp-role">Copywriter</div></div>
 
-        <hr class="m-about-divider" />
-
-        <div class="m-about-section">&gt; ARCHIVE/</div>
-        <div class="m-about-archive"><span class="m-about-file">scoot-savage/</span> 4x Award Winner</div>
-        <div class="m-about-archive"><span class="m-about-file">MCI-onwards/</span> National TVC</div>
-        <div class="m-about-archive"><span class="m-about-file">MWP-passion/</span> Brand Film Series</div>
-        <div class="m-about-archive"><span class="m-about-file">fairprice-pun/</span> Gold Markies 2017</div>
-        <div class="m-about-archive"><span class="m-about-file">scoot-hipsters/</span> Brand Film</div>
-        <div class="m-about-archive"><span class="m-about-file">scoot-inflight/</span> Video Series</div>
-
-        <hr class="m-about-divider" />
-
-        <div class="m-about-section">&gt; AWARDS</div>
-        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Rising Star</strong><br><span class="m-term-dim">Creative Circles '18</span></div>
-        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Gold</strong><br><span class="m-term-dim">Markies '17</span></div>
-        <div class="m-about-award"><span class="m-about-star">*</span> <strong>2 Silver + 3 Bronze</strong><br><span class="m-term-dim">Creative Circles '18</span></div>
-        <div class="m-about-award"><span class="m-about-star">*</span> <strong>Grand Prize</strong><br><span class="m-term-dim">IG Cannes '16</span></div>
-
-        <hr class="m-about-divider" />
-
-        <p class="m-term-dim">I spent a decade selling stuff for brands.</p>
-        <p><span style="color:var(--orange)">Now, I create products for people.</span></p>
-        <div class="m-term-cursor">█</div>
+      <div class="stats-section-title">Achievements</div>
+      <div class="stats-pixel-badges">
+        <div class="stats-pixel-badge">
+          <div class="stats-pixel-icon" style="background:#FFE600"><div style="width:16px;height:16px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#FF6B00"></div></div>
+          <div class="stats-pixel-name">Rising Star</div>
+          <div class="stats-pixel-event">Creative Circles '18</div>
+        </div>
+        <div class="stats-pixel-badge">
+          <div class="stats-pixel-icon" style="background:#FFE600"><div style="width:16px;height:16px;border-radius:50%;background:#FF6B00"></div></div>
+          <div class="stats-pixel-name">Gold</div>
+          <div class="stats-pixel-event">Markies '17</div>
+        </div>
+        <div class="stats-pixel-badge">
+          <div class="stats-pixel-icon" style="background:#C0C0C0"><div style="width:14px;height:14px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#888"></div></div>
+          <div class="stats-pixel-name">2S + 3B</div>
+          <div class="stats-pixel-event">Creative Circles '18</div>
+        </div>
+        <div class="stats-pixel-badge">
+          <div class="stats-pixel-icon" style="background:#9B59B6"><div style="width:16px;height:16px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#FFE600"></div></div>
+          <div class="stats-pixel-name">Grand Prix</div>
+          <div class="stats-pixel-event">IG Cannes '16</div>
+        </div>
       </div>
     </div>
   </MobilePanel>
@@ -383,47 +358,141 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       <div class="m-contact-status">Open to Product, Creative Tech, Brand Strategy & adjacent roles within EU & APAC.</div>
     </div>
   </MobilePanel>
-  <MobilePanel id="reroute-detail" title="project_01.exe — (RE)ROUTE" fullscreen>
-    <ProjectDetail
-      slug="reroute" order={1} title="(RE)ROUTE"
-      hook="(re)Route is a walking app that asks a different question - What kind of walk do you need right now? Type a mood, a vibe, or a destination in natural language. The AI figures out the rest."
-      tags="AI · UX Research · Product Design · Data" location="Barcelona" status="Master's Thesis · 2026"
-      isMobile={true}
-      link="https://rerouted.vercel.app/"
-      stats={[{ number: '119K', label: 'street segments\nscored' }, { number: '386', label: 'curated\nPOIs' }, { number: '3', label: 'new ways\nto walk' }]}
-      problem={`"Every navigation app gets you there fast. But what about making the walk worth taking?"`}
-      approaches={[{ label: 'INTENT OVER INPUT', desc: 'Mood as navigation intent.' }, { label: 'DATA-INFORMED', desc: 'Routes from real street data.' }, { label: 'SAFETY DEFAULT', desc: 'Well-lit streets after dark.' }]}
-      features={[{ title: '119K segments scored', desc: 'Real data on noise, greenery, safety.' }, { title: 'AI discovery', desc: 'Verified place recommendations.' }, { title: 'Safety baseline', desc: 'Well-lit routes after dark.' }]}
-      mockups={[{ label: 'GO', caption: 'GO mode' }, { label: 'EXPLORE', caption: 'EXPLORE mode' }, { label: 'WANDER', caption: 'WANDER mode' }]}
-    />
+  <!-- MOBILE: Project detail — App Store style -->
+  <!-- MOBILE: Project details — App Store style -->
+  <MobilePanel id="reroute-detail" title="" fullscreen>
+    <div class="appstore">
+      <div class="appstore-head">
+        <img src="/images/projects/reroute/icon-512x512.png" alt="(RE)ROUTE" class="appstore-icon" />
+        <div class="appstore-head-text">
+          <div class="appstore-title">(RE)ROUTE</div>
+          <div class="appstore-sub">AI Walking Navigation</div>
+        </div>
+        <a href="https://rerouted.vercel.app/" target="_blank" rel="noopener" class="appstore-get">TRY</a>
+      </div>
+      <div class="appstore-stats-strip">
+        <div class="appstore-stat"><div class="appstore-stat-val">119K</div><div class="appstore-stat-label">segments scored</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">386</div><div class="appstore-stat-label">curated POIs</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">3</div><div class="appstore-stat-label">walk modes</div></div>
+      </div>
+      <div class="appstore-screenshots">
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/preview.jpg" alt="preview" /></div>
+        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/reroute/explore_mode.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/reroute/smart_search.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/wander_mode.jpg" alt="wander" /></div>
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/sassy_bestie.PNG" alt="sassy bestie" /></div>
+      </div>
+      <div class="appstore-desc">What if navigation optimised for how you feel, not just where you go? Type a mood, a vibe, or a destination. The AI routes you through Barcelona's most interesting streets.</div>
+      <div class="appstore-section">What's New</div>
+      <div class="appstore-features">
+        <div class="appstore-feat"><span class="appstore-dot">*</span>119K street segments scored for noise, safety, greenery</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>AI discovery: mood to route in one call</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Safety baseline after dark — always on</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>386 hand-curated POIs not on commercial platforms</div>
+      </div>
+      <div class="appstore-section">Approach</div>
+      <div class="appstore-concept"><div class="appstore-concept-label">INTENT OVER INPUT</div><div class="appstore-concept-desc">Users type feelings, not addresses. One AI call interprets mood as navigation intent.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">DATA-INFORMED ROUTES</div><div class="appstore-concept-desc">119K segments scored. Routes from real characteristics, not just distance.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">SAFETY AS DEFAULT</div><div class="appstore-concept-desc">After dark, every route auto-shifts to well-lit streets.</div></div>
+      <div class="appstore-section">Information</div>
+      <div class="appstore-info">
+        <div class="appstore-row"><span class="appstore-key">Type</span><span>Web Application</span></div>
+        <div class="appstore-row"><span class="appstore-key">Stack</span><span>AI &middot; UX &middot; Product &middot; Data</span></div>
+        <div class="appstore-row"><span class="appstore-key">Location</span><span>Barcelona</span></div>
+        <div class="appstore-row"><span class="appstore-key">Status</span><span>Prototype</span></div>
+        <div class="appstore-row last"><span class="appstore-key">Context</span><span>Master's Thesis &mdash; ELISAVA</span></div>
+      </div>
+    </div>
   </MobilePanel>
-  <MobilePanel id="snapp-detail" title="project_02.exe — SNAPP" fullscreen>
-    <ProjectDetail
-      slug="snapp" order={2} title="SNAPP"
-      hook="Snapp is a location-based photo scavenger hunt. Each day, players get a single word prompt. Photos land on a shared map, then disappear at midnight."
-      tags="Product Design · Full-Stack · UX" location="Global" status="Deployed · 2026"
-      isMobile={true}
-      link="https://ohsnapp.vercel.app/"
-      stats={[{ number: '1', label: 'word\na day' }, { number: '24hr', label: 'challenge' }, { number: '∞', label: 'moments\nof beauty' }]}
-      problem={`"We walk past interesting things every day without seeing them."`}
-      approaches={[{ label: 'ONE CONSTRAINT', desc: 'Limits create focus.' }, { label: 'EPHEMERAL', desc: 'Resets at midnight.' }, { label: 'COLLECTIVE', desc: 'Shared interpretation.' }]}
-      features={[{ title: 'Anti-social media', desc: 'No algorithm, no followers.' }, { title: 'Ephemeral', desc: 'Resets at midnight.' }, { title: 'Constraints = focus', desc: 'One word, one day.' }]}
-      mockups={[{ label: 'PROMPT', caption: 'Daily prompt' }, { label: 'MAP', caption: 'Shared map' }, { label: 'CAPTURE', caption: 'Photo capture' }]}
-    />
+
+  <MobilePanel id="snapp-detail" title="" fullscreen>
+    <div class="appstore">
+      <div class="appstore-head">
+        <img src="/images/projects/snapp/icon-512.png" alt="SNAPP" class="appstore-icon" />
+        <div class="appstore-head-text">
+          <div class="appstore-title">SNAPP</div>
+          <div class="appstore-sub">Photo Scavenger Hunt</div>
+        </div>
+        <a href="https://ohsnapp.vercel.app/" target="_blank" rel="noopener" class="appstore-get">TRY</a>
+      </div>
+      <div class="appstore-stats-strip">
+        <div class="appstore-stat"><div class="appstore-stat-val">1</div><div class="appstore-stat-label">word a day</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">24hr</div><div class="appstore-stat-label">challenge</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">0</div><div class="appstore-stat-label">likes by design</div></div>
+      </div>
+      <div class="appstore-screenshots">
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/snapp/daily_prompt.jpg" alt="daily prompt" /></div>
+        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/snapp/beta_test.mov" muted playsinline preload="metadata"></video></div>
+      </div>
+      <div class="appstore-desc">A location-based photo scavenger hunt. Each day, one word. Find it. Frame it. Share it on a shared map that resets at midnight.</div>
+      <div class="appstore-section">What's New</div>
+      <div class="appstore-features">
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Anti-social media: no algorithm, no followers</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Ephemeral — the map resets at midnight</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>One word + one day = focus</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>City becomes a collaborative gallery</div>
+      </div>
+      <div class="appstore-section">Approach</div>
+      <div class="appstore-concept"><div class="appstore-concept-label">ONE CONSTRAINT</div><div class="appstore-concept-desc">One word per day. The constraint IS the creativity.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">EPHEMERAL BY DESIGN</div><div class="appstore-concept-desc">Map resets at midnight. Impermanence creates urgency without anxiety.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">COLLECTIVE SEEING</div><div class="appstore-concept-desc">Same prompt, different eyes. Shared interpretation.</div></div>
+      <div class="appstore-section">Information</div>
+      <div class="appstore-info">
+        <div class="appstore-row"><span class="appstore-key">Type</span><span>Mobile Web App</span></div>
+        <div class="appstore-row"><span class="appstore-key">Stack</span><span>Product &middot; Full-Stack &middot; UX</span></div>
+        <div class="appstore-row"><span class="appstore-key">Location</span><span>Global</span></div>
+        <div class="appstore-row last"><span class="appstore-key">Status</span><span>Deployed</span></div>
+      </div>
+    </div>
   </MobilePanel>
-  <MobilePanel id="planmytrip-detail" title="project_03.exe — PLANMYTRIP" fullscreen>
-    <ProjectDetail
-      slug="planmytrip" order={3} title="PLANMYTRIP"
-      hook="PlanMyTrip is a planning surface that's actually editable, data-connected, and nice enough to download. Input your parameters and AI generates an itinerary in full editorial layout."
-      tags="Frontend · Editorial Design · Interactive" location="Global" status="Deployed · 2026"
-      isMobile={false}
-      link="https://mytrippp.vercel.app/"
-      stats={[{ number: 'LIVE', label: 'weather' }, { number: 'AI', label: 'recommendations' }, { number: 'PDF', label: 'downloads' }]}
-      problem={`Trip planning tools are ugly spreadsheets or rigid templates.`}
-      approaches={[{ label: 'EDITOR NOT SPREADSHEET', desc: 'The interface IS the experience.' }, { label: 'LIVE DATA LAYER', desc: 'The tool stays current so you don\'t have to.' }, { label: 'DESIGN-FIRST WORKFLOW', desc: 'Visual hierarchy drives the planning process.' }]}
-      features={[{ title: 'Magazine-quality layouts', desc: 'Planning you\'d actually screenshot and share.' }, { title: 'Multi-provider image search', desc: 'Auto-fill to populate the itinerary instantly.' }, { title: 'Weather-aware itineraries', desc: 'Live conditions for every day of the trip.' }, { title: 'Inline everything', desc: 'Click to edit, drag to reorder. No modals.' }]}
-      mockups={[{ label: 'ITINERARY', caption: 'Day overview' }, { label: 'WEATHER', caption: 'Weather widgets' }]}
-    />
+
+  <MobilePanel id="planmytrip-detail" title="" fullscreen>
+    <div class="appstore">
+      <div class="appstore-head">
+        <div class="appstore-icon" style="background:#fff"></div>
+        <div class="appstore-head-text">
+          <div class="appstore-title">PLANMYTRIP</div>
+          <div class="appstore-sub">Editorial Trip Planner</div>
+        </div>
+        <a href="https://mytrippp.vercel.app/" target="_blank" rel="noopener" class="appstore-get">TRY</a>
+      </div>
+      <div class="appstore-stats-strip">
+        <div class="appstore-stat"><div class="appstore-stat-val">LIVE</div><div class="appstore-stat-label">weather</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">AI</div><div class="appstore-stat-label">itineraries</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">PDF</div><div class="appstore-stat-label">downloads</div></div>
+      </div>
+      <div class="appstore-screenshots">
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/planmytrip/preview.jpg" alt="preview" /></div>
+        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/planmytrip/main.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/planmytrip/euro_alps_tour.pdf.png" alt="euro alps tour" /></div>
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/planmytrip/trip_overview.pdf.png" alt="trip overview" /></div>
+      </div>
+      <div class="appstore-desc">Trip planning that looks as good as the trip. An editorial-style planner that's editable, data-connected, and pretty enough to download.</div>
+      <div class="appstore-section">What's New</div>
+      <div class="appstore-features">
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Magazine-quality layouts with photo galleries</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Multi-provider image search + auto-fill</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Live weather per destination via Open-Meteo</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Click to edit, drag to reorder — no modals</div>
+      </div>
+      <div class="appstore-section">Approach</div>
+      <div class="appstore-concept"><div class="appstore-concept-label">EDITOR NOT SPREADSHEET</div><div class="appstore-concept-desc">Planning should feel like designing a magazine.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">LIVE DATA LAYER</div><div class="appstore-concept-desc">Weather and images pull in real-time.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">DESIGN-FIRST WORKFLOW</div><div class="appstore-concept-desc">Start with how it looks, then fill in details.</div></div>
+      <div class="appstore-section">Information</div>
+      <div class="appstore-info">
+        <div class="appstore-row"><span class="appstore-key">Type</span><span>Web Application</span></div>
+        <div class="appstore-row"><span class="appstore-key">Stack</span><span>Frontend &middot; Editorial &middot; Interactive</span></div>
+        <div class="appstore-row"><span class="appstore-key">Location</span><span>Global</span></div>
+        <div class="appstore-row last"><span class="appstore-key">Status</span><span>Deployed</span></div>
+      </div>
+    </div>
   </MobilePanel>
 
   <!-- Easter egg mobile panels -->
@@ -810,6 +879,30 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       if (gridView) gridView.style.display = '';
     });
   }
+
+  // Gallery popup — tap screenshot to open full-screen
+  document.querySelectorAll('[data-gallery-open]').forEach(item => {
+    item.addEventListener('click', () => {
+      const media = item.querySelector('img, video') as HTMLElement;
+      if (!media) return;
+      const popup = document.createElement('div');
+      popup.className = 'gallery-popup';
+      const clone = media.cloneNode(true) as HTMLElement;
+      if (clone.tagName === 'VIDEO') {
+        (clone as HTMLVideoElement).controls = true;
+        (clone as HTMLVideoElement).autoplay = true;
+        (clone as HTMLVideoElement).muted = false;
+      }
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'gallery-popup-close';
+      closeBtn.textContent = '\u00d7';
+      closeBtn.addEventListener('click', () => popup.remove());
+      popup.addEventListener('click', (e) => { if (e.target === popup) popup.remove(); });
+      popup.appendChild(clone);
+      popup.appendChild(closeBtn);
+      document.body.appendChild(popup);
+    });
+  });
 </script>
 
 <style is:global>
@@ -1396,140 +1489,367 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     color: var(--text-dim);
   }
 
-  /* ========== Mobile Projects — Clean text cards ========== */
-  .m-projects { margin: -1.5rem; }
-  .m-proj-card {
-    padding: 1.2rem 1rem;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
+  /* ========== App Store — Project detail ========== */
+  .appstore {
+    margin: -1.5rem;
   }
-  .m-proj-text { flex: 1; }
-  .m-proj-num {
+  .appstore-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem;
+  }
+  .appstore-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+    background: #fff;
+    object-fit: contain;
+  }
+  .appstore-head-text { flex: 1; }
+  .appstore-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .appstore-sub {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+  .appstore-get {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--orange);
+    padding: 6px 18px;
+    border-radius: 14px;
+    text-decoration: none;
+    flex-shrink: 0;
+    letter-spacing: 0.04em;
+  }
+  /* Stats strip — like App Store ratings/age/chart row */
+  .appstore-stats-strip {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0;
+    margin: 0 1rem;
+  }
+  .appstore-stat {
+    flex: 1;
+    text-align: center;
+  }
+  .appstore-stat-val {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .appstore-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-dim);
+  }
+  .appstore-stat-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+  /* Screenshots */
+  .appstore-screenshots {
+    padding: 1rem;
+    overflow-x: auto;
+    display: flex;
+    gap: 10px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .appstore-screenshot {
+    flex-shrink: 0;
+    height: 240px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .appstore-screenshot img,
+  .appstore-screenshot video {
+    height: 100%;
+    display: block;
+  }
+  .appstore-screenshot:has(video)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .appstore-screenshot:has(video)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-45%, -50%);
+    z-index: 1;
+    border-style: solid;
+    border-width: 6px 0 6px 10px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .appstore-screenshot { position: relative; }
+
+  /* Gallery popup overlay */
+  .gallery-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 10001;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .gallery-popup img,
+  .gallery-popup video {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 8px;
+  }
+  .gallery-popup-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .appstore-desc {
+    padding: 0 1rem 1rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .appstore-section {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    margin: 1rem 1rem 0.8rem;
+    color: var(--text);
+  }
+  .appstore-features { padding: 0 1rem; }
+  .appstore-feat {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 0.6rem;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--text-mid);
+  }
+  .appstore-dot {
+    color: var(--orange);
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+  .appstore-concept {
+    padding: 0 1rem;
+    margin-bottom: 1rem;
+  }
+  .appstore-concept-label {
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--orange);
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+  }
+  .appstore-concept-desc {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    line-height: 1.4;
+  }
+  .appstore-info { padding: 0 1rem 1rem; }
+  .appstore-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+  }
+  .appstore-row.last { border-bottom: none; }
+  .appstore-key { color: var(--text-dim); }
+
+  /* ========== Stats Dashboard — About ========== */
+  .stats-dash {
+    margin: -1.5rem;
+    padding: 1.5rem;
+  }
+  .stats-profile {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .stats-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: #333;
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.6rem;
+    overflow: hidden;
+  }
+  .stats-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .stats-role {
     font-family: var(--font-mono);
     font-size: 0.7rem;
     color: var(--text-dim);
-    margin-bottom: 0.15rem;
   }
-  .m-proj-title {
+  .stats-rings {
+    display: flex;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .stats-ring {
+    text-align: center;
+    position: relative;
+    width: 80px;
+  }
+  .stats-ring-svg {
+    width: 64px;
+    height: 64px;
+  }
+  .stats-ring-num {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text);
-    margin-bottom: 0.2rem;
+    margin-top: -44px;
+    position: relative;
   }
-  .m-proj-hook {
-    font-family: var(--font-body);
-    font-size: 0.88rem;
-    color: var(--text-mid);
-    line-height: 1.4;
-    margin-bottom: 0.3rem;
+  .stats-ring-label {
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    color: var(--text-dim);
+    margin-top: 14px;
+    display: block;
   }
-  .m-proj-tags {
+  .stats-section-title {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+    margin: 1.2rem 0 0.8rem;
+    color: var(--text);
+  }
+  .stats-exp { margin-bottom: 1rem; }
+  .stats-exp-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3px;
+  }
+  .stats-exp-co {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--orange);
+  }
+  .stats-exp-yr {
     font-family: var(--font-mono);
     font-size: 0.65rem;
     color: var(--text-dim);
   }
-  .m-proj-meta {
+  .stats-bar {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin: 3px 0;
+    overflow: hidden;
+  }
+  .stats-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+  .stats-exp-role {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
+    font-size: 0.7rem;
     color: var(--text-dim);
-    margin-top: 0.15rem;
   }
-  .m-proj-chevron {
-    font-size: 1.5rem;
+  .stats-quote {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-style: italic;
     color: var(--text-dim);
-    margin-top: 0.8rem;
-    flex-shrink: 0;
+    margin-top: 0.4rem;
+    line-height: 1.4;
+    max-width: 260px;
+    margin-left: auto;
+    margin-right: auto;
   }
-
-  /* ========== Mobile About — Terminal story ========== */
-  .m-terminal {
-    margin: -1.5rem;
-    background: #0c0c0c;
-    min-height: 100%;
+  .stats-pixel-badges {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
+    gap: 6px;
   }
-  .m-term-header {
-    background: #1a1a1a;
-    padding: 10px 16px;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    color: #00CC55;
-    border-bottom: 1px solid #333;
+  .stats-pixel-badge {
+    flex: 1;
+    text-align: center;
+  }
+  .stats-pixel-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    margin: 0 auto 4px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    image-rendering: pixelated;
   }
-  .m-term-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #00CC55;
-    flex-shrink: 0;
-  }
-  .m-term-body {
-    padding: 1.2rem;
-    flex: 1;
+  .stats-pixel-name {
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: #ccc;
-    line-height: 1.6;
-    text-shadow: 0 0 8px rgba(0,204,85,0.08);
-  }
-  .m-term-body p { margin-bottom: 0.5rem; }
-  .m-term-dim { color: #666; }
-  .m-about-section {
-    color: #00CC55;
+    font-size: 0.6rem;
     font-weight: 700;
-    font-size: 0.78rem;
-    margin: 1.5rem 0 0.6rem;
+    color: var(--text);
   }
-  .m-about-section:first-child { margin-top: 0; }
-  .m-about-divider {
-    border: none;
-    border-top: 1px dashed #333;
-    margin: 1rem 0;
-  }
-  .m-about-entry {
-    display: grid;
-    grid-template-columns: 58px 1fr;
-    gap: 8px;
-    margin-bottom: 0.8rem;
-    font-size: 0.78rem;
-  }
-  .m-about-year {
-    color: var(--orange);
-    font-weight: 700;
-    font-size: 0.7rem;
-  }
-  .m-about-co {
-    color: var(--orange);
-    font-weight: 700;
-  }
-  .m-about-hl { color: #00CC55; }
-  .m-about-now { color: #00CC55; font-size: 0.65rem; }
-  .m-about-archive {
-    margin-bottom: 0.3rem;
-    font-size: 0.78rem;
-  }
-  .m-about-file { color: var(--orange); }
-  .m-about-award {
-    margin-bottom: 0.5rem;
-    font-size: 0.78rem;
-  }
-  .m-about-star { color: #FFE600; }
-  .m-term-cursor {
+  .stats-pixel-event {
     font-family: var(--font-mono);
-    color: #00CC55;
-    animation: cursor-blink 1s step-end infinite;
-    margin-top: 0.8rem;
-  }
-  @keyframes cursor-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    font-size: 0.5rem;
+    color: var(--text-dim);
   }
 
   /* ========== Mobile Skills — Settings app ========== */

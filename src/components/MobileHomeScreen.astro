@@ -3,19 +3,21 @@ import { icons, colorMap } from '../data/pixel-icons';
 
 // App grid config: icon key, label, panel ID
 const gridApps = [
+  { icon: 'rings', label: 'about', id: 'about', bg: '#222' },
+  { icon: 'gear', label: 'skills', id: 'skills', bg: '#3B7DD8' },
+  { icon: 'resume', label: 'resume', id: 'resume', bg: '#444' },
+  { icon: 'messages', label: 'messages', id: 'messages', bg: '#30B850' },
+  { icon: 'checklist', label: 'notes', id: 'notes', bg: '#C0C0C0' },
+  { icon: 'weather', label: 'weather', id: 'weather', bg: '#87CEEB' },
   { icon: 'image', label: 'photos', id: 'photos', bg: '#FFFFFF' },
-  { icon: 'messages', label: 'messages', id: 'messages', bg: '#34C759' },
-  { icon: 'weather', label: 'weather', id: 'weather', bg: '#5BC0EB' },
-  { icon: 'checklist', label: 'notes', id: 'notes', bg: '#FFB84D' },
-  { icon: 'music', label: 'playlist', id: 'playlist', bg: '#FF6B00' },
-  { icon: 'resume', label: 'resume', id: 'resume', bg: '#888', bottom: true },
+  { icon: 'music', label: 'playlist', id: 'playlist', bg: '#E85D00' },
 ];
 
 const dockApps = [
-  { icon: 'folder', label: 'projects', id: 'projects', bg: '#FF6B00' },
-  { icon: 'terminal', label: 'about', id: 'about', bg: '#1E1E1E' },
-  { icon: 'gear', label: 'skills', id: 'skills', bg: '#2A5DB0' },
-  { icon: 'coffee', label: 'contact', id: 'contact', bg: '#6B4226' },
+  { icon: 'reroute_app', label: '(re)route', id: 'reroute-detail', bg: '#87CEEB' },
+  { icon: 'snapp_app', label: 'snapp', id: 'snapp-detail', bg: '#9B59B6' },
+  { icon: 'planmytrip_app', label: 'planmytrip', id: 'planmytrip-detail', bg: '#FFFFFF' },
+  { icon: 'coffee', label: 'contact', id: 'contact', bg: '#F5A623' },
 ];
 ---
 
@@ -36,7 +38,7 @@ const dockApps = [
       if (!app) return <div />;
       const grid = icons[app.icon] || icons['notepad'];
       return (
-        <button class={`phone-app ${app.bottom ? 'phone-app--bottom' : ''}`} data-open-app={app.id}>
+        <button class="phone-app" data-open-app={app.id}>
           <div class="phone-app-icon" style={`background:${app.bg};`}>
             <div class="phone-app-pixels">
               {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
@@ -133,11 +135,6 @@ const dockApps = [
     position: relative;
     z-index: 2;
   }
-  .phone-app--bottom {
-    grid-column: 4;
-    grid-row: -1;
-    align-self: end;
-  }
 
   .phone-app, .phone-dock-app {
     display: flex;
@@ -158,22 +155,26 @@ const dockApps = [
   .phone-app-icon {
     width: 60px;
     height: 60px;
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
     transition: transform 0.1s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    border: none;
   }
   .phone-app-pixels {
+    width: 40px;
+    height: 40px;
     display: grid;
-    grid-template-columns: repeat(10, 4.5px);
-    grid-template-rows: repeat(10, 4.5px);
+    grid-template-columns: repeat(10, 4px);
+    grid-template-rows: repeat(10, 4px);
     image-rendering: pixelated;
   }
   .phone-app-pixels div {
-    width: 4.5px;
-    height: 4.5px;
+    width: 4px;
+    height: 4px;
   }
 
   .phone-app-label {
@@ -189,19 +190,47 @@ const dockApps = [
   }
 
   /* Dock icon — colored rounded square with pixel art inside */
+  .phone-dock-app {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
   .phone-dock-icon {
     width: 60px;
     height: 60px;
-    border-radius: 14px;
+    border-radius: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
     transition: transform 0.1s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    border: none;
   }
   .phone-dock-app:active .phone-dock-icon {
     transform: scale(0.9);
   }
+  .phone-dock-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 16px;
+  }
+  .phone-dock-text {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
   .phone-dock-pixels {
+    width: 40px;
+    height: 40px;
     display: grid;
     grid-template-columns: repeat(10, 4px);
     grid-template-rows: repeat(10, 4px);
@@ -214,9 +243,9 @@ const dockApps = [
 
   /* Dock — aligned with app grid */
   .phone-dock {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
     padding: 10px 20px;
     padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
     background: rgba(0, 0, 0, 0.25);
