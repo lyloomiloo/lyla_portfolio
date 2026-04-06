@@ -1182,7 +1182,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         return;
       }
       if (!duck.jumping) {
-        duck.vy = -px(1.8);
+        duck.vy = -px(2.4);
         duck.jumping = true;
       }
     }
@@ -1192,7 +1192,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       frameCount++;
 
       // Duck physics
-      duck.vy += px(0.12);
+      duck.vy += px(0.18);
       duck.y += duck.vy;
       if (duck.y >= groundY - px(10)) {
         duck.y = groundY - px(10);
@@ -1207,10 +1207,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       speed = 3 + Math.floor(score / 10) * 0.5;
       const spd = px(speed * 0.3);
 
-      // Spawn obstacles (grace period: no spawns for first 60 frames)
-      if (frameCount < 60) { spawnTimer = 0; }
+      // Spawn first obstacle right after duck lands (~1.5s), then regular intervals
+      if (frameCount < 90) { spawnTimer = 0; }
+      if (frameCount === 90) { spawnObstacle(); }
       spawnTimer++;
-      const spawnInterval = Math.max(30, 80 - score * 2);
+      const baseInterval = Math.max(30, 80 - score * 2);
+      const spawnInterval = baseInterval + Math.floor(Math.random() * 40) - 10;
       if (spawnTimer >= spawnInterval) {
         spawnTimer = 0;
         spawnObstacle();
