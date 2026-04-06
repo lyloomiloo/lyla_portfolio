@@ -1000,6 +1000,114 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 </script>
 
 <script>
+  // ===== DUCK RUNNER GAME — SOUNDS =====
+  const duckSfx = {
+    _ctx: null as AudioContext | null,
+    _getCtx() {
+      if (!this._ctx || this._ctx.state === 'closed') {
+        this._ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+      }
+      if (this._ctx.state === 'suspended') this._ctx.resume();
+      return this._ctx;
+    },
+
+    // Short chirpy jump sound
+    jump() {
+      try {
+        const ctx = this._getCtx();
+        const t = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(500, t);
+        osc.frequency.exponentialRampToValueAtTime(900, t + 0.08);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.15, t);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.1);
+      } catch (e) {}
+    },
+
+    // Quick blip when passing an obstacle
+    score() {
+      try {
+        const ctx = this._getCtx();
+        const t = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, t);
+        osc.frequency.setValueAtTime(1100, t + 0.03);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.1, t);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.08);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.08);
+      } catch (e) {}
+    },
+
+    // Sad quack on death — lower pitch, longer
+    death() {
+      try {
+        const ctx = this._getCtx();
+        const t = ctx.currentTime;
+        // Noise burst
+        const bufSize = ctx.sampleRate * 0.3;
+        const noiseBuf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+        const data = noiseBuf.getChannelData(0);
+        for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
+        const noise = ctx.createBufferSource();
+        noise.buffer = noiseBuf;
+        const bp = ctx.createBiquadFilter();
+        bp.type = 'bandpass';
+        bp.frequency.setValueAtTime(800, t);
+        bp.frequency.exponentialRampToValueAtTime(300, t + 0.25);
+        bp.Q.value = 4;
+        // Low tone
+        const osc = ctx.createOscillator();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(500, t);
+        osc.frequency.exponentialRampToValueAtTime(200, t + 0.25);
+        // Envelope
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.25, t + 0.02);
+        gain.gain.setValueAtTime(0.25, t + 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.3);
+        noise.connect(bp);
+        bp.connect(gain);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start(t);
+        osc.start(t);
+        noise.stop(t + 0.3);
+        osc.stop(t + 0.3);
+      } catch (e) {}
+    },
+
+    // Soft thud when duck lands
+    land() {
+      try {
+        const ctx = this._getCtx();
+        const t = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(150, t);
+        osc.frequency.exponentialRampToValueAtTime(60, t + 0.08);
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.12, t);
+        gain.gain.exponentialRampToValueAtTime(0.01, t + 0.1);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + 0.1);
+      } catch (e) {}
+    },
+  };
+
   // ===== DUCK RUNNER GAME =====
   function initDuckGame(canvas: HTMLCanvasElement) {
     const ctx = canvas.getContext('2d')!;
@@ -1013,7 +1121,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       H = rect.height * dpr;
       canvas.width = W;
       canvas.height = H;
-      scale = Math.max(1, Math.floor(Math.min(W, H) / 60));
+      scale = Math.max(1, Math.floor(Math.min(W, H) / 130));
       ctx.imageSmoothingEnabled = false;
       groundY = H * 0.75;
     }
@@ -1184,6 +1292,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       if (!duck.jumping) {
         duck.vy = -px(2.4);
         duck.jumping = true;
+        duckSfx.jump();
       }
     }
 
@@ -1192,12 +1301,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       frameCount++;
 
       // Duck physics
+      const wasAirborne = duck.jumping;
       duck.vy += px(0.18);
       duck.y += duck.vy;
       if (duck.y >= groundY - px(10)) {
         duck.y = groundY - px(10);
         duck.vy = 0;
         duck.jumping = false;
+        if (wasAirborne) duckSfx.land();
       }
 
       // Run animation
@@ -1226,6 +1337,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         if (!o.passed && o.x + o.w < duck.x) {
           o.passed = true;
           score++;
+          duckSfx.score();
           if (score > best) {
             best = score;
             sessionStorage.setItem('duckBest', String(best));
@@ -1253,6 +1365,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         if (dBox.x < oBox.x + oBox.w && dBox.x + dBox.w > oBox.x &&
             dBox.y < oBox.y + oBox.h && dBox.y + dBox.h > oBox.y) {
           state = 'dead';
+          duckSfx.death();
           return;
         }
       }
@@ -1301,12 +1414,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       // Score
       if (state === 'playing' || state === 'dead') {
         ctx.fillStyle = '#222';
-        ctx.font = `bold ${px(5)}px "IBM Plex Mono", monospace`;
+        ctx.font = `bold ${px(3)}px "IBM Plex Mono", monospace`;
         ctx.textAlign = 'right';
-        ctx.fillText(String(score), W - px(4), px(8));
-        ctx.font = `${px(3)}px "IBM Plex Mono", monospace`;
+        ctx.fillText(String(score), W - px(3), px(5));
+        ctx.font = `${px(2)}px "IBM Plex Mono", monospace`;
         ctx.fillStyle = '#666';
-        ctx.fillText(`BEST: ${best}`, W - px(4), px(12));
+        ctx.fillText(`BEST: ${best}`, W - px(3), px(8));
       }
 
       // Game over
