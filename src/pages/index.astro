@@ -998,25 +998,38 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     observer.observe(aboutPanel, { attributes: true, attributeFilter: ['class'] });
   }
 
-  // Lazy-load videos — only set src when parent window/panel opens
-  document.querySelectorAll('.os-window, .mobile-panel').forEach(container => {
-    const lazyVideos = container.querySelectorAll('video[data-lazy-src]');
-    if (!lazyVideos.length) return;
-    let loaded = false;
-    const obs = new MutationObserver(() => {
-      if (loaded || !container.classList.contains('open')) return;
-      loaded = true;
-      lazyVideos.forEach(v => {
+  // Lazy-load videos — preload in background after 3s, staggered to avoid bandwidth spike.
+  // Videos get src set immediately but with preload="none" overridden to "auto" so the
+  // browser fetches them in the background. Autoplay videos start when their panel opens.
+  function preloadLazyVideos() {
+    const videos = document.querySelectorAll('video[data-lazy-src]');
+    videos.forEach((v, i) => {
+      setTimeout(() => {
         const video = v as HTMLVideoElement;
         const src = video.dataset.lazySrc;
         if (src && !video.src) {
+          video.preload = 'auto';
           video.src = src;
-          if (video.hasAttribute('autoplay')) video.play().catch(() => {});
         }
-      });
+      }, i * 500); // stagger 500ms apart
     });
-    obs.observe(container, { attributes: true, attributeFilter: ['class'] });
-  });
+
+    // Start autoplay videos when their container opens
+    document.querySelectorAll('.os-window, .mobile-panel').forEach(container => {
+      const autoplayVideos = container.querySelectorAll('video[autoplay]');
+      if (!autoplayVideos.length) return;
+      let started = false;
+      const obs = new MutationObserver(() => {
+        if (started || !container.classList.contains('open')) return;
+        started = true;
+        autoplayVideos.forEach(v => {
+          (v as HTMLVideoElement).play().catch(() => {});
+        });
+      });
+      obs.observe(container, { attributes: true, attributeFilter: ['class'] });
+    });
+  }
+  setTimeout(preloadLazyVideos, 3000);
 </script>
 
 <script>
