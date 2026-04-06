@@ -435,8 +435,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <div class="appstore-stat"><div class="appstore-stat-val">3</div><div class="appstore-stat-label">walk modes</div></div>
       </div>
       <div class="appstore-screenshots">
-        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/reroute/explore_mode.mov" muted playsinline preload="metadata"></video></div>
-        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/reroute/smart_search.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute/explore_mode.mov" muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute/smart_search.mov" muted playsinline preload="none"></video></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/preview.jpg" alt="preview" /></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/wander_mode.jpg" alt="wander" /></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/reroute/sassy_bestie.PNG" alt="sassy bestie" /></div>
@@ -482,7 +482,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <div class="appstore-stat"><div class="appstore-stat-val">0</div><div class="appstore-stat-label">likes by design</div></div>
       </div>
       <div class="appstore-screenshots">
-        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/snapp/beta_test.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/snapp/beta_test.mov" muted playsinline preload="none"></video></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/snapp/daily_prompt.jpg" alt="daily prompt" /></div>
       </div>
       <div class="appstore-section">What's New</div>
@@ -525,7 +525,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <div class="appstore-stat"><div class="appstore-stat-val">PDF</div><div class="appstore-stat-label">downloads</div></div>
       </div>
       <div class="appstore-screenshots">
-        <div class="appstore-screenshot" data-gallery-open><video src="/images/projects/planmytrip/main.mov" muted playsinline preload="metadata"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/planmytrip/main.mov" muted playsinline preload="none"></video></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/planmytrip/preview.jpg" alt="preview" /></div>
       </div>
       <div class="appstore-section">What's New</div>
@@ -997,6 +997,26 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     });
     observer.observe(aboutPanel, { attributes: true, attributeFilter: ['class'] });
   }
+
+  // Lazy-load videos — only set src when parent window/panel opens
+  document.querySelectorAll('.os-window, .mobile-panel').forEach(container => {
+    const lazyVideos = container.querySelectorAll('video[data-lazy-src]');
+    if (!lazyVideos.length) return;
+    let loaded = false;
+    const obs = new MutationObserver(() => {
+      if (loaded || !container.classList.contains('open')) return;
+      loaded = true;
+      lazyVideos.forEach(v => {
+        const video = v as HTMLVideoElement;
+        const src = video.dataset.lazySrc;
+        if (src && !video.src) {
+          video.src = src;
+          if (video.hasAttribute('autoplay')) video.play().catch(() => {});
+        }
+      });
+    });
+    obs.observe(container, { attributes: true, attributeFilter: ['class'] });
+  });
 </script>
 
 <script>

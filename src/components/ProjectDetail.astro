@@ -108,7 +108,7 @@ const allProjects = [
                   <div class="proj-phone-notch"></div>
                   <div class="proj-phone-screen">
                     {gallery[0].type === 'video' ? (
-                      <video src={gallery[0].src} autoplay loop muted playsinline class="proj-phone-video"></video>
+                      <video data-lazy-src={gallery[0].src} autoplay loop muted playsinline preload="none" class="proj-phone-video"></video>
                     ) : (
                       <img src={gallery[0].src} alt={gallery[0].name} class="proj-phone-video" />
                     )}
@@ -119,7 +119,7 @@ const allProjects = [
                   <div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">{slug}.app</span></div>
                   <div class={`proj-bview ${gallery[0].type === 'pdf' ? 'proj-bview--scroll' : ''}`}>
                     {gallery[0].type === 'video' ? (
-                      <video src={gallery[0].src} autoplay loop muted playsinline class="proj-browser-video"></video>
+                      <video data-lazy-src={gallery[0].src} autoplay loop muted playsinline preload="none" class="proj-browser-video"></video>
                     ) : gallery[0].type === 'pdf' ? (
                       <iframe src={`${gallery[0].src}#toolbar=0&navpanes=0&scrollbar=1`} class="proj-browser-pdf"></iframe>
                     ) : (
@@ -135,7 +135,7 @@ const allProjects = [
             {gallery.slice(1, 3).map(item => (
               <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
                 {item.type === 'video' ? (
-                  <video src={item.src} muted playsinline preload="metadata" class="gallery-thumb-media"></video>
+                  <video data-lazy-src={item.src} muted playsinline preload="none" class="gallery-thumb-media"></video>
                 ) : item.type === 'pdf' ? (
                   item.preview ? (
                     <img src={item.preview} alt={item.name} loading="lazy" class="gallery-thumb-media" />
