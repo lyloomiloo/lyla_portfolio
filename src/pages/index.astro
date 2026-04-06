@@ -1341,7 +1341,11 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
       // Spawn first obstacle right after duck lands (~1.5s), then regular intervals
       if (frameCount < 45) { spawnTimer = 0; }
-      if (frameCount === 45) { spawnObstacle(); }
+      if (frameCount === 45) {
+        // Spawn first obstacle closer so it arrives within ~2-3s
+        spawnObstacle();
+        obstacles[obstacles.length - 1].x = W * 0.7;
+      }
       spawnTimer++;
       const baseInterval = Math.max(30, 80 - score * 2);
       const spawnInterval = baseInterval + Math.floor(Math.random() * 40) - 10;
