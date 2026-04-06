@@ -1036,17 +1036,33 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   // ===== DUCK RUNNER GAME — SOUNDS =====
   const duckSfx = {
     _ctx: null as AudioContext | null,
+    _unlocked: false,
     _getCtx() {
       if (!this._ctx || this._ctx.state === 'closed') {
         this._ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        this._unlocked = false;
       }
       if (this._ctx.state === 'suspended') this._ctx.resume();
       return this._ctx;
+    },
+    // Must be called during a user gesture (tap/click) to unlock audio on mobile
+    unlock() {
+      const ctx = this._getCtx();
+      if (!this._unlocked) {
+        this._unlocked = true;
+        // Play a silent buffer to unlock iOS/mobile audio output
+        const buf = ctx.createBuffer(1, 1, ctx.sampleRate);
+        const src = ctx.createBufferSource();
+        src.buffer = buf;
+        src.connect(ctx.destination);
+        src.start(0);
+      }
     },
 
     // Short chirpy jump sound
     jump() {
       try {
+        if (!this._unlocked) return;
         const ctx = this._getCtx();
         const t = ctx.currentTime;
         const osc = ctx.createOscillator();
@@ -1066,6 +1082,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     // Quick blip when passing an obstacle
     score() {
       try {
+        if (!this._unlocked) return;
         const ctx = this._getCtx();
         const t = ctx.currentTime;
         const osc = ctx.createOscillator();
@@ -1085,6 +1102,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     // Sad quack on death — lower pitch, longer
     death() {
       try {
+        if (!this._unlocked) return;
         const ctx = this._getCtx();
         const t = ctx.currentTime;
         // Noise burst
@@ -1124,6 +1142,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     // Soft thud when duck lands
     land() {
       try {
+        if (!this._unlocked) return;
         const ctx = this._getCtx();
         const t = ctx.currentTime;
         const osc = ctx.createOscillator();
@@ -1316,6 +1335,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     }
 
     function jump() {
+      // Unlock audio on first user gesture (required for mobile)
+      duckSfx.unlock();
       if (state === 'dead') {
         state = 'playing';
         reset();
