@@ -1141,7 +1141,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       H = rect.height * dpr;
       canvas.width = W;
       canvas.height = H;
-      scale = Math.max(1, Math.floor(Math.min(W, H) / 130));
+      const isMobile = window.innerWidth <= 768;
+      scale = Math.max(1, Math.floor(Math.min(W, H) / (isMobile ? 90 : 130)));
       ctx.imageSmoothingEnabled = false;
       groundY = H * 0.75;
     }
@@ -1339,8 +1340,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       const spd = px(speed * 0.3);
 
       // Spawn first obstacle right after duck lands (~1.5s), then regular intervals
-      if (frameCount < 90) { spawnTimer = 0; }
-      if (frameCount === 90) { spawnObstacle(); }
+      if (frameCount < 45) { spawnTimer = 0; }
+      if (frameCount === 45) { spawnObstacle(); }
       spawnTimer++;
       const baseInterval = Math.max(30, 80 - score * 2);
       const spawnInterval = baseInterval + Math.floor(Math.random() * 40) - 10;
