@@ -182,7 +182,17 @@ if (duck) {
       setTimeout(() => counterEl.style.color = '', 200);
     }
     // Milestones
-    if (duckClicks === 10) showBubble('...really?', '#999');
+    if (duckClicks === 10) {
+      showBubble('wanna play?', '#FFE600');
+      setTimeout(() => {
+        const win = document.querySelector('[data-window-id="duckgame"]');
+        if (win) {
+          win.style.display = 'flex';
+          win.classList.add('open', 'maximized');
+          win.style.zIndex = '9999';
+        }
+      }, 800);
+    }
     if (duckClicks === 25) showBubble("I'm getting dizzy", '#999');
     if (duckClicks === 50) showBubble("you know I'm not real right?", '#999');
     if (duckClicks === 100) {
