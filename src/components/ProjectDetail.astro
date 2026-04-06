@@ -664,6 +664,14 @@ const allProjects = [
       toggle.addEventListener('click', () => {
         col3.classList.contains('collapsed') ? expand() : collapse();
       });
+
+      // PlanMyTrip: click the gallery mockup to toggle col3
+      const galleryPanel = propsMain.querySelector('[data-gallery-panel][data-slug="planmytrip"]');
+      if (galleryPanel) {
+        galleryPanel.addEventListener('click', () => {
+          col3.classList.contains('collapsed') ? expand() : collapse();
+        });
+      }
     });
   });
 </script>
