@@ -7,8 +7,8 @@ if (duck) {
   let duckX = 5 + Math.random() * 85; // % from left
   let duckY = isMobileView ? 0 : (26 + Math.random() * 12); // mobile: fixed bottom via CSS
   let duckDir = 1; // 1=right, -1=left
-  const mobileScale = isMobileView ? 'scale(0.7) ' : '';
-  function duckTransform(base) { return mobileScale + base; }
+  const mobileScale = '';
+  function duckTransform(base) { return base; }
   let duckState = 'walking'; // walking, idle, clicked, grabbed
   let isDragging = false;
   let dragOffsetX = 0;

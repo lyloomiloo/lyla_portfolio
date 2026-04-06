@@ -504,7 +504,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <MobilePanel id="planmytrip-detail" title="" fullscreen>
     <div class="appstore">
       <div class="appstore-head">
-        <div class="appstore-icon" style="background:#fff"></div>
+        <div class="appstore-icon" style="background:#0038FF;color:#FF6B00;font-family:var(--font-mono);font-size:0.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:0.05em">PMT</div>
         <div class="appstore-head-text">
           <div class="appstore-title">PLANMYTRIP</div>
           <div class="appstore-sub">Editorial Trip Planner</div>
@@ -907,12 +907,15 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       const detailCaption = document.getElementById('photosDetailCaption');
       if (!detail || !gridView || !detailImg || !detailCaption) return;
 
-      // Clone the thumbnail content into the detail view at full size
+      // Copy the thumbnail as a scaled version
       detailImg.innerHTML = '';
-      detailImg.setAttribute('style', (btn as HTMLElement).getAttribute('style') || '');
-      Array.from(btn.children).forEach(child => {
-        detailImg.appendChild(child.cloneNode(true));
-      });
+      const clone = (btn as HTMLElement).cloneNode(true) as HTMLElement;
+      clone.style.width = '100%';
+      clone.style.height = '100%';
+      clone.style.aspectRatio = '1';
+      clone.style.borderRadius = '0';
+      clone.style.position = 'relative';
+      detailImg.appendChild(clone);
       detailCaption.textContent = photoCaptions[idx] || '';
       gridView.style.display = 'none';
       detail.style.display = 'flex';
@@ -1380,27 +1383,30 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     margin: -1.5rem;
   }
   .messages-profile {
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
     padding: 6px 16px 8px;
     border-bottom: 1px solid var(--border);
   }
   .messages-avatar {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: var(--border);
     color: var(--text-dim);
     font-family: var(--font-display);
-    font-size: 1.2rem;
+    font-size: 0.7rem;
     font-weight: 700;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 6px;
+    flex-shrink: 0;
   }
   .messages-contact {
     font-family: var(--font-display);
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--text);
   }
@@ -2119,14 +2125,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   /* ========== Mobile Skills — Settings app ========== */
   .m-settings {
     margin: -1.5rem;
-    background: #f0ede7;
     padding: 0.8rem;
     min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
   }
   .m-settings-group {
-    background: var(--bg-card);
-    border-radius: 10px;
-    margin-bottom: 0.6rem;
+    border: 1px solid var(--border);
     overflow: hidden;
   }
   .m-settings-header {
@@ -2143,7 +2149,6 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   .m-settings-dot {
     width: 8px;
     height: 8px;
-    border-radius: 2px;
     flex-shrink: 0;
   }
   .m-settings-item {

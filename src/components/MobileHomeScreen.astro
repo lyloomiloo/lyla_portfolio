@@ -3,20 +3,26 @@ import { icons, colorMap } from '../data/pixel-icons';
 
 // App grid config: icon key, label, panel ID
 const gridApps = [
-  { icon: 'face', label: 'about', id: 'about', bg: '#A8B4C0' },
-  { icon: 'gear', label: 'skills', id: 'skills', bg: '#3B7DD8' },
-  { icon: 'download', label: 'resume', id: 'resume', bg: '#00CC55' },
-  { icon: 'messages', label: 'messages', id: 'messages', bg: '#30B850' },
-  { icon: 'checklist_m', label: 'notes', id: 'notes', bg: '#C0C0C0' },
-  { icon: 'weather', label: 'weather', id: 'weather', bg: '#87CEEB' },
+  { icon: 'weather', label: 'weather', id: 'weather', bg: '#3B7DD8' },
   { icon: 'image', label: 'photos', id: 'photos', bg: '#FFFFFF' },
   { icon: 'music_m', label: 'playlist', id: 'playlist', bg: '#E85D00' },
+  null,
+  { icon: 'checklist', label: 'notes', id: 'notes', bg: '#333', border: true },
+  { icon: 'messages', label: 'messages', id: 'messages', bg: '#30B850' },
+  { icon: 'download', label: 'download', id: 'resume', bg: '#9B59B6' },
+];
+
+// Project folder contents — shown when tapping folder icon
+const projectApps = [
+  { icon: 'reroute_app', label: '(re)route', id: 'reroute-detail', bg: '#87CEEB' },
+  { icon: 'snapp_app', label: 'snapp', id: 'snapp-detail', bg: '#E85D00' },
+  { icon: 'planmytrip_app', label: 'planmytrip', id: 'planmytrip-detail', bg: '#FFFFFF' },
 ];
 
 const dockApps = [
-  { icon: 'reroute_app', label: '(re)route', id: 'reroute-detail', bg: '#87CEEB' },
-  { icon: 'snapp_app', label: 'snapp', id: 'snapp-detail', bg: '#9B59B6' },
-  { icon: 'planmytrip_app', label: 'planmytrip', id: 'planmytrip-detail', bg: '#FFFFFF' },
+  { icon: 'face', label: 'about', id: 'about', bg: '#A8B4C0' },
+  { icon: 'gear', label: 'skills', id: 'skills', bg: '#9ECAE1' },
+  { icon: 'folder', label: 'projects', id: 'projects-folder', bg: '#444' },
   { icon: 'coffee', label: 'contact', id: 'contact', bg: '#F5A623' },
 ];
 ---
@@ -39,7 +45,7 @@ const dockApps = [
       const grid = icons[app.icon] || icons['notepad'];
       return (
         <button class="phone-app" data-open-app={app.id}>
-          <div class="phone-app-icon" style={`background:${app.bg};`}>
+          <div class="phone-app-icon" style={`background:${app.bg};${(app as any).border ? 'border:1px solid rgba(255,255,255,0.5);' : ''}`}>
             <div class="phone-app-pixels">
               {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
             </div>
@@ -77,6 +83,25 @@ const dockApps = [
   <!-- Dock -->
   <div class="phone-dock">
     {dockApps.map(app => {
+      if (app.id === 'projects-folder') {
+        return (
+          <button class="phone-dock-app" data-open-app={app.id}>
+            <div class="phone-dock-icon phone-folder-icon" style={`background:${app.bg};`}>
+              {projectApps.map(p => {
+                const pg = icons[p.icon] || icons['notepad'];
+                return (
+                  <div class="phone-folder-mini" style={`background:${p.bg};`}>
+                    <div class="phone-folder-mini-pixels">
+                      {pg.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <span class="phone-app-label">{app.label}</span>
+          </button>
+        );
+      }
       const grid = icons[app.icon] || icons['notepad'];
       return (
         <button class="phone-dock-app" data-open-app={app.id}>
@@ -89,6 +114,28 @@ const dockApps = [
         </button>
       );
     })}
+  </div>
+
+  <!-- Projects folder popup -->
+  <div class="phone-folder-overlay" id="phoneFolderOverlay" style="display:none">
+    <div class="phone-folder-popup">
+      <div class="phone-folder-title">projects</div>
+      <div class="phone-folder-grid">
+        {projectApps.map(app => {
+          const grid = icons[app.icon] || icons['notepad'];
+          return (
+            <button class="phone-app" data-open-app={app.id} data-close-folder>
+              <div class="phone-app-icon" style={`background:${app.bg};`}>
+                <div class="phone-app-pixels">
+                  {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+                </div>
+              </div>
+              <span class="phone-app-label">{app.label}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   </div>
 </div>
 
@@ -128,7 +175,6 @@ const dockApps = [
     flex: 1;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: auto auto 1fr auto;
     gap: 24px 8px;
     padding: 32px 20px;
     align-content: start;
@@ -179,13 +225,15 @@ const dockApps = [
 
   .phone-app-label {
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 500;
     color: #fff;
     text-align: center;
     max-width: 76px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
     text-shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
 
@@ -257,13 +305,89 @@ const dockApps = [
     z-index: 2;
   }
 
-  /* Mobile duck positioning — in the meadow, above the dock */
+  /* Mobile duck — smaller via cell size, not scale (avoids subpixel gaps) */
   .mobile-duck {
     position: absolute;
     bottom: 40%;
     left: 30%;
     z-index: 3;
-    transform: scale(0.7);
+  }
+  .mobile-duck .duck-frame {
+    grid-template-columns: repeat(8, 4px) !important;
+    grid-template-rows: repeat(8, 4px) !important;
+  }
+  .mobile-duck .duck-frame div {
+    width: 4px !important;
+    height: 4px !important;
+  }
+
+  /* Folder icon with mini app previews */
+  .phone-folder-icon {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 3px;
+    padding: 6px;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+  }
+  .phone-folder-mini {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .phone-folder-mini-pixels {
+    display: grid;
+    grid-template-columns: repeat(10, 1.6px);
+    grid-template-rows: repeat(10, 1.6px);
+    image-rendering: pixelated;
+  }
+  .phone-folder-mini-pixels div {
+    width: 1.6px;
+    height: 1.6px;
+  }
+
+  /* Projects folder popup */
+  .phone-folder-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .phone-folder-popup {
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 16px;
+    width: 100%;
+    max-width: 280px;
+  }
+  .phone-folder-title {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .phone-folder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .phone-folder-grid .phone-app-label {
+    color: var(--text);
+    text-shadow: none;
   }
 
   /* Hide on desktop */
@@ -282,4 +406,23 @@ const dockApps = [
   }
   updatePhoneClock();
   setInterval(updatePhoneClock, 30000);
+
+  // Projects folder — open/close
+  const folderOverlay = document.getElementById('phoneFolderOverlay');
+  document.querySelectorAll('[data-open-app="projects-folder"]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (folderOverlay) folderOverlay.style.display = 'flex';
+    });
+  });
+  if (folderOverlay) {
+    folderOverlay.addEventListener('click', (e) => {
+      if (e.target === folderOverlay) folderOverlay.style.display = 'none';
+    });
+    folderOverlay.querySelectorAll('[data-close-folder]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        folderOverlay.style.display = 'none';
+      });
+    });
+  }
 </script>
