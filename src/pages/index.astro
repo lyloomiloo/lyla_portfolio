@@ -225,61 +225,112 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
   <!-- Mobile Panels -->
 
-  <!-- MOBILE: About — Stats Dashboard -->
+  <!-- MOBILE: About — RPG Character Sheet -->
+  <!-- MOBILE: About — RPG Character Sheet -->
   <MobilePanel id="about" title="" fullscreen>
-    <div class="stats-dash">
-      <div class="stats-profile">
-        <div class="stats-avatar">
-          <div class="m-contact-pixel-grid">
-            <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
-            <div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div>
-            <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
-            <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
-            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
-            <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
-            <div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div>
-            <div></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div><div></div>
+    <div class="rpg-sheet">
+      <!-- Character card — avatar left, info right -->
+      <div class="rpg-card">
+        <div class="rpg-card-left">
+          <div class="rpg-avatar">
+            <div class="m-contact-pixel-grid">
+              <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div>
+              <div></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div><div></div><div></div>
+            </div>
+          </div>
+          <div class="rpg-lvl-badge">LV.5</div>
+        </div>
+        <div class="rpg-card-right">
+          <div class="rpg-name">LYLA HUANG <span class="rpg-title">BUILDER</span></div>
+          <div class="rpg-class">CLASS: Strategist</div>
+          <div class="rpg-class">ORIGIN: Singapore</div>
+          <div class="rpg-class">BASE: Barcelona</div>
+        </div>
+      </div>
+
+      <!-- Stats — bordered box like Pokemon/RPG -->
+      <div class="rpg-box">
+        <div class="rpg-box-title">STATS</div>
+        <div class="rpg-stat"><span class="rpg-stat-label">STR</span><span class="rpg-stat-name">Strategy</span><div class="rpg-bar"><div class="rpg-bar-fill" data-rpg-width="85%" style="background:#FF6B00"></div></div><span class="rpg-stat-num">85</span></div>
+        <div class="rpg-stat"><span class="rpg-stat-label">DEX</span><span class="rpg-stat-name">Design</span><div class="rpg-bar"><div class="rpg-bar-fill" data-rpg-width="75%" style="background:#00CC55"></div></div><span class="rpg-stat-num">75</span></div>
+        <div class="rpg-stat"><span class="rpg-stat-label">INT</span><span class="rpg-stat-name">Build</span><div class="rpg-bar"><div class="rpg-bar-fill" data-rpg-width="65%" style="background:#4A9EFF"></div></div><span class="rpg-stat-num">65</span></div>
+        <div class="rpg-stat"><span class="rpg-stat-label">CHA</span><span class="rpg-stat-name">Communicate</span><div class="rpg-bar"><div class="rpg-bar-fill" data-rpg-width="90%" style="background:#FF2D8A"></div></div><span class="rpg-stat-num">90</span></div>
+        <div class="rpg-stat"><span class="rpg-stat-label">WIS</span><span class="rpg-stat-name">Research</span><div class="rpg-bar"><div class="rpg-bar-fill" data-rpg-width="50%" style="background:#9B59B6"></div></div><span class="rpg-stat-num">50</span></div>
+      </div>
+
+      <!-- Level progression — compact timeline -->
+      <div class="rpg-box">
+        <div class="rpg-box-title">CAREER LOG</div>
+        <div class="rpg-timeline">
+          <div class="rpg-tl"><span class="rpg-tl-lvl">01</span><span class="rpg-tl-co">HAVAS_SG</span><span class="rpg-tl-yr">2015-17</span></div>
+          <div class="rpg-tl"><span class="rpg-tl-lvl">02</span><span class="rpg-tl-co">BLKJ_SG</span><span class="rpg-tl-yr">2018-21</span></div>
+          <div class="rpg-tl"><span class="rpg-tl-lvl">03</span><span class="rpg-tl-co">GOOGLE_APAC</span><span class="rpg-tl-yr">2021-22</span></div>
+          <div class="rpg-tl"><span class="rpg-tl-lvl">04</span><span class="rpg-tl-co">FREELANCE</span><span class="rpg-tl-yr">2022-25</span></div>
+          <div class="rpg-tl active"><span class="rpg-tl-lvl">05</span><span class="rpg-tl-co">BUILD_MODE</span><span class="rpg-tl-yr">2025-NOW</span></div>
+        </div>
+      </div>
+
+      <!-- Achievements — 4 across -->
+      <div class="rpg-box">
+        <div class="rpg-box-title">ACHIEVEMENTS</div>
+        <div class="rpg-badges">
+          <div class="rpg-badge">
+            <div class="rpg-pixel-badge">
+              <div></div><div></div><div style="background:#FFE600"></div><div></div><div></div>
+              <div></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div></div>
+              <div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div>
+              <div></div><div style="background:#FFE600"></div><div></div><div style="background:#FFE600"></div><div></div>
+              <div style="background:#FFE600"></div><div></div><div></div><div></div><div style="background:#FFE600"></div>
+            </div>
+            <div class="rpg-badge-name">Rising Star</div><div class="rpg-badge-sub">Creative Circles '18</div>
+          </div>
+          <div class="rpg-badge">
+            <div class="rpg-pixel-badge">
+              <div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div>
+              <div></div><div style="background:#DAA520"></div><div style="background:#FFE600"></div><div style="background:#DAA520"></div><div></div>
+              <div></div><div style="background:#DAA520"></div><div style="background:#FFE600"></div><div style="background:#DAA520"></div><div></div>
+              <div></div><div></div><div style="background:#DAA520"></div><div></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div>
+            </div>
+            <div class="rpg-badge-name">Gold</div><div class="rpg-badge-sub">Markies '17</div>
+          </div>
+          <div class="rpg-badge">
+            <div class="rpg-pixel-badge">
+              <div></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div></div>
+              <div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div>
+              <div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#CD7F32"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div>
+              <div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div><div style="background:#C0C0C0"></div>
+              <div></div><div></div><div style="background:#FF6B00"></div><div></div><div></div>
+            </div>
+            <div class="rpg-badge-name">2S + 3B</div><div class="rpg-badge-sub">Creative Circles '18</div>
+          </div>
+          <div class="rpg-badge">
+            <div class="rpg-pixel-badge">
+              <div style="background:#FFE600"></div><div></div><div style="background:#FFE600"></div><div></div><div style="background:#FFE600"></div>
+              <div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div>
+              <div style="background:#DAA520"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#FFE600"></div><div style="background:#DAA520"></div>
+              <div style="background:#DAA520"></div><div style="background:#DAA520"></div><div style="background:#DAA520"></div><div style="background:#DAA520"></div><div style="background:#DAA520"></div>
+              <div></div><div style="background:#FF2020"></div><div style="background:#FF2020"></div><div style="background:#FF2020"></div><div></div>
+            </div>
+            <div class="rpg-badge-name">Grand Prix</div><div class="rpg-badge-sub">IG Cannes '16</div>
           </div>
         </div>
-        <div class="stats-name">LYLA HUANG</div>
-        <div class="stats-role">Strategist &rarr; Builder</div>
-        <div class="stats-quote">I spent a decade selling stuff for brands. Now, I create products for people.</div>
       </div>
 
-      <div class="stats-rings">
-        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#00CC55" stroke-width="3" stroke-dasharray="90 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">10</div><div class="stats-ring-label">yrs in industry</div></div>
-        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#FF6B00" stroke-width="3" stroke-dasharray="50 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">3</div><div class="stats-ring-label">products built</div></div>
-        <div class="stats-ring"><svg viewBox="0 0 36 36" class="stats-ring-svg"><circle cx="18" cy="18" r="15.9" fill="none" stroke="var(--border)" stroke-width="3"/><circle cx="18" cy="18" r="15.9" fill="none" stroke="#4A9EFF" stroke-width="3" stroke-dasharray="30 100" stroke-linecap="round" transform="rotate(-90 18 18)"/></svg><div class="stats-ring-num">2</div><div class="stats-ring-label">countries</div></div>
-      </div>
-
-      <div class="stats-section-title">Experience</div>
-      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">ELISAVA_BCN</span><span class="stats-exp-yr">2025-26</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:33%;background:#9B59B6"></div></div><div class="stats-exp-role">MSc Human Interaction & AI</div></div>
-      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">FREELANCE</span><span class="stats-exp-yr">2022-25</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:100%;background:#4A9EFF"></div></div><div class="stats-exp-role">Strategy + Creative &middot; 20+ clients</div></div>
-      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">GOOGLE_APAC</span><span class="stats-exp-yr">2021-22</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:33%;background:#00CC55"></div></div><div class="stats-exp-role">Creative Strategist &middot; 133 SMEs</div></div>
-      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">BLKJ_SG</span><span class="stats-exp-yr">2018-21</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:100%;background:#FF6B00"></div></div><div class="stats-exp-role">Senior Writer &middot; Led 8 creatives</div></div>
-      <div class="stats-exp"><div class="stats-exp-top"><span class="stats-exp-co">HAVAS_SG</span><span class="stats-exp-yr">2015-17</span></div><div class="stats-bar"><div class="stats-bar-fill" style="width:66%;background:#FF6B00"></div></div><div class="stats-exp-role">Content & Community Specialist (Writer)</div></div>
-
-      <div class="stats-section-title">Achievements</div>
-      <div class="stats-pixel-badges">
-        <div class="stats-pixel-badge">
-          <div class="stats-pixel-icon" style="background:#FFE600"><div style="width:16px;height:16px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#FF6B00"></div></div>
-          <div class="stats-pixel-name">Rising Star</div>
-          <div class="stats-pixel-event">Creative Circles '18</div>
-        </div>
-        <div class="stats-pixel-badge">
-          <div class="stats-pixel-icon" style="background:#FFE600"><div style="width:16px;height:16px;border-radius:50%;background:#FF6B00"></div></div>
-          <div class="stats-pixel-name">Gold</div>
-          <div class="stats-pixel-event">Markies '17</div>
-        </div>
-        <div class="stats-pixel-badge">
-          <div class="stats-pixel-icon" style="background:#C0C0C0"><div style="width:14px;height:14px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#888"></div></div>
-          <div class="stats-pixel-name">2 Silver + 3 Bronze</div>
-          <div class="stats-pixel-event">Creative Circles Awards '18</div>
-        </div>
-        <div class="stats-pixel-badge">
-          <div class="stats-pixel-icon" style="background:#9B59B6"><div style="width:16px;height:16px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#FFE600"></div></div>
-          <div class="stats-pixel-name">Grand Prix</div>
-          <div class="stats-pixel-event">IG Cannes '16</div>
+      <!-- Past quests — compact -->
+      <div class="rpg-box">
+        <div class="rpg-box-title">PAST QUESTS</div>
+        <div class="rpg-quests">
+          <a href="https://youtu.be/Dn2lGyE0V3k" target="_blank" rel="noopener" class="rpg-quest"><span class="rpg-q-icon">&#8599;</span><span class="rpg-q-name">scoot-savage</span><span class="rpg-q-drop">4x Award</span></a>
+          <a href="https://youtu.be/kzSWUyc-cUY" target="_blank" rel="noopener" class="rpg-quest"><span class="rpg-q-icon">&#8599;</span><span class="rpg-q-name">MCI-onwards</span><span class="rpg-q-drop">Nat. TVC</span></a>
+          <a href="https://vimeo.com/512876247?fl=pl&fe=sh" target="_blank" rel="noopener" class="rpg-quest"><span class="rpg-q-icon">&#8599;</span><span class="rpg-q-name">MWP-passion</span><span class="rpg-q-drop">Film Series</span></a>
+          <a href="https://youtu.be/Ze37UtBNnfY" target="_blank" rel="noopener" class="rpg-quest"><span class="rpg-q-icon">&#8599;</span><span class="rpg-q-name">fairprice-pun</span><span class="rpg-q-drop">Gold '17</span></a>
         </div>
       </div>
     </div>
@@ -901,6 +952,21 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       document.body.appendChild(popup);
     });
   });
+
+  // RPG stat bar animation — fill from 0 when about panel opens
+  const aboutPanel = document.querySelector('[data-panel-id="about"]');
+  if (aboutPanel) {
+    const observer = new MutationObserver(() => {
+      if (aboutPanel.classList.contains('open')) {
+        aboutPanel.querySelectorAll('[data-rpg-width]').forEach(bar => {
+          const el = bar as HTMLElement;
+          el.style.width = '0%';
+          setTimeout(() => { el.style.width = el.dataset.rpgWidth || '0%'; }, 300);
+        });
+      }
+    });
+    observer.observe(aboutPanel, { attributes: true, attributeFilter: ['class'] });
+  }
 </script>
 
 <style is:global>
@@ -1707,7 +1773,204 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   .appstore-row.last { border-bottom: none; }
   .appstore-key { color: var(--text-dim); }
 
-  /* ========== Stats Dashboard — About ========== */
+  /* ========== RPG Character Sheet — About ========== */
+  .rpg-sheet {
+    margin: -1.5rem;
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  /* Character card — side by side */
+  .rpg-card {
+    display: flex;
+    gap: 12px;
+    border: 1px solid var(--border);
+    padding: 10px;
+  }
+  .rpg-card-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .rpg-avatar {
+    width: 56px;
+    height: 56px;
+    background: #333;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .rpg-lvl-badge {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--orange);
+    padding: 1px 6px;
+  }
+  .rpg-card-right { flex: 1; }
+  .rpg-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+  }
+  .rpg-class {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+  }
+  .rpg-title {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--orange);
+    vertical-align: middle;
+  }
+  /* Bordered box sections */
+  .rpg-box {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+  }
+  .rpg-box-title {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    letter-spacing: 0.06em;
+  }
+  /* Stat rows */
+  .rpg-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 5px;
+  }
+  .rpg-stat:last-child { margin-bottom: 0; }
+  .rpg-stat-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--orange);
+    min-width: 28px;
+  }
+  .rpg-stat-name {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    min-width: 80px;
+  }
+  .rpg-bar {
+    flex: 1;
+    height: 10px;
+    background: var(--border);
+    overflow: hidden;
+  }
+  .rpg-bar-fill {
+    height: 100%;
+    width: 0%;
+    transition: width 0.8s steps(10);
+    background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(255,255,255,0.3) 2px, rgba(255,255,255,0.3) 3px);
+  }
+  .rpg-stat-num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text);
+    min-width: 22px;
+    text-align: right;
+  }
+  /* Timeline */
+  .rpg-timeline { }
+  .rpg-tl {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+  }
+  .rpg-tl:last-child { border-bottom: none; }
+  .rpg-tl-lvl {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--orange);
+    min-width: 18px;
+  }
+  .rpg-tl-co {
+    flex: 1;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .rpg-tl-yr {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+  }
+  .rpg-tl.active {
+    color: var(--orange);
+  }
+  .rpg-tl.active .rpg-tl-co { color: var(--orange); }
+  .rpg-tl.active .rpg-tl-yr { color: var(--orange); }
+  /* Badges — 4 across */
+  .rpg-badges {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+  }
+  .rpg-badge {
+    text-align: center;
+    padding: 6px 2px;
+  }
+  .rpg-pixel-badge {
+    width: 20px;
+    height: 20px;
+    margin: 0 auto 4px;
+    display: grid;
+    grid-template-columns: repeat(5, 4px);
+    grid-template-rows: repeat(5, 4px);
+    image-rendering: pixelated;
+  }
+  .rpg-pixel-badge div {
+    width: 4px;
+    height: 4px;
+  }
+  .rpg-badge-name {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .rpg-badge-sub {
+    font-family: var(--font-mono);
+    font-size: 0.48rem;
+    color: var(--text-dim);
+  }
+  /* Quests */
+  .rpg-quests { }
+  .rpg-quest {
+    display: flex;
+    gap: 6px;
+    padding: 3px 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .rpg-quest .rpg-q-name { text-decoration: underline; }
+  .rpg-quest:last-child { border-bottom: none; }
+  .rpg-q-icon { color: var(--orange); font-weight: 700; }
+  .rpg-q-name { flex: 1; color: var(--text); }
+  .rpg-q-drop { color: var(--text-dim); }
+
+  /* Keep old stats classes for compatibility */
   .stats-dash {
     margin: -1.5rem;
     padding: 1.5rem;
