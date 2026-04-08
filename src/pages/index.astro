@@ -626,12 +626,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       </div>
     </div>
   </MobilePanel>
-  <MobilePanel id="resume" title="" fullscreen>
-    <div style="font-family: var(--font-mono); font-size: 0.9rem; color: var(--text); text-align: center; padding: 2rem 0;">
-      <p style="font-size: 2rem;">&#128196;</p>
+  <MobilePanel id="resume" title="resume.pdf — Downloading...">
+    <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text); text-align: center; padding: 0.5rem 0;">
+      <p style="font-size: 2rem; margin-bottom: 0.5rem;">&#128196;</p>
       <p style="font-weight: 700;">Lyla_Huang_Resume_2026.pdf</p>
-      <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 0.5rem;">135 KB &middot; PDF</p>
-      <a href="/Lyla_Huang_Resume_2026.pdf" download="Lyla_Huang_Resume_2026.pdf" target="_blank" rel="noopener" style="display: inline-block; margin-top: 1.5rem; background: var(--orange); color: #fff; font-family: var(--font-mono); font-size: 0.85rem; padding: 10px 20px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.06em;">Download ↓</a>
+      <p style="color: var(--text-dim); font-size: 0.8rem; margin-top: 0.3rem;">Downloading...</p>
+      <div style="width: 80%; margin: 1rem auto 0; height: 6px; background: var(--border); overflow: hidden;">
+        <div style="height: 100%; background: var(--orange); animation: loadFill 2s ease-out forwards; width: 0%;"></div>
+      </div>
     </div>
   </MobilePanel>
 
@@ -1402,7 +1404,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         duck.y = groundY - px(10);
         duck.vy = 0;
         duck.jumping = false;
-        if (performance.now() - countdownStart >= 3000) {
+        if (performance.now() - countdownStart >= 1000) {
           state = 'playing';
           frameCount = 0;
         }
@@ -1549,7 +1551,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       // Countdown overlay
       if (state === 'countdown') {
         const elapsed = performance.now() - countdownStart;
-        const remaining = Math.max(0, 3 - Math.floor(elapsed / 1000));
+        const remaining = Math.max(0, 3 - Math.floor(elapsed / 333));
         const label = remaining > 0 ? String(remaining) : 'GO!';
         ctx.fillStyle = 'rgba(0,0,0,0.35)';
         ctx.fillRect(0, 0, W, H);
@@ -1668,14 +1670,18 @@ import ProjectDetail from '../components/ProjectDetail.astro';
           <div class="duck-initials-title">NEW HIGH SCORE!</div>
           <div class="duck-initials-score">${score}</div>
           <div class="duck-initials-label">ENTER INITIALS</div>
-          <input type="text" class="duck-initials-input" maxlength="3" autocapitalize="characters" autocomplete="off" spellcheck="false" />
-          <button class="duck-initials-submit">SAVE</button>
+          <div class="duck-initials-row">
+            <input type="text" class="duck-initials-input" maxlength="3" placeholder="AAA" autocapitalize="characters" autocomplete="off" spellcheck="false" />
+            <button class="duck-initials-btn duck-initials-submit" type="button" aria-label="Enter">⏎</button>
+          </div>
+          <button class="duck-initials-btn duck-initials-skip" type="button">TRY AGAIN</button>
         </div>
       `;
       parent.appendChild(overlay);
 
       const input = overlay.querySelector('.duck-initials-input') as HTMLInputElement;
       const submitBtn = overlay.querySelector('.duck-initials-submit') as HTMLButtonElement;
+      const skipBtn = overlay.querySelector('.duck-initials-skip') as HTMLButtonElement;
       setTimeout(() => input.focus(), 50);
       input.addEventListener('input', () => {
         input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
@@ -1690,7 +1696,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         overlay.remove();
         state = 'dead';
       };
+      const skip = () => {
+        overlay.remove();
+        startGame();
+      };
       submitBtn.addEventListener('click', submit);
+      skipBtn.addEventListener('click', skip);
       input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') { e.preventDefault(); submit(); }
       });
@@ -1727,64 +1738,94 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     background: rgba(0,0,0,0.4);
   }
   .duck-initials-box {
-    background: #1E1E1E;
+    background: #F5F3EF;
     border: 2px solid var(--orange);
-    padding: 1.2rem 1.4rem;
+    padding: 1.4rem 1.6rem 1.2rem;
     text-align: center;
     font-family: var(--font-mono);
-    color: #fff;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    color: #1E1E1E;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    min-width: 260px;
   }
   .duck-initials-title {
     color: var(--orange);
     font-weight: 700;
-    font-size: 0.9rem;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.4rem;
-  }
-  .duck-initials-score {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 700;
-    color: #FFE066;
-    line-height: 1;
-    margin-bottom: 0.6rem;
-  }
-  .duck-initials-label {
-    font-size: 0.65rem;
-    color: #999;
+    font-size: 0.85rem;
     letter-spacing: 0.1em;
     margin-bottom: 0.5rem;
   }
+  .duck-initials-score {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #1E1E1E;
+    line-height: 1;
+    margin-bottom: 0.9rem;
+  }
+  .duck-initials-label {
+    font-size: 0.6rem;
+    color: #666;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  .duck-initials-row {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: stretch;
+    margin-bottom: 0.7rem;
+  }
   .duck-initials-input {
-    background: #000;
-    border: 1px solid #555;
-    color: #FFE066;
+    background: #fff;
+    border: 1px solid #c8c4bc;
+    color: #1E1E1E;
     font-family: var(--font-mono);
-    font-size: 1.6rem;
+    font-size: 1.3rem;
     font-weight: 700;
     text-align: center;
-    width: 6rem;
-    padding: 0.4rem;
-    letter-spacing: 0.3em;
+    width: 5.5rem;
+    height: 2.4rem;
+    padding: 0;
+    line-height: 2.4rem;
+    letter-spacing: 0.35em;
+    text-indent: 0.35em;
     text-transform: uppercase;
-    display: block;
-    margin: 0 auto 0.8rem;
     outline: none;
+    box-sizing: border-box;
   }
+  .duck-initials-input::placeholder { color: #c8c4bc; }
   .duck-initials-input:focus { border-color: var(--orange); }
+  .duck-initials-btn {
+    border: none;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0 16px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    height: 2.4rem;
+    box-sizing: border-box;
+  }
   .duck-initials-submit {
     background: var(--orange);
     color: #fff;
-    border: none;
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 8px 18px;
-    cursor: pointer;
-    letter-spacing: 0.08em;
+    font-size: 1.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    min-width: 3rem;
   }
   .duck-initials-submit:hover { background: #e55e00; }
+  .duck-initials-skip {
+    background: transparent;
+    color: #666;
+    border: 1px solid #c8c4bc;
+    width: calc(5.5rem + 8px + 3rem);
+    display: block;
+    margin: 0 auto;
+  }
+  .duck-initials-skip:hover { color: #1E1E1E; border-color: #1E1E1E; }
 
   /* Duck game panel — no padding, canvas fills */
   [data-panel-id="duckgame"] .mobile-panel-body {
