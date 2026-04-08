@@ -131,23 +131,27 @@ const allProjects = [
             )}
             <span class="gallery-label">{gallery[0]?.name}</span>
           </div>
-          <div class="gallery-filmstrip">
-            {gallery.slice(1, 3).map(item => (
-              <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
-                {item.type === 'video' ? (
-                  <video data-lazy-src={item.src} muted playsinline preload="none" class="gallery-thumb-media"></video>
-                ) : item.type === 'pdf' ? (
-                  item.preview ? (
-                    <img src={item.preview} alt={item.name} loading="lazy" class="gallery-thumb-media" />
+          <div class="gallery-filmstrip-wrap">
+            <button class="gallery-scroll-btn gallery-scroll-left" data-gallery-scroll="-1" aria-label="Scroll left">‹</button>
+            <div class="gallery-filmstrip" data-gallery-filmstrip>
+              {gallery.slice(1).map(item => (
+                <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
+                  {item.type === 'video' ? (
+                    <video data-lazy-src={item.src} muted playsinline preload="none" class="gallery-thumb-media"></video>
+                  ) : item.type === 'pdf' ? (
+                    item.preview ? (
+                      <img src={item.preview} alt={item.name} loading="lazy" class="gallery-thumb-media" />
+                    ) : (
+                      <div class="gallery-thumb-pdf">PDF</div>
+                    )
                   ) : (
-                    <div class="gallery-thumb-pdf">PDF</div>
-                  )
-                ) : (
-                  <img src={item.src} alt={item.name} loading="lazy" class="gallery-thumb-media" />
-                )}
-                <span class="gallery-label">{item.name}</span>
-              </button>
-            ))}
+                    <img src={item.src} alt={item.name} loading="lazy" class="gallery-thumb-media" />
+                  )}
+                  <span class="gallery-label">{item.name}</span>
+                </button>
+              ))}
+            </div>
+            <button class="gallery-scroll-btn gallery-scroll-right" data-gallery-scroll="1" aria-label="Scroll right">›</button>
           </div>
         </div>
 
@@ -244,12 +248,42 @@ const allProjects = [
     max-width: 100%;
   }
 
+  .gallery-filmstrip-wrap {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 100%;
+  }
   .gallery-filmstrip {
     display: flex;
     gap: 10px;
-    flex-shrink: 0;
-    justify-content: center;
+    flex: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    padding: 2px;
   }
+  .gallery-filmstrip::-webkit-scrollbar { display: none; }
+  .gallery-scroll-btn {
+    flex-shrink: 0;
+    width: 22px;
+    height: 60px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .gallery-scroll-btn:hover { color: var(--orange); border-color: var(--orange); }
 
   .gallery-thumb {
     width: 60px;
@@ -570,6 +604,16 @@ const allProjects = [
     document.querySelectorAll('[data-gallery-panel]').forEach(panel => {
       const preview = panel.querySelector('[data-gallery-preview]') as HTMLElement;
       const isMobile = (panel as HTMLElement).dataset.isMobile === 'true';
+
+      const filmstrip = panel.querySelector('[data-gallery-filmstrip]') as HTMLElement;
+      panel.querySelectorAll('[data-gallery-scroll]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!filmstrip) return;
+          const dir = parseInt((btn as HTMLElement).dataset.galleryScroll || '1', 10);
+          filmstrip.scrollBy({ left: dir * 140, behavior: 'smooth' });
+        });
+      });
 
       panel.querySelectorAll('.gallery-thumb').forEach(thumb => {
         thumb.addEventListener('click', () => {
