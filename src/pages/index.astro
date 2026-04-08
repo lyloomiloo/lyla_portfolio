@@ -1216,17 +1216,29 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
     // Leaderboard (top 5 stored in localStorage)
     type LBEntry = { initials: string; score: number };
-    function loadLeaderboard(): LBEntry[] {
-      try { return JSON.parse(localStorage.getItem('duckLeaderboard') || '[]'); } catch { return []; }
+    let cachedLB: LBEntry[] = [];
+    async function fetchLeaderboard() {
+      try {
+        const res = await fetch('/api/leaderboard', { cache: 'no-store' });
+        if (res.ok) cachedLB = await res.json();
+      } catch {}
     }
-    function saveLeaderboard(lb: LBEntry[]) {
-      localStorage.setItem('duckLeaderboard', JSON.stringify(lb));
+    async function submitScore(initials: string, s: number) {
+      try {
+        await fetch('/api/leaderboard', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ initials, score: s }),
+        });
+      } catch {}
+      await fetchLeaderboard();
     }
+    function loadLeaderboard(): LBEntry[] { return cachedLB; }
     function qualifiesForLeaderboard(s: number): boolean {
       if (s <= 0) return false;
-      const lb = loadLeaderboard();
-      return lb.length < 5 || s > lb[lb.length - 1].score;
+      return cachedLB.length < 5 || s > cachedLB[cachedLB.length - 1].score;
     }
+    fetchLeaderboard();
 
     // Duck
     const duck = { x: 0, y: 0, w: 0, h: 0, vy: 0, jumping: false, jumpCount: 0 };
@@ -1687,12 +1699,10 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         input.value = input.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 3);
       });
 
-      const submit = () => {
+      const submit = async () => {
         const initials = (input.value || 'AAA').padEnd(3, 'A').slice(0, 3);
-        const lb = loadLeaderboard();
-        lb.push({ initials, score });
-        lb.sort((a, b) => b.score - a.score);
-        saveLeaderboard(lb.slice(0, 5));
+        submitBtn.disabled = true;
+        await submitScore(initials, score);
         overlay.remove();
         state = 'dead';
       };
