@@ -1251,6 +1251,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     // Clouds
     type Cloud = { x: number; y: number; w: number; h: number };
     let clouds: Cloud[] = [];
+    let groundOffset = 0;
 
     function reset() {
       score = 0;
@@ -1261,6 +1262,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       duck.vy = 0;
       duck.jumping = false;
       duck.jumpCount = 0;
+      groundOffset = 0;
       clouds = [];
       for (let i = 0; i < 4; i++) {
         clouds.push({
@@ -1479,9 +1481,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         }
       }
 
+      // Scroll ground
+      groundOffset = (groundOffset + spd) % px(8);
+
       // Move clouds
       for (const c of clouds) {
-        c.x -= spd * 0.15;
+        c.x -= spd * 0.5;
         if (c.x + c.w < 0) {
           c.x = W + Math.random() * 100;
           c.y = H * 0.05 + Math.random() * H * 0.25;
@@ -1527,9 +1532,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       ctx.fillStyle = '#4A8F4A';
       ctx.fillRect(0, groundY, W, px(2));
 
-      // Ground detail — little grass tufts
+      // Ground detail — little grass tufts (scroll with obstacles)
       ctx.fillStyle = '#6BB86B';
-      for (let i = 0; i < W; i += px(8)) {
+      for (let i = -groundOffset; i < W; i += px(8)) {
         ctx.fillRect(i, groundY - px(1), px(1), px(1));
       }
 

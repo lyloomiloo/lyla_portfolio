@@ -1,5 +1,7 @@
 ---
 import DesktopIcon from './DesktopIcon.astro';
+import { icons, colorMap } from '../data/pixel-icons';
+const duckGrid = icons['duck'];
 ---
 
 <div class="desktop">
@@ -53,9 +55,15 @@ import DesktopIcon from './DesktopIcon.astro';
   <DesktopIcon id="todo" label="todo.md" icon="checklist" top="32%" left="90%" />
   <DesktopIcon id="selfie" label="selfie.jpg" icon="image" top="62%" left="30%" />
   <DesktopIcon id="readme" label="readme.txt" icon="notepad" top="58%" left="72%" />
-
-  <!-- Duck click counter -->
-  <div class="duck-counter" id="duckCounter">QUACK COUNT: <span id="duckCountNum">000</span></div>
+  <!-- Duck click counter + mini game icon -->
+  <div class="duck-counter" id="duckCounter">
+    <div class="mini-duck-btn desktop-icon" data-icon-id="duckgame">
+      <div class="mini-duck-grid">
+        {duckGrid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+      </div>
+    </div>
+    QUACK COUNT: <span id="duckCountNum">000</span>
+  </div>
 
   <!-- Desktop pet duck — walks behind icons (z-index:3, icons are z-index:5) -->
 <div class="duck walking" id="deskDuck">
@@ -364,6 +372,31 @@ import DesktopIcon from './DesktopIcon.astro';
     font-weight: 500;
     color: #888;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .mini-duck-btn {
+    position: static;
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 2px;
+    z-index: 7;
+  }
+  .mini-duck-btn:hover { transform: scale(1.1); }
+
+  .mini-duck-grid {
+    width: 20px;
+    height: 20px;
+    display: grid;
+    grid-template-columns: repeat(10, 2px);
+    grid-template-rows: repeat(10, 2px);
+    image-rendering: pixelated;
+  }
+  .mini-duck-grid div {
+    width: 2px;
+    height: 2px;
   }
 
   /* Name tag — small, bottom-left */

@@ -44,8 +44,8 @@ function openWindow(id) {
         return;
       }
     }
-    // Project detail windows open maximized directly
-    if (id.endsWith('-detail') && !win.classList.contains('maximized')) {
+    // Project detail windows and duck game open maximized directly
+    if ((id.endsWith('-detail') || id === 'duckgame') && !win.classList.contains('maximized')) {
       win.classList.add('maximized');
     }
     // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
