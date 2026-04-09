@@ -131,10 +131,7 @@ function updateTaskbar(activeId) {
   });
 }
 
-// --- Icon double-click / single-tap ---
-let clickTimer = null;
-let lastClickedIcon = null;
-
+// --- Icon click ---
 document.addEventListener('click', (e) => {
   // Close buttons (red dot)
   const closeBtn = e.target.closest('[data-close]');
@@ -164,34 +161,13 @@ document.addEventListener('click', (e) => {
     return;
   }
 
-  // Desktop icons
+  // Desktop icons — single click opens
   const icon = e.target.closest('.desktop-icon');
   if (icon) {
     const id = icon.dataset.iconId;
-
-    // Mobile: single tap opens
-    if (isTouchDevice()) {
-      document.querySelectorAll('.desktop-icon.selected').forEach(i => i.classList.remove('selected'));
-      icon.classList.add('selected');
-      openWindow(id);
-      return;
-    }
-
-    // Desktop: double-click
-    if (lastClickedIcon === id && clickTimer) {
-      clearTimeout(clickTimer);
-      clickTimer = null;
-      lastClickedIcon = null;
-      openWindow(id);
-    } else {
-      document.querySelectorAll('.desktop-icon.selected').forEach(i => i.classList.remove('selected'));
-      icon.classList.add('selected');
-      lastClickedIcon = id;
-      clickTimer = setTimeout(() => {
-        clickTimer = null;
-        lastClickedIcon = null;
-      }, 400);
-    }
+    document.querySelectorAll('.desktop-icon.selected').forEach(i => i.classList.remove('selected'));
+    icon.classList.add('selected');
+    openWindow(id);
     return;
   }
 
