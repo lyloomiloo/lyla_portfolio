@@ -172,6 +172,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       gallery={[
         { src: '/images/projects/snapp/beta_test.mov', name: 'beta_test.mov', type: 'video' },
         { src: '/images/projects/snapp/daily_prompt.jpg', name: 'daily_prompt.jpg', type: 'image' },
+        { src: '/images/projects/snapp/drop_it.png', name: 'drop_it.png', type: 'image' },
       ]}
       stats={[{ number: '1', label: 'word\na day' }, { number: '24hr', label: 'challenge' }, { number: '∞', label: 'moments\nof beauty' }]}
       problem='We walk past a thousand interesting things every day without noticing them. Snapp turns our everyday environment into a canvas for discovery, with a daily word prompt that gets everyone looking up and sharing what they find.'
@@ -486,6 +487,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       <div class="appstore-screenshots">
         <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/snapp/beta_test.mov" autoplay loop muted playsinline preload="none"></video></div>
         <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/snapp/daily_prompt.jpg" alt="daily prompt" /></div>
+        <div class="appstore-screenshot" data-gallery-open><img src="/images/projects/snapp/drop_it.png" alt="drop it" /></div>
       </div>
       <div class="appstore-section">What's New</div>
       <div class="appstore-features">
@@ -626,7 +628,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       </div>
     </div>
   </MobilePanel>
-  <MobilePanel id="resume" title="resume.pdf — Downloading...">
+  <MobilePanel id="resume" title="" fullscreen>
     <div style="font-family: var(--font-mono); font-size: 0.9rem; line-height: 1.8; color: var(--text); text-align: center; padding: 0.5rem 0;">
       <p style="font-size: 2rem; margin-bottom: 0.5rem;">&#128196;</p>
       <p style="font-weight: 700;">Lyla_Huang_Resume_2026.pdf</p>
