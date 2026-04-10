@@ -1,26 +1,23 @@
 ---
 name: status
-description: Show project progress across specs, plans, and tasks.
+description: Show project progress across specs and plans.
 disable-model-invocation: true
 ---
 
 Show project status:
 
-1. List all files in `/_specs/`, `/_plans/`, `/_tasks/`.
-2. For each task, check if it has a `## Status` section.
+1. List all files in `/_specs/` and `/_plans/`.
+2. For each spec, check if a matching plan exists and read its `## Status:` line.
 3. Show a summary:
 
 ```
 ## Project Status
 
-### [Spec title]
-Spec: /_specs/[file] ✅
-Plan: /_plans/[file] ✅
-Tasks:
-  - [1.1] [title] ✅ Done
-  - [1.2] [title] ⏳ Next
-  - [2.1] [title] ○ Pending
+| # | Feature | Spec | Plan | Status |
+|---|---------|------|------|--------|
+| 1 | Desktop OS | 01-desktop-os.md | 01-desktop-os.md | Implemented |
+| 2 | Feature Name | 02-feature.md | — | Pending |
 ```
 
-4. Flag specs without plans, plans with unfinished tasks.
-5. Show which task to work on next.
+4. Flag specs without plans, and plans still marked Pending.
+5. Show recent git log (last 5 commits) for additional context.

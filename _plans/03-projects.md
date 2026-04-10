@@ -1,38 +1,29 @@
-# Plan: Projects Section
-Spec: `/_specs/03-projects.md`
+# Plan: Projects & Case Studies
+Spec: /_specs/03-projects.md
 
 ## Overview
-Build the project cards and asymmetric grid. 3 steps, single phase.
+Build the project showcase — card grid in projects.exe window, and maximized detail views for each project.
 
 ## Phases
 
-### Phase 1: Project Grid
+### Phase 1: Content Collection
+1. Define Zod schema in `src/content/config.ts` (title, slug, tags, order, etc.)
+2. Create project markdown files: reroute.md, snapp.md, planmytrip.md
 
-#### Step 1.1: Build ProjectCard.astro
-- What: A single project card component that accepts frontmatter props (displayTitle, hook, tags, slug, status, year, order). Renders: index number, mockup placeholder (16:10 grey rectangle), ALL CAPS title in Space Grotesk, hook text, tag pills, "View Project →" link in accent blue, and a meta line (status · year) with top border separator. Card background is `--bg-card`, no explicit border (handled by grid parent).
-- Files: `src/components/ProjectCard.astro`
-- Satisfies: "Project titles are ALL CAPS", "Tags, hooks, and meta lines render correctly"
-- Depends on: Foundation complete
+### Phase 2: Projects Grid
+3. Create `ProjectsWindow.astro` — 3-column card grid
+4. Add pixel icon + mockup preview per card (browser/phone frame)
+5. Wire card clicks to open detail windows (close projects, open detail maximized)
 
-#### Step 1.2: Build ProjectGrid.astro
-- What: A grid container that queries all projects from the content collection, sorts by `order`, and renders them in the asymmetric layout. Grid: `grid-template-columns: 1.4fr 1fr; grid-template-rows: auto auto`. First card gets `.featured` class (grid-row: span 2). Parent has `gap: 1px; background: var(--border)` to create dividers. Children have `background: var(--bg-card)`. On mobile: single column, no spanning.
-- Files: `src/components/ProjectGrid.astro`
-- Satisfies: "Grid is asymmetric on desktop", "1px dividers visible", "Single-column on mobile"
-- Depends on: 1.1
+### Phase 3: Project Detail
+6. Create `ProjectDetail.astro` — 3-column layout (props, gallery, collapsible info)
+7. Build stats cards, approach methodology, feature list
+8. Build media gallery with filmstrip thumbnail scroller
+9. Add lazy video loading (staggered 500ms preload)
+10. Add tab navigation between projects within detail view
 
-#### Step 1.3: Integrate into index.astro
-- What: Add the Projects section to the index page with section label ("Projects" with accent line prefix) and the ProjectGrid component. Add `.reveal` classes for scroll animation.
-- Files: `src/pages/index.astro` (extend)
-- Satisfies: "Three project cards render", "Scroll-triggered reveal animation works"
-- Depends on: 1.2
+### Phase 4: Mobile Project Panels
+11. Build App Store-style project cards for mobile panels
+12. Wire from projects folder popup in mobile home screen
 
-## Risks
-- Content collection query might need `getCollection('projects')` — verify Astro API
-- Grid spanning behavior on tablet may need a breakpoint between desktop and mobile
-
-## Done criteria
-- Three cards render with correct data from markdown frontmatter
-- Asymmetric grid visible on desktop
-- 1px dividers between all cards
-- Links point to `/projects/[slug]`
-- Responsive single-column on mobile
+## Status: Implemented

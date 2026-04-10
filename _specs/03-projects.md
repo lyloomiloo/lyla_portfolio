@@ -1,42 +1,38 @@
-# Spec: Projects Section
+# Spec: Projects & Case Studies
 
 ## Summary
-Build the projects section with an asymmetric grid displaying three project cards. Each card shows a screenshot placeholder, ALL CAPS title, hook text, tags, and a link to the project detail page.
+Three projects displayed as a card grid in `projects.exe`, each opening a maximized detail window with stats, approach methodology, features, and a media gallery.
 
-## Why
-The projects are the core of the portfolio — this is what hiring managers and collaborators come to see. The asymmetric grid (one large featured card + two stacked smaller cards) creates visual hierarchy and avoids the generic three-column portfolio layout.
+## Projects
 
-## Requested outcome
-A section containing:
-- Section label "Projects" with accent-colored line prefix
-- An asymmetric 2-column grid: left column (1.4fr) spans 2 rows for the featured project, right column (1fr) has 2 stacked cards
-- Cards separated by 1px border dividers (not gaps)
-- Each card contains: index number, mockup placeholder, ALL CAPS project name, hook text, tag pills, "View Project →" link, and a meta line with status + year
-- Project data is pulled from markdown content collections
+### (RE)ROUTE (order: 1)
+AI walking navigation that optimizes for quality, not speed. Master's thesis at ELISAVA, 2026.
+- 119K street segments scored (noise, greenery, safety)
+- 386 hand-curated POIs
+- 3 route modes: Go (destination), Explore (vibe-based), Wander (compass + pins)
+- Live: rerouted.vercel.app
 
-## Users affected
-- Portfolio visitors, hiring managers, recruiters
+### OH SNAPP! (order: 2)
+Location-based daily photo scavenger hunt. Personal project, 2026.
+- One word prompt per day, 24hr ephemeral map
+- Anti-social media: no algorithm, followers, or likes
+- Live: ohsnapp.vercel.app
 
-## Functional expectations
-- Cards load data from `src/content/projects/*.md` frontmatter
-- Featured project (reroute, order: 1) takes the large left position
-- The grid uses `gap: 1px; background: var(--border)` with white card backgrounds to create dividers
-- Tags render as small pills with 1px borders
-- "View Project →" links to `/projects/[slug]`
-- On mobile, grid becomes single column
-- Cards fade in on scroll (`.reveal` class)
+### PLANMYTRIP (order: 3)
+Interactive trip itinerary builder. Personal project, 2026.
+- Magazine-quality layouts, multi-provider image search
+- Live weather per destination, PDF export
+- Live: mytrippp.vercel.app
 
-## Acceptance criteria
-- Three project cards render with correct data from markdown files
-- Grid is asymmetric on desktop (featured card spans 2 rows)
-- 1px dividers visible between cards
-- Project titles are ALL CAPS (using `displayTitle` from frontmatter)
-- Tags, hooks, and meta lines render correctly
-- Links point to correct project detail URLs
-- Single-column layout on mobile
-- Scroll-triggered reveal animation works
+## Detail view structure
+Each ProjectDetail receives: slug, title, hook, tags, stats[], problem, approaches[], features[], mockups[], gallery[], link, context, year.
 
-## Affected components
-- `src/components/ProjectGrid.astro` (new)
-- `src/components/ProjectCard.astro` (new)
-- `src/pages/index.astro` (integrate)
+Gallery supports video (MOV), images (JPG/PNG), and PDFs with preview thumbnails. Videos lazy-load with staggered preload (500ms intervals). Filmstrip thumbnail scroller for navigation.
+
+## Files
+- `src/components/ProjectsWindow.astro` — 3-column card grid with pixel icons + mockup previews
+- `src/components/ProjectDetail.astro` — 3-column detail layout (props, gallery, collapsible info)
+- `src/content/projects/*.md` — project frontmatter (Zod schema in `src/content/config.ts`)
+- Project assets in `public/images/projects/{reroute,snapp,planmytrip}/`
+
+## Status: Implemented
