@@ -818,7 +818,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   const lockScreen = document.getElementById('lockScreen');
   const lockButton = document.getElementById('lockButton');
 
-  if (lockScreen && !document.documentElement.classList.contains('skip-lock')) {
+  function setupLockListeners() {
+    if (!lockScreen) return;
     const dismiss = (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
@@ -837,6 +838,13 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
     if (lockButton) lockButton.addEventListener('click', dismiss);
     document.addEventListener('keydown', dismissKey);
+  }
+
+  // Expose for logoff reuse
+  (window as any).__setupLockListeners = setupLockListeners;
+
+  if (!document.documentElement.classList.contains('skip-lock')) {
+    setupLockListeners();
   }
 
   // Mini player
