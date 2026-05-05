@@ -126,7 +126,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       hook="(re)Route is a walking app that asks a different question. 'What kind of walk do you need right now?' Type a mood, a vibe, or a destination in natural language. The AI routes you through Barcelona's most interesting, safest, or calmest streets depending on what the moment calls for."
       tags="AI · UX Research · Product Design · Data"
       location="Barcelona" status="Prototype · On-going"
-      appType="Web Application" context="Master's Thesis — ELISAVA" year="2026"
+      appType="Mobile Web App" context="Master's Thesis — ELISAVA" year="2026"
       isMobile={true}
       video="/images/projects/reroute/main.mov"
       link="https://rerouted.vercel.app/"
@@ -227,6 +227,80 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       mockups={[
         { label: 'ITINERARY VIEW', caption: 'City intro + day overview' },
         { label: 'WEATHER & DETAILS', caption: 'Weather widgets + timeline' },
+      ]}
+    />
+  </Window>
+
+  <Window id="reroute2-detail" title="project_01.exe — (RE)ROUTE 2.0" width="82vw" height="78vh" top="4vh" left="6vw">
+    <ProjectDetail
+      slug="reroute2" order={1} title="(RE)ROUTE 2.0"
+      hook="(re)Route 2.0 is a walking discovery app. AI generates quests — visit real places, snap photos of vibes, chase live events — then builds a taste profile from how you explore. Navigation as presence, not efficiency."
+      tags="AI · Product Design · UX Research · Full-Stack"
+      location="Global" status="Master's Thesis · Prototype"
+      appType="Native Mobile App" context="Master's Thesis — ELISAVA" year="2026"
+      isMobile={true}
+      link="https://rerouteweb.vercel.app/"
+      gallery={[
+        { src: '/images/projects/reroute2/daily_quests.mov', name: 'daily_quests.mov', type: 'video' },
+        { src: '/images/projects/reroute2/watch_companion.mov', name: 'watch_companion.mov', type: 'video', frame: 'watch' },
+        { src: '/images/projects/reroute2/game_master.mov', name: 'game_master.mov', type: 'video' },
+        { src: '/images/projects/reroute2/badges.mov', name: 'badges.mov', type: 'video' },
+        { src: '/images/projects/reroute2/attention_log.mov', name: 'attention_log.mov', type: 'video' },
+      ]}
+      stats={[{ number: 'AI', label: 'quest\nmaster' }, { number: '∞', label: 'quests' }, { number: '35', label: 'badges' }]}
+      problem="Navigation apps solved getting there fast. But what if the walk itself was the point? (re)Route 2.0 turns cities into quest maps — generating challenges from real events, building a taste profile from your explorations, and learning what kind of city you want to discover."
+      approaches={[
+        { label: 'QUEST-DRIVEN', desc: 'Four quest types (visit, wander, collect, live) turn walking into structured discovery, prompting you to look up.' },
+        { label: 'TASTE MEMORY', desc: 'Every interaction feeds an evolving profile. Nightly AI rebuilds your taste notes. Tomorrow reflects today.' },
+        { label: 'LIVE + LOCAL', desc: 'Three-tier trigger: real events via web search, recurring rhythms, solar-calculated light windows. Always fresh.' },
+      ]}
+      features={[
+        { title: 'Designed for eyes up', desc: `Most apps draw you in — we direct your attention out. Your phone isn't an attention-stealing device.` },
+        { title: 'Lives and breathes like the city', desc: 'Daily cronning of live events injects randomness into the mix, on top of context-aware quests.' },
+        { title: 'Your city, your way', desc: 'Taste profile is built and maintained over time from what you snap and query, so daily quests are always tailored for you.' },
+      ]}
+      mockups={[
+        { label: 'QUEST DECK', caption: 'Daily quest cards — live, community, tailored, local' },
+        { label: 'GAME MASTER', caption: 'Walk mode + objectives + snap camera' },
+        { label: 'BADGES', caption: 'Achievement + collection badges' },
+        { label: 'ATTENTION LOG', caption: 'AI taste profile + exploration history' },
+      ]}
+    />
+  </Window>
+
+  <Window id="jobhunter-detail" title="project_03.exe — JOBHUNTER" width="90vw" height="82vh" top="2vh" left="5vw">
+    <ProjectDetail
+      slug="jobhunter" order={3} title="JOBHUNTER"
+      hook="Job searching is one of the most anxiety-inducing experiences a person can go through. Most job tools make it worse by treating you like a data point. JobHunter is an AI-free aggregator that scores listings against your profile and looks after you while you look for work."
+      tags="UX Design · Full-Stack · Product · Emotional Design"
+      location="Global" status="Deployed"
+      appType="Web Application" context="Personal Project" year="2026"
+      isMobile={false}
+      link="https://jobsforall.vercel.app/"
+      gallery={[
+        { src: '/images/projects/jobhunter/meet_pip.mov', name: 'meet_pip.mov', type: 'video' },
+        { src: '/images/projects/jobhunter/job_sort.mov', name: 'job_sort.mov', type: 'video' },
+        { src: '/images/projects/jobhunter/breathe.mov', name: 'breathe.mov', type: 'video' },
+        { src: '/images/projects/jobhunter/celebration.mov', name: 'celebration.mov', type: 'video' },
+      ]}
+      stats={[{ number: '600+', label: 'sources\nscraped' }, { number: '6', label: 'scoring\ndimensions' }, { number: '1', label: 'moody\nblob' }]}
+      problem="The tools designed to help job seekers (job boards, LinkedIn, recruiter inboxes) optimise for listings served, not for the person searching. There's no acknowledgement that job searching is emotionally gruelling work. JobHunter was built as a response to that."
+      approaches={[
+        { label: 'SCORE, DON\'T SCROLL (FOREVER)', desc: 'Every listing scored on 6 dimensions against your profile. Hard filters remove noise before it reaches your feed.' },
+        { label: 'EMOTIONAL DESIGN', desc: 'Pip checks in each session. Mood shapes the experience: breathing exercises, gentle nudges, or permission to close the tab.' },
+        { label: 'EFFORT, NOT OUTCOMES', desc: 'XP rewards showing up, saving, applying. Not callbacks you can\'t control. Confetti when you apply, because that matters.' },
+      ]}
+      features={[
+        { title: 'Pip, your stress ball', desc: 'A reactive blob that checks in on your mood, adapts the interface, and can be squished endlessly without judgment.' },
+        { title: '600+ sources, 6hr refresh', desc: 'Arbeitnow, Remotive, Adzuna (17 countries), 125+ RSS feeds. Scored and ranked before you see them.' },
+        { title: 'Adjacent role discovery', desc: 'Surfaces positions with skill overlap you hadn\'t considered. Expand your search without diluting it.' },
+        { title: 'No algorithms, no data selling', desc: 'Free, self-hosted, your data stays yours. Built to be genuinely on your side.' },
+      ]}
+      mockups={[
+        { label: 'MEET PIP', caption: 'Mood check-in + stress ball' },
+        { label: 'JOB SORT', caption: 'Ranked job matches by fit' },
+        { label: 'BREATHE', caption: 'Built-in breathing exercise' },
+        { label: 'CELEBRATION', caption: 'Confetti when you apply' },
       ]}
     />
   </Window>
@@ -504,6 +578,98 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       <div class="appstore-info">
         <div class="appstore-row"><span class="appstore-key">Type</span><span>Mobile Web App</span></div>
         <div class="appstore-row"><span class="appstore-key">Stack</span><span>Product &middot; Full-Stack &middot; UX</span></div>
+        <div class="appstore-row"><span class="appstore-key">Location</span><span>Global</span></div>
+        <div class="appstore-row last"><span class="appstore-key">Status</span><span>Deployed</span></div>
+      </div>
+    </div>
+  </MobilePanel>
+
+  <MobilePanel id="reroute2-detail" title="" fullscreen>
+    <div class="appstore">
+      <div class="appstore-head">
+        <div class="appstore-icon" style="background:#00CC55;color:#1E1E1E;font-family:var(--font-mono);font-size:0.7rem;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:0.02em">RE 2</div>
+        <div class="appstore-head-text">
+          <div class="appstore-title">(RE)ROUTE 2.0</div>
+          <div class="appstore-sub">Walking Discovery App</div>
+        </div>
+        <a href="https://rerouteweb.vercel.app/" target="_blank" rel="noopener" class="appstore-get">TRY</a>
+      </div>
+      <div class="appstore-desc">AI generates quests — visit real places, snap photos of vibes, chase live events — then builds a taste profile from how you explore. Navigation as presence, not efficiency.</div>
+      <div class="appstore-stats-strip">
+        <div class="appstore-stat"><div class="appstore-stat-val">AI</div><div class="appstore-stat-label">quest master</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">∞</div><div class="appstore-stat-label">quests</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">35</div><div class="appstore-stat-label">badges</div></div>
+      </div>
+      <div class="appstore-screenshots">
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute2/daily_quests.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute2/watch_companion.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute2/game_master.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute2/badges.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/reroute2/attention_log.mov" autoplay loop muted playsinline preload="none"></video></div>
+      </div>
+      <div class="appstore-section">Differentiators</div>
+      <div class="appstore-features">
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Designed for eyes up — directs attention out, not in</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Lives and breathes like the city — daily live events + randomness</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Your city, your way — taste profile tailors every quest</div>
+      </div>
+      <div class="appstore-section">Approach</div>
+      <div class="appstore-concept"><div class="appstore-concept-label">QUEST-DRIVEN</div><div class="appstore-concept-desc">Four quest types (visit, wander, collect, live) turn walking into structured discovery, prompting you to look up.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">TASTE MEMORY</div><div class="appstore-concept-desc">Every interaction feeds an evolving profile. Nightly AI rebuilds your taste notes. Tomorrow reflects today.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">LIVE + LOCAL</div><div class="appstore-concept-desc">Real events via web search, recurring rhythms, solar-calculated light windows. Always fresh.</div></div>
+      <div class="appstore-section">Information</div>
+      <div class="appstore-info">
+        <div class="appstore-row"><span class="appstore-key">Type</span><span>Native Mobile App</span></div>
+        <div class="appstore-row"><span class="appstore-key">Stack</span><span>AI &middot; Product Design &middot; UX Research &middot; Full-Stack</span></div>
+        <div class="appstore-row"><span class="appstore-key">Location</span><span>Global</span></div>
+        <div class="appstore-row"><span class="appstore-key">Status</span><span>Prototype</span></div>
+        <div class="appstore-row last"><span class="appstore-key">Context</span><span>Master's Thesis &mdash; ELISAVA</span></div>
+      </div>
+    </div>
+  </MobilePanel>
+
+  <MobilePanel id="jobhunter-detail" title="" fullscreen>
+    <div class="appstore">
+      <div class="appstore-head">
+        <div class="appstore-icon" style="background:#FF6B00;color:#fff;font-family:var(--font-mono);font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:0.02em">JH</div>
+        <div class="appstore-head-text">
+          <div class="appstore-title">JOBHUNTER</div>
+          <div class="appstore-sub">Job Search Companion</div>
+        </div>
+        <a href="https://jobsforall.vercel.app/" target="_blank" rel="noopener" class="appstore-get">TRY</a>
+      </div>
+      <div class="appstore-desc">An AI-free job aggregator that scores every listing against your skills, values, and location — and looks after you while you look for work.</div>
+      <div class="appstore-stats-strip">
+        <div class="appstore-stat"><div class="appstore-stat-val">600+</div><div class="appstore-stat-label">sources</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">6</div><div class="appstore-stat-label">dimensions</div></div>
+        <div class="appstore-stat-divider"></div>
+        <div class="appstore-stat"><div class="appstore-stat-val">1</div><div class="appstore-stat-label">moody blob</div></div>
+      </div>
+      <div class="appstore-screenshots">
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/jobhunter/meet_pip.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/jobhunter/job_sort.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/jobhunter/breathe.mov" autoplay loop muted playsinline preload="none"></video></div>
+        <div class="appstore-screenshot" data-gallery-open><video data-lazy-src="/images/projects/jobhunter/celebration.mov" autoplay loop muted playsinline preload="none"></video></div>
+      </div>
+      <div class="appstore-section">What's New</div>
+      <div class="appstore-features">
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Pip: mood-aware blob that adapts the interface</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>600+ sources scraped every 6 hours</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>6-dimension scoring against your profile</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Adjacent role discovery for career pivots</div>
+        <div class="appstore-feat"><span class="appstore-dot">*</span>Breathing exercises built into the feed</div>
+      </div>
+      <div class="appstore-section">Approach</div>
+      <div class="appstore-concept"><div class="appstore-concept-label">SCORE, DON'T SCROLL (FOREVER)</div><div class="appstore-concept-desc">Every listing scored on 6 dimensions. Hard filters remove noise before it reaches you.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">EMOTIONAL DESIGN</div><div class="appstore-concept-desc">Pip checks in each session. Mood shapes the experience.</div></div>
+      <div class="appstore-concept"><div class="appstore-concept-label">EFFORT, NOT OUTCOMES</div><div class="appstore-concept-desc">XP rewards showing up, not callbacks you can't control.</div></div>
+      <div class="appstore-section">Information</div>
+      <div class="appstore-info">
+        <div class="appstore-row"><span class="appstore-key">Type</span><span>Web Application</span></div>
+        <div class="appstore-row"><span class="appstore-key">Stack</span><span>UX Design &middot; Full-Stack &middot; Product &middot; Emotional Design</span></div>
         <div class="appstore-row"><span class="appstore-key">Location</span><span>Global</span></div>
         <div class="appstore-row last"><span class="appstore-key">Status</span><span>Deployed</span></div>
       </div>

@@ -5,12 +5,13 @@ displayTitle: "SNAPP"
 tagline: "A game about noticing the small stuff."
 hook: "A word a day. Infinite discovery.|This web app helps humans look up from their screens to discover the beauty around them through daily quests."
 type: "Barcelona"
-status: "In use · Feb 2026"
+status: "Deployed · Feb 2026"
 year: "2026"
 tags: ["Product Design", "Full-Stack", "UX", "Gamification"]
 thumbnail: "/images/projects/snapp/thumb.png"
 heroImage: "/images/projects/snapp/hero.png"
 order: 2
+page: 1
 role: "Designer & developer (concept to product)"
 duration: "3 months"
 tools: ["Figma", "Next.js", "Supabase", "Leaflet", "Vercel"]

@@ -13,7 +13,7 @@ interface Props {
   approaches: { label: string; desc: string }[];
   features: { title: string; desc: string }[];
   mockups: { label: string; caption: string; video?: string; image?: string }[];
-  gallery?: { src: string; name: string; type: 'video' | 'image' | 'pdf'; preview?: string }[];
+  gallery?: { src: string; name: string; type: 'video' | 'image' | 'pdf'; preview?: string; frame?: 'watch' }[];
   link?: string;
   video?: string;
   appType?: string;
@@ -24,9 +24,11 @@ interface Props {
 const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, video, appType, context, year } = Astro.props;
 
 const allProjects = [
-  { slug: 'reroute', title: 'project_01.exe — (RE)ROUTE', order: 1 },
+  { slug: 'reroute2', title: 'project_01.exe — (RE)ROUTE 2.0', order: 1 },
   { slug: 'snapp', title: 'project_02.exe — SNAPP', order: 2 },
-  { slug: 'planmytrip', title: 'project_03.exe — PLANMYTRIP', order: 3 },
+  { slug: 'jobhunter', title: 'project_03.exe — JOBHUNTER', order: 3 },
+  { slug: 'reroute', title: 'project_04.exe — (RE)ROUTE 1.0', order: 4 },
+  { slug: 'planmytrip', title: 'project_05.exe — PLANMYTRIP', order: 5 },
 ];
 ---
 
@@ -101,7 +103,7 @@ const allProjects = [
         </div>
 
         <div class="props-gallery-panel" data-gallery-panel data-is-mobile={isMobile ? 'true' : 'false'} data-slug={slug}>
-          <div class="gallery-preview" data-gallery-preview data-gallery-src={gallery[0]?.src} data-gallery-type={gallery[0]?.type} data-gallery-name={gallery[0]?.name}>
+          <div class="gallery-preview" data-gallery-preview data-gallery-src={gallery[0]?.src} data-gallery-type={gallery[0]?.type} data-gallery-name={gallery[0]?.name} data-gallery-frame={gallery[0]?.frame || ''}>
             {gallery.length > 0 && (
               isMobile ? (
                 <div class="proj-phone gallery-phone">
@@ -135,7 +137,7 @@ const allProjects = [
             <button class="gallery-scroll-btn gallery-scroll-left" data-gallery-scroll="-1" aria-label="Scroll left">‹</button>
             <div class="gallery-filmstrip" data-gallery-filmstrip>
               {gallery.slice(1).map(item => (
-                <button class="gallery-thumb" data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name}>
+                <button class={`gallery-thumb ${item.frame === 'watch' ? 'gallery-thumb--watch' : ''}`} data-gallery-src={item.src} data-gallery-type={item.type} data-gallery-name={item.name} data-gallery-frame={item.frame || ''}>
                   {item.type === 'video' ? (
                     <video data-lazy-src={item.src} muted playsinline preload="none" class="gallery-thumb-media"></video>
                   ) : item.type === 'pdf' ? (
@@ -519,6 +521,8 @@ const allProjects = [
     transition: transform 0.3s ease;
   }
   .col3-toggle:hover { color: #e55e00; }
+  [data-proj-detail="jobhunter"] .col3-toggle { display: none; }
+  [data-proj-detail="jobhunter"] .props-col3--collapsible { min-width: 280px; }
   .props-desc {
     font-family: var(--font-body);
     font-size: 0.95rem;
@@ -580,6 +584,12 @@ const allProjects = [
   .proj-browser .proj-ph { aspect-ratio: 16/10; }
   .proj-ph span { font-family: var(--font-mono); font-size: 0.65rem; color: #666; text-transform: uppercase; letter-spacing: 0.1em; }
   .proj-phone-video { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Apple Watch frame */
+  .proj-watch { width: 140px; aspect-ratio: 5 / 6; background: #1E1E1E; border-radius: 28px; border: 5px solid #555; overflow: visible; margin: 0 auto; position: relative; box-shadow: inset 0 0 0 1px #333; }
+  .proj-watch::before { content: ''; position: absolute; right: -9px; top: 28%; width: 4px; height: 18px; background: #555; border-radius: 0 2px 2px 0; }
+  .proj-watch::after { content: ''; position: absolute; right: -11px; top: 40%; width: 6px; height: 14px; background: #555; border-radius: 0 3px 3px 0; }
+  .proj-watch-screen { width: 100%; height: 100%; overflow: hidden; border-radius: 23px; }
+  .proj-watch-video { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proj-browser-video { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   @media (max-width: 768px) {
@@ -624,33 +634,61 @@ const allProjects = [
           const prevSrc = preview.dataset.gallerySrc!;
           const prevType = preview.dataset.galleryType!;
           const prevName = preview.dataset.galleryName!;
+          const prevFrame = preview.dataset.galleryFrame || '';
 
           // Capture what's in the clicked thumb
           const newSrc = btn.dataset.gallerySrc!;
           const newType = btn.dataset.galleryType!;
           const newName = btn.dataset.galleryName!;
+          const newFrame = btn.dataset.galleryFrame || '';
 
-          // Put new item into the preview frame
-          const mediaContainer = isMobile
-            ? preview.querySelector('.proj-phone-screen')
-            : preview.querySelector('.proj-bview');
-          if (mediaContainer) {
-            const cls = isMobile ? 'proj-phone-video' : 'proj-browser-video';
-            if (newType === 'pdf') {
-              mediaContainer.innerHTML = `<iframe src="${newSrc}#toolbar=0&navpanes=0&scrollbar=1" class="proj-browser-pdf"></iframe>`;
-              mediaContainer.classList.add('proj-bview--scroll');
-            } else {
-              mediaContainer.classList.remove('proj-bview--scroll');
-              mediaContainer.innerHTML = newType === 'video'
-                ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
-                : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+          // Rebuild the entire preview frame based on new item's frame type
+          if (newFrame === 'watch') {
+            // Render watch frame
+            const mediaTag = newType === 'video'
+              ? `<video src="${newSrc}" autoplay loop muted playsinline class="proj-watch-video"></video>`
+              : `<img src="${newSrc}" alt="${newName}" class="proj-watch-video" />`;
+            preview.innerHTML = `<div class="proj-watch gallery-watch"><div class="proj-watch-screen">${mediaTag}</div></div><span class="gallery-label">${newName}</span>`;
+          } else {
+            // Render phone or browser frame
+            const mediaContainer = isMobile
+              ? preview.querySelector('.proj-phone-screen') || preview.querySelector('.proj-watch-screen')
+              : preview.querySelector('.proj-bview');
+
+            // If switching FROM watch to phone/browser, rebuild the frame
+            if (prevFrame === 'watch' || !mediaContainer) {
+              if (isMobile) {
+                const cls = 'proj-phone-video';
+                const mediaTag = newType === 'video'
+                  ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
+                  : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+                preview.innerHTML = `<div class="proj-phone gallery-phone"><div class="proj-phone-notch"></div><div class="proj-phone-screen">${mediaTag}</div></div><span class="gallery-label">${newName}</span>`;
+              } else {
+                const cls = 'proj-browser-video';
+                const mediaTag = newType === 'video'
+                  ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
+                  : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+                preview.innerHTML = `<div class="proj-browser gallery-browser"><div class="proj-bbar"><span class="proj-bdots"><span style="background:var(--orange)"></span><span style="background:var(--green)"></span><span style="background:#666"></span></span><span class="proj-burl">${(panel as HTMLElement).dataset.slug}.app</span></div><div class="proj-bview">${mediaTag}</div></div><span class="gallery-label">${newName}</span>`;
+              }
+            } else if (mediaContainer) {
+              const cls = isMobile ? 'proj-phone-video' : 'proj-browser-video';
+              if (newType === 'pdf') {
+                mediaContainer.innerHTML = `<iframe src="${newSrc}#toolbar=0&navpanes=0&scrollbar=1" class="proj-browser-pdf"></iframe>`;
+                mediaContainer.classList.add('proj-bview--scroll');
+              } else {
+                mediaContainer.classList.remove('proj-bview--scroll');
+                mediaContainer.innerHTML = newType === 'video'
+                  ? `<video src="${newSrc}" autoplay loop muted playsinline class="${cls}"></video>`
+                  : `<img src="${newSrc}" alt="${newName}" class="${cls}" />`;
+              }
+              const lbl = preview.querySelector('.gallery-label');
+              if (lbl) lbl.textContent = newName;
             }
           }
           preview.dataset.gallerySrc = newSrc;
           preview.dataset.galleryType = newType;
           preview.dataset.galleryName = newName;
-          const previewLabel = preview.querySelector('.gallery-label');
-          if (previewLabel) previewLabel.textContent = newName;
+          preview.dataset.galleryFrame = newFrame;
 
           // Put old preview item into the thumb slot
           const thumbMedia = btn.querySelector('.gallery-thumb-media') || btn.querySelector('.gallery-thumb-pdf');
@@ -679,6 +717,7 @@ const allProjects = [
           btn.dataset.gallerySrc = prevSrc;
           btn.dataset.galleryType = prevType;
           btn.dataset.galleryName = prevName;
+          btn.dataset.galleryFrame = prevFrame;
           const thumbLabel = btn.querySelector('.gallery-label');
           if (thumbLabel) thumbLabel.textContent = prevName;
         });

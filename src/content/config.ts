@@ -16,6 +16,7 @@ const projects = defineCollection({
     thumbnail: z.string(),
     heroImage: z.string().optional(),
     order: z.number(),
+    page: z.number().default(1),
     role: z.string().optional(),
     duration: z.string().optional(),
     tools: z.array(z.string()).optional(),

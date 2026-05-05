@@ -11,6 +11,7 @@ tags: ["AI", "UX Research", "Product Design", "Data"]
 thumbnail: "/images/projects/reroute/thumb.png"
 heroImage: "/images/projects/reroute/hero.png"
 order: 1
+page: 2
 role: "Solo designer & researcher"
 duration: "4 months"
 tools: ["Figma", "Python", "OpenAI API", "QGIS", "Supabase"]

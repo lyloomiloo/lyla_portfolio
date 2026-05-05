@@ -3,10 +3,28 @@ import { getCollection } from 'astro:content';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 
+// Group by page
+const page1 = projects.filter(p => p.data.page === 1);
+const page2 = projects.filter(p => p.data.page === 2);
+const totalPages = page2.length > 0 ? 2 : 1;
+
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
 const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
-  // Direction arrow — 8×8
+  // Footprint/path — 8×8 (reroute 2.0 - walking discovery)
+  reroute2: {
+    cols: 8, rows: 8, grid: [
+      ['_','_','G','G','_','_','_','_'],
+      ['_','G','G','G','G','_','_','_'],
+      ['_','G','G','G','G','_','_','_'],
+      ['_','_','G','G','_','_','_','_'],
+      ['_','_','_','_','G','G','_','_'],
+      ['_','_','_','G','G','G','G','_'],
+      ['_','_','_','G','G','G','G','_'],
+      ['_','_','_','_','G','G','_','_'],
+    ]
+  },
+  // Direction arrow — 8×8 (reroute 1.0)
   reroute: {
     cols: 8, rows: 8, grid: [
       ['_','_','_','G','G','G','G','G'],
@@ -30,6 +48,19 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['_','_','_','O','O','_','_','_'],
       ['O','_','_','_','_','_','_','O'],
       ['O','O','_','_','_','_','O','O'],
+    ]
+  },
+  // Notebook — 8×8 (jobhunter)
+  jobhunter: {
+    cols: 8, rows: 8, grid: [
+      ['B','_','B','B','B','B','B','B'],
+      ['_','_','B','_','_','_','_','B'],
+      ['B','_','B','_','B','B','_','B'],
+      ['_','_','B','_','_','_','_','B'],
+      ['B','_','B','_','B','B','_','B'],
+      ['_','_','B','_','_','_','_','B'],
+      ['B','_','B','_','B','_','_','B'],
+      ['B','_','B','B','B','B','B','B'],
     ]
   },
   // Calendar — 8×10
@@ -58,89 +89,245 @@ const iconColors: Record<string, string> = {
 
 // Mockup preview config per project
 const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; image?: string }> = {
+  reroute2: { label: 'QUEST DECK', type: 'phone', image: '/images/projects/reroute2/main.png' },
   reroute: { label: 'GO MODE', type: 'phone', image: '/images/projects/reroute/preview.jpg' },
   snapp: { label: 'DAILY PROMPT', type: 'phone', image: '/images/projects/snapp/daily_prompt.jpg' },
+  jobhunter: { label: 'PIP', type: 'browser', image: '/images/projects/jobhunter/main.png' },
   planmytrip: { label: 'ITINERARY VIEW', type: 'browser', image: '/images/projects/planmytrip/preview.jpg' },
 };
 ---
 
-<div class="pw-grid">
-  {projects.map(p => {
-    const icon = pixelIcons[p.data.slug];
-    const mockup = mockupConfig[p.data.slug];
-    return (
-      <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
-        {icon && (
-          <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
-            {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
-          </div>
-        )}
-        <span class="pw-num">0{p.data.order}</span>
-        <h3 class="pw-title">{p.data.displayTitle}</h3>
-        {p.data.hook.includes('|') ? (
-          <div class="pw-hook">
-            <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
-            <p>{p.data.hook.split('|')[1]}</p>
-          </div>
-        ) : (
-          <p class="pw-hook">{p.data.hook}</p>
-        )}
-        <div class="pw-tags">
-          {p.data.tags.map((t: string) => <span>{t}</span>)}
-        </div>
-        {p.data.type && <div class="pw-location">{p.data.type}</div>}
-        <div class="pw-meta">{p.data.status}</div>
-        <span class="pw-arrow">VIEW PROJECT →</span>
+<div class="pw-container">
+  <!-- Tab navigation -->
+  {totalPages > 1 && (
+    <div class="pw-tabs">
+      <button class="pw-tab active" data-pw-page="1">Highlights</button>
+      <button class="pw-tab" data-pw-page="2">Others</button>
+      <span class="pw-page-indicator">1/{totalPages}</span>
+    </div>
+  )}
 
-        {mockup && (
-          <div class="pw-preview">
-            {mockup.type === 'phone' ? (
-              <div class="pw-phone-wrap">
-                <div class="pw-phone">
-                  <div class="pw-phone-notch"></div>
-                  <div class="pw-phone-screen">
-                    {mockup.image ? (
-                      <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
-                    ) : (
-                      <span>{mockup.label}</span>
-                    )}
-                  </div>
-                </div>
+  <!-- Page 1 -->
+  <div class="pw-page active" data-pw-content="1">
+    <div class="pw-grid">
+      {page1.map(p => {
+        const icon = pixelIcons[p.data.slug];
+        const mockup = mockupConfig[p.data.slug];
+        return (
+          <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
+            {icon && (
+              <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+                {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+              </div>
+            )}
+            <span class="pw-num">0{p.data.order}</span>
+            <h3 class="pw-title">{p.data.displayTitle}</h3>
+            {p.data.hook.includes('|') ? (
+              <div class="pw-hook">
+                <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+                <p>{p.data.hook.split('|')[1]}</p>
               </div>
             ) : (
-              <div class="pw-phone-wrap">
-                <div class="pw-browser">
-                  <div class="pw-bbar">
-                    <span class="pw-bdot" style="background:#FF6B00"></span>
-                    <span class="pw-bdot" style="background:#39FF14"></span>
-                    <span class="pw-bdot" style="background:#666"></span>
-                    <span class="pw-burl">{p.data.slug}.app</span>
+              <p class="pw-hook">{p.data.hook}</p>
+            )}
+            <div class="pw-tags">
+              {p.data.tags.map((t: string) => <span>{t}</span>)}
+            </div>
+            {p.data.type && <div class="pw-location">{p.data.type}</div>}
+            <div class="pw-meta">{p.data.status}</div>
+            <span class="pw-arrow">VIEW PROJECT →</span>
+
+            {mockup && (
+              <div class="pw-preview">
+                {mockup.type === 'phone' ? (
+                  <div class="pw-phone-wrap">
+                    <div class="pw-phone">
+                      <div class="pw-phone-notch"></div>
+                      <div class="pw-phone-screen">
+                        {mockup.image ? (
+                          <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                        ) : (
+                          <span>{mockup.label}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <div class="pw-bscreen">
-                    {mockup.image ? (
-                      <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
-                    ) : (
-                      <span>{mockup.label}</span>
-                    )}
+                ) : (
+                  <div class="pw-phone-wrap">
+                    <div class="pw-browser">
+                      <div class="pw-bbar">
+                        <span class="pw-bdot" style="background:#FF6B00"></span>
+                        <span class="pw-bdot" style="background:#39FF14"></span>
+                        <span class="pw-bdot" style="background:#666"></span>
+                        <span class="pw-burl">{p.data.slug}.app</span>
+                      </div>
+                      <div class="pw-bscreen">
+                        {mockup.image ? (
+                          <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                        ) : (
+                          <span>{mockup.label}</span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             )}
           </div>
-        )}
+        );
+      })}
+    </div>
+  </div>
+
+  <!-- Page 2 -->
+  {page2.length > 0 && (
+    <div class="pw-page" data-pw-content="2">
+      <div class="pw-grid">
+        {page2.map(p => {
+          const icon = pixelIcons[p.data.slug];
+          const mockup = mockupConfig[p.data.slug];
+          return (
+            <div class="pw-card" data-open-project={`${p.data.slug}-detail`}>
+              {icon && (
+                <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+                  {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                </div>
+              )}
+              <span class="pw-num">0{p.data.order}</span>
+              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              {p.data.hook.includes('|') ? (
+                <div class="pw-hook">
+                  <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+                  <p>{p.data.hook.split('|')[1]}</p>
+                </div>
+              ) : (
+                <p class="pw-hook">{p.data.hook}</p>
+              )}
+              <div class="pw-tags">
+                {p.data.tags.map((t: string) => <span>{t}</span>)}
+              </div>
+              {p.data.type && <div class="pw-location">{p.data.type}</div>}
+              <div class="pw-meta">{p.data.status}</div>
+              <span class="pw-arrow">VIEW PROJECT →</span>
+
+              {mockup && (
+                <div class="pw-preview">
+                  {mockup.type === 'phone' ? (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-phone">
+                        <div class="pw-phone-notch"></div>
+                        <div class="pw-phone-screen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-browser">
+                        <div class="pw-bbar">
+                          <span class="pw-bdot" style="background:#FF6B00"></span>
+                          <span class="pw-bdot" style="background:#39FF14"></span>
+                          <span class="pw-bdot" style="background:#666"></span>
+                          <span class="pw-burl">{p.data.slug}.app</span>
+                        </div>
+                        <div class="pw-bscreen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
+    </div>
+  )}
 </div>
 
+<script>
+  // Tab pagination
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabs = document.querySelectorAll('.pw-tab');
+    const pages = document.querySelectorAll('.pw-page');
+    const indicator = document.querySelector('.pw-page-indicator');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const page = tab.getAttribute('data-pw-page');
+        tabs.forEach(t => t.classList.remove('active'));
+        pages.forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.querySelector(`[data-pw-content="${page}"]`)?.classList.add('active');
+        if (indicator) indicator.textContent = `${page}/${pages.length}`;
+      });
+    });
+  });
+</script>
+
 <style is:global>
+  .pw-container {
+    height: calc(100% + 3rem);
+    margin: -1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Tab navigation — matches proj-nav style */
+  .pw-tabs {
+    display: flex;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .pw-tab {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim);
+    cursor: pointer;
+  }
+  .pw-tab:hover { color: var(--text); background: var(--bg-card); }
+  .pw-tab.active {
+    color: var(--text);
+    background: var(--bg-card);
+    border-bottom-color: var(--orange);
+  }
+  .pw-page-indicator {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    padding: 10px 16px;
+    align-self: center;
+  }
+
+  /* Page visibility */
+  .pw-page { display: none; flex: 1; min-height: 0; }
+  .pw-page.active { display: flex; flex-direction: column; }
+
   .pw-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1px;
     background: var(--border);
-    height: calc(100% + 3rem);
-    margin: -1.5rem;
+    flex: 1;
+    min-height: 0;
   }
   .pw-card {
     background: var(--bg-card);
@@ -217,11 +404,11 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
 
   @keyframes pw-slide-up {
     0% { opacity: 0; transform: translateY(100%); }
-    100% { opacity: 1; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(-30px); }
   }
   @keyframes pw-slide-up-phone {
     0% { opacity: 0; transform: translateY(100%); }
-    100% { opacity: 1; transform: translateY(60px); }
+    100% { opacity: 1; transform: translateY(80px); }
   }
   .pw-phone-notch {
     width: 32px;
