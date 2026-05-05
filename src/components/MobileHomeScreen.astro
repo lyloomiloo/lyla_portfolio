@@ -14,9 +14,9 @@ const gridApps = [
 
 // Project folder contents — shown when tapping folder icon
 const projectApps = [
-  { icon: 'reroute2_app', label: '(re)route 2', id: 'reroute2-detail', bg: '#00CC55' },
+  { icon: 'reroute2_app', label: '(re)route 2', id: 'reroute2-detail', bg: '#7B5EA7' },
   { icon: 'snapp_app', label: 'snapp', id: 'snapp-detail', bg: '#E85D00' },
-  { icon: 'jobhunter_app', label: 'jobhunter', id: 'jobhunter-detail', bg: '#FF6B00' },
+  { icon: 'jobhunter_app', label: 'jobhunter', id: 'jobhunter-detail', bg: '#F4D03F' },
   { icon: 'reroute_app', label: '(re)route 1', id: 'reroute-detail', bg: '#87CEEB' },
   { icon: 'planmytrip_app', label: 'planmytrip', id: 'planmytrip-detail', bg: '#FFFFFF' },
 ];
@@ -326,18 +326,18 @@ const dockApps = [
   /* Folder icon with mini app previews */
   .phone-folder-icon {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 3px;
-    padding: 6px;
+    gap: 2px;
+    padding: 5px;
     align-items: center;
     justify-items: center;
     align-content: center;
   }
   .phone-folder-mini {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -345,13 +345,13 @@ const dockApps = [
   }
   .phone-folder-mini-pixels {
     display: grid;
-    grid-template-columns: repeat(10, 1.6px);
-    grid-template-rows: repeat(10, 1.6px);
+    grid-template-columns: repeat(10, 1.3px);
+    grid-template-rows: repeat(10, 1.3px);
     image-rendering: pixelated;
   }
   .phone-folder-mini-pixels div {
-    width: 1.6px;
-    height: 1.6px;
+    width: 1.3px;
+    height: 1.3px;
   }
 
   /* Projects folder popup */
@@ -372,7 +372,7 @@ const dockApps = [
     border-radius: 20px;
     padding: 16px;
     width: 100%;
-    max-width: 280px;
+    max-width: 300px;
   }
   .phone-folder-title {
     font-family: var(--font-mono);
