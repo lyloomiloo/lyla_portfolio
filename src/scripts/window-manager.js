@@ -248,12 +248,24 @@ document.addEventListener('mouseup', () => {
   dragIcon = null;
 });
 
-// --- Project card click → open project detail window ---
-document.addEventListener('click', (e) => {
-  const card = e.target.closest('[data-open-project]');
+// --- Project card double-click → open project detail window ---
+// Cards in the projects grid require double-click (retro OS feel)
+// Nav tabs inside project details stay single-click
+document.addEventListener('dblclick', (e) => {
+  const card = e.target.closest('.pw-card[data-open-project]');
   if (card) {
     const id = card.dataset.openProject;
-    // If navigating from inside a project detail, close the current one
+    const currentWindow = card.closest('.os-window');
+    if (currentWindow) {
+      closeWindow(currentWindow.dataset.windowId);
+    }
+    openWindow(id);
+  }
+});
+document.addEventListener('click', (e) => {
+  const card = e.target.closest('[data-open-project]');
+  if (card && !card.classList.contains('pw-card')) {
+    const id = card.dataset.openProject;
     const currentWindow = card.closest('.os-window');
     if (currentWindow) {
       closeWindow(currentWindow.dataset.windowId);

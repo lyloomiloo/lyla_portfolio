@@ -43,6 +43,10 @@
         "order": {
           "type": "number"
         },
+        "page": {
+          "type": "number",
+          "default": 1
+        },
         "role": {
           "type": "string"
         },

@@ -11,18 +11,18 @@ const totalPages = page2.length > 0 ? 2 : 1;
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
 const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
-  // Plumbob diamond — 8×10 (reroute 2.0, matches mobile icon)
+  // Plumbob diamond — 8×10 (reroute 2.0)
   reroute2: {
     cols: 8, rows: 10, grid: [
-      ['_','_','_','K','K','_','_','_'],
-      ['_','_','K','D','G','K','_','_'],
-      ['_','K','D','D','G','G','K','_'],
-      ['K','D','D','D','G','G','G','K'],
-      ['K','D','D','D','G','G','G','K'],
-      ['K','D','D','D','G','G','G','K'],
-      ['_','K','D','D','G','G','K','_'],
-      ['_','_','K','D','G','K','_','_'],
-      ['_','_','_','K','K','_','_','_'],
+      ['_','_','_','D','G','_','_','_'],
+      ['_','_','D','D','G','G','_','_'],
+      ['_','D','D','D','G','G','G','_'],
+      ['D','D','D','D','G','G','G','G'],
+      ['D','D','D','D','G','G','G','G'],
+      ['D','D','D','D','G','G','G','G'],
+      ['_','D','D','D','G','G','G','_'],
+      ['_','_','D','D','G','G','_','_'],
+      ['_','_','_','D','G','_','_','_'],
       ['_','_','_','_','_','_','_','_'],
     ]
   },
