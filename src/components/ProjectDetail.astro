@@ -15,19 +15,20 @@ interface Props {
   mockups: { label: string; caption: string; video?: string; image?: string }[];
   gallery?: { src: string; name: string; type: 'video' | 'image' | 'pdf'; preview?: string; frame?: 'watch' }[];
   link?: string;
+  processLink?: string;
   video?: string;
   appType?: string;
   context?: string;
   year?: string;
 }
 
-const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, video, appType, context, year } = Astro.props;
+const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, processLink, video, appType, context, year } = Astro.props;
 
 const allProjects = [
   { slug: 'reroute2', title: 'project_01.exe — (RE)ROUTE 2.0', order: 1 },
-  { slug: 'snapp', title: 'project_02.exe — SNAPP', order: 2 },
-  { slug: 'jobhunter', title: 'project_03.exe — JOBHUNTER', order: 3 },
-  { slug: 'reroute', title: 'project_04.exe — (RE)ROUTE 1.0', order: 4 },
+  { slug: 'reroute', title: 'project_02.exe — (RE)ROUTE', order: 2 },
+  { slug: 'snapp', title: 'project_03.exe — SNAPP', order: 3 },
+  { slug: 'jobhunter', title: 'project_04.exe — JOBHUNTER', order: 4 },
   { slug: 'planmytrip', title: 'project_05.exe — PLANMYTRIP', order: 5 },
 ];
 ---
@@ -95,11 +96,18 @@ const allProjects = [
 
           <div class="props-section-label">Description</div>
           <p class="props-desc">{hook}</p>
-          {link && (
-            <a href={link} target="_blank" rel="noopener noreferrer" class="props-link-btn">
-              TRY IT ↗
-            </a>
-          )}
+          <div class="props-link-row">
+            {link && (
+              <a href={link} target="_blank" rel="noopener noreferrer" class="props-link-btn">
+                TRY IT ↗
+              </a>
+            )}
+            {processLink && (
+              <a href={processLink} target="_blank" rel="noopener noreferrer" class="props-link-btn props-link-secondary">
+                DESIGN PROCESS ↗
+              </a>
+            )}
+          </div>
         </div>
 
         <div class="props-gallery-panel" data-gallery-panel data-is-mobile={isMobile ? 'true' : 'false'} data-slug={slug}>
@@ -416,6 +424,21 @@ const allProjects = [
     transition: background 0.15s;
   }
   .props-link-btn:hover { background: #e55e00; }
+
+  .props-link-row {
+    display: flex;
+    gap: 8px;
+    margin-top: auto;
+    align-self: flex-end;
+  }
+  .props-link-row .props-link-btn {
+    margin-top: 0;
+    align-self: auto;
+  }
+  .props-link-secondary {
+    background: var(--dark);
+  }
+  .props-link-secondary:hover { background: #333; }
 
   /* Stats row */
   .props-stats-row {

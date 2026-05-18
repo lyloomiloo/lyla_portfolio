@@ -10,7 +10,7 @@ year: "2026"
 tags: ["Product Design", "Full-Stack", "UX", "Gamification"]
 thumbnail: "/images/projects/snapp/thumb.png"
 heroImage: "/images/projects/snapp/hero.png"
-order: 2
+order: 3
 page: 1
 role: "Designer & developer (concept to product)"
 duration: "3 months"

@@ -10,7 +10,7 @@ year: "2026"
 tags: ["Frontend", "Editorial Design", "Interactive"]
 thumbnail: "/images/projects/planmytrip/thumb.png"
 heroImage: "/images/projects/planmytrip/hero.png"
-order: 3
+order: 5
 page: 2
 role: "Designer & developer"
 duration: "Ongoing"

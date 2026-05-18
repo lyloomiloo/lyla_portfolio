@@ -9,8 +9,8 @@ status: "Deployed · 2026"
 year: "2026"
 tags: ["UX Design", "Full-Stack", "Product", "Emotional Design"]
 thumbnail: "/images/projects/jobhunter/thumb.png"
-order: 3
-page: 1
+order: 4
+page: 2
 role: "Designer & developer"
 duration: "Ongoing"
 tools: ["Next.js", "Supabase", "Web Scraping", "RSS"]

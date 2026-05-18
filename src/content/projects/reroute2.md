@@ -11,6 +11,7 @@ tags: ["AI", "Product Design", "UX Research", "Full-Stack"]
 thumbnail: "/images/projects/reroute2/thumb.png"
 order: 1
 page: 1
+
 role: "Solo designer, researcher & developer"
 duration: "6 months"
 tools: ["React Native", "Expo", "Gemini AI", "Supabase", "Google Places", "OpenRouteService"]
