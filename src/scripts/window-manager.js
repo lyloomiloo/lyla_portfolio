@@ -45,7 +45,7 @@ function openWindow(id) {
       }
     }
     // Project detail windows and duck game open maximized directly
-    if ((id.endsWith('-detail') || id === 'duckgame') && !win.classList.contains('maximized')) {
+    if ((id.endsWith('-detail') || id === 'duckgame' || id === 'films') && !win.classList.contains('maximized')) {
       win.classList.add('maximized');
     }
     // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
@@ -72,6 +72,20 @@ function openWindow(id) {
   // Fetch weather when weather panel opens
   if (id === 'weather') {
     loadWeather();
+  }
+
+  // Lazy-load film videos when films window opens
+  if (id === 'films') {
+    const container = document.querySelector(`[data-window-id="films"]`) || document.querySelector(`[data-panel-id="films"]`);
+    if (container) {
+      container.querySelectorAll('video[data-lazy-src]').forEach(v => {
+        if (!v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
+      });
+      container.querySelectorAll('video[autoplay]').forEach(v => {
+        if (v.readyState >= 2) v.play().catch(() => {});
+        else v.addEventListener('loadeddata', () => v.play().catch(() => {}), { once: true });
+      });
+    }
   }
 
   // Auto-download resume PDF when resume window opens
@@ -271,6 +285,55 @@ document.addEventListener('click', (e) => {
       closeWindow(currentWindow.dataset.windowId);
     }
     openWindow(id);
+  }
+});
+
+// --- Film tabs ---
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('[data-film-tab]');
+  if (!tab) return;
+  const id = tab.dataset.filmTab;
+  const container = tab.closest('.films-detail');
+  container.querySelectorAll('.proj-nav-tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  container.querySelectorAll('.films-frame').forEach(f => f.classList.remove('active'));
+  container.querySelector(`[data-film-panel="${id}"]`).classList.add('active');
+});
+
+// --- Instagram Reels fullscreen ---
+let igProgressRAF = null;
+document.addEventListener('click', (e) => {
+  const media = e.target.closest('[data-ig-fullscreen]');
+  if (!media) return;
+  const video = media.querySelector('video');
+  if (!video) return;
+  const post = media.closest('.ig-post');
+  const caption = post ? post.querySelector('.ig-post-caption') : null;
+  const overlay = document.getElementById('igFullscreen');
+  const fsVideo = document.getElementById('igFullscreenVideo');
+  const captionEl = document.getElementById('igReelCaption');
+  const progressEl = document.getElementById('igReelProgress');
+  if (!overlay || !fsVideo) return;
+  fsVideo.src = video.src || video.dataset.lazySrc;
+  fsVideo.muted = false;
+  if (captionEl && caption) captionEl.textContent = caption.textContent;
+  overlay.style.display = 'block';
+  fsVideo.play().catch(() => {});
+  function updateProgress() {
+    if (fsVideo.duration && progressEl) {
+      progressEl.style.width = (fsVideo.currentTime / fsVideo.duration * 100) + '%';
+    }
+    igProgressRAF = requestAnimationFrame(updateProgress);
+  }
+  updateProgress();
+});
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'igFullscreenClose') {
+    const overlay = document.getElementById('igFullscreen');
+    const fsVideo = document.getElementById('igFullscreenVideo');
+    if (overlay) overlay.style.display = 'none';
+    if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; }
+    if (igProgressRAF) cancelAnimationFrame(igProgressRAF);
   }
 });
 

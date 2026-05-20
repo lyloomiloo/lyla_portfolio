@@ -16,13 +16,14 @@ interface Props {
   gallery?: { src: string; name: string; type: 'video' | 'image' | 'pdf'; preview?: string; frame?: 'watch' }[];
   link?: string;
   processLink?: string;
+  filmsWindow?: string;
   video?: string;
   appType?: string;
   context?: string;
   year?: string;
 }
 
-const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, processLink, video, appType, context, year } = Astro.props;
+const { slug, order, title, hook, tags, location, status, isMobile, stats, problem, approaches, features, gallery = [], link, processLink, filmsWindow, video, appType, context, year } = Astro.props;
 
 const allProjects = [
   { slug: 'reroute2', title: 'project_01.exe — (RE)ROUTE 2.0', order: 1 },
@@ -106,6 +107,11 @@ const allProjects = [
               <a href={processLink} target="_blank" rel="noopener noreferrer" class="props-link-btn props-link-secondary">
                 DESIGN PROCESS ↗
               </a>
+            )}
+            {filmsWindow && (
+              <button class="props-link-btn props-link-films" onclick={`openWindow('${filmsWindow}')`}>
+                FILMS ▶
+              </button>
             )}
           </div>
         </div>
@@ -424,6 +430,8 @@ const allProjects = [
     transition: background 0.15s;
   }
   .props-link-btn:hover { background: #e55e00; }
+  .props-link-films { background: #9B59B6; }
+  .props-link-films:hover { background: #8344a5; }
 
   .props-link-row {
     display: flex;
