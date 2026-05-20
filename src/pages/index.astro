@@ -854,9 +854,9 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       <video id="igFullscreenVideo" autoplay loop playsinline></video>
       <button class="ig-reel-back" id="igFullscreenClose">←</button>
       <div class="ig-reel-sidebar">
-        <div class="ig-reel-action"><span class="ig-reel-icon">♥</span><span class="ig-reel-count">—</span></div>
-        <div class="ig-reel-action"><span class="ig-reel-icon">◻</span><span class="ig-reel-count">—</span></div>
-        <div class="ig-reel-action"><span class="ig-reel-icon">↗</span></div>
+        <div class="ig-reel-action"><span class="ig-reel-icon">LIKE</span></div>
+        <div class="ig-reel-action"><span class="ig-reel-icon">COMMENT</span></div>
+        <div class="ig-reel-action"><span class="ig-reel-icon">SHARE</span></div>
       </div>
       <div class="ig-reel-info">
         <div class="ig-reel-user">
@@ -4028,13 +4028,16 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     gap: 4px;
   }
   .ig-reel-icon {
-    font-size: 1.5rem;
-    color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .ig-reel-count {
     font-family: var(--font-mono);
     font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 10px;
+    text-shadow: none;
+  }
     color: #fff;
   }
   .ig-reel-info {

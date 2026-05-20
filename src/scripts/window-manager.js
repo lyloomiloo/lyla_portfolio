@@ -76,15 +76,36 @@ function openWindow(id) {
 
   // Lazy-load film videos when films window opens
   if (id === 'films') {
-    const container = document.querySelector(`[data-window-id="films"]`) || document.querySelector(`[data-panel-id="films"]`);
-    if (container) {
-      container.querySelectorAll('video[data-lazy-src]').forEach(v => {
-        if (!v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
-      });
-      container.querySelectorAll('video[autoplay]').forEach(v => {
-        if (v.readyState >= 2) v.play().catch(() => {});
-        else v.addEventListener('loadeddata', () => v.play().catch(() => {}), { once: true });
-      });
+    if (isDesktop()) {
+      // Desktop: load all tabs since user switches between them
+      const container = document.querySelector('[data-window-id="films"]');
+      if (container) {
+        container.querySelectorAll('video[data-lazy-src]').forEach(v => {
+          if (!v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
+        });
+        container.querySelectorAll('video[autoplay]').forEach(v => {
+          if (v.readyState >= 2) v.play().catch(() => {});
+          else v.addEventListener('loadeddata', () => v.play().catch(() => {}), { once: true });
+        });
+      }
+    } else {
+      // Mobile: lazy-load videos as they scroll into view
+      const panel = document.querySelector('[data-panel-id="films"]');
+      if (panel) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting && !video.src) {
+              video.preload = 'auto';
+              video.src = video.dataset.lazySrc;
+              video.addEventListener('loadeddata', () => video.play().catch(() => {}), { once: true });
+            }
+            if (entry.isIntersecting) video.play().catch(() => {});
+            else video.pause();
+          });
+        }, { root: panel.querySelector('.mobile-panel-body'), threshold: 0.3 });
+        panel.querySelectorAll('video[data-lazy-src]').forEach(v => observer.observe(v));
+      }
     }
   }
 
