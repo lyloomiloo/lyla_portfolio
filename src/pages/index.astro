@@ -308,22 +308,48 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     />
   </Window>
 
-  <Window id="films" title="films.exe — (RE)ROUTE 2.0 FILMS" width="90vw" height="90vh" top="2vh" left="5vw">
+  <Window id="films" title="films.exe" width="76vw" height="80vh" top="10vh" left="12vw">
     <div class="films-detail">
       <div class="proj-nav">
-        <button class="proj-nav-tab active" data-film-tab="brand">BRAND FILM</button>
-        <button class="proj-nav-tab" data-film-tab="content">CONTENT FILM</button>
-        <button class="proj-nav-tab" data-film-tab="concept">CONCEPT FILM</button>
+        <button class="proj-nav-tab active" data-film-tab="brand">brand_film.mp4 — (RE)ROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="content">content_film.mp4 — (RE)ROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="concept">concept_film.mp4 — (RE)ROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="covid">public_comms.mp4 — GOV.SG</button>
+        <button class="proj-nav-tab" data-film-tab="kansai">tourism_ad.mp4 — SCOOT</button>
+        <button class="proj-nav-tab" data-film-tab="laos">tourism_ad.mp4 — SCOOT</button>
+        <button class="proj-nav-tab" data-film-tab="scootbiz">scootbiz_series.mp4 — SCOOT</button>
       </div>
       <div class="films-content">
         <div class="films-frame active" data-film-panel="brand">
           <video data-lazy-src="/images/projects/reroute2/brand_film.mp4" autoplay loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
-        <div class="films-frame" data-film-panel="content">
+        <div class="films-frame films-frame--portrait" data-film-panel="content">
           <video data-lazy-src="/images/projects/reroute2/content_film.mp4" autoplay loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="concept">
           <video data-lazy-src="/images/projects/reroute2/concept_film.mp4" autoplay loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="covid">
+          <video data-lazy-src="/images/Ads/Gov.SG | COVID Reopening.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="kansai">
+          <video data-lazy-src="/images/Ads/Scoot | Kansai Tourism.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="laos">
+          <video data-lazy-src="/images/Ads/Scoot | Laos Route Launch.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="scootbiz">
+          <video data-lazy-src="/images/Ads/Scoot | ScootBiz Content Series.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
       </div>
     </div>
@@ -677,17 +703,23 @@ import ProjectDetail from '../components/ProjectDetail.astro';
             <span class="ig-post-name">reroute_2.0</span>
             <span class="ig-post-loc">Barcelona, Spain</span>
           </div>
+          <span class="ig-ai-badge">AI-GENERATED</span>
         </div>
         <div class="ig-post-media ig-post-media--portrait" data-ig-fullscreen>
           <video data-lazy-src="/images/projects/reroute2/content_film.mp4" autoplay loop muted playsinline preload="none"></video>
-          <div class="ig-tap-hint">TAP TO EXPAND</div>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="ig-post-actions">
-          <span class="ig-action">♥</span>
-          <span class="ig-action">◻</span>
-          <span class="ig-action">↗</span>
+          <button class="ig-action ig-like" data-ig-like>♥</button>
+          <button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button>
+          <button class="ig-action ig-share" data-ig-share>↗</button>
+          <span class="ig-like-count" data-ig-like-count>0 likes</span>
         </div>
         <div class="ig-post-caption"><strong>reroute_2.0</strong> CONTENT FILM | Photography → Nano Banana → Kling 3.0 Pro (Runway) → CapCut</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2026</div>
       </div>
       <div class="ig-post">
         <div class="ig-post-header">
@@ -703,17 +735,23 @@ import ProjectDetail from '../components/ProjectDetail.astro';
             <span class="ig-post-name">reroute_2.0</span>
             <span class="ig-post-loc">Barcelona, Spain</span>
           </div>
+          <span class="ig-ai-badge">AI-GENERATED</span>
         </div>
         <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
           <video data-lazy-src="/images/projects/reroute2/brand_film.mp4" autoplay loop muted playsinline preload="none"></video>
-          <div class="ig-tap-hint">TAP TO EXPAND</div>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="ig-post-actions">
-          <span class="ig-action">♥</span>
-          <span class="ig-action">◻</span>
-          <span class="ig-action">↗</span>
+          <button class="ig-action ig-like" data-ig-like>♥</button>
+          <button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button>
+          <button class="ig-action ig-share" data-ig-share>↗</button>
+          <span class="ig-like-count" data-ig-like-count>0 likes</span>
         </div>
         <div class="ig-post-caption"><strong>reroute_2.0</strong> BRAND FILM | Nano Banana → Kling 3.0 Pro (Runway) + Mureka v9 → CapCut</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2026</div>
       </div>
       <div class="ig-post">
         <div class="ig-post-header">
@@ -729,17 +767,87 @@ import ProjectDetail from '../components/ProjectDetail.astro';
             <span class="ig-post-name">reroute_2.0</span>
             <span class="ig-post-loc">Barcelona, Spain</span>
           </div>
+          <span class="ig-ai-badge">AI-GENERATED</span>
         </div>
         <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
           <video data-lazy-src="/images/projects/reroute2/concept_film.mp4" autoplay loop muted playsinline preload="none"></video>
-          <div class="ig-tap-hint">TAP TO EXPAND</div>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="ig-post-actions">
-          <span class="ig-action">♥</span>
-          <span class="ig-action">◻</span>
-          <span class="ig-action">↗</span>
+          <button class="ig-action ig-like" data-ig-like>♥</button>
+          <button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button>
+          <button class="ig-action ig-share" data-ig-share>↗</button>
+          <span class="ig-like-count" data-ig-like-count>0 likes</span>
         </div>
         <div class="ig-post-caption"><strong>reroute_2.0</strong> CONCEPT FILM | Nano Banana → Kling 3.0 Pro (Runway) + Mureka v9 → CapCut + DaVinci Resolve</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2026</div>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><div class="ig-pixel-face"><div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div><div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div></div></div>
+          <div class="ig-post-user"><span class="ig-post-name">lyla.huang</span><span class="ig-post-loc">Singapore</span></div>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/Gov.SG | COVID Reopening.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>lyla.huang</strong> Gov.SG — COVID Reopening</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2020</div>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><div class="ig-pixel-face"><div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div><div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div></div></div>
+          <div class="ig-post-user"><span class="ig-post-name">lyla.huang</span><span class="ig-post-loc">Singapore</span></div>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/Scoot | Kansai Tourism.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>lyla.huang</strong> Scoot — Kansai Tourism</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2019</div>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><div class="ig-pixel-face"><div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div><div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div></div></div>
+          <div class="ig-post-user"><span class="ig-post-name">lyla.huang</span><span class="ig-post-loc">Singapore</span></div>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/Scoot | Laos Route Launch.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>lyla.huang</strong> Scoot — Laos Route Launch</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2019</div>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar"><div class="ig-pixel-face"><div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div><div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div><div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div></div></div>
+          <div class="ig-post-user"><span class="ig-post-name">lyla.huang</span><span class="ig-post-loc">Singapore</span></div>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/Scoot | ScootBiz Content Series.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>lyla.huang</strong> Scoot — ScootBiz Content Series</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2019</div>
       </div>
     </div>
     <div class="ig-fullscreen-overlay" id="igFullscreen" style="display:none">
@@ -3630,10 +3738,69 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   /* Films window */
   .films-detail { display: flex; flex-direction: column; height: calc(100% + 3rem); margin: -1.5rem; }
   [data-window-id="films"] .os-window-body { overflow: hidden; }
+  .films-sound-btn {
+    position: absolute;
+    bottom: 40px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 6px 12px;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .ig-expand-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 1rem;
+    line-height: 1;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+    z-index: 5;
+  }
+  .ig-sound-btn {
+    position: absolute;
+    bottom: 14px;
+    right: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: #fff;
+    padding: 4px 8px;
+    cursor: pointer;
+    z-index: 5;
+  }
   .films-content { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-  .films-frame { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+  .films-ai-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #fff;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 10px;
+    pointer-events: none;
+    z-index: 5;
+  }
+  .films-frame { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; position: relative; }
   .films-frame.active { display: flex; }
-  .films-frame video { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .films-frame video { width: 100%; height: auto; object-fit: contain; }
+  .films-frame--portrait video { width: auto; height: 100%; max-width: 100%; }
   /* Instagram feed — retro */
   .ig-feed {
     margin: -1.5rem;
@@ -3710,8 +3877,58 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
+    min-width: 28px;
     height: 28px;
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    padding: 0;
+  }
+  .ig-like { font-size: 1.5rem; }
+  .ig-like.liked { color: #FF2D55; }
+  .ig-like-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    margin-left: auto;
+  }
+  .ig-comment-box {
+    display: flex;
+    gap: 8px;
+    padding: 4px 14px 8px;
+  }
+  .ig-comment-input {
+    flex: 1;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 6px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    outline: none;
+  }
+  .ig-comment-input:focus { border-color: var(--text-dim); }
+  .ig-comment-post {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--orange);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .ig-comments {
+    padding: 0 14px;
+  }
+  .ig-comment {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.5;
+    padding-bottom: 4px;
+  }
+  .ig-comment strong {
+    font-weight: 700;
+    margin-right: 4px;
   }
   .ig-post-caption {
     padding: 4px 14px 14px;
@@ -3724,6 +3941,37 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     font-weight: 700;
     margin-right: 4px;
   }
+  .ig-post-date {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    padding: 2px 14px 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .ig-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: var(--orange);
+    padding: 14px 14px 6px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .ig-ai-badge {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+    flex-shrink: 0;
+  }
+  .ig-post-media { position: relative; }
   .ig-post-media[data-ig-fullscreen] {
     position: relative;
     cursor: pointer;

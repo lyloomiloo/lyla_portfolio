@@ -262,6 +262,107 @@ document.addEventListener('mouseup', () => {
   dragIcon = null;
 });
 
+// --- Draggable windows (by title bar) ---
+let dragWin = null;
+let dragWinOffsetX = 0;
+let dragWinOffsetY = 0;
+
+document.addEventListener('mousedown', (e) => {
+  const titlebar = e.target.closest('.os-window-titlebar');
+  if (!titlebar) return;
+  // Don't drag if clicking a button
+  if (e.target.closest('.os-btn')) return;
+  const win = titlebar.closest('.os-window');
+  if (!win || win.classList.contains('maximized')) return;
+  dragWin = win;
+  const rect = win.getBoundingClientRect();
+  dragWinOffsetX = e.clientX - rect.left;
+  dragWinOffsetY = e.clientY - rect.top;
+  win.style.transition = 'none';
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!dragWin) return;
+  dragWin.style.top = (e.clientY - dragWinOffsetY) + 'px';
+  dragWin.style.left = (e.clientX - dragWinOffsetX) + 'px';
+});
+
+document.addEventListener('mouseup', () => {
+  if (dragWin) {
+    dragWin.style.transition = '';
+    dragWin = null;
+  }
+});
+
+// --- Instagram like ---
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-ig-like]');
+  if (!btn) return;
+  const post = btn.closest('.ig-post');
+  const countEl = post.querySelector('[data-ig-like-count]');
+  const liked = btn.classList.toggle('liked');
+  let count = parseInt(countEl.textContent) || 0;
+  count = liked ? count + 1 : Math.max(0, count - 1);
+  countEl.textContent = count + (count === 1 ? ' like' : ' likes');
+});
+
+// --- Instagram comment ---
+document.addEventListener('click', (e) => {
+  const toggle = e.target.closest('[data-ig-comment-toggle]');
+  if (toggle) {
+    const post = toggle.closest('.ig-post');
+    const box = post.querySelector('.ig-comment-box');
+    box.style.display = box.style.display === 'none' ? 'flex' : 'none';
+    if (box.style.display === 'flex') box.querySelector('input').focus();
+    return;
+  }
+  const postBtn = e.target.closest('[data-ig-comment-post]');
+  if (postBtn) {
+    const post = postBtn.closest('.ig-post');
+    const input = post.querySelector('[data-ig-comment-input]');
+    const text = input.value.trim();
+    if (!text) return;
+    const comments = post.querySelector('[data-ig-comments]');
+    const comment = document.createElement('div');
+    comment.className = 'ig-comment';
+    comment.innerHTML = '<strong>visitor</strong>' + text;
+    comments.appendChild(comment);
+    input.value = '';
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.matches('[data-ig-comment-input]')) {
+    e.target.closest('.ig-post').querySelector('[data-ig-comment-post]').click();
+  }
+});
+
+// --- Instagram share ---
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-ig-share]');
+  if (!btn) return;
+  if (navigator.share) {
+    navigator.share({ title: 'Lyla Huang — Portfolio', url: window.location.href }).catch(() => {});
+  } else {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      btn.textContent = '✓';
+      setTimeout(() => { btn.textContent = '↗'; }, 1500);
+    });
+  }
+});
+
+// --- Per-video sound toggle ---
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-sound-toggle]');
+  if (!btn) return;
+  const frame = btn.closest('.films-frame') || btn.closest('.ig-post-media');
+  if (!frame) return;
+  const video = frame.querySelector('video');
+  if (!video) return;
+  video.muted = !video.muted;
+  btn.textContent = video.muted ? 'SOUND ON' : 'SOUND OFF';
+});
+
 // --- Project card double-click → open project detail window ---
 // Cards in the projects grid require double-click (retro OS feel)
 // Nav tabs inside project details stay single-click
@@ -303,7 +404,9 @@ document.addEventListener('click', (e) => {
 // --- Instagram Reels fullscreen ---
 let igProgressRAF = null;
 document.addEventListener('click', (e) => {
-  const media = e.target.closest('[data-ig-fullscreen]');
+  const btn = e.target.closest('[data-ig-fullscreen-btn]');
+  if (!btn) return;
+  const media = btn.closest('.ig-post-media');
   if (!media) return;
   const video = media.querySelector('video');
   if (!video) return;
