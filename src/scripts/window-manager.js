@@ -422,8 +422,7 @@ document.addEventListener('click', (e) => {
   container.querySelector(`[data-film-panel="${id}"]`).classList.add('active');
 });
 
-// --- Instagram Reels fullscreen ---
-let igProgressRAF = null;
+// --- Instagram fullscreen video ---
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-ig-fullscreen-btn]');
   if (!btn) return;
@@ -431,25 +430,13 @@ document.addEventListener('click', (e) => {
   if (!media) return;
   const video = media.querySelector('video');
   if (!video) return;
-  const post = media.closest('.ig-post');
-  const caption = post ? post.querySelector('.ig-post-caption') : null;
   const overlay = document.getElementById('igFullscreen');
   const fsVideo = document.getElementById('igFullscreenVideo');
-  const captionEl = document.getElementById('igReelCaption');
-  const progressEl = document.getElementById('igReelProgress');
   if (!overlay || !fsVideo) return;
   fsVideo.src = video.src || video.dataset.lazySrc;
   fsVideo.muted = false;
-  if (captionEl && caption) captionEl.textContent = caption.textContent;
   overlay.style.display = 'block';
   fsVideo.play().catch(() => {});
-  function updateProgress() {
-    if (fsVideo.duration && progressEl) {
-      progressEl.style.width = (fsVideo.currentTime / fsVideo.duration * 100) + '%';
-    }
-    igProgressRAF = requestAnimationFrame(updateProgress);
-  }
-  updateProgress();
 });
 document.addEventListener('click', (e) => {
   if (e.target.id === 'igFullscreenClose') {
@@ -457,7 +444,6 @@ document.addEventListener('click', (e) => {
     const fsVideo = document.getElementById('igFullscreenVideo');
     if (overlay) overlay.style.display = 'none';
     if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; }
-    if (igProgressRAF) cancelAnimationFrame(igProgressRAF);
   }
 });
 

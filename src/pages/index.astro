@@ -850,31 +850,12 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <div class="ig-post-date">2019</div>
       </div>
     </div>
-    <div class="ig-fullscreen-overlay" id="igFullscreen" style="display:none">
-      <video id="igFullscreenVideo" autoplay loop playsinline></video>
-      <button class="ig-reel-back" id="igFullscreenClose">←</button>
-      <div class="ig-reel-sidebar">
-        <div class="ig-reel-action"><span class="ig-reel-icon">LIKE</span></div>
-        <div class="ig-reel-action"><span class="ig-reel-icon">COMMENT</span></div>
-        <div class="ig-reel-action"><span class="ig-reel-icon">SHARE</span></div>
-      </div>
-      <div class="ig-reel-info">
-        <div class="ig-reel-user">
-          <div class="ig-reel-avatar">
-            <div class="ig-pixel-face">
-              <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
-              <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
-              <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
-              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
-            </div>
-          </div>
-          <span class="ig-reel-name">reroute_2.0</span>
-        </div>
-        <div class="ig-reel-caption" id="igReelCaption"></div>
-      </div>
-      <div class="ig-reel-progress"><div class="ig-reel-progress-fill" id="igReelProgress"></div></div>
-    </div>
   </MobilePanel>
+
+  <div class="ig-fullscreen-overlay" id="igFullscreen" style="display:none">
+    <video id="igFullscreenVideo" autoplay loop playsinline></video>
+    <button class="ig-fullscreen-close" id="igFullscreenClose">&times;</button>
+  </div>
 
   <MobilePanel id="jobhunter-detail" title="" fullscreen>
     <div class="appstore">
@@ -3998,94 +3979,24 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
-  .ig-reel-back {
+  .ig-fullscreen-close {
     position: absolute;
-    top: 14px; left: 14px;
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.4rem;
-    z-index: 201;
-    cursor: pointer;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .ig-reel-sidebar {
-    position: absolute;
+    top: 14px;
     right: 14px;
-    bottom: 120px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    align-items: center;
-    z-index: 201;
-  }
-  .ig-reel-action {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-  .ig-reel-icon {
     font-family: var(--font-mono);
-    font-size: 0.6rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: #fff;
+    font-size: 1.4rem;
     background: rgba(0,0,0,0.35);
     border: 1px solid rgba(255,255,255,0.3);
-    padding: 6px 10px;
-    text-shadow: none;
-  }
     color: #fff;
-  }
-  .ig-reel-info {
-    position: absolute;
-    bottom: 50px;
-    left: 14px;
-    right: 70px;
-    z-index: 201;
-  }
-  .ig-reel-user {
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
-  .ig-reel-avatar {
-    width: 28px;
-    height: 28px;
-    border: 2px solid #fff;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-  .ig-reel-name {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .ig-reel-caption {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    color: #fff;
-    line-height: 1.5;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-  }
-  .ig-reel-progress {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    background: rgba(255,255,255,0.2);
+    justify-content: center;
+    cursor: pointer;
     z-index: 201;
-  }
-  .ig-reel-progress-fill {
-    height: 100%;
-    background: #fff;
-    width: 0%;
-    transition: width 0.3s;
   }
   .appstore-btns {
     display: flex;
