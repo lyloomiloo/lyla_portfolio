@@ -1413,47 +1413,73 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
   // Lazy-load videos — preload in background after 3s, staggered to avoid bandwidth spike.
   // When a window/panel opens, immediately set src on any lazy videos inside and autoplay.
+  const isMobileDevice = window.innerWidth <= 768;
+
+  function loadVideo(video: HTMLVideoElement) {
+    const src = video.dataset.lazySrc;
+    if (src && !video.src) {
+      video.preload = 'auto';
+      video.src = src;
+    }
+  }
+
+  function playVideo(video: HTMLVideoElement) {
+    if (video.readyState >= 2) {
+      video.play().catch(() => {});
+    } else {
+      video.addEventListener('loadeddata', () => video.play().catch(() => {}), { once: true });
+    }
+  }
+
   function activateVideos(container: Element) {
-    container.querySelectorAll('video[data-lazy-src]').forEach(v => {
+    // On mobile, only load visible videos (max 3 at a time)
+    const videos = container.querySelectorAll('video[data-lazy-src]');
+    if (isMobileDevice) {
+      const visibleVideos = Array.from(videos).slice(0, 3);
+      visibleVideos.forEach(v => {
+        const video = v as HTMLVideoElement;
+        loadVideo(video);
+        if (video.hasAttribute('autoplay')) playVideo(video);
+      });
+    } else {
+      videos.forEach(v => {
+        const video = v as HTMLVideoElement;
+        loadVideo(video);
+      });
+      container.querySelectorAll('video[autoplay]').forEach(v => {
+        playVideo(v as HTMLVideoElement);
+      });
+    }
+  }
+
+  function deactivateVideos(container: Element) {
+    container.querySelectorAll('video').forEach(v => {
       const video = v as HTMLVideoElement;
-      const src = video.dataset.lazySrc;
-      if (src && !video.src) {
-        video.preload = 'auto';
-        video.src = src;
-      }
-    });
-    container.querySelectorAll('video[autoplay]').forEach(v => {
-      const video = v as HTMLVideoElement;
-      if (video.readyState >= 2) {
-        video.play().catch(() => {});
-      } else {
-        video.addEventListener('loadeddata', () => video.play().catch(() => {}), { once: true });
-      }
+      video.pause();
     });
   }
 
   function preloadLazyVideos() {
-    // Background preload for videos in not-yet-opened containers
-    const videos = document.querySelectorAll('video[data-lazy-src]');
-    videos.forEach((v, i) => {
-      setTimeout(() => {
-        const video = v as HTMLVideoElement;
-        const src = video.dataset.lazySrc;
-        if (src && !video.src) {
-          video.preload = 'auto';
-          video.src = src;
-        }
-      }, i * 500);
-    });
+    // Desktop only: background preload staggered
+    if (!isMobileDevice) {
+      const videos = document.querySelectorAll('video[data-lazy-src]');
+      videos.forEach((v, i) => {
+        setTimeout(() => {
+          loadVideo(v as HTMLVideoElement);
+        }, i * 500);
+      });
+    }
 
-    // When a window/panel opens, activate its videos immediately
+    // When a window/panel opens, activate its videos; when it closes, pause them
     document.querySelectorAll('.os-window, .mobile-panel').forEach(container => {
       const obs = new MutationObserver(() => {
-        if (!container.classList.contains('open')) return;
-        activateVideos(container);
+        if (container.classList.contains('open')) {
+          activateVideos(container);
+        } else {
+          deactivateVideos(container);
+        }
       });
       obs.observe(container, { attributes: true, attributeFilter: ['class'] });
-      // Also activate if already open
       if (container.classList.contains('open')) activateVideos(container);
     });
   }

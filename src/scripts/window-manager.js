@@ -77,16 +77,18 @@ function openWindow(id) {
   // Lazy-load film videos when films window opens
   if (id === 'films') {
     if (isDesktop()) {
-      // Desktop: load all tabs since user switches between them
+      // Desktop: only load active tab's video
       const container = document.querySelector('[data-window-id="films"]');
       if (container) {
-        container.querySelectorAll('video[data-lazy-src]').forEach(v => {
-          if (!v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
-        });
-        container.querySelectorAll('video[autoplay]').forEach(v => {
-          if (v.readyState >= 2) v.play().catch(() => {});
-          else v.addEventListener('loadeddata', () => v.play().catch(() => {}), { once: true });
-        });
+        const activeFrame = container.querySelector('.films-frame.active');
+        if (activeFrame) {
+          const v = activeFrame.querySelector('video[data-lazy-src]');
+          if (v && !v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
+          if (v) {
+            if (v.readyState >= 2) v.play().catch(() => {});
+            else v.addEventListener('loadeddata', () => v.play().catch(() => {}), { once: true });
+          }
+        }
       }
     } else {
       // Mobile: lazy-load videos as they scroll into view
@@ -416,10 +418,27 @@ document.addEventListener('click', (e) => {
   if (!tab) return;
   const id = tab.dataset.filmTab;
   const container = tab.closest('.films-detail');
+  // Pause previous video
+  const prevFrame = container.querySelector('.films-frame.active');
+  if (prevFrame) {
+    const prevVideo = prevFrame.querySelector('video');
+    if (prevVideo) prevVideo.pause();
+  }
   container.querySelectorAll('.proj-nav-tab').forEach(t => t.classList.remove('active'));
   tab.classList.add('active');
   container.querySelectorAll('.films-frame').forEach(f => f.classList.remove('active'));
-  container.querySelector(`[data-film-panel="${id}"]`).classList.add('active');
+  const newFrame = container.querySelector(`[data-film-panel="${id}"]`);
+  newFrame.classList.add('active');
+  // Load and play new video on demand
+  const video = newFrame.querySelector('video');
+  if (video) {
+    if (!video.src && video.dataset.lazySrc) {
+      video.preload = 'auto';
+      video.src = video.dataset.lazySrc;
+    }
+    if (video.readyState >= 2) video.play().catch(() => {});
+    else video.addEventListener('loadeddata', () => video.play().catch(() => {}), { once: true });
+  }
 });
 
 // --- Instagram fullscreen video ---
