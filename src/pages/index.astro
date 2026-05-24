@@ -311,14 +311,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="films" title="films.exe" width="76vw" height="80vh" top="10vh" left="12vw">
     <div class="films-detail">
       <div class="proj-nav">
-        <button class="proj-nav-tab active" data-film-tab="brand">brand_film.mp4 — (RE)ROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="content">content_film.mp4 — (RE)ROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="concept">concept_film.mp4 — (RE)ROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="covid">public_comms.mp4 — GOV.SG</button>
-        <button class="proj-nav-tab" data-film-tab="kansai">tourism_ad.mp4 — SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="laos">tourism_ad.mp4 — SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="scootbiz">scootbiz_series.mp4 — SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="runway">runway_application.mp4 — RUNWAY</button>
+        <button class="proj-nav-tab active" data-film-tab="brand">brand.mp4 | REROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="concept">concept.mp4 | REROUTE</button>
+        <button class="proj-nav-tab" data-film-tab="covid">covid.mp4  | GOV SG</button>
+        <button class="proj-nav-tab" data-film-tab="kansai">JP_tourism.mp4 | SCOOT</button>
+        <button class="proj-nav-tab" data-film-tab="laos">laos.mp4 | SCOOT</button>
+        <button class="proj-nav-tab" data-film-tab="scootbiz">scootbiz_series.mp4 | SCOOT</button>
+        <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
       </div>
       <div class="films-content">
         <div class="films-frame active" data-film-panel="brand">
@@ -354,6 +354,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         </div>
         <div class="films-frame" data-film-panel="runway">
           <video data-lazy-src="/images/Ads/runway_application.mp4" autoplay loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
           <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
       </div>
@@ -704,6 +705,30 @@ import ProjectDetail from '../components/ProjectDetail.astro';
               <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
             </div>
           </div>
+          <div class="ig-post-user"><span class="ig-post-name">runway</span><span class="ig-post-loc">Remote</span></div>
+          <span class="ig-ai-badge">AI-GENERATED</span>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/runway_application.mp4" autoplay loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>runway</strong> APPLICATION | Art is expression. It's creation. It's telling stories from your perspective. Stories only you can tell because you're the one who lived. Here's my story, for Runway, made with Runway.</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2026</div>
+      </div>
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar">
+            <div class="ig-pixel-face">
+              <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            </div>
+          </div>
           <div class="ig-post-user">
             <span class="ig-post-name">reroute_2.0</span>
             <span class="ig-post-loc">Barcelona, Spain</span>
@@ -853,22 +878,6 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <div class="ig-comments" data-ig-comments></div>
         <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
         <div class="ig-post-date">2019</div>
-      </div>
-      <div class="ig-post">
-        <div class="ig-post-header">
-          <div class="ig-post-avatar" style="background:#222; display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:0.5rem; font-weight:700; color:#fff;">R</div>
-          <div class="ig-post-user"><span class="ig-post-name">runway</span><span class="ig-post-loc">Application</span></div>
-        </div>
-        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
-          <video data-lazy-src="/images/Ads/runway_application.mp4" autoplay loop muted playsinline preload="none"></video>
-          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
-          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
-        </div>
-        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
-        <div class="ig-post-caption"><strong>runway</strong> APPLICATION | Runway Gen-4 application video</div>
-        <div class="ig-comments" data-ig-comments></div>
-        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
-        <div class="ig-post-date">2026</div>
       </div>
     </div>
   </MobilePanel>
