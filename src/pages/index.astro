@@ -311,17 +311,22 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="films" title="films.exe" width="76vw" height="80vh" top="10vh" left="12vw">
     <div class="films-detail">
       <div class="proj-nav">
-        <button class="proj-nav-tab active" data-film-tab="brand">brand.mp4 | REROUTE</button>
+        <button class="proj-nav-tab active" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
+        <button class="proj-nav-tab" data-film-tab="brand">brand.mp4 | REROUTE</button>
         <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
         <button class="proj-nav-tab" data-film-tab="concept">concept.mp4 | REROUTE</button>
         <button class="proj-nav-tab" data-film-tab="covid">covid.mp4  | GOV SG</button>
         <button class="proj-nav-tab" data-film-tab="kansai">JP_tourism.mp4 | SCOOT</button>
         <button class="proj-nav-tab" data-film-tab="laos">laos.mp4 | SCOOT</button>
         <button class="proj-nav-tab" data-film-tab="scootcontent">inflight_series.mp4 | SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
       </div>
       <div class="films-content">
-        <div class="films-frame active" data-film-panel="brand">
+        <div class="films-frame active" data-film-panel="runway">
+          <video data-lazy-src="/images/Ads/runway_application.mp4" autoplay loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="brand">
           <video data-lazy-src="/images/projects/reroute2/brand_film.mp4" autoplay loop muted playsinline preload="none"></video>
           <span class="films-ai-badge">AI-GENERATED</span>
           <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
@@ -350,11 +355,6 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         </div>
         <div class="films-frame" data-film-panel="scootcontent">
           <video data-lazy-src="/images/Ads/Scoot | Scoot Content Series.mp4" autoplay loop muted playsinline preload="none"></video>
-          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-        </div>
-        <div class="films-frame" data-film-panel="runway">
-          <video data-lazy-src="/images/Ads/runway_application.mp4" autoplay loop muted playsinline preload="none"></video>
-          <span class="films-ai-badge">AI-GENERATED</span>
           <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
       </div>
