@@ -7,4 +7,11 @@ export default defineConfig({
   integrations: [sitemap()],
   output: 'static',
   adapter: vercel(),
+  vite: {
+    server: {
+      watch: {
+        ignored: ['**/public/images/**/*.mp4', '**/public/images/**/*.mov'],
+      },
+    },
+  },
 });

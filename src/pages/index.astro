@@ -311,7 +311,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <Window id="films" title="films.exe" width="76vw" height="80vh" top="10vh" left="12vw">
     <div class="films-detail">
       <div class="proj-nav">
-        <button class="proj-nav-tab active" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
+        <button class="proj-nav-tab active" data-film-tab="om">om_showreel.mp4 | ONWARD</button>
+        <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
         <button class="proj-nav-tab" data-film-tab="brand">brand.mp4 | REROUTE</button>
         <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
         <button class="proj-nav-tab" data-film-tab="concept">concept.mp4 | REROUTE</button>
@@ -321,7 +322,11 @@ import ProjectDetail from '../components/ProjectDetail.astro';
         <button class="proj-nav-tab" data-film-tab="scootcontent">inflight_series.mp4 | SCOOT</button>
       </div>
       <div class="films-content">
-        <div class="films-frame active" data-film-panel="runway">
+        <div class="films-frame active" data-film-panel="om">
+          <video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="runway">
           <video data-lazy-src="/images/Ads/runway_application.mp4" loop muted playsinline preload="none"></video>
           <span class="films-ai-badge">AI-GENERATED</span>
           <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
@@ -695,6 +700,29 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
   <MobilePanel id="films" title="" fullscreen>
     <div class="ig-feed">
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar">
+            <div class="ig-pixel-face">
+              <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            </div>
+          </div>
+          <div class="ig-post-user"><span class="ig-post-name">onward</span><span class="ig-post-loc">Singapore</span></div>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
+        <div class="ig-post-caption"><strong>onward</strong> TVC | Onward showreel</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2019</div>
+      </div>
       <div class="ig-post">
         <div class="ig-post-header">
           <div class="ig-post-avatar">
