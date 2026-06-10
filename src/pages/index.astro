@@ -310,16 +310,20 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 
   <Window id="films" title="films.exe" width="76vw" height="80vh" top="10vh" left="12vw">
     <div class="films-detail">
-      <div class="proj-nav">
-        <button class="proj-nav-tab active" data-film-tab="om">om_showreel.mp4 | ONWARD</button>
-        <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
-        <button class="proj-nav-tab" data-film-tab="brand">brand.mp4 | REROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="concept">concept.mp4 | REROUTE</button>
-        <button class="proj-nav-tab" data-film-tab="covid">covid.mp4  | GOV SG</button>
-        <button class="proj-nav-tab" data-film-tab="kansai">JP_tourism.mp4 | SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="laos">laos.mp4 | SCOOT</button>
-        <button class="proj-nav-tab" data-film-tab="scootcontent">inflight_series.mp4 | SCOOT</button>
+      <div class="films-nav-wrap">
+        <button class="films-nav-arrow films-nav-prev" data-films-scroll="prev">&#x2039;</button>
+        <div class="proj-nav films-nav-scroll">
+          <button class="proj-nav-tab active" data-film-tab="om">om_showreel.mp4 | ONWARD</button>
+          <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
+          <button class="proj-nav-tab" data-film-tab="brand">brand.mp4 | REROUTE</button>
+          <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
+          <button class="proj-nav-tab" data-film-tab="concept">concept.mp4 | REROUTE</button>
+          <button class="proj-nav-tab" data-film-tab="covid">covid.mp4  | GOV SG</button>
+          <button class="proj-nav-tab" data-film-tab="kansai">JP_tourism.mp4 | SCOOT</button>
+          <button class="proj-nav-tab" data-film-tab="laos">laos.mp4 | SCOOT</button>
+          <button class="proj-nav-tab" data-film-tab="scootcontent">inflight_series.mp4 | SCOOT</button>
+        </div>
+        <button class="films-nav-arrow films-nav-next" data-films-scroll="next">&#x203A;</button>
       </div>
       <div class="films-content">
         <div class="films-frame active" data-film-panel="om">
@@ -710,7 +714,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
               <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
             </div>
           </div>
-          <div class="ig-post-user"><span class="ig-post-name">onward</span><span class="ig-post-loc">Singapore</span></div>
+          <div class="ig-post-user"><span class="ig-post-name">OM</span><span class="ig-post-loc">Barcelona</span></div>
         </div>
         <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
           <video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video>
@@ -718,7 +722,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
           <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>0 likes</span></div>
-        <div class="ig-post-caption"><strong>onward</strong> TVC | Onward showreel</div>
+        <div class="ig-post-caption"><strong>OM</strong> CONCEPT | OM is a project aimed at designing a body for AGI - one that is calm, natural and more human-centric than the screens we have today. Learn mor at http://om.nikosbellos.com/</div>
         <div class="ig-comments" data-ig-comments></div>
         <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
         <div class="ig-post-date">2019</div>
@@ -3846,6 +3850,36 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     cursor: pointer;
     z-index: 5;
   }
+  .films-nav-wrap {
+    display: flex;
+    align-items: stretch;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .films-nav-scroll {
+    flex: 1;
+    overflow-x: auto;
+    scrollbar-width: none;
+    border-bottom: none;
+  }
+  .films-nav-scroll::-webkit-scrollbar { display: none; }
+  .films-nav-scroll .proj-nav-tab { white-space: nowrap; }
+  .films-nav-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    background: var(--bg);
+    border: none;
+    border-bottom: none;
+    color: var(--text-dim);
+    font-size: 1.2rem;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .films-nav-prev { border-right: 1px solid var(--border); }
+  .films-nav-next { border-left: 1px solid var(--border); }
+  .films-nav-arrow:hover { color: var(--text); background: var(--bg-card); }
   .films-content { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; }
   .films-ai-badge {
     position: absolute;

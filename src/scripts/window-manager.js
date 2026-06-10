@@ -412,6 +412,15 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// --- Film nav scroll arrows ---
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('[data-films-scroll]');
+  if (!btn) return;
+  const nav = btn.closest('.films-nav-wrap').querySelector('.films-nav-scroll');
+  const amount = 200;
+  nav.scrollBy({ left: btn.dataset.filmsScroll === 'next' ? amount : -amount, behavior: 'smooth' });
+});
+
 // --- Film tabs ---
 document.addEventListener('click', (e) => {
   const tab = e.target.closest('[data-film-tab]');
