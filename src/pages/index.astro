@@ -1478,6 +1478,13 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   // Lazy-load videos — preload in background after 3s, staggered to avoid bandwidth spike.
   // When a window/panel opens, immediately set src on any lazy videos inside and autoplay.
   const isMobileDevice = window.innerWidth <= 768;
+  // iPadOS 13+ reports as "MacIntel" with touch points, so width alone misses iPads.
+  // Treat all iOS/iPadOS as memory-constrained: Safari kills the tab when too much
+  // decoded video is held at once. Cap concurrency and free memory aggressively.
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isConstrained = isMobileDevice || isIOS;
+  const MAX_CONCURRENT_VIDEOS = isConstrained ? 2 : Infinity;
 
   function loadVideo(video: HTMLVideoElement) {
     const src = video.dataset.lazySrc;
@@ -1495,12 +1502,24 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     }
   }
 
+  function unloadVideo(video: HTMLVideoElement) {
+    // pause() alone keeps the decoded frame buffer in memory; clearing src + load()
+    // is what actually releases it on iOS. Restore the lazy marker so it can reload.
+    video.pause();
+    if (video.src) {
+      if (!video.dataset.lazySrc) video.dataset.lazySrc = video.src;
+      video.removeAttribute('src');
+      video.load();
+    }
+  }
+
   function activateVideos(container: Element) {
-    // On mobile, only load visible videos (max 3 at a time)
+    // On constrained devices (mobile + all iOS/iPadOS), only load a capped number of
+    // videos at once so we never exceed Safari's per-tab video memory budget.
     const videos = container.querySelectorAll('video[data-lazy-src]');
-    if (isMobileDevice) {
-      const visibleVideos = Array.from(videos).slice(0, 3);
-      visibleVideos.forEach(v => {
+    if (isConstrained) {
+      const allowed = Array.from(videos).slice(0, MAX_CONCURRENT_VIDEOS);
+      allowed.forEach(v => {
         const video = v as HTMLVideoElement;
         loadVideo(video);
         if (video.hasAttribute('autoplay')) playVideo(video);
@@ -1519,13 +1538,16 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   function deactivateVideos(container: Element) {
     container.querySelectorAll('video').forEach(v => {
       const video = v as HTMLVideoElement;
-      video.pause();
+      // On constrained devices, fully release memory; elsewhere just pause.
+      if (isConstrained) unloadVideo(video);
+      else video.pause();
     });
   }
 
   function preloadLazyVideos() {
-    // Desktop only: background preload staggered
-    if (!isMobileDevice) {
+    // Desktop only: background preload staggered. Never preload on constrained
+    // devices — eagerly loading every clip is what crashes iPad/iOS Safari.
+    if (!isConstrained) {
       const videos = document.querySelectorAll('video[data-lazy-src]');
       videos.forEach((v, i) => {
         setTimeout(() => {
