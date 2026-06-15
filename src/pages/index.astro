@@ -327,63 +327,45 @@ import ProjectDetail from '../components/ProjectDetail.astro';
       </div>
       <div class="films-content">
         <div class="films-frame active" data-film-panel="om">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <span class="films-ai-badge">AI-GENERATED</span>
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="runway">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/runway_application.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <span class="films-ai-badge">AI-GENERATED</span>
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/runway_application.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="brand">
-          <div class="films-stage"><video data-lazy-src="/images/projects/reroute2/brand_film.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <span class="films-ai-badge">AI-GENERATED</span>
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/projects/reroute2/brand_film.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame films-frame--portrait" data-film-panel="content">
-          <div class="films-stage"><video data-lazy-src="/images/projects/reroute2/content_film.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <span class="films-ai-badge">AI-GENERATED</span>
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/projects/reroute2/content_film.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="concept">
-          <div class="films-stage"><video data-lazy-src="/images/projects/reroute2/concept_film.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <span class="films-ai-badge">AI-GENERATED</span>
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/projects/reroute2/concept_film.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="covid">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/Gov.SG | COVID Reopening.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/Gov.SG | COVID Reopening.mp4" loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="kansai">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/Scoot | Kansai Tourism.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/Scoot | Kansai Tourism.mp4" loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="laos">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/Scoot | Laos Route Launch.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/Scoot | Laos Route Launch.mp4" loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
         <div class="films-frame" data-film-panel="scootcontent">
-          <div class="films-stage"><video data-lazy-src="/images/Ads/Scoot | Scoot Content Series.mp4" loop muted playsinline preload="none"></video></div>
-          <div class="films-bar">
-            <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
-          </div>
+          <video data-lazy-src="/images/Ads/Scoot | Scoot Content Series.mp4" loop muted playsinline preload="none"></video>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
         </div>
       </div>
     </div>
@@ -3850,18 +3832,20 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   .films-detail { display: flex; flex-direction: column; height: calc(100% + 3rem); margin: -1.5rem; }
   [data-window-id="films"] .os-window-body { overflow: hidden; }
   .films-sound-btn {
-    margin-left: auto;
+    position: absolute;
+    bottom: 64px;
+    right: 14px;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.08em;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.35);
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
     color: #fff;
-    padding: 9px 18px;
+    padding: 6px 12px;
     cursor: pointer;
+    z-index: 5;
   }
-  .films-sound-btn:hover { background: rgba(255,255,255,0.18); }
   .ig-expand-btn {
     position: absolute;
     top: 12px;
@@ -3922,31 +3906,24 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   .films-nav-arrow:hover { color: var(--text); background: var(--bg-card); }
   .films-content { flex: 1; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
   .films-ai-badge {
+    position: absolute;
+    top: 14px;
+    right: 14px;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     color: #fff;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.35);
-    padding: 7px 14px;
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 10px;
     pointer-events: none;
+    z-index: 5;
   }
-  .films-frame { display: none; width: 100%; flex-direction: column; position: relative; }
+  .films-frame { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; position: relative; }
   .films-frame.active { display: flex; }
-  .films-stage { width: 100%; display: flex; align-items: center; justify-content: center; }
-  /* Size the video by viewport height (always resolvable) instead of a flex
-     percentage-height chain, which iPad Safari fails to resolve and collapses. */
-  .films-stage video { max-width: 100%; max-height: calc(80vh - 150px); width: auto; height: auto; object-fit: contain; }
-  .films-bar {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
-    background: #000;
-    border-top: 1px solid rgba(255,255,255,0.12);
-  }
+  .films-frame video { width: 100%; height: auto; object-fit: contain; }
+  .films-frame--portrait video { width: auto; height: 100%; max-width: 100%; }
   /* Instagram feed — retro */
   .ig-feed {
     margin: -1.5rem;
