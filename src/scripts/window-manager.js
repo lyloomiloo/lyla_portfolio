@@ -91,22 +91,52 @@ function openWindow(id) {
         }
       }
     } else {
-      // Mobile: lazy-load videos as they scroll into view
+      // Mobile: only ONE video plays at a time — the one occupying the top half of the
+      // viewport. Everything else is paused and muted so there's never overlapping audio.
       const panel = document.querySelector('[data-panel-id="films"]');
-      if (panel) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            const video = entry.target;
-            if (entry.isIntersecting && !video.src) {
-              video.preload = 'auto';
-              video.src = video.dataset.lazySrc;
-              video.addEventListener('loadeddata', () => video.play().catch(() => {}), { once: true });
-            }
-            if (entry.isIntersecting) video.play().catch(() => {});
-            else video.pause();
+      const scroller = panel && panel.querySelector('.mobile-panel-body');
+      if (scroller) {
+        const videos = [...panel.querySelectorAll('video[data-lazy-src]')];
+
+        const updateActive = () => {
+          const root = scroller.getBoundingClientRect();
+          const bandTop = root.top;
+          const bandBottom = root.top + root.height / 2; // top half of the viewport
+          // Active = the video covering the most of the top-half band.
+          let active = null, best = 0;
+          videos.forEach(v => {
+            const r = v.getBoundingClientRect();
+            const overlap = Math.min(r.bottom, bandBottom) - Math.max(r.top, bandTop);
+            if (overlap > best) { best = overlap; active = v; }
           });
-        }, { root: panel.querySelector('.mobile-panel-body'), threshold: 0.3 });
-        panel.querySelectorAll('video[data-lazy-src]').forEach(v => observer.observe(v));
+          // The last clip(s) can't scroll up into the top half — at the bottom of the
+          // feed, hand off to the last video that's actually visible so it still plays.
+          if (scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 4) {
+            for (let i = videos.length - 1; i >= 0; i--) {
+              const r = videos[i].getBoundingClientRect();
+              if (r.bottom > root.top && r.top < root.bottom) { active = videos[i]; break; }
+            }
+          }
+          videos.forEach(v => {
+            if (v === active) {
+              if (!v.src) { v.preload = 'auto'; v.src = v.dataset.lazySrc; }
+              applySoundPref(v.closest('.ig-post-media')); // honor the sound preference
+              v.play().catch(() => {});
+            } else {
+              v.pause();
+              v.muted = true; // silence off-screen videos
+            }
+          });
+        };
+
+        let ticking = false;
+        scroller.addEventListener('scroll', () => {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(() => { updateActive(); ticking = false; });
+        });
+        // Re-evaluate after the open animation settles so the first video starts playing
+        setTimeout(updateActive, 350);
       }
     }
   }
@@ -374,7 +404,18 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// --- Per-video sound toggle ---
+// --- Per-video sound toggle (preference persists to next video) ---
+let soundOn = false;
+
+// Apply the current sound preference to a video frame and sync its button label
+function applySoundPref(frame) {
+  if (!frame) return;
+  const video = frame.querySelector('video');
+  const btn = frame.querySelector('[data-sound-toggle]');
+  if (video) video.muted = !soundOn;
+  if (btn) btn.textContent = soundOn ? 'SOUND OFF' : 'SOUND ON';
+}
+
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-sound-toggle]');
   if (!btn) return;
@@ -383,6 +424,7 @@ document.addEventListener('click', (e) => {
   const video = frame.querySelector('video');
   if (!video) return;
   video.muted = !video.muted;
+  soundOn = !video.muted; // remember so the next video the user navigates to inherits it
   btn.textContent = video.muted ? 'SOUND ON' : 'SOUND OFF';
 });
 
@@ -438,6 +480,7 @@ document.addEventListener('click', (e) => {
   container.querySelectorAll('.films-frame').forEach(f => f.classList.remove('active'));
   const newFrame = container.querySelector(`[data-film-panel="${id}"]`);
   newFrame.classList.add('active');
+  applySoundPref(newFrame); // carry the sound preference to the newly shown film
   // Load and play new video on demand
   const video = newFrame.querySelector('video');
   if (video) {
