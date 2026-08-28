@@ -422,13 +422,20 @@ const dockApps = [
       if (folderOverlay) folderOverlay.style.display = 'flex';
     });
   });
+  // Drop the #projects deep-link hash when the folder is dismissed.
+  const clearProjectsHash = () => {
+    if (location.hash === '#projects') {
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  };
   if (folderOverlay) {
     folderOverlay.addEventListener('click', (e) => {
-      if (e.target === folderOverlay) folderOverlay.style.display = 'none';
+      if (e.target === folderOverlay) { folderOverlay.style.display = 'none'; clearProjectsHash(); }
     });
     folderOverlay.querySelectorAll('[data-close-folder]').forEach(btn => {
       btn.addEventListener('click', () => {
         folderOverlay.style.display = 'none';
+        clearProjectsHash();
       });
     });
   }

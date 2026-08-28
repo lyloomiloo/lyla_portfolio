@@ -41,6 +41,7 @@ function openWindow(id) {
         win.classList.add('maximized');
         focusWindow(id);
         updateTaskbar(id);
+        syncHash(id);
         return;
       }
     }
@@ -68,6 +69,7 @@ function openWindow(id) {
     requestAnimationFrame(() => panel.classList.add('open'));
   }
   updateTaskbar(id);
+  syncHash(id);
 
   // Fetch weather when weather panel opens
   if (id === 'weather') {
@@ -167,6 +169,8 @@ function closeWindow(id) {
     setTimeout(() => panel.style.display = 'none', 250);
   }
   updateTaskbar(null);
+  // If the section we just closed owned the URL, drop the deep-link hash.
+  if (ID_TO_SLUG[id] === location.hash.replace('#', '')) clearHash();
 }
 
 function focusWindow(id) {
@@ -186,6 +190,7 @@ function closeAllWindows() {
   });
   updateTaskbar(null);
   document.querySelectorAll('.desktop-icon.selected').forEach(i => i.classList.remove('selected'));
+  clearHash();
 }
 
 function updateTaskbar(activeId) {
@@ -594,5 +599,69 @@ async function loadWeather() {
   }
 }
 
+// ================= Deep links (shareable section URLs) =================
+// Each main section gets its own URL hash so it can be linked to / shared directly,
+// e.g. lylahuang.com/#reroute opens the (RE)ROUTE case study straight away.
+const SLUG_TO_ID = {
+  films: 'films',
+  projects: 'projects',
+  reroute: 'reroute-detail',
+  'reroute-2': 'reroute2-detail',
+  snapp: 'snapp-detail',
+  planmytrip: 'planmytrip-detail',
+  jobhunter: 'jobhunter-detail',
+};
+const ID_TO_SLUG = {
+  films: 'films',
+  projects: 'projects',
+  'reroute-detail': 'reroute',
+  'reroute2-detail': 'reroute-2',
+  'snapp-detail': 'snapp',
+  'planmytrip-detail': 'planmytrip',
+  'jobhunter-detail': 'jobhunter',
+};
+
+// Keep the URL in step with what's open. Mapped sections set their slug;
+// anything else (easter eggs, etc.) leaves a clean URL.
+function syncHash(id) {
+  const slug = ID_TO_SLUG[id];
+  if (slug) {
+    if ('#' + slug !== location.hash) history.replaceState(null, '', '#' + slug);
+  } else {
+    clearHash();
+  }
+}
+
+function clearHash() {
+  if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+}
+
+// A shared link should land straight on the content, past the lock screen.
+function dismissLockForDeepLink() {
+  document.documentElement.classList.add('skip-lock');
+  try { sessionStorage.setItem('lyla-visited', 'true'); } catch (e) {}
+  const lock = document.getElementById('lockScreen');
+  if (lock) { lock.classList.remove('dismissing'); lock.style.display = 'none'; }
+  const phoneLock = document.querySelector('.phone-lock');
+  if (phoneLock) phoneLock.style.display = 'none';
+}
+
+function openFromHash() {
+  const id = SLUG_TO_ID[location.hash.replace('#', '')];
+  if (!id) return;
+  dismissLockForDeepLink();
+  // Mobile has no "projects" panel — it uses the home-screen folder popup instead.
+  if (id === 'projects' && !isDesktop()) {
+    const overlay = document.getElementById('phoneFolderOverlay');
+    if (overlay) overlay.style.display = 'flex';
+    return;
+  }
+  openWindow(id);
+}
+
 // Expose globally
 window.openWindow = openWindow;
+
+// Honour a deep link on first load and whenever the hash changes.
+openFromHash();
+window.addEventListener('hashchange', openFromHash);
