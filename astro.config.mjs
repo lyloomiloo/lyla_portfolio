@@ -6,7 +6,9 @@ export default defineConfig({
   site: 'https://lylahuang.com',
   integrations: [sitemap()],
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({
+    webAnalytics: { enabled: true },
+  }),
   vite: {
     server: {
       watch: {
