@@ -670,7 +670,7 @@ function openFromHash() {
 // Opens ONLY via #showcase-<token>. The <token> names a manifest fetched from
 // /showcase/<token>.json, so each viewer can get their own link + curated feed,
 // and nothing about any showcase ships in the public page HTML.
-let showcaseSoundOn = false;
+let showcaseSoundOn = true; // showcase opens with sound on
 let showcaseLoadedToken = null;
 
 async function openShowcase(token) {
@@ -704,57 +704,64 @@ function renderShowcase(data) {
   const esc = (s) => String(s == null ? '' : s)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-  const showDots = items.length > 1;
+  const defaultProfile = (data && data.profile) ? data.profile : 'showcase';
+
+  // Same pixel-face avatar the #films IG posts use.
+  const FACE =
+    `<div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>` +
+    `<div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>` +
+    `<div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>` +
+    `<div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>`;
+
+  // Overlays that sit on top of the video (For You / AI badge / sound).
+  const overlays = (it) => {
+    const sound = it.type === 'video' ? `<button class="tok-sound">SOUND ON</button>` : '';
+    return `<div class="tok-fyp">For You</div>${sound}`;
+  };
+
+  const stageHtml = (it, i) => {
+    if (it.type === 'image') return `<img src="${esc(it.src)}" alt="${esc(it.caption || '')}" />${overlays(it)}`;
+    if (it.type === 'link') {
+      const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
+      return `<div class="tok-linkcard">${thumb}</div>`;
+    }
+    return `<video data-tok-video loop muted playsinline preload="${i === 0 ? 'auto' : 'metadata'}" src="${esc(it.src)}"></video>
+        ${overlays(it)}
+        <div class="tok-progress"><i></i></div>`;
+  };
 
   const itemHtml = (it, i) => {
-    let stage = '';
-    if (it.type === 'video') {
-      stage = `<video data-tok-video loop muted playsinline preload="${i === 0 ? 'auto' : 'metadata'}" src="${esc(it.src)}"></video>`;
-    } else if (it.type === 'image') {
-      stage = `<img src="${esc(it.src)}" alt="${esc(it.title)}" />`;
-    } else if (it.type === 'link') {
-      const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
-      stage = `<div class="tok-linkcard">${thumb}<a class="tok-linkgo" href="${esc(it.url)}" target="_blank" rel="noopener">open link ↗</a></div>`;
-    }
-    const isVideo = it.type === 'video';
+    const name = it.profile || defaultProfile;
+    const loc = it.loc || '';
+    const brief = it.caption || it.desc || it.title || '';
+    const likes = (it.likes | 0) || 0;
     const openAct = it.type === 'link'
-      ? `<button class="tok-act tok-open" data-url="${esc(it.url)}"><span class="tok-ico">⤢</span><span>OPEN</span></button>` : '';
-    const soundAct = isVideo
-      ? `<button class="tok-act tok-sound"><span class="tok-ico">🔇</span><span>SOUND</span></button>` : '';
-    const caption = (it.title || it.desc)
-      ? `<div class="tok-caption"><div class="tok-handle">${esc(it.title)}</div>${it.desc ? `<div class="tok-desc">${esc(it.desc)}</div>` : ''}</div>` : '';
-    const progress = isVideo ? `<div class="tok-progress"><i></i></div>` : '';
+      ? `<a class="tok-open" href="${esc(it.url)}" target="_blank" rel="noopener">OPEN ↗</a>` : '';
+    const aiInline = it.ai ? `<span class="tok-ai-inline">AI-GENERATED</span>` : '';
     return `<div class="tok-item" data-idx="${i}">
-      <div class="tok-cluster">
-        <div class="tok-stage">
-          ${stage}
-          ${caption}
-          ${progress}
+      <div class="tok-stage">${stageHtml(it, i)}</div>
+      <div class="tok-side">
+        <div class="tok-textcol">
+          <div class="tok-profile">
+            <div class="tok-avatar"><div class="ig-pixel-face">${FACE}</div></div>
+            <div class="tok-user"><span class="tok-name">${esc(name)}</span>${loc ? `<span class="tok-loc">${esc(loc)}</span>` : ''}</div>
+            ${aiInline}
+          </div>
+          ${brief ? `<div class="tok-caption"><div class="tok-brief">${esc(brief)}</div><button class="tok-more" data-tok-more>…more</button></div>` : ''}
         </div>
-        <div class="tok-rail">
-          ${soundAct}
-          <button class="tok-act tok-like"><span class="tok-ico">♥</span><span class="tok-likecount">${(it.likes | 0) || 0}</span></button>
-          <button class="tok-act tok-share"><span class="tok-ico">↗</span><span>SHARE</span></button>
+        <div class="tok-actions">
+          <button class="tok-like"><span class="tok-glyph">&#9829;</span><span class="tok-likecount">${likes}</span></button>
+          <button class="tok-share"><span class="tok-glyph">&#8599;</span></button>
           ${openAct}
         </div>
       </div>
     </div>`;
   };
 
-  const dots = showDots
-    ? `<div class="tok-dots">${items.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('')}</div>` : '';
-
   document.querySelectorAll('.js-showcase-feed').forEach(feed => {
     feed.innerHTML = items.length
       ? items.map(itemHtml).join('')
       : '<div class="tok-empty">Nothing here yet.</div>';
-    // dots live alongside the feed inside .showcase-detail
-    const detail = feed.closest('.showcase-detail');
-    if (detail) {
-      const old = detail.querySelector('.tok-dots');
-      if (old) old.remove();
-      if (dots) detail.insertAdjacentHTML('beforeend', dots);
-    }
     setupShowcaseFeed(feed);
   });
 }
@@ -762,96 +769,87 @@ function renderShowcase(data) {
 function setupShowcaseFeed(feed) {
   const itemEls = [...feed.querySelectorAll('.tok-item')];
   if (!itemEls.length) return;
-  const detail = feed.closest('.showcase-detail');
-  const dotEls = detail ? [...detail.querySelectorAll('.tok-dots span')] : [];
+  const root = feed.closest('.mobile-panel-body') || feed.closest('.showcase-detail') || feed;
 
-  const applySound = (video) => {
+  const applyShowcaseSound = (video) => {
     if (!video) return;
     video.muted = !showcaseSoundOn;
-    // reflect on this item's sound button
-    const item = video.closest('.tok-item');
-    const btn = item && item.querySelector('.tok-sound');
-    if (btn) {
-      btn.classList.toggle('on', showcaseSoundOn);
-      const ico = btn.querySelector('.tok-ico');
-      if (ico) ico.textContent = showcaseSoundOn ? '🔊' : '🔇';
-    }
+    const btn = video.closest('.tok-item') && video.closest('.tok-item').querySelector('.tok-sound');
+    if (btn) { btn.classList.toggle('on', showcaseSoundOn); btn.textContent = showcaseSoundOn ? 'SOUND OFF' : 'SOUND ON'; }
   };
 
-  const setActive = (idx) => {
-    itemEls.forEach((el, i) => {
-      const v = el.querySelector('video[data-tok-video]');
-      if (i === idx) {
-        if (v) {
-          if (!v.getAttribute('src') && v.dataset.lazy) v.src = v.dataset.lazy;
-          applySound(v);
-          v.play().catch(() => {});
-        }
-      } else if (v) {
-        v.pause();
-        v.muted = true;
-      }
-    });
-    dotEls.forEach((d, i) => d.classList.toggle('active', i === idx));
-  };
-
-  // Wire each video's progress bar.
+  // Progress bars.
   itemEls.forEach(el => {
     const v = el.querySelector('video[data-tok-video]');
     const bar = el.querySelector('.tok-progress > i');
-    if (v && bar) {
-      v.addEventListener('timeupdate', () => {
-        if (v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%';
-      });
-    }
+    if (v && bar) v.addEventListener('timeupdate', () => { if (v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%'; });
   });
 
-  // One item plays at a time — the one filling the viewport.
+  // One clip plays at a time — the one filling the viewport.
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      if (e.isIntersecting && e.intersectionRatio >= 0.6) {
-        setActive(itemEls.indexOf(e.target));
-      }
+      const v = e.target.querySelector('video[data-tok-video]');
+      if (!v) return;
+      if (e.isIntersecting && e.intersectionRatio >= 0.6) { applyShowcaseSound(v); v.play().catch(() => {}); }
+      else { v.pause(); v.muted = true; }
     });
-  }, { root: feed, threshold: [0.6] });
+  }, { root, threshold: [0.6] });
   itemEls.forEach(el => io.observe(el));
 
-  // Kick off the first item once layout settles.
-  setTimeout(() => setActive(0), 200);
+  setTimeout(() => {
+    const v0 = itemEls[0] && itemEls[0].querySelector('video[data-tok-video]');
+    if (!v0) return;
+    applyShowcaseSound(v0); // unmuted (sound on by default)
+    v0.play().catch(() => {
+      // Browser blocked unmuted autoplay: play muted so it isn't frozen,
+      // then unmute on the viewer's first interaction.
+      v0.muted = true;
+      v0.play().catch(() => {});
+      const unlock = () => {
+        if (showcaseSoundOn) { applyShowcaseSound(v0); v0.play().catch(() => {}); }
+        document.removeEventListener('pointerdown', unlock);
+      };
+      document.addEventListener('pointerdown', unlock, { once: true });
+    });
+  }, 200);
 }
 
-// Showcase interactions: sound / like / share / open (delegated, scoped to the feed).
+// Showcase interactions: sound / like / share / expand (delegated).
 document.addEventListener('click', (e) => {
   const soundBtn = e.target.closest('.tok-sound');
   if (soundBtn) {
     showcaseSoundOn = !showcaseSoundOn;
-    const item = soundBtn.closest('.tok-item');
-    const v = item && item.querySelector('video[data-tok-video]');
+    const v = soundBtn.closest('.tok-item') && soundBtn.closest('.tok-item').querySelector('video[data-tok-video]');
     if (v) { v.muted = !showcaseSoundOn; if (showcaseSoundOn) v.play().catch(() => {}); }
     soundBtn.classList.toggle('on', showcaseSoundOn);
-    const ico = soundBtn.querySelector('.tok-ico');
-    if (ico) ico.textContent = showcaseSoundOn ? '🔊' : '🔇';
+    soundBtn.textContent = showcaseSoundOn ? 'SOUND OFF' : 'SOUND ON';
     return;
   }
   const likeBtn = e.target.closest('.tok-like');
   if (likeBtn) {
     const countEl = likeBtn.querySelector('.tok-likecount');
     const liked = likeBtn.classList.toggle('liked');
-    let n = parseInt(countEl.textContent, 10) || 0;
+    const n = parseInt(countEl.textContent, 10) || 0;
     countEl.textContent = liked ? n + 1 : Math.max(0, n - 1);
     return;
   }
   const shareBtn = e.target.closest('.tok-share');
   if (shareBtn) {
-    const label = shareBtn.querySelector('span:last-child');
-    const done = () => { if (label) { const t = label.textContent; label.textContent = 'COPIED'; setTimeout(() => label.textContent = t, 1400); } };
-    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done).catch(done);
-    else done();
+    const glyph = shareBtn.querySelector('.tok-glyph');
+    const flash = () => { if (glyph) { const t = glyph.textContent; glyph.textContent = '✓'; setTimeout(() => glyph.textContent = t, 1200); } };
+    if (navigator.share) navigator.share({ url: location.href }).catch(() => {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(flash).catch(flash);
+    else flash();
     return;
   }
-  const openBtn = e.target.closest('.tok-open');
-  if (openBtn && openBtn.dataset.url) {
-    window.open(openBtn.dataset.url, '_blank', 'noopener');
+  const moreBtn = e.target.closest('[data-tok-more]');
+  if (moreBtn) {
+    const cap = moreBtn.closest('.tok-caption');
+    const brief = cap && cap.querySelector('.tok-brief');
+    if (brief) {
+      const expanded = brief.classList.toggle('expanded');
+      moreBtn.textContent = expanded ? 'less' : '…more';
+    }
     return;
   }
 });

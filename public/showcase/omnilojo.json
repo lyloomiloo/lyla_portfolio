@@ -1,12 +1,15 @@
 {
   "title": "FOR YOU",
-  "intro": "a private cut",
+  "profile": "Omnilojo",
   "items": [
     {
       "type": "video",
       "src": "/images/showcase/Omnilojo_Last%20Z.mp4",
-      "title": "Omnilojo // Last Z",
-      "desc": ""
+      "profile": "Omnilojo",
+      "loc": "Singapore",
+      "caption": "This 30-second User Acquisition concept for Last Z uses generative AI to replace standard gameplay recordings with high-fidelity cinematic storytelling. Selling the survival fantasy upfront elevates the title into a recognisable franchise, making in-game items feel vastly more valuable. Crucially, this AI-driven workflow supercharges performance marketing by enabling rapid A/B testing of distinct visual hooks, such as gritty horror versus explosive action, to maximise scroll-stopping engagement before seamlessly transitioning into core gameplay mechanics.",
+      "ai": true,
+      "likes": 2431
     }
   ]
 }
