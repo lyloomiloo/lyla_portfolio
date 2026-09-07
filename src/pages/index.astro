@@ -371,6 +371,16 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     </div>
   </Window>
 
+  <!-- Hidden showcase — opens ONLY via the secret deep link (#showcase-<token>).
+       Never shown as an icon/taskbar tab. Its items are fetched from
+       /showcase/<token>.json at open time, so nothing about it ships in this page's source. -->
+  <Window id="showcase" title="showcase.exe" width="86vw" height="84vh" top="3vh" left="7vw">
+    <div class="showcase-detail">
+      <div class="tok-topbar"><span class="tok-fyp js-showcase-title">FOR YOU</span></div>
+      <div class="tok-feed js-showcase-feed"></div>
+    </div>
+  </Window>
+
   <!-- Mobile Panels -->
 
   <!-- MOBILE: About — RPG Character Sheet -->
@@ -1250,6 +1260,14 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   <!-- Duck Runner Game — Mobile -->
   <MobilePanel id="duckgame" title="quack.exe" fullscreen>
     <canvas id="duckGameMobile" style="width:100%; height:100%; display:block; image-rendering:pixelated; background:#87CEEB; position:absolute; inset:0;"></canvas>
+  </MobilePanel>
+
+  <!-- Hidden showcase — Mobile (secret deep link only) -->
+  <MobilePanel id="showcase" title="" fullscreen>
+    <div class="showcase-detail">
+      <div class="tok-topbar"><span class="tok-fyp js-showcase-title">FOR YOU</span></div>
+      <div class="tok-feed js-showcase-feed"></div>
+    </div>
   </MobilePanel>
 
   <!-- Scrolling marquee bar -->
@@ -4168,6 +4186,230 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   }
   .appstore-bottom-btn--films {
     background: #9B59B6;
+  }
+
+  /* ===================== HIDDEN SHOWCASE — "For You" feed ===================== */
+  .showcase-detail {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+  }
+  .tok-feed {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tok-feed::-webkit-scrollbar { display: none; }
+
+  .tok-item {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* Group the video + rail so they centre together (desktop = TikTok layout) */
+  .tok-cluster {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    height: 100%;
+    padding: 22px 0;
+  }
+  .tok-stage {
+    position: relative;
+    height: 100%;
+    aspect-ratio: 9 / 16;
+    background: #000;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  .tok-stage video,
+  .tok-stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Link card (type:"link") */
+  .tok-linkcard {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    text-align: center;
+    padding: 24px;
+    background: radial-gradient(90% 60% at 50% 30%, #2E2E2E, #111);
+  }
+  .tok-linkcard .tok-linkthumb {
+    width: 64%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 6px 6px 0 var(--orange);
+  }
+  .tok-linkcard .tok-linkgo {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    color: var(--dark);
+    background: var(--green);
+    border: 2px solid #fff;
+    padding: 9px 16px;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  /* Caption, overlaid bottom-left on the video */
+  .tok-caption {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 24px;
+    z-index: 3;
+    color: #fff;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.85);
+    pointer-events: none;
+  }
+  .tok-handle {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+  .tok-desc {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    opacity: 0.92;
+    margin-top: 5px;
+    line-height: 1.4;
+    max-width: 80%;
+  }
+
+  /* Playback progress bar */
+  .tok-progress {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    z-index: 3;
+  }
+  .tok-progress > i {
+    display: block;
+    height: 100%;
+    width: 0;
+    background: var(--orange);
+  }
+
+  /* Right action rail — round buttons */
+  .tok-rail {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-bottom: 6px;
+  }
+  .tok-act {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.03em;
+  }
+  .tok-act .tok-ico {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    transition: transform 0.08s ease;
+  }
+  .tok-act:active .tok-ico { transform: scale(0.9); }
+  .tok-act.liked .tok-ico { color: var(--orange); }
+  .tok-sound.on .tok-ico { color: var(--green); }
+
+  /* "FOR YOU" tab */
+  .tok-topbar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0 22px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+    pointer-events: none;
+  }
+  .tok-fyp {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.85);
+    padding: 4px 12px;
+  }
+
+  .tok-empty {
+    color: #bbb;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    text-align: center;
+    width: 100%;
+    align-self: center;
+    padding: 40px;
+  }
+
+  /* Feed position dots (left) */
+  .tok-dots {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    pointer-events: none;
+  }
+  .tok-dots span {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+  }
+  .tok-dots span.active { background: var(--orange); height: 12px; border-radius: 3px; }
+
+  /* MOBILE: full-width video, rail overlaid on top of it */
+  @media (max-width: 768px) {
+    .tok-cluster { width: 100%; height: 100%; padding: 0; gap: 0; }
+    .tok-stage { width: 100%; height: 100%; aspect-ratio: auto; border-radius: 0; }
+    .tok-rail {
+      position: absolute;
+      right: 10px;
+      bottom: 30px;
+      z-index: 4;
+    }
+    .tok-rail .tok-ico { background: rgba(0,0,0,0.4); }
+    .tok-dots { left: 10px; }
   }
 
 </style>

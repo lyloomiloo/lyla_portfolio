@@ -46,7 +46,7 @@ function openWindow(id) {
       }
     }
     // Project detail windows and duck game open maximized directly
-    if ((id.endsWith('-detail') || id === 'duckgame' || id === 'films') && !win.classList.contains('maximized')) {
+    if ((id.endsWith('-detail') || id === 'duckgame' || id === 'films' || id === 'showcase') && !win.classList.contains('maximized')) {
       win.classList.add('maximized');
     }
     // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
@@ -170,7 +170,7 @@ function closeWindow(id) {
   }
   updateTaskbar(null);
   // If the section we just closed owned the URL, drop the deep-link hash.
-  if (ID_TO_SLUG[id] === location.hash.replace('#', '')) clearHash();
+  if (id === 'showcase' || ID_TO_SLUG[id] === location.hash.replace('#', '')) clearHash();
 }
 
 function focusWindow(id) {
@@ -624,6 +624,7 @@ const ID_TO_SLUG = {
 // Keep the URL in step with what's open. Mapped sections set their slug;
 // anything else (easter eggs, etc.) leaves a clean URL.
 function syncHash(id) {
+  if (id === 'showcase') return; // secret token hash is managed by the showcase opener
   const slug = ID_TO_SLUG[id];
   if (slug) {
     if ('#' + slug !== location.hash) history.replaceState(null, '', '#' + slug);
@@ -647,7 +648,13 @@ function dismissLockForDeepLink() {
 }
 
 function openFromHash() {
-  const id = SLUG_TO_ID[location.hash.replace('#', '')];
+  const raw = location.hash.replace('#', '');
+  // Secret per-viewer showcase: #showcase-<token> -> /showcase/<token>.json
+  if (raw.indexOf('showcase-') === 0) {
+    openShowcase(raw.slice('showcase-'.length));
+    return;
+  }
+  const id = SLUG_TO_ID[raw];
   if (!id) return;
   dismissLockForDeepLink();
   // Mobile has no "projects" panel — it uses the home-screen folder popup instead.
@@ -658,6 +665,196 @@ function openFromHash() {
   }
   openWindow(id);
 }
+
+// ================= Secret showcase ("For You" feed) =================
+// Opens ONLY via #showcase-<token>. The <token> names a manifest fetched from
+// /showcase/<token>.json, so each viewer can get their own link + curated feed,
+// and nothing about any showcase ships in the public page HTML.
+let showcaseSoundOn = false;
+let showcaseLoadedToken = null;
+
+async function openShowcase(token) {
+  // Only allow simple slugs — no slashes/dots — so the token can't walk the filesystem.
+  if (!token || !/^[a-z0-9-]+$/i.test(token)) return;
+  dismissLockForDeepLink();
+  openWindow('showcase');
+
+  const feeds = document.querySelectorAll('.js-showcase-feed');
+  if (showcaseLoadedToken === token) return; // already rendered this one
+  feeds.forEach(f => { f.innerHTML = '<div class="tok-empty">loading…</div>'; });
+
+  try {
+    const res = await fetch('/showcase/' + token + '.json', { cache: 'no-store' });
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    renderShowcase(data);
+    showcaseLoadedToken = token;
+  } catch (e) {
+    feeds.forEach(f => { f.innerHTML = '<div class="tok-empty">This showcase link isn\'t available.</div>'; });
+    document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = 'FOR YOU'; });
+  }
+}
+
+function renderShowcase(data) {
+  const items = (data && Array.isArray(data.items)) ? data.items : [];
+  document.querySelectorAll('.js-showcase-title').forEach(t => {
+    t.textContent = (data && data.title) ? data.title : 'FOR YOU';
+  });
+
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  const showDots = items.length > 1;
+
+  const itemHtml = (it, i) => {
+    let stage = '';
+    if (it.type === 'video') {
+      stage = `<video data-tok-video loop muted playsinline preload="${i === 0 ? 'auto' : 'metadata'}" src="${esc(it.src)}"></video>`;
+    } else if (it.type === 'image') {
+      stage = `<img src="${esc(it.src)}" alt="${esc(it.title)}" />`;
+    } else if (it.type === 'link') {
+      const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
+      stage = `<div class="tok-linkcard">${thumb}<a class="tok-linkgo" href="${esc(it.url)}" target="_blank" rel="noopener">open link ↗</a></div>`;
+    }
+    const isVideo = it.type === 'video';
+    const openAct = it.type === 'link'
+      ? `<button class="tok-act tok-open" data-url="${esc(it.url)}"><span class="tok-ico">⤢</span><span>OPEN</span></button>` : '';
+    const soundAct = isVideo
+      ? `<button class="tok-act tok-sound"><span class="tok-ico">🔇</span><span>SOUND</span></button>` : '';
+    const caption = (it.title || it.desc)
+      ? `<div class="tok-caption"><div class="tok-handle">${esc(it.title)}</div>${it.desc ? `<div class="tok-desc">${esc(it.desc)}</div>` : ''}</div>` : '';
+    const progress = isVideo ? `<div class="tok-progress"><i></i></div>` : '';
+    return `<div class="tok-item" data-idx="${i}">
+      <div class="tok-cluster">
+        <div class="tok-stage">
+          ${stage}
+          ${caption}
+          ${progress}
+        </div>
+        <div class="tok-rail">
+          ${soundAct}
+          <button class="tok-act tok-like"><span class="tok-ico">♥</span><span class="tok-likecount">${(it.likes | 0) || 0}</span></button>
+          <button class="tok-act tok-share"><span class="tok-ico">↗</span><span>SHARE</span></button>
+          ${openAct}
+        </div>
+      </div>
+    </div>`;
+  };
+
+  const dots = showDots
+    ? `<div class="tok-dots">${items.map((_, i) => `<span${i === 0 ? ' class="active"' : ''}></span>`).join('')}</div>` : '';
+
+  document.querySelectorAll('.js-showcase-feed').forEach(feed => {
+    feed.innerHTML = items.length
+      ? items.map(itemHtml).join('')
+      : '<div class="tok-empty">Nothing here yet.</div>';
+    // dots live alongside the feed inside .showcase-detail
+    const detail = feed.closest('.showcase-detail');
+    if (detail) {
+      const old = detail.querySelector('.tok-dots');
+      if (old) old.remove();
+      if (dots) detail.insertAdjacentHTML('beforeend', dots);
+    }
+    setupShowcaseFeed(feed);
+  });
+}
+
+function setupShowcaseFeed(feed) {
+  const itemEls = [...feed.querySelectorAll('.tok-item')];
+  if (!itemEls.length) return;
+  const detail = feed.closest('.showcase-detail');
+  const dotEls = detail ? [...detail.querySelectorAll('.tok-dots span')] : [];
+
+  const applySound = (video) => {
+    if (!video) return;
+    video.muted = !showcaseSoundOn;
+    // reflect on this item's sound button
+    const item = video.closest('.tok-item');
+    const btn = item && item.querySelector('.tok-sound');
+    if (btn) {
+      btn.classList.toggle('on', showcaseSoundOn);
+      const ico = btn.querySelector('.tok-ico');
+      if (ico) ico.textContent = showcaseSoundOn ? '🔊' : '🔇';
+    }
+  };
+
+  const setActive = (idx) => {
+    itemEls.forEach((el, i) => {
+      const v = el.querySelector('video[data-tok-video]');
+      if (i === idx) {
+        if (v) {
+          if (!v.getAttribute('src') && v.dataset.lazy) v.src = v.dataset.lazy;
+          applySound(v);
+          v.play().catch(() => {});
+        }
+      } else if (v) {
+        v.pause();
+        v.muted = true;
+      }
+    });
+    dotEls.forEach((d, i) => d.classList.toggle('active', i === idx));
+  };
+
+  // Wire each video's progress bar.
+  itemEls.forEach(el => {
+    const v = el.querySelector('video[data-tok-video]');
+    const bar = el.querySelector('.tok-progress > i');
+    if (v && bar) {
+      v.addEventListener('timeupdate', () => {
+        if (v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%';
+      });
+    }
+  });
+
+  // One item plays at a time — the one filling the viewport.
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= 0.6) {
+        setActive(itemEls.indexOf(e.target));
+      }
+    });
+  }, { root: feed, threshold: [0.6] });
+  itemEls.forEach(el => io.observe(el));
+
+  // Kick off the first item once layout settles.
+  setTimeout(() => setActive(0), 200);
+}
+
+// Showcase interactions: sound / like / share / open (delegated, scoped to the feed).
+document.addEventListener('click', (e) => {
+  const soundBtn = e.target.closest('.tok-sound');
+  if (soundBtn) {
+    showcaseSoundOn = !showcaseSoundOn;
+    const item = soundBtn.closest('.tok-item');
+    const v = item && item.querySelector('video[data-tok-video]');
+    if (v) { v.muted = !showcaseSoundOn; if (showcaseSoundOn) v.play().catch(() => {}); }
+    soundBtn.classList.toggle('on', showcaseSoundOn);
+    const ico = soundBtn.querySelector('.tok-ico');
+    if (ico) ico.textContent = showcaseSoundOn ? '🔊' : '🔇';
+    return;
+  }
+  const likeBtn = e.target.closest('.tok-like');
+  if (likeBtn) {
+    const countEl = likeBtn.querySelector('.tok-likecount');
+    const liked = likeBtn.classList.toggle('liked');
+    let n = parseInt(countEl.textContent, 10) || 0;
+    countEl.textContent = liked ? n + 1 : Math.max(0, n - 1);
+    return;
+  }
+  const shareBtn = e.target.closest('.tok-share');
+  if (shareBtn) {
+    const label = shareBtn.querySelector('span:last-child');
+    const done = () => { if (label) { const t = label.textContent; label.textContent = 'COPIED'; setTimeout(() => label.textContent = t, 1400); } };
+    if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(done).catch(done);
+    else done();
+    return;
+  }
+  const openBtn = e.target.closest('.tok-open');
+  if (openBtn && openBtn.dataset.url) {
+    window.open(openBtn.dataset.url, '_blank', 'noopener');
+    return;
+  }
+});
 
 // Expose globally
 window.openWindow = openWindow;

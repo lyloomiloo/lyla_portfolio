@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /showcase/
+Disallow: /images/showcase/
+
+Sitemap: https://lylahuang.com/sitemap-index.xml
