@@ -4380,26 +4380,25 @@ import FunPanel from '../components/FunPanel.astro';
   /* "drag to swipe" hint — retro hand + long left arrow + radiating ring.
      Desktop only, sits in the bottom-right of the video, fades on first drag. */
   .tok-swipe-hint {
-    position: absolute; right: 14px; bottom: 14px; z-index: 5;
-    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    position: absolute; right: 14px; bottom: 46px; z-index: 5;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
     pointer-events: none;
     transition: opacity 0.4s ease;
   }
-  .tok-swipe-hint .th-svg { display: block; width: 92px; height: auto; overflow: visible; filter: drop-shadow(0 1px 3px rgba(0,0,0,0.6)); }
+  .tok-swipe-hint .th-svg { display: block; width: 96px; height: auto; overflow: visible; }
   .tok-swipe-hint .th-label {
     font-family: var(--font-mono); font-size: 0.56rem; font-weight: 700;
     letter-spacing: 0.18em; text-transform: uppercase; color: #fff;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.85);
   }
-  .tok-swipe-hint .th-arrow { opacity: 0.8; }
+  .tok-swipe-hint .th-arrow { opacity: 0.85; }
   /* Hand slides right → left, fading out at the end and resetting off-screen */
   .th-hand-grp { animation: thHandSlide 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
   @keyframes thHandSlide {
-    0%   { transform: translateX(46px); opacity: 0; }
+    0%   { transform: translateX(36px); opacity: 0; }
     14%  { opacity: 1; }
-    60%  { transform: translateX(2px); opacity: 1; }
-    76%  { transform: translateX(2px); opacity: 0; }
-    100% { transform: translateX(46px); opacity: 0; }
+    60%  { transform: translateX(-4px); opacity: 1; }
+    76%  { transform: translateX(-4px); opacity: 0; }
+    100% { transform: translateX(36px); opacity: 0; }
   }
   /* Radiating rings pulse out from the hand's grab point */
   .th-ring { fill: none; stroke: #fff; stroke-width: 1.6; transform-box: fill-box; transform-origin: center; animation: thRing 1.5s ease-out infinite; }

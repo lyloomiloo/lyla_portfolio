@@ -797,21 +797,23 @@ function renderShowcase(data) {
       }).join('');
       const dots = slides.map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
       const hint = slides.length > 1 ? `<div class="tok-swipe-hint" aria-label="Drag to swipe">
-        <svg class="th-svg" viewBox="0 0 104 54" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <g class="th-arrow" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="94" y1="42" x2="26" y2="42"/>
-            <polyline points="36,34 22,42 36,50"/>
+        <svg class="th-svg" viewBox="0 0 96 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g class="th-arrow" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="84" y1="34" x2="18" y2="34"/>
+            <polyline points="28,27 14,34 28,41"/>
           </g>
           <g class="th-hand-grp">
-            <circle class="th-ring" cx="17" cy="20" r="8"/>
-            <circle class="th-ring th-ring2" cx="17" cy="20" r="8"/>
-            <g class="th-hand" fill="#fff" stroke="#111" stroke-width="1.1" stroke-linejoin="round">
-              <rect x="9" y="16" width="16" height="16" rx="4.5"/>
-              <rect x="9.6" y="7" width="3.4" height="11" rx="1.7"/>
-              <rect x="13.6" y="5" width="3.4" height="13" rx="1.7"/>
-              <rect x="17.6" y="5.5" width="3.4" height="13" rx="1.7"/>
-              <rect x="21.4" y="7" width="3.4" height="11" rx="1.7"/>
-              <rect x="22" y="18" width="6.5" height="3.6" rx="1.8" transform="rotate(30 24 20)"/>
+            <circle class="th-ring" cx="60" cy="13" r="9"/>
+            <circle class="th-ring th-ring2" cx="60" cy="13" r="9"/>
+            <g class="th-hand" transform="translate(51 -1) scale(0.9)">
+              <rect x="0" y="0" width="3" height="3" fill="#111"/><rect x="3" y="0" width="3" height="3" fill="#111"/><rect x="6" y="0" width="3" height="3" fill="#111"/>
+              <rect x="0" y="3" width="3" height="3" fill="#111"/><rect x="3" y="3" width="3" height="3" fill="#FFF"/><rect x="6" y="3" width="3" height="3" fill="#111"/>
+              <rect x="0" y="6" width="3" height="3" fill="#111"/><rect x="3" y="6" width="3" height="3" fill="#FFF"/><rect x="6" y="6" width="3" height="3" fill="#111"/>
+              <rect x="0" y="9" width="3" height="3" fill="#111"/><rect x="3" y="9" width="3" height="3" fill="#FFF"/><rect x="6" y="9" width="3" height="3" fill="#111"/><rect x="9" y="9" width="3" height="3" fill="#111"/><rect x="12" y="9" width="3" height="3" fill="#111"/><rect x="15" y="9" width="3" height="3" fill="#111"/>
+              <rect x="0" y="12" width="3" height="3" fill="#111"/><rect x="3" y="12" width="3" height="3" fill="#FFF"/><rect x="6" y="12" width="3" height="3" fill="#FFF"/><rect x="9" y="12" width="3" height="3" fill="#FFF"/><rect x="12" y="12" width="3" height="3" fill="#FFF"/><rect x="15" y="12" width="3" height="3" fill="#111"/>
+              <rect x="0" y="15" width="3" height="3" fill="#111"/><rect x="3" y="15" width="3" height="3" fill="#FFF"/><rect x="6" y="15" width="3" height="3" fill="#FFF"/><rect x="9" y="15" width="3" height="3" fill="#FFF"/><rect x="12" y="15" width="3" height="3" fill="#FFF"/><rect x="15" y="15" width="3" height="3" fill="#111"/>
+              <rect x="3" y="18" width="3" height="3" fill="#111"/><rect x="6" y="18" width="3" height="3" fill="#FFF"/><rect x="9" y="18" width="3" height="3" fill="#FFF"/><rect x="12" y="18" width="3" height="3" fill="#111"/>
+              <rect x="3" y="21" width="3" height="3" fill="#111"/><rect x="6" y="21" width="3" height="3" fill="#111"/><rect x="9" y="21" width="3" height="3" fill="#111"/><rect x="12" y="21" width="3" height="3" fill="#111"/>
             </g>
           </g>
         </svg>
