@@ -6,9 +6,9 @@ const { slug, iconBg, abbr, iconFg = '#FFFFFF' } = Astro.props;
 
 const project = (await getCollection('projects')).find(p => p.data.slug === slug);
 const d = project!.data;
-const tagline = d.hook.includes('|') ? d.hook.split('|')[0] : d.tagline;
-const body = d.hook.includes('|') ? d.hook.split('|')[1] : d.hook;
-const stack = (d.tags || []).join(' · ');
+const subhead = d.hook.includes('|') ? d.hook.split('|')[0] : d.tagline;
+const story = d.description || (d.hook.includes('|') ? d.hook.split('|')[1] : d.hook);
+const stack = d.stack || (d.tags || []).join(' · ');
 const getLabel = d.download ? 'GET' : 'VISIT';
 ---
 
@@ -17,7 +17,7 @@ const getLabel = d.download ? 'GET' : 'VISIT';
     <div class="appstore-icon appstore-icon--abbr" style={`background:${iconBg};color:${iconFg}`}>{abbr}</div>
     <div class="appstore-head-text">
       <div class="appstore-title">{d.displayTitle}</div>
-      <div class="appstore-sub">{tagline}</div>
+      <div class="appstore-sub">{subhead}</div>
     </div>
     {d.link && (
       <a
@@ -30,7 +30,7 @@ const getLabel = d.download ? 'GET' : 'VISIT';
     )}
   </div>
 
-  {body && <div class="appstore-desc">{body}</div>}
+  {story && <div class="appstore-desc">{story}</div>}
 
   {d.video && (
     <div class="appstore-screenshots">
@@ -47,8 +47,9 @@ const getLabel = d.download ? 'GET' : 'VISIT';
 
   <div class="appstore-section">Information</div>
   <div class="appstore-info">
-    {d.type && <div class="appstore-row"><span class="appstore-key">Location</span><span>{d.type}</span></div>}
-    {stack && <div class="appstore-row"><span class="appstore-key">Made with</span><span>{stack}</span></div>}
+    {d.type && <div class="appstore-row"><span class="appstore-key">Type</span><span>{d.type}</span></div>}
+    {stack && <div class="appstore-row"><span class="appstore-key">Stack</span><span>{stack}</span></div>}
+    {d.location && <div class="appstore-row"><span class="appstore-key">Location</span><span>{d.location}</span></div>}
     <div class="appstore-row last"><span class="appstore-key">Status</span><span>{d.status}</span></div>
   </div>
 

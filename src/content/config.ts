@@ -21,6 +21,9 @@ const projects = defineCollection({
     cta: z.string().optional(),        // RANDOM card button label (default "VISIT SITE →")
     download: z.boolean().optional(),  // RANDOM card link triggers a file download
     video: z.string().optional(),      // RANDOM: screen recording shown in the expand lightbox
+    stack: z.string().optional(),        // fun detail page: "Stack" row (tools/tech)
+    location: z.string().optional(),     // fun detail page: "Location" row (geography)
+    description: z.string().optional(),  // fun detail page: longer story shown under the sub head
     role: z.string().optional(),
     duration: z.string().optional(),
     tools: z.array(z.string()).optional(),

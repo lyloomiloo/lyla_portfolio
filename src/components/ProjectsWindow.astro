@@ -183,7 +183,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
             <div class="pw-tags">
               {p.data.tags.map((t: string) => <span>{t}</span>)}
             </div>
-            {p.data.type && <div class="pw-location">{p.data.type}</div>}
+            {(p.data.location ?? p.data.type) && <div class="pw-location">{p.data.location ?? p.data.type}</div>}
             <div class="pw-meta">{p.data.status}</div>
             <span class="pw-arrow">VIEW PROJECT →</span>
 
@@ -256,7 +256,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
               <div class="pw-tags">
                 {p.data.tags.map((t: string) => <span>{t}</span>)}
               </div>
-              {p.data.type && <div class="pw-location">{p.data.type}</div>}
+              {(p.data.location ?? p.data.type) && <div class="pw-location">{p.data.location ?? p.data.type}</div>}
               <div class="pw-meta">{p.data.status}</div>
               <span class="pw-arrow">VIEW PROJECT →</span>
 
@@ -332,7 +332,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
               ) : (
                 <p class="pw-hook">{p.data.hook}</p>
               )}
-              {p.data.type && <div class="pw-location">{p.data.type}</div>}
+              {(p.data.location ?? p.data.type) && <div class="pw-location">{p.data.location ?? p.data.type}</div>}
               <div class="pw-meta">{p.data.status}</div>
               <a
                 class="pw-arrow"
