@@ -1,26 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
-import { icons, colorMap } from '../data/pixel-icons';
 
-interface Props { slug: string; iconKey: string; iconBg: string; }
-const { slug, iconKey, iconBg } = Astro.props;
+interface Props { slug: string; iconBg: string; abbr: string; iconFg?: string; }
+const { slug, iconBg, abbr, iconFg = '#FFFFFF' } = Astro.props;
 
 const project = (await getCollection('projects')).find(p => p.data.slug === slug);
 const d = project!.data;
 const tagline = d.hook.includes('|') ? d.hook.split('|')[0] : d.tagline;
 const body = d.hook.includes('|') ? d.hook.split('|')[1] : d.hook;
-const grid = icons[iconKey] || icons['notepad'];
 const stack = (d.tags || []).join(' · ');
 const getLabel = d.download ? 'GET' : 'VISIT';
 ---
 
 <div class="appstore">
   <div class="appstore-head">
-    <div class="appstore-icon appstore-icon--pixel" style={`background:${iconBg}`}>
-      <div class="appstore-icon-pixels">
-        {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
-      </div>
-    </div>
+    <div class="appstore-icon appstore-icon--abbr" style={`background:${iconBg};color:${iconFg}`}>{abbr}</div>
     <div class="appstore-head-text">
       <div class="appstore-title">{d.displayTitle}</div>
       <div class="appstore-sub">{tagline}</div>
@@ -66,15 +60,10 @@ const getLabel = d.download ? 'GET' : 'VISIT';
 </div>
 
 <style is:global>
-  /* Pixel-art icon inside the app-store header (fun projects) */
-  .appstore-icon--pixel {
+  /* Simple abbreviation icon inside the app-store header (fun projects) */
+  .appstore-icon--abbr {
     display: flex; align-items: center; justify-content: center;
-    overflow: hidden; padding: 0;
+    font-family: var(--font-mono);
+    font-size: 0.9rem; font-weight: 700; letter-spacing: 0.05em;
   }
-  .appstore-icon-pixels {
-    width: 40px; height: 40px;
-    display: grid; grid-template-columns: repeat(10, 1fr); grid-template-rows: repeat(10, 1fr);
-    image-rendering: pixelated;
-  }
-  .appstore-icon-pixels > div { width: 100%; height: 100%; }
 </style>
