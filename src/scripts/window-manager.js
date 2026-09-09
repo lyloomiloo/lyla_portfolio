@@ -908,8 +908,27 @@ function setupShowcaseFeed(feed) {
 
     slides.forEach(s => { const v = s.querySelector('video[data-tok-galvideo]'); if (v) v.addEventListener('ended', () => { if (auto && inView) goTo(cur + 1); }); });
     track.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(() => setCur(Math.round(track.scrollLeft / track.clientWidth)), 90); });
-    track.addEventListener('pointerdown', () => { auto = false; clearAdv(); });
     dots.forEach((d, k) => d.addEventListener('click', () => { auto = false; goTo(k); }));
+
+    // Mouse drag-to-swipe (desktop has no touch; touch/trackpad pan natively).
+    let dragOn = false, dragX = 0, dragLeft = 0;
+    track.addEventListener('pointerdown', (e) => {
+      auto = false; clearAdv();
+      if (e.pointerType === 'touch') return; // native touch scrolling handles swipes
+      dragOn = true; dragX = e.clientX; dragLeft = track.scrollLeft;
+      track.classList.add('dragging');
+      try { track.setPointerCapture(e.pointerId); } catch (_) {}
+    });
+    track.addEventListener('pointermove', (e) => { if (dragOn) track.scrollLeft = dragLeft - (e.clientX - dragX); });
+    const endDrag = (e) => {
+      if (!dragOn) return;
+      dragOn = false;
+      track.classList.remove('dragging');
+      try { track.releasePointerCapture(e.pointerId); } catch (_) {}
+      goTo(Math.round(track.scrollLeft / track.clientWidth));
+    };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
 
     // Called by the vertical observer when this gallery post enters/leaves view.
     gal._enter = () => { inView = true; playCur(); scheduleAdv(); };

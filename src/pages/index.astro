@@ -4363,11 +4363,14 @@ import FunPanel from '../components/FunPanel.astro';
     display: flex; width: 100%; height: 100%;
     overflow-x: auto; overflow-y: hidden;
     scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    cursor: grab;
   }
   .tok-track::-webkit-scrollbar { display: none; }
+  .tok-track.dragging { cursor: grabbing; scroll-snap-type: none; scroll-behavior: auto; }
   .tok-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; }
   .tok-gallery .tok-slide img, .tok-gallery .tok-slide video {
     width: 100%; height: 100%; object-fit: contain; display: block; background: #000;
+    -webkit-user-drag: none; user-select: none;
   }
   .tok-dots {
     position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5;
