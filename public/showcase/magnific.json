@@ -1,0 +1,36 @@
+{
+  "title": "FOR YOU",
+  "profile": "Magnific",
+  "items": [
+    {
+      "type": "video",
+      "src": "/images/showcase/Omnilojo_Last%20Z.mp4",
+      "profile": "Omnilojo",
+      "loc": "Singapore",
+      "caption": "This 30-second User Acquisition concept for Last Z uses generative AI to replace standard gameplay recordings with high-fidelity cinematic storytelling. Selling the survival fantasy upfront elevates the title into a recognisable franchise, making in-game items feel vastly more valuable. Crucially, this AI-driven workflow supercharges performance marketing by enabling rapid A/B testing of distinct visual hooks, such as gritty horror versus explosive action, to maximise scroll-stopping engagement before seamlessly transitioning into core gameplay mechanics.",
+      "ai": true,
+      "likes": 2431
+    },
+    {
+      "type": "video",
+      "src": "/images/showcase/Chicken-Sample%201.mp4",
+      "profile": "Magnific",
+      "loc": "",
+      "caption": "Chicken sample — a short AI-generated clip. (placeholder caption, edit me)",
+      "ai": true,
+      "likes": 1287
+    },
+    {
+      "type": "gallery",
+      "images": [
+        "/images/showcase/Chicken-Sample2.png",
+        "/images/showcase/Chicken-Sample%203.png"
+      ],
+      "profile": "Magnific",
+      "loc": "",
+      "caption": "Chicken samples — AI-generated stills, auto-cycling. (placeholder caption, edit me)",
+      "ai": true,
+      "likes": 964
+    }
+  ]
+}

@@ -4345,6 +4345,35 @@ import FunPanel from '../components/FunPanel.astro';
 
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
+  /* Prev/next post arrows (multi-post showcases) — overlaid on the asset */
+  .tok-nav {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
+    width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.42); color: #fff; border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 50%; cursor: pointer; font-family: var(--font-mono);
+    font-size: 1.4rem; line-height: 1; padding-bottom: 3px;
+  }
+  .tok-nav:hover { background: rgba(0,0,0,0.7); }
+  .tok-nav-prev { left: 10px; }
+  .tok-nav-next { right: 10px; }
+
+  /* Image gallery — auto-scrolling cross-fade carousel with dots */
+  .tok-gallery { position: absolute; inset: 0; background: #000; }
+  .tok-gallery .tok-galimg {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: contain; opacity: 0; transition: opacity 0.6s ease; z-index: 1;
+  }
+  .tok-gallery .tok-galimg.on { opacity: 1; z-index: 2; }
+  .tok-dots {
+    position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5;
+    display: flex; gap: 7px; justify-content: center;
+  }
+  .tok-dot {
+    width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
+    cursor: pointer; background: rgba(255,255,255,0.4); transition: background 0.2s ease;
+  }
+  .tok-dot.on { background: #fff; }
+
   /* MOBILE: full-bleed video, overlays; sound auto-on (button hidden) */
   @media (max-width: 768px) {
     .tok-item { display: block; }
@@ -4368,6 +4397,9 @@ import FunPanel from '../components/FunPanel.astro';
     .tok-like, .tok-share { text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
     .tok-sound { display: none; }
     .tok-fyp { font-size: 0.72rem; top: 12px; }
+    /* Lift dots clear of the bottom caption; shrink arrows a touch */
+    .tok-dots { bottom: 92px; }
+    .tok-nav { width: 34px; height: 34px; font-size: 1.25rem; }
   }
 
 </style>

@@ -710,6 +710,11 @@ function openFromHash() {
     openShowcase(raw.slice('showcase-'.length));
     return;
   }
+  // Named public showcases that open from their bare hash (e.g. #magnific).
+  if (NAMED_SHOWCASES.indexOf(raw) !== -1) {
+    openShowcase(raw);
+    return;
+  }
   const id = SLUG_TO_ID[raw];
   if (!id) return;
   dismissLockForDeepLink();
@@ -728,6 +733,8 @@ function openFromHash() {
 // and nothing about any showcase ships in the public page HTML.
 let showcaseSoundOn = true; // showcase opens with sound on
 let showcaseLoadedToken = null;
+// Showcases that open from a plain hash (not the #showcase-<token> secret form).
+const NAMED_SHOWCASES = ['magnific'];
 
 async function openShowcase(token) {
   // Only allow simple slugs — no slashes/dots — so the token can't walk the filesystem.
@@ -777,6 +784,11 @@ function renderShowcase(data) {
 
   const stageHtml = (it, i) => {
     if (it.type === 'image') return `<img src="${esc(it.src)}" alt="${esc(it.caption || '')}" />${overlays(it)}`;
+    if (it.type === 'gallery') {
+      const imgs = (it.images || []).map((s, gi) => `<img class="tok-galimg${gi === 0 ? ' on' : ''}" src="${esc(s)}" alt="" />`).join('');
+      const dots = (it.images || []).map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
+      return `<div class="tok-gallery" data-tok-gallery>${imgs}<div class="tok-dots">${dots}</div></div>${overlays(it)}`;
+    }
     if (it.type === 'link') {
       const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
       return `<div class="tok-linkcard">${thumb}</div>`;
@@ -786,7 +798,8 @@ function renderShowcase(data) {
         <div class="tok-progress"><i></i></div>`;
   };
 
-  const itemHtml = (it, i) => {
+  const itemHtml = (it, i, arr) => {
+    const total = arr ? arr.length : 1;
     const name = it.profile || defaultProfile;
     const loc = it.loc || '';
     const brief = it.caption || it.desc || it.title || '';
@@ -794,8 +807,12 @@ function renderShowcase(data) {
     const openAct = it.type === 'link'
       ? `<a class="tok-open" href="${esc(it.url)}" target="_blank" rel="noopener">OPEN ↗</a>` : '';
     const aiInline = it.ai ? `<span class="tok-ai-inline">AI-GENERATED</span>` : '';
+    // Prev/next post arrows (only when there's more than one post).
+    const nav = total > 1
+      ? `${i > 0 ? '<button class="tok-nav tok-nav-prev" data-tok-prev aria-label="Previous post">&#8249;</button>' : ''}${i < total - 1 ? '<button class="tok-nav tok-nav-next" data-tok-next aria-label="Next post">&#8250;</button>' : ''}`
+      : '';
     return `<div class="tok-item" data-idx="${i}">
-      <div class="tok-stage">${stageHtml(it, i)}</div>
+      <div class="tok-stage">${stageHtml(it, i)}${nav}</div>
       <div class="tok-side">
         <div class="tok-textcol">
           <div class="tok-profile">
@@ -841,6 +858,22 @@ function setupShowcaseFeed(feed) {
     if (v && bar) v.addEventListener('timeupdate', () => { if (v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%'; });
   });
 
+  // Image galleries: cross-fade auto-advance with clickable dots.
+  feed.querySelectorAll('[data-tok-gallery]').forEach(gal => {
+    const imgs = [...gal.querySelectorAll('.tok-galimg')];
+    const dots = [...gal.querySelectorAll('.tok-dot')];
+    if (imgs.length < 2) return;
+    let gi = 0, timer = null;
+    const show = (n) => {
+      gi = (n + imgs.length) % imgs.length;
+      imgs.forEach((im, k) => im.classList.toggle('on', k === gi));
+      dots.forEach((d, k) => d.classList.toggle('on', k === gi));
+    };
+    const start = () => { if (timer) clearInterval(timer); timer = setInterval(() => show(gi + 1), 2800); };
+    dots.forEach((d, k) => d.addEventListener('click', () => { show(k); start(); }));
+    start();
+  });
+
   // One clip plays at a time — the one filling the viewport.
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -879,6 +912,20 @@ document.addEventListener('click', (e) => {
     if (v) { v.muted = !showcaseSoundOn; if (showcaseSoundOn) v.play().catch(() => {}); }
     soundBtn.classList.toggle('on', showcaseSoundOn);
     soundBtn.textContent = showcaseSoundOn ? 'SOUND OFF' : 'SOUND ON';
+    return;
+  }
+  const navPrev = e.target.closest('[data-tok-prev]');
+  if (navPrev) {
+    const item = navPrev.closest('.tok-item');
+    const p = item && item.previousElementSibling;
+    if (p) p.scrollIntoView({ behavior: 'smooth' });
+    return;
+  }
+  const navNext = e.target.closest('[data-tok-next]');
+  if (navNext) {
+    const item = navNext.closest('.tok-item');
+    const n = item && item.nextElementSibling;
+    if (n) n.scrollIntoView({ behavior: 'smooth' });
     return;
   }
   const likeBtn = e.target.closest('.tok-like');
