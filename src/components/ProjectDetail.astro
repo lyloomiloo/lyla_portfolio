@@ -36,6 +36,7 @@ const allProjects = [
 
 <div class="proj-detail" data-proj-detail={slug}>
   <div class="proj-nav">
+    <button class="proj-nav-back" data-proj-back aria-label="Back to projects" title="Back to projects">&larr;</button>
     {allProjects.map(p => (
       <button
         class={`proj-nav-tab ${p.slug === slug ? 'active' : ''}`}
@@ -206,6 +207,8 @@ const allProjects = [
   .proj-detail { display: flex; flex-direction: column; height: 100%; margin: -1.5rem; }
 
   .proj-nav { display: flex; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .proj-nav-back { font-family: var(--font-mono); font-size: 1rem; line-height: 1; padding: 10px 14px; color: var(--text-dim); background: none; border: none; border-right: 1px solid var(--border); cursor: pointer; flex-shrink: 0; }
+  .proj-nav-back:hover { color: var(--orange); background: var(--bg-card); }
   .proj-nav-tab { font-family: var(--font-mono); font-size: 0.72rem; padding: 10px 16px; color: var(--text-dim); background: none; border: none; border-bottom: 2px solid transparent; border-right: 1px solid var(--border); }
   .proj-nav-tab:hover { color: var(--text); background: var(--bg-card); }
   .proj-nav-tab.active { color: var(--text); background: var(--bg-card); border-bottom-color: var(--orange); }

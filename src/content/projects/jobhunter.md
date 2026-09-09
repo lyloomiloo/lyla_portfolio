@@ -5,7 +5,7 @@ displayTitle: "JOBHUNTER"
 tagline: "Jobs board, but make it zen."
 hook: "Jobs board, but make it zen.|An AI-free listing aggregator that scores roles against your profile while taking care of your mental health."
 type: "Global"
-status: "Deployed · 2026"
+status: "Deployed · Apr 2026"
 year: "2026"
 tags: ["UX Design", "Full-Stack", "Product", "Emotional Design"]
 thumbnail: "/images/projects/jobhunter/thumb.png"

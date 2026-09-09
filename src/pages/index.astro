@@ -926,7 +926,16 @@ import ProjectDetail from '../components/ProjectDetail.astro';
   </MobilePanel>
 
   <div class="ig-fullscreen-overlay" id="igFullscreen" style="display:none">
-    <video id="igFullscreenVideo" autoplay loop playsinline></video>
+    <div class="ig-fs-frame">
+      <div class="ig-fs-bar">
+        <span class="ig-fs-dot"></span><span class="ig-fs-dot"></span><span class="ig-fs-dot"></span>
+        <span class="ig-fs-title" id="igFullscreenTitle"></span>
+      </div>
+      <div class="ig-fs-body">
+        <video id="igFullscreenVideo" autoplay loop playsinline></video>
+        <img id="igFullscreenImg" alt="" style="display:none" />
+      </div>
+    </div>
     <button class="ig-fullscreen-close" id="igFullscreenClose">&times;</button>
   </div>
 
@@ -4133,11 +4142,59 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     background: #000;
     z-index: 200;
   }
-  .ig-fullscreen-overlay video {
-    position: absolute;
-    top: 0; left: 0;
+  /* Fullscreen mode (default — used by #films videos): media fills the screen */
+  .ig-fs-frame { position: absolute; inset: 0; }
+  .ig-fs-bar { display: none; }
+  .ig-fs-body { position: absolute; inset: 0; }
+  .ig-fs-body video,
+  .ig-fs-body img {
+    position: absolute; top: 0; left: 0;
     width: 100%; height: 100%;
     object-fit: contain;
+  }
+
+  /* Windowed mode (RANDOM expand): a browser-framed viewer at ~3/4 of the page */
+  .ig-fullscreen-overlay.ig-fs-windowed {
+    background: rgba(0,0,0,0.82);
+    display: flex; align-items: center; justify-content: center;
+    padding: 5vh 5vw;
+  }
+  .ig-fs-windowed .ig-fs-frame {
+    position: static; inset: auto;
+    display: flex; flex-direction: column;
+    height: min(76vh, 780px);
+    width: auto;                 /* fit to the content's width */
+    max-width: 94vw; max-height: 90vh;
+    background: #1a1a1a;
+    border: 1px solid #333; border-radius: 8px; overflow: hidden;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+  }
+  .ig-fs-windowed .ig-fs-bar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 9px 12px; background: #101010; border-bottom: 1px solid #333;
+    position: relative; flex-shrink: 0;
+  }
+  .ig-fs-dot { width: 11px; height: 11px; border-radius: 50%; background: #444; }
+  .ig-fs-windowed .ig-fs-dot:nth-child(1) { background: #FF6B00; }
+  .ig-fs-windowed .ig-fs-dot:nth-child(2) { background: #39FF14; }
+  .ig-fs-windowed .ig-fs-dot:nth-child(3) { background: #666; }
+  .ig-fs-title {
+    position: absolute; left: 0; right: 0; text-align: center;
+    font-family: var(--font-mono); font-size: 0.72rem; color: #888;
+    pointer-events: none;
+  }
+  .ig-fs-windowed .ig-fs-body {
+    position: static; inset: auto;
+    flex: 1; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #111;
+  }
+  .ig-fs-windowed .ig-fs-body video,
+  .ig-fs-windowed .ig-fs-body img {
+    position: static; top: auto; left: auto;
+    height: 100%; width: auto;
+    max-width: 94vw;
+    object-fit: contain; display: block;
   }
   .ig-fullscreen-close {
     position: absolute;

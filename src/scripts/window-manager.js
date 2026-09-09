@@ -433,23 +433,20 @@ document.addEventListener('click', (e) => {
   btn.textContent = video.muted ? 'SOUND ON' : 'SOUND OFF';
 });
 
-// --- Project card double-click → open project detail window ---
-// Cards in the projects grid require double-click (retro OS feel)
-// Nav tabs inside project details stay single-click
-document.addEventListener('dblclick', (e) => {
-  const card = e.target.closest('.pw-card[data-open-project]');
-  if (card) {
-    const id = card.dataset.openProject;
-    const currentWindow = card.closest('.os-window');
-    if (currentWindow) {
-      closeWindow(currentWindow.dataset.windowId);
-    }
-    openWindow(id);
+// --- Project detail "back" arrow → close detail, reopen projects grid ---
+document.addEventListener('click', (e) => {
+  const back = e.target.closest('[data-proj-back]');
+  if (back) {
+    const win = back.closest('.os-window');
+    if (win) closeWindow(win.dataset.windowId);
+    openWindow('projects');
   }
 });
+
+// --- Project card single-click → open project detail window ---
 document.addEventListener('click', (e) => {
   const card = e.target.closest('[data-open-project]');
-  if (card && !card.classList.contains('pw-card')) {
+  if (card) {
     const id = card.dataset.openProject;
     const currentWindow = card.closest('.os-window');
     if (currentWindow) {
@@ -498,30 +495,86 @@ document.addEventListener('click', (e) => {
   }
 });
 
-// --- Instagram fullscreen video ---
+// --- Lightbox (shared): fullscreen for #films videos, windowed browser-frame for RANDOM ---
+// Size the windowed frame to the media's aspect ratio so it hugs the content width.
+function fitFrameToMedia(mw, mh) {
+  const overlay = document.getElementById('igFullscreen');
+  const frame = overlay && overlay.querySelector('.ig-fs-frame');
+  if (!frame || !overlay.classList.contains('ig-fs-windowed') || !mw || !mh) return;
+  const bar = frame.querySelector('.ig-fs-bar');
+  const barH = bar ? bar.getBoundingClientRect().height : 0;
+  const frameH = frame.getBoundingClientRect().height;
+  const bodyH = frameH - barH;
+  let w = bodyH * (mw / mh);
+  const maxW = window.innerWidth * 0.94;
+  if (w > maxW) w = maxW;
+  frame.style.width = Math.round(w) + 'px';
+}
+
+function showLightbox({ image, video, poster, title, windowed }) {
+  const overlay = document.getElementById('igFullscreen');
+  const fsVideo = document.getElementById('igFullscreenVideo');
+  const fsImg = document.getElementById('igFullscreenImg');
+  const fsTitle = document.getElementById('igFullscreenTitle');
+  const frame = overlay && overlay.querySelector('.ig-fs-frame');
+  if (!overlay) return;
+  overlay.classList.toggle('ig-fs-windowed', !!windowed);
+  if (frame) frame.style.width = ''; // reset; recomputed on media load when windowed
+  if (fsTitle) fsTitle.textContent = title || '';
+  if (video) {
+    if (fsImg) { fsImg.src = ''; fsImg.style.display = 'none'; }
+    if (fsVideo) {
+      fsVideo.style.display = 'block';
+      fsVideo.poster = poster || '';               // show the cover while the video loads
+      fsVideo.onerror = () => { if (poster && fsImg) { fsVideo.style.display = 'none'; fsImg.src = poster; fsImg.style.display = 'block'; } };
+      fsVideo.onloadedmetadata = () => fitFrameToMedia(fsVideo.videoWidth, fsVideo.videoHeight);
+      fsVideo.src = video;
+      fsVideo.muted = false;
+      fsVideo.play().catch(() => {});
+      if (fsVideo.videoWidth) fitFrameToMedia(fsVideo.videoWidth, fsVideo.videoHeight);
+    }
+  } else {
+    if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; fsVideo.style.display = 'none'; }
+    if (fsImg) {
+      fsImg.onload = () => fitFrameToMedia(fsImg.naturalWidth, fsImg.naturalHeight);
+      fsImg.src = image;
+      fsImg.style.display = 'block';
+      if (fsImg.complete && fsImg.naturalWidth) fitFrameToMedia(fsImg.naturalWidth, fsImg.naturalHeight);
+    }
+  }
+  overlay.style.display = windowed ? 'flex' : 'block';
+}
+
+function closeLightbox() {
+  const overlay = document.getElementById('igFullscreen');
+  const fsVideo = document.getElementById('igFullscreenVideo');
+  const fsImg = document.getElementById('igFullscreenImg');
+  if (overlay) { overlay.style.display = 'none'; overlay.classList.remove('ig-fs-windowed'); }
+  if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; }
+  if (fsImg) { fsImg.src = ''; fsImg.style.display = 'none'; }
+}
+
+// #films post → fullscreen video
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('[data-ig-fullscreen-btn]');
   if (!btn) return;
   const media = btn.closest('.ig-post-media');
-  if (!media) return;
-  const video = media.querySelector('video');
+  const video = media && media.querySelector('video');
   if (!video) return;
-  const overlay = document.getElementById('igFullscreen');
-  const fsVideo = document.getElementById('igFullscreenVideo');
-  if (!overlay || !fsVideo) return;
-  fsVideo.src = video.src || video.dataset.lazySrc;
-  fsVideo.muted = false;
-  overlay.style.display = 'block';
-  fsVideo.play().catch(() => {});
+  showLightbox({ video: video.src || video.dataset.lazySrc, windowed: false });
 });
+
+// RANDOM cards → windowed, browser-framed viewer
+window.openScreenshotFullscreen = (src, title) => showLightbox({ image: src, title, windowed: true });
+window.openRecordingFullscreen = (src, title, poster) => showLightbox({ video: src, poster, title, windowed: true });
+
+// Close via the × button or by clicking the backdrop
 document.addEventListener('click', (e) => {
-  if (e.target.id === 'igFullscreenClose') {
-    const overlay = document.getElementById('igFullscreen');
-    const fsVideo = document.getElementById('igFullscreenVideo');
-    if (overlay) overlay.style.display = 'none';
-    if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; }
-  }
+  const overlay = document.getElementById('igFullscreen');
+  if (!overlay || overlay.style.display === 'none') return;
+  if (e.target.id === 'igFullscreenClose' || e.target === overlay) closeLightbox();
 });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
 // --- Mobile home screen app buttons ---
 document.addEventListener('click', (e) => {

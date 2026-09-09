@@ -5,12 +5,13 @@ displayTitle: "MCHACH"
 tagline: "A hand-painted medina you wander with your fingertips."
 hook: "A hand-painted medina you wander with your fingertips.|Eighty-nine cats hidden in Essaouira's walls — poke the doors, plants and boats, and a real stray unfolds."
 type: "Essaouira, Morocco"
-status: "Live · 2026"
+status: "Live · Jul 2026"
 year: "2026"
 tags: ["Interactive", "Illustration", "Web Toy", "For Fun"]
 thumbnail: "/images/projects/mchach/cover.jpg"
 order: 6
 page: 3
+video: "/images/projects/mchach/demo.mp4"
 link: "https://mchach.vercel.app/"
 ---
 

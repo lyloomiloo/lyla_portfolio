@@ -110,13 +110,13 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
   // Outline smiley — 8×8 (mini-me)
   'mini-me': {
     cols: 8, rows: 8, grid: [
-      ['_','_','O','O','O','O','_','_'],
-      ['_','O','_','_','_','_','O','_'],
-      ['O','_','O','_','_','O','_','O'],
-      ['O','_','_','_','_','_','_','O'],
-      ['O','_','O','_','_','O','_','O'],
-      ['_','O','_','O','O','_','O','_'],
-      ['_','_','O','O','O','O','_','_'],
+      ['_','_','B','B','B','B','_','_'],
+      ['_','B','_','_','_','_','B','_'],
+      ['B','_','B','_','_','B','_','B'],
+      ['B','_','_','_','_','_','_','B'],
+      ['B','_','B','_','_','B','_','B'],
+      ['_','B','_','B','B','_','B','_'],
+      ['_','_','B','B','B','B','_','_'],
       ['_','_','_','_','_','_','_','_'],
     ]
   },
@@ -152,7 +152,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     <div class="pw-tabs">
       <button class="pw-tab active" data-pw-page="1">Highlights</button>
       <button class="pw-tab" data-pw-page="2">Others</button>
-      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">Random</button>}
+      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">Just for fun</button>}
       <span class="pw-page-indicator">1/{totalPages}</span>
     </div>
   )}
@@ -311,12 +311,11 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
           const icon = pixelIcons[p.data.slug];
           const mockup = mockupConfig[p.data.slug];
           return (
-            <a
-              class="pw-card pw-card--external"
-              href={p.data.link}
-              target={p.data.download ? undefined : '_blank'}
-              rel="noopener"
-              download={p.data.download ? '' : undefined}
+            <div
+              class="pw-card pw-card--random"
+              data-pw-expand={mockup?.image}
+              data-pw-video={p.data.video}
+              data-pw-title={`${p.data.slug}.app`}
             >
               {icon && (
                 <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
@@ -335,7 +334,13 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
               )}
               {p.data.type && <div class="pw-location">{p.data.type}</div>}
               <div class="pw-meta">{p.data.status}</div>
-              <span class="pw-arrow">{p.data.cta ?? 'VISIT SITE →'}</span>
+              <a
+                class="pw-arrow"
+                href={p.data.link}
+                target={p.data.download ? undefined : '_blank'}
+                rel="noopener"
+                download={p.data.download ? '' : undefined}
+              >{p.data.cta ?? 'VISIT SITE →'}</a>
 
               {mockup && (
                 <div class="pw-preview">
@@ -373,7 +378,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                   )}
                 </div>
               )}
-            </a>
+            </div>
           );
         })}
       </div>
@@ -397,6 +402,20 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
         document.querySelector(`[data-pw-content="${page}"]`)?.classList.add('active');
         if (indicator) indicator.textContent = `${page}/${pages.length}`;
       });
+    });
+
+    // RANDOM cards: clicking the SCREENSHOT expands it in the shared browser-framed lightbox
+    // (screen recording if there is one, otherwise the still cover).
+    document.addEventListener('click', (e) => {
+      const preview = (e.target as HTMLElement).closest('.pw-card--random .pw-preview');
+      if (!preview) return;
+      const card = preview.closest('.pw-card--random') as HTMLElement | null;
+      if (!card) return;
+      const title = card.dataset.pwTitle || '';
+      const openVid = (window as any).openRecordingFullscreen;
+      const openImg = (window as any).openScreenshotFullscreen;
+      if (card.dataset.pwVideo && typeof openVid === 'function') openVid(card.dataset.pwVideo, title, card.dataset.pwExpand);
+      else if (card.dataset.pwExpand && typeof openImg === 'function') openImg(card.dataset.pwExpand, title);
     });
   });
 </script>
@@ -465,8 +484,22 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     overflow: hidden;
   }
   .pw-card:hover { background: var(--bg); }
-  /* RANDOM cards are external links — keep them visually identical to project cards */
-  a.pw-card--external { text-decoration: none; color: inherit; }
+  /* RANDOM cards: only the screenshot expands (the CTA below is the live link/download) */
+  .pw-card--random .pw-arrow { text-decoration: none; width: fit-content; }
+  .pw-card--random .pw-arrow:hover { text-decoration: underline; }
+  .pw-card--random .pw-preview { cursor: zoom-in; position: relative; }
+  /* Hover affordance on the screenshot */
+  .pw-card--random .pw-preview::after {
+    content: '\2922';
+    position: absolute; top: 4px; right: 4px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; color: #fff;
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.35);
+    opacity: 0; transition: opacity 0.15s ease;
+    pointer-events: none; z-index: 2;
+  }
+  .pw-card--random:hover .pw-preview::after { opacity: 1; }
 
   /* Pixel art icon */
   .pw-pixel-icon {

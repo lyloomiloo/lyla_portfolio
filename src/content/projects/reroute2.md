@@ -5,7 +5,7 @@ displayTitle: "(RE)ROUTE 2.0"
 tagline: "The city as an open world game."
 hook: "The city as an open world game.|In a world of AI that steals intentionality and attention, (re)Route gives you permission to be present."
 type: "Global"
-status: "Master's Thesis · Prototype"
+status: "Master's Thesis · Apr–May 2026"
 year: "2026"
 tags: ["AI", "Product Design", "UX Research", "Full-Stack"]
 thumbnail: "/images/projects/reroute2/thumb.png"

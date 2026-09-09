@@ -20,6 +20,7 @@ const projects = defineCollection({
     link: z.string().optional(),
     cta: z.string().optional(),        // RANDOM card button label (default "VISIT SITE →")
     download: z.boolean().optional(),  // RANDOM card link triggers a file download
+    video: z.string().optional(),      // RANDOM: screen recording shown in the expand lightbox
     role: z.string().optional(),
     duration: z.string().optional(),
     tools: z.array(z.string()).optional(),
