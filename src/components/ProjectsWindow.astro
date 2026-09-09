@@ -6,7 +6,8 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 // Group by page
 const page1 = projects.filter(p => p.data.page === 1);
 const page2 = projects.filter(p => p.data.page === 2);
-const totalPages = page2.length > 0 ? 2 : 1;
+const page3 = projects.filter(p => p.data.page === 3); // RANDOM — external, no detail page
+const totalPages = page3.length > 0 ? 3 : page2.length > 0 ? 2 : 1;
 
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
@@ -80,6 +81,32 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['O','O','O','O','O','O','O','O'],
     ]
   },
+  // Sparkle / wonder — 8×8 (cozycollab)
+  cozycollab: {
+    cols: 8, rows: 8, grid: [
+      ['_','_','_','P','_','_','_','_'],
+      ['_','_','_','P','_','_','_','_'],
+      ['_','P','_','P','_','P','_','_'],
+      ['_','_','P','P','P','_','_','_'],
+      ['P','P','P','P','P','P','P','_'],
+      ['_','_','P','P','P','_','_','_'],
+      ['_','P','_','P','_','P','_','_'],
+      ['_','_','_','P','_','_','_','_'],
+    ]
+  },
+  // Cat face — 8×8 (mchach)
+  mchach: {
+    cols: 8, rows: 8, grid: [
+      ['_','O','_','_','_','_','O','_'],
+      ['_','O','O','_','_','O','O','_'],
+      ['_','O','O','O','O','O','O','_'],
+      ['_','O','K','O','O','K','O','_'],
+      ['_','O','O','O','O','O','O','_'],
+      ['_','O','O','K','K','O','O','_'],
+      ['_','_','O','O','O','O','_','_'],
+      ['_','_','_','_','_','_','_','_'],
+    ]
+  },
 };
 
 const iconColors: Record<string, string> = {
@@ -99,6 +126,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   snapp: { label: 'DAILY PROMPT', type: 'phone', image: '/images/projects/snapp/daily_prompt.jpg' },
   jobhunter: { label: 'PIP', type: 'browser', image: '/images/projects/jobhunter/main.png' },
   planmytrip: { label: 'ITINERARY VIEW', type: 'browser', image: '/images/projects/planmytrip/preview.jpg' },
+  cozycollab: { label: 'COZY COLLAB', type: 'browser', image: '/images/projects/cozycollab/cover.png' },
+  mchach: { label: 'ESSAOUIRA', type: 'browser', image: '/images/projects/mchach/cover.jpg' },
 };
 ---
 
@@ -108,6 +137,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     <div class="pw-tabs">
       <button class="pw-tab active" data-pw-page="1">Highlights</button>
       <button class="pw-tab" data-pw-page="2">Others</button>
+      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">Random</button>}
       <span class="pw-page-indicator">1/{totalPages}</span>
     </div>
   )}
@@ -257,6 +287,77 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
       </div>
     </div>
   )}
+
+  <!-- Page 3 — RANDOM (external links, no detail page) -->
+  {page3.length > 0 && (
+    <div class="pw-page" data-pw-content="3">
+      <div class="pw-grid">
+        {page3.map(p => {
+          const icon = pixelIcons[p.data.slug];
+          const mockup = mockupConfig[p.data.slug];
+          return (
+            <a class="pw-card pw-card--external" href={p.data.link} target="_blank" rel="noopener">
+              {icon && (
+                <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+                  {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                </div>
+              )}
+              <span class="pw-num">0{p.data.order}</span>
+              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              {p.data.hook.includes('|') ? (
+                <div class="pw-hook">
+                  <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+                  <p>{p.data.hook.split('|')[1]}</p>
+                </div>
+              ) : (
+                <p class="pw-hook">{p.data.hook}</p>
+              )}
+              {p.data.type && <div class="pw-location">{p.data.type}</div>}
+              <div class="pw-meta">{p.data.status}</div>
+              <span class="pw-arrow">VISIT SITE →</span>
+
+              {mockup && (
+                <div class="pw-preview">
+                  {mockup.type === 'phone' ? (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-phone">
+                        <div class="pw-phone-notch"></div>
+                        <div class="pw-phone-screen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-browser">
+                        <div class="pw-bbar">
+                          <span class="pw-bdot" style="background:#FF6B00"></span>
+                          <span class="pw-bdot" style="background:#39FF14"></span>
+                          <span class="pw-bdot" style="background:#666"></span>
+                          <span class="pw-burl">{p.data.slug}.app</span>
+                        </div>
+                        <div class="pw-bscreen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  )}
 </div>
 
 <script>
@@ -343,6 +444,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     overflow: hidden;
   }
   .pw-card:hover { background: var(--bg); }
+  /* RANDOM cards are external links — keep them visually identical to project cards */
+  a.pw-card--external { text-decoration: none; color: inherit; }
 
   /* Pixel art icon */
   .pw-pixel-icon {
