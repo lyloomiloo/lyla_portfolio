@@ -4376,6 +4376,17 @@ import FunPanel from '../components/FunPanel.astro';
     position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5;
     display: flex; gap: 7px; justify-content: center; pointer-events: auto;
   }
+
+  /* "drag to swipe" hint — desktop only, fades out on first interaction */
+  .tok-swipe-hint {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5;
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+    color: #fff; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.45);
+    padding: 8px 14px; border-radius: 20px; white-space: nowrap; pointer-events: none;
+    transition: opacity 0.4s ease; animation: tokHintBreathe 1.8s ease-in-out infinite;
+  }
+  @keyframes tokHintBreathe { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.55; } }
+  .tok-gallery.swiped .tok-swipe-hint { opacity: 0; animation: none; }
   .tok-dot {
     width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
     cursor: pointer; background: rgba(255,255,255,0.4); transition: background 0.2s ease;
@@ -4408,6 +4419,7 @@ import FunPanel from '../components/FunPanel.astro';
     /* Dots ride under the "For You" bar so they clear the bottom caption */
     .tok-dots { top: 52px; bottom: auto; }
     .tok-nav { width: 34px; height: 34px; font-size: 1.25rem; }
+    .tok-swipe-hint { display: none; }  /* touch users swipe naturally */
   }
 
 </style>

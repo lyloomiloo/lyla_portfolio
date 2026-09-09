@@ -796,7 +796,8 @@ function renderShowcase(data) {
         return `<div class="tok-slide">${media}</div>`;
       }).join('');
       const dots = slides.map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
-      return `<div class="tok-gallery" data-tok-gallery><div class="tok-track">${slideHtml}</div><div class="tok-dots">${dots}</div></div>${overlays(it)}`;
+      const hint = slides.length > 1 ? `<div class="tok-swipe-hint">&#8596; drag to swipe</div>` : '';
+      return `<div class="tok-gallery" data-tok-gallery><div class="tok-track">${slideHtml}</div>${hint}<div class="tok-dots">${dots}</div></div>${overlays(it)}`;
     }
     if (it.type === 'link') {
       const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
@@ -877,6 +878,7 @@ function setupShowcaseFeed(feed) {
     const dots = [...gal.querySelectorAll('.tok-dot')];
     if (!track || !slides.length) return;
     let cur = 0, auto = true, inView = false, advTimer = null, scrollTimer = null;
+    const hideHint = () => gal.classList.add('swiped'); // drop the "drag to swipe" hint
 
     const clearAdv = () => { if (advTimer) { clearTimeout(advTimer); advTimer = null; } };
     const curVideo = () => slides[cur] && slides[cur].querySelector('video[data-tok-galvideo]');
@@ -908,12 +910,12 @@ function setupShowcaseFeed(feed) {
 
     slides.forEach(s => { const v = s.querySelector('video[data-tok-galvideo]'); if (v) v.addEventListener('ended', () => { if (auto && inView) goTo(cur + 1); }); });
     track.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(() => setCur(Math.round(track.scrollLeft / track.clientWidth)), 90); });
-    dots.forEach((d, k) => d.addEventListener('click', () => { auto = false; goTo(k); }));
+    dots.forEach((d, k) => d.addEventListener('click', () => { auto = false; hideHint(); goTo(k); }));
 
     // Mouse drag-to-swipe (desktop has no touch; touch/trackpad pan natively).
     let dragOn = false, dragX = 0, dragLeft = 0;
     track.addEventListener('pointerdown', (e) => {
-      auto = false; clearAdv();
+      auto = false; clearAdv(); hideHint();
       if (e.pointerType === 'touch') return; // native touch scrolling handles swipes
       dragOn = true; dragX = e.clientX; dragLeft = track.scrollLeft;
       track.classList.add('dragging');
