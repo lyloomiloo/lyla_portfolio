@@ -4377,16 +4377,35 @@ import FunPanel from '../components/FunPanel.astro';
     display: flex; gap: 7px; justify-content: center; pointer-events: auto;
   }
 
-  /* "drag to swipe" hint — desktop only, fades out on first interaction */
+  /* "drag to swipe" hint — retro hand + long left arrow + radiating ring.
+     Desktop only, sits in the bottom-right of the video, fades on first drag. */
   .tok-swipe-hint {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 5;
-    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
-    color: #fff; background: rgba(0,0,0,0.55); border: 1px solid rgba(255,255,255,0.45);
-    padding: 8px 14px; border-radius: 20px; white-space: nowrap; pointer-events: none;
-    transition: opacity 0.4s ease; animation: tokHintBreathe 1.8s ease-in-out infinite;
+    position: absolute; right: 12px; bottom: 12px; z-index: 5;
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    padding: 8px 10px 6px; pointer-events: none;
+    background: rgba(0,0,0,0.42); border: 1px solid rgba(255,255,255,0.28); border-radius: 10px;
+    transition: opacity 0.4s ease;
   }
-  @keyframes tokHintBreathe { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.55; } }
-  .tok-gallery.swiped .tok-swipe-hint { opacity: 0; animation: none; }
+  .tok-swipe-hint .th-svg { display: block; width: 92px; height: auto; overflow: visible; }
+  .tok-swipe-hint .th-label {
+    font-family: var(--font-mono); font-size: 0.56rem; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85);
+  }
+  .tok-swipe-hint .th-arrow { opacity: 0.8; }
+  /* Hand slides right → left, fading out at the end and resetting off-screen */
+  .th-hand-grp { animation: thHandSlide 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+  @keyframes thHandSlide {
+    0%   { transform: translateX(46px); opacity: 0; }
+    14%  { opacity: 1; }
+    60%  { transform: translateX(2px); opacity: 1; }
+    76%  { transform: translateX(2px); opacity: 0; }
+    100% { transform: translateX(46px); opacity: 0; }
+  }
+  /* Radiating rings pulse out from the hand's grab point */
+  .th-ring { fill: none; stroke: #fff; stroke-width: 1.6; transform-box: fill-box; transform-origin: center; animation: thRing 1.5s ease-out infinite; }
+  .th-ring2 { animation-delay: 0.75s; }
+  @keyframes thRing { 0% { transform: scale(0.35); opacity: 0.85; } 100% { transform: scale(1.55); opacity: 0; } }
+  .tok-gallery.swiped .tok-swipe-hint { opacity: 0; }
   .tok-dot {
     width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
     cursor: pointer; background: rgba(255,255,255,0.4); transition: background 0.2s ease;

@@ -796,7 +796,27 @@ function renderShowcase(data) {
         return `<div class="tok-slide">${media}</div>`;
       }).join('');
       const dots = slides.map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
-      const hint = slides.length > 1 ? `<div class="tok-swipe-hint">&#8596; drag to swipe</div>` : '';
+      const hint = slides.length > 1 ? `<div class="tok-swipe-hint" aria-label="Drag to swipe">
+        <svg class="th-svg" viewBox="0 0 104 54" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g class="th-arrow" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="94" y1="42" x2="26" y2="42"/>
+            <polyline points="36,34 22,42 36,50"/>
+          </g>
+          <g class="th-hand-grp">
+            <circle class="th-ring" cx="17" cy="20" r="8"/>
+            <circle class="th-ring th-ring2" cx="17" cy="20" r="8"/>
+            <g class="th-hand" fill="#fff" stroke="#111" stroke-width="1.1" stroke-linejoin="round">
+              <rect x="9" y="16" width="16" height="16" rx="4.5"/>
+              <rect x="9.6" y="7" width="3.4" height="11" rx="1.7"/>
+              <rect x="13.6" y="5" width="3.4" height="13" rx="1.7"/>
+              <rect x="17.6" y="5.5" width="3.4" height="13" rx="1.7"/>
+              <rect x="21.4" y="7" width="3.4" height="11" rx="1.7"/>
+              <rect x="22" y="18" width="6.5" height="3.6" rx="1.8" transform="rotate(30 24 20)"/>
+            </g>
+          </g>
+        </svg>
+        <span class="th-label">drag</span>
+      </div>` : '';
       return `<div class="tok-gallery" data-tok-gallery><div class="tok-track">${slideHtml}</div>${hint}<div class="tok-dots">${dots}</div></div>${overlays(it)}`;
     }
     if (it.type === 'link') {
