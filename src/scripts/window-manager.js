@@ -817,7 +817,7 @@ function renderShowcase(data) {
             </g>
           </g>
         </svg>
-        <span class="th-label">drag</span>
+        <span class="th-label">drag to scroll</span>
       </div>` : '';
       return `<div class="tok-gallery" data-tok-gallery><div class="tok-track">${slideHtml}</div>${hint}<div class="tok-dots">${dots}</div></div>${overlays(it)}`;
     }
