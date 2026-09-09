@@ -107,6 +107,19 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['_','_','_','_','_','_','_','_'],
     ]
   },
+  // Outline smiley — 8×8 (mini-me)
+  'mini-me': {
+    cols: 8, rows: 8, grid: [
+      ['_','_','O','O','O','O','_','_'],
+      ['_','O','_','_','_','_','O','_'],
+      ['O','_','O','_','_','O','_','O'],
+      ['O','_','_','_','_','_','_','O'],
+      ['O','_','O','_','_','O','_','O'],
+      ['_','O','_','O','O','_','O','_'],
+      ['_','_','O','O','O','O','_','_'],
+      ['_','_','_','_','_','_','_','_'],
+    ]
+  },
 };
 
 const iconColors: Record<string, string> = {
@@ -117,6 +130,7 @@ const iconColors: Record<string, string> = {
   'P': '#9B59B6',
   'K': '#222',
   'D': '#0A8F3F',
+  'S': '#F4C89A',
 };
 
 // Mockup preview config per project
@@ -128,6 +142,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   planmytrip: { label: 'ITINERARY VIEW', type: 'browser', image: '/images/projects/planmytrip/preview.jpg' },
   cozycollab: { label: 'COZY COLLAB', type: 'browser', image: '/images/projects/cozycollab/cover.png' },
   mchach: { label: 'ESSAOUIRA', type: 'browser', image: '/images/projects/mchach/cover.jpg' },
+  'mini-me': { label: 'MINI-ME', type: 'browser', image: '/images/projects/mini-me/cover.jpg' },
 };
 ---
 
@@ -296,7 +311,13 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
           const icon = pixelIcons[p.data.slug];
           const mockup = mockupConfig[p.data.slug];
           return (
-            <a class="pw-card pw-card--external" href={p.data.link} target="_blank" rel="noopener">
+            <a
+              class="pw-card pw-card--external"
+              href={p.data.link}
+              target={p.data.download ? undefined : '_blank'}
+              rel="noopener"
+              download={p.data.download ? '' : undefined}
+            >
               {icon && (
                 <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
                   {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
@@ -314,7 +335,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
               )}
               {p.data.type && <div class="pw-location">{p.data.type}</div>}
               <div class="pw-meta">{p.data.status}</div>
-              <span class="pw-arrow">VISIT SITE →</span>
+              <span class="pw-arrow">{p.data.cta ?? 'VISIT SITE →'}</span>
 
               {mockup && (
                 <div class="pw-preview">
