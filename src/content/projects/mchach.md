@@ -3,11 +3,11 @@ title: "Mchach"
 slug: "mchach"
 displayTitle: "MCHACH"
 tagline: "A hand-painted medina you wander with your fingertips."
-hook: "Cat Finder|Eighty-nine cats hidden in Essaouira's walls — poke the doors, plants and boats, and a real stray unfolds."
+hook: "Cat Finder|Eighty-nine cats hidden in Essaouira's walls. Poke the doors, plants and boats, and a real stray unfolds."
 type: "Interactive web"
 location: "Essaouira, Morocco"
 stack: "Web"
-description: "A love letter to the cats of Essaouira — no grid, no hurry, just the oldest pleasure there is: looking slowly at an ordinary street until it blooms with life."
+description: "A love letter to the cats of Essaouira. No grid, no hurry, just the oldest pleasure there is: looking slowly at an ordinary street until it blooms with life."
 status: "Live · Jul 2026"
 year: "2026"
 tags: ["Interactive", "Illustration", "Web Toy", "For Fun"]
@@ -18,4 +18,4 @@ video: "/images/projects/mchach/demo.mp4"
 link: "https://mchach.vercel.app/"
 ---
 
-A love letter to the cats of Essaouira — no grid, no hurry, just the oldest pleasure there is: looking slowly at an ordinary street until it blooms with life.
+A love letter to the cats of Essaouira. No grid, no hurry, just the oldest pleasure there is: looking slowly at an ordinary street until it blooms with life.

@@ -1272,13 +1272,13 @@ import FunPanel from '../components/FunPanel.astro';
   </MobilePanel>
 
   <!-- Just for fun — Mobile pages -->
-  <MobilePanel id="cozycollab-fun" title="just for fun" fullscreen>
+  <MobilePanel id="cozycollab-fun" title="for fun" fullscreen>
     <FunPanel slug="cozycollab" iconBg="#4A9EFF" abbr="CC" iconFg="#FFFFFF" />
   </MobilePanel>
-  <MobilePanel id="mchach-fun" title="just for fun" fullscreen>
+  <MobilePanel id="mchach-fun" title="for fun" fullscreen>
     <FunPanel slug="mchach" iconBg="#FFC93C" abbr="MC" iconFg="#1E1E1E" />
   </MobilePanel>
-  <MobilePanel id="mini-me-fun" title="just for fun" fullscreen>
+  <MobilePanel id="mini-me-fun" title="for fun" fullscreen>
     <FunPanel slug="mini-me" iconBg="#4CB963" abbr="MM" iconFg="#FF4FA3" />
   </MobilePanel>
 
@@ -4434,8 +4434,8 @@ import FunPanel from '../components/FunPanel.astro';
     .tok-like, .tok-share { text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
     .tok-sound { display: none; }
     .tok-fyp { font-size: 0.72rem; top: 12px; }
-    /* Dots ride under the "For You" bar so they clear the bottom caption */
-    .tok-dots { top: 52px; bottom: auto; }
+    /* TikTok-style: dots sit low-centre, just above the caption + AI tag */
+    .tok-dots { top: auto; bottom: 170px; }
     .tok-nav { width: 34px; height: 34px; font-size: 1.25rem; }
     .tok-swipe-hint { display: none; }  /* touch users swipe naturally */
   }
