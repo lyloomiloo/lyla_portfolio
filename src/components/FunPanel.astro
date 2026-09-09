@@ -8,7 +8,7 @@ const project = (await getCollection('projects')).find(p => p.data.slug === slug
 const d = project!.data;
 const subhead = d.hook.includes('|') ? d.hook.split('|')[0] : d.tagline;
 const story = d.description || (d.hook.includes('|') ? d.hook.split('|')[1] : d.hook);
-const stack = d.stack || (d.tags || []).join(' · ');
+const stack = d.stack || '';
 const getLabel = d.download ? 'GET' : 'VISIT';
 ---
 
@@ -52,12 +52,6 @@ const getLabel = d.download ? 'GET' : 'VISIT';
     {d.location && <div class="appstore-row"><span class="appstore-key">Location</span><span>{d.location}</span></div>}
     <div class="appstore-row last"><span class="appstore-key">Status</span><span>{d.status}</span></div>
   </div>
-
-  {d.download && d.link && (
-    <div class="appstore-bottom-btns">
-      <a href={d.link} download class="appstore-bottom-btn">{d.cta ?? 'DOWNLOAD ↓'}</a>
-    </div>
-  )}
 </div>
 
 <style is:global>
