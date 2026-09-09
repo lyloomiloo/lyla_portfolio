@@ -785,9 +785,18 @@ function renderShowcase(data) {
   const stageHtml = (it, i) => {
     if (it.type === 'image') return `<img src="${esc(it.src)}" alt="${esc(it.caption || '')}" />${overlays(it)}`;
     if (it.type === 'gallery') {
-      const imgs = (it.images || []).map((s, gi) => `<img class="tok-galimg${gi === 0 ? ' on' : ''}" src="${esc(s)}" alt="" />`).join('');
-      const dots = (it.images || []).map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
-      return `<div class="tok-gallery" data-tok-gallery>${imgs}<div class="tok-dots">${dots}</div></div>${overlays(it)}`;
+      const slides = (Array.isArray(it.slides) && it.slides.length)
+        ? it.slides
+        : (it.images || []).map(s => ({ type: 'image', src: s }));
+      const loop = slides.length > 1 ? '' : 'loop';
+      const slideHtml = slides.map((sl, gi) => {
+        const media = sl.type === 'video'
+          ? `<video class="tok-galvideo" data-tok-galvideo ${loop} playsinline muted preload="${gi === 0 ? 'auto' : 'metadata'}" src="${esc(sl.src)}"></video>`
+          : `<img src="${esc(sl.src)}" alt="" />`;
+        return `<div class="tok-slide">${media}</div>`;
+      }).join('');
+      const dots = slides.map((_, gi) => `<button class="tok-dot${gi === 0 ? ' on' : ''}" data-tok-dot="${gi}" aria-label="Slide ${gi + 1}"></button>`).join('');
+      return `<div class="tok-gallery" data-tok-gallery><div class="tok-track">${slideHtml}</div><div class="tok-dots">${dots}</div></div>${overlays(it)}`;
     }
     if (it.type === 'link') {
       const thumb = it.thumb ? `<img class="tok-linkthumb" src="${esc(it.thumb)}" alt="" />` : '';
@@ -858,35 +867,80 @@ function setupShowcaseFeed(feed) {
     if (v && bar) v.addEventListener('timeupdate', () => { if (v.duration) bar.style.width = (v.currentTime / v.duration * 100) + '%'; });
   });
 
-  // Image galleries: cross-fade auto-advance with clickable dots.
+  // Media galleries (video + stills): a horizontal swipe carousel with dots.
+  // Auto-advances through the slides; a video slide holds until it ends, and any
+  // manual swipe / dot tap stops the auto-advance. Videos play only while the
+  // gallery post is the one on screen (driven by the vertical observer below).
   feed.querySelectorAll('[data-tok-gallery]').forEach(gal => {
-    const imgs = [...gal.querySelectorAll('.tok-galimg')];
+    const track = gal.querySelector('.tok-track');
+    const slides = [...gal.querySelectorAll('.tok-slide')];
     const dots = [...gal.querySelectorAll('.tok-dot')];
-    if (imgs.length < 2) return;
-    let gi = 0, timer = null;
-    const show = (n) => {
-      gi = (n + imgs.length) % imgs.length;
-      imgs.forEach((im, k) => im.classList.toggle('on', k === gi));
-      dots.forEach((d, k) => d.classList.toggle('on', k === gi));
+    if (!track || !slides.length) return;
+    let cur = 0, auto = true, inView = false, advTimer = null, scrollTimer = null;
+
+    const clearAdv = () => { if (advTimer) { clearTimeout(advTimer); advTimer = null; } };
+    const curVideo = () => slides[cur] && slides[cur].querySelector('video[data-tok-galvideo]');
+    const pauseVids = () => slides.forEach(s => { const v = s.querySelector('video[data-tok-galvideo]'); if (v) { v.pause(); v.muted = true; } });
+    const playCur = () => {
+      pauseVids();
+      if (!inView) return;
+      const v = curVideo();
+      if (v) { try { v.currentTime = 0; } catch (e) {} v.muted = !showcaseSoundOn; v.play().catch(() => { v.muted = true; v.play().catch(() => {}); }); }
     };
-    const start = () => { if (timer) clearInterval(timer); timer = setInterval(() => show(gi + 1), 2800); };
-    dots.forEach((d, k) => d.addEventListener('click', () => { show(k); start(); }));
-    start();
+    const scheduleAdv = () => {
+      clearAdv();
+      if (!auto || !inView || slides.length < 2 || curVideo()) return; // video slides advance on 'ended'
+      advTimer = setTimeout(() => goTo(cur + 1), 3200);
+    };
+    const setCur = (idx) => {
+      idx = ((idx % slides.length) + slides.length) % slides.length;
+      if (idx === cur) { scheduleAdv(); return; }
+      cur = idx;
+      dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+      playCur();
+      scheduleAdv();
+    };
+    const goTo = (n) => {
+      const idx = ((n % slides.length) + slides.length) % slides.length;
+      track.scrollTo({ left: idx * track.clientWidth, behavior: 'smooth' });
+      setCur(idx);
+    };
+
+    slides.forEach(s => { const v = s.querySelector('video[data-tok-galvideo]'); if (v) v.addEventListener('ended', () => { if (auto && inView) goTo(cur + 1); }); });
+    track.addEventListener('scroll', () => { clearTimeout(scrollTimer); scrollTimer = setTimeout(() => setCur(Math.round(track.scrollLeft / track.clientWidth)), 90); });
+    track.addEventListener('pointerdown', () => { auto = false; clearAdv(); });
+    dots.forEach((d, k) => d.addEventListener('click', () => { auto = false; goTo(k); }));
+
+    // Called by the vertical observer when this gallery post enters/leaves view.
+    gal._enter = () => { inView = true; playCur(); scheduleAdv(); };
+    gal._leave = () => { inView = false; clearAdv(); pauseVids(); };
   });
 
-  // One clip plays at a time — the one filling the viewport.
+  // One post is "on screen" at a time — the one filling the viewport. Videos in
+  // any other post (or in the hidden desktop/mobile duplicate feed) stay paused.
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
-      const v = e.target.querySelector('video[data-tok-video]');
+      const active = e.isIntersecting && e.intersectionRatio >= 0.6;
+      const item = e.target;
+      const gal = item.querySelector('[data-tok-gallery]');
+      if (gal) { if (active) { gal._enter && gal._enter(); } else { gal._leave && gal._leave(); } return; }
+      const v = item.querySelector('video[data-tok-video]');
       if (!v) return;
-      if (e.isIntersecting && e.intersectionRatio >= 0.6) { applyShowcaseSound(v); v.play().catch(() => {}); }
+      if (active) { applyShowcaseSound(v); v.play().catch(() => {}); }
       else { v.pause(); v.muted = true; }
     });
   }, { root, threshold: [0.6] });
   itemEls.forEach(el => io.observe(el));
 
+  // Autoplay the first post — but only for the feed that's actually visible
+  // (desktop window vs mobile panel both render; the hidden one must stay silent).
   setTimeout(() => {
-    const v0 = itemEls[0] && itemEls[0].querySelector('video[data-tok-video]');
+    if (!feed.offsetParent) return;
+    const first = itemEls[0];
+    if (!first) return;
+    const gal0 = first.querySelector('[data-tok-gallery]');
+    if (gal0) { gal0._enter && gal0._enter(); return; }
+    const v0 = first.querySelector('video[data-tok-video]');
     if (!v0) return;
     applyShowcaseSound(v0); // unmuted (sound on by default)
     v0.play().catch(() => {

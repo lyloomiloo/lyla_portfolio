@@ -4357,16 +4357,21 @@ import FunPanel from '../components/FunPanel.astro';
   .tok-nav-prev { left: 10px; }
   .tok-nav-next { right: 10px; }
 
-  /* Image gallery — auto-scrolling cross-fade carousel with dots */
+  /* Media gallery — horizontal swipe carousel (video + stills) with dots */
   .tok-gallery { position: absolute; inset: 0; background: #000; }
-  .tok-gallery .tok-galimg {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: contain; opacity: 0; transition: opacity 0.6s ease; z-index: 1;
+  .tok-track {
+    display: flex; width: 100%; height: 100%;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none;
   }
-  .tok-gallery .tok-galimg.on { opacity: 1; z-index: 2; }
+  .tok-track::-webkit-scrollbar { display: none; }
+  .tok-slide { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; }
+  .tok-gallery .tok-slide img, .tok-gallery .tok-slide video {
+    width: 100%; height: 100%; object-fit: contain; display: block; background: #000;
+  }
   .tok-dots {
     position: absolute; left: 0; right: 0; bottom: 14px; z-index: 5;
-    display: flex; gap: 7px; justify-content: center;
+    display: flex; gap: 7px; justify-content: center; pointer-events: auto;
   }
   .tok-dot {
     width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
@@ -4397,8 +4402,8 @@ import FunPanel from '../components/FunPanel.astro';
     .tok-like, .tok-share { text-shadow: 0 1px 5px rgba(0,0,0,0.9); }
     .tok-sound { display: none; }
     .tok-fyp { font-size: 0.72rem; top: 12px; }
-    /* Lift dots clear of the bottom caption; shrink arrows a touch */
-    .tok-dots { bottom: 92px; }
+    /* Dots ride under the "For You" bar so they clear the bottom caption */
+    .tok-dots { top: 52px; bottom: auto; }
     .tok-nav { width: 34px; height: 34px; font-size: 1.25rem; }
   }
 
