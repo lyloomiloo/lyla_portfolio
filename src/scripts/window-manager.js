@@ -496,19 +496,20 @@ document.addEventListener('click', (e) => {
 });
 
 // --- Lightbox (shared): fullscreen for #films videos, windowed browser-frame for RANDOM ---
-// Size the windowed frame to the media's aspect ratio so it hugs the content width.
+// Size the windowed frame to the media so it hugs the content (both axes, no letterbox).
 function fitFrameToMedia(mw, mh) {
   const overlay = document.getElementById('igFullscreen');
   const frame = overlay && overlay.querySelector('.ig-fs-frame');
   if (!frame || !overlay.classList.contains('ig-fs-windowed') || !mw || !mh) return;
   const bar = frame.querySelector('.ig-fs-bar');
   const barH = bar ? bar.getBoundingClientRect().height : 0;
-  const frameH = frame.getBoundingClientRect().height;
-  const bodyH = frameH - barH;
-  let w = bodyH * (mw / mh);
-  const maxW = window.innerWidth * 0.94;
-  if (w > maxW) w = maxW;
+  const maxW = Math.min(window.innerWidth * 0.9, 960);
+  const maxBodyH = Math.min(window.innerHeight * 0.8, 720) - barH;
+  const aspect = mw / mh;
+  let w = maxW, h = w / aspect;
+  if (h > maxBodyH) { h = maxBodyH; w = h * aspect; }
   frame.style.width = Math.round(w) + 'px';
+  frame.style.height = Math.round(h + barH) + 'px';
 }
 
 function showLightbox({ image, video, poster, title, windowed }) {
@@ -519,7 +520,7 @@ function showLightbox({ image, video, poster, title, windowed }) {
   const frame = overlay && overlay.querySelector('.ig-fs-frame');
   if (!overlay) return;
   overlay.classList.toggle('ig-fs-windowed', !!windowed);
-  if (frame) frame.style.width = ''; // reset; recomputed on media load when windowed
+  if (frame) { frame.style.width = ''; frame.style.height = ''; } // reset; recomputed on media load
   if (fsTitle) fsTitle.textContent = title || '';
   if (video) {
     if (fsImg) { fsImg.src = ''; fsImg.style.display = 'none'; }
@@ -549,7 +550,9 @@ function closeLightbox() {
   const overlay = document.getElementById('igFullscreen');
   const fsVideo = document.getElementById('igFullscreenVideo');
   const fsImg = document.getElementById('igFullscreenImg');
+  const frame = overlay && overlay.querySelector('.ig-fs-frame');
   if (overlay) { overlay.style.display = 'none'; overlay.classList.remove('ig-fs-windowed'); }
+  if (frame) { frame.style.width = ''; frame.style.height = ''; }
   if (fsVideo) { fsVideo.pause(); fsVideo.src = ''; }
   if (fsImg) { fsImg.src = ''; fsImg.style.display = 'none'; }
 }

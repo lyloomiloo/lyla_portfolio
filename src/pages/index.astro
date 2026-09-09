@@ -12,6 +12,7 @@ import AboutWindow from '../components/AboutWindow.astro';
 import SkillsWindow from '../components/SkillsWindow.astro';
 import ContactWindow from '../components/ContactWindow.astro';
 import ProjectDetail from '../components/ProjectDetail.astro';
+import FunPanel from '../components/FunPanel.astro';
 ---
 
 <BaseLayout title="Portfolio">
@@ -1270,6 +1271,17 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     <canvas id="duckGameMobile" style="width:100%; height:100%; display:block; image-rendering:pixelated; background:#87CEEB; position:absolute; inset:0;"></canvas>
   </MobilePanel>
 
+  <!-- Just for fun — Mobile pages -->
+  <MobilePanel id="cozycollab-fun" title="just for fun" fullscreen>
+    <FunPanel slug="cozycollab" iconKey="cozycollab_app" iconBg="#8E7CC3" />
+  </MobilePanel>
+  <MobilePanel id="mchach-fun" title="just for fun" fullscreen>
+    <FunPanel slug="mchach" iconKey="mchach_app" iconBg="#E85D00" />
+  </MobilePanel>
+  <MobilePanel id="mini-me-fun" title="just for fun" fullscreen>
+    <FunPanel slug="mini-me" iconKey="mini-me_app" iconBg="#3B7DD8" />
+  </MobilePanel>
+
   <!-- Hidden showcase — Mobile (secret deep link only) -->
   <MobilePanel id="showcase" title="" fullscreen>
     <div class="showcase-detail">
@@ -1456,32 +1468,20 @@ import ProjectDetail from '../components/ProjectDetail.astro';
     });
   }
 
-  // Gallery popup — tap screenshot to open full-screen
+  // Gallery — tap a project screenshot to open it in the shared retro-framed lightbox
   document.querySelectorAll('[data-gallery-open]').forEach(item => {
     item.addEventListener('click', () => {
       const media = item.querySelector('img, video') as HTMLElement;
       if (!media) return;
-      const popup = document.createElement('div');
-      popup.className = 'gallery-popup';
-      const clone = media.cloneNode(true) as HTMLElement;
-      if (clone.tagName === 'VIDEO') {
-        const cloneVideo = clone as HTMLVideoElement;
-        // Ensure lazy-loaded videos get their src
-        if (!cloneVideo.src && cloneVideo.dataset.lazySrc) {
-          cloneVideo.src = cloneVideo.dataset.lazySrc;
-        }
-        cloneVideo.controls = true;
-        cloneVideo.autoplay = true;
-        cloneVideo.muted = false;
-      }
-      const closeBtn = document.createElement('button');
-      closeBtn.className = 'gallery-popup-close';
-      closeBtn.textContent = '\u00d7';
-      closeBtn.addEventListener('click', () => popup.remove());
-      popup.addEventListener('click', (e) => { if (e.target === popup) popup.remove(); });
-      popup.appendChild(clone);
-      popup.appendChild(closeBtn);
-      document.body.appendChild(popup);
+      const isVideo = media.tagName === 'VIDEO';
+      const src = isVideo
+        ? (media.getAttribute('src') || (media as HTMLVideoElement).dataset.lazySrc)
+        : media.getAttribute('src');
+      if (!src) return;
+      const title = (src.split('/').pop() || '').split('?')[0];
+      const w = window as any;
+      if (isVideo && typeof w.openRecordingFullscreen === 'function') w.openRecordingFullscreen(src, title);
+      else if (!isVideo && typeof w.openScreenshotFullscreen === 'function') w.openScreenshotFullscreen(src, title);
     });
   });
 
