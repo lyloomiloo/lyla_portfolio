@@ -751,7 +751,58 @@ async function openShowcase(token) {
   }
 }
 
+// Page showcases: a manifest of standalone HTML documents shown one at a time
+// in an iframe, with prev/next navigation. { "type": "pages", "pages": [{src,label}] }
+function renderShowcasePages(data) {
+  const pages = (data && Array.isArray(data.pages)) ? data.pages : [];
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = (data && data.title) ? data.title : 'SHOWCASE'; });
+  if (!pages.length) {
+    document.querySelectorAll('.js-showcase-feed').forEach(f => { f.innerHTML = '<div class="tok-empty">Nothing here yet.</div>'; });
+    return;
+  }
+  const total = String(pages.length).padStart(2, '0');
+  // Nav bar only makes sense with more than one page.
+  const bar = pages.length > 1 ? `<div class="scp-bar">
+      <button class="scp-arrow" data-scp-prev aria-label="Previous page">&#8249;</button>
+      <div class="scp-meta">
+        <span class="scp-count"><b class="scp-cur">01</b> / ${total}</span>
+        <span class="scp-label">${esc(pages[0].label || '')}</span>
+      </div>
+      <button class="scp-arrow" data-scp-next aria-label="Next page">&#8250;</button>
+    </div>` : '';
+  const html = `<div class="scp" data-scp>${bar}
+    <iframe class="scp-frame" src="${esc(pages[0].src)}" title="${esc(pages[0].label || '')}" loading="lazy"></iframe>
+  </div>`;
+  document.querySelectorAll('.js-showcase-feed').forEach(feed => {
+    feed.innerHTML = html;
+    setupShowcasePages(feed, pages);
+  });
+}
+
+function setupShowcasePages(feed, pages) {
+  const scp = feed.querySelector('[data-scp]');
+  if (!scp) return;
+  const frame = scp.querySelector('.scp-frame');
+  const curEl = scp.querySelector('.scp-cur');
+  const labelEl = scp.querySelector('.scp-label');
+  let cur = 0;
+  const go = (n) => {
+    cur = (n + pages.length) % pages.length;
+    frame.src = pages[cur].src;
+    frame.title = pages[cur].label || '';
+    if (curEl) curEl.textContent = String(cur + 1).padStart(2, '0');
+    if (labelEl) labelEl.textContent = pages[cur].label || '';
+  };
+  const prev = scp.querySelector('[data-scp-prev]');
+  const next = scp.querySelector('[data-scp-next]');
+  if (prev) prev.addEventListener('click', () => go(cur - 1));
+  if (next) next.addEventListener('click', () => go(cur + 1));
+}
+
 function renderShowcase(data) {
+  if (data && (data.type === 'pages' || Array.isArray(data.pages))) { renderShowcasePages(data); return; }
   const items = (data && Array.isArray(data.items)) ? data.items : [];
   document.querySelectorAll('.js-showcase-title').forEach(t => {
     t.textContent = (data && data.title) ? data.title : 'FOR YOU';

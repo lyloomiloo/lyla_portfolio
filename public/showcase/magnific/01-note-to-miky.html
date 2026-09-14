@@ -1,0 +1,108 @@
+<title>Note to Miky</title>
+<meta name="description" content="Why the Scoot build exists.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@600;700;800;900&family=Roboto:ital,wght@0,400;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* A letter, not a deck. Same palette as the Playbook, almost none of its furniture. */
+:root{
+  --yellow:#FFE900; --ink:#111110; --ink-2:#3B3A33; --ink-3:#6E6C60;
+  --paper:#FFFDF4; --rule:#E2DFCF;
+  --display:"Futura PT","Futura","Jost","Century Gothic",system-ui,sans-serif;
+  --body:"Roboto","Helvetica Neue",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font:400 18px/1.72 var(--body);-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration-thickness:1.5px;text-underline-offset:3px}
+a:hover{background:var(--yellow)}
+a:focus-visible{outline:2.5px solid var(--ink);outline-offset:2px;border-radius:3px}
+p{margin:0 0 1.15em}
+p:last-child{margin-bottom:0}
+
+.sheet{max-width:640px;margin:0 auto;padding:clamp(40px,8vw,88px) clamp(20px,6vw,40px) clamp(56px,10vw,110px)}
+
+.from{font:500 12.5px/1 var(--mono);letter-spacing:.07em;text-transform:uppercase;
+  color:var(--ink-3);margin-bottom:clamp(28px,6vw,44px)}
+
+h1{font-family:var(--display);font-weight:900;letter-spacing:-.03em;line-height:1;
+  font-size:clamp(40px,8vw,62px);margin:0 0 6px}
+.rule{width:62px;height:7px;background:var(--yellow);border-radius:99px;margin:0 0 clamp(24px,4vw,34px)}
+
+/* run-in labels instead of section headers */
+.lbl{font:700 13px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-3);margin:clamp(30px,5vw,42px) 0 10px}
+
+ol{margin:0 0 1.15em;padding:0;list-style:none;counter-reset:n}
+ol li{counter-increment:n;position:relative;padding-left:30px;margin-bottom:9px}
+ol li:last-child{margin-bottom:0}
+ol li::before{content:counter(n) ".";position:absolute;left:0;top:0;
+  font:700 17px/1.72 var(--body);color:var(--ink-3)}
+ol li b{font-weight:700}
+
+.ps{margin-top:clamp(30px,5vw,42px);padding-top:22px;border-top:1px solid var(--rule);
+  font-size:16.5px;line-height:1.65;color:var(--ink-2)}
+.ps b{color:var(--ink)}
+
+.sign{margin-top:clamp(34px,6vw,50px);font-family:var(--display);font-weight:800;
+  letter-spacing:-.02em;font-size:26px;line-height:1.25}
+.sign span{display:block;font:500 12.5px/1 var(--mono);letter-spacing:.07em;
+  text-transform:uppercase;color:var(--ink-3);margin-top:12px}
+
+/* Scoot stickers: flat shape, thick white cut-out border, slight tilt. */
+.sheet{position:relative}
+.stk{position:absolute;pointer-events:none;z-index:0}
+.stk svg{display:block;width:100%;height:auto;overflow:visible}
+.stk-1{width:74px;top:96px;left:-104px;transform:rotate(-13deg)}
+.stk-2{width:56px;top:330px;right:-92px;transform:rotate(11deg)}
+.stk-3{width:62px;top:700px;left:-98px;transform:rotate(7deg)}
+.stk-4{width:52px;bottom:250px;right:-86px;transform:rotate(-9deg)}
+@media (max-width:1040px){.stk{display:none}}
+
+/* the two that always show, inline with the type */
+.inline-stk{display:inline-block;width:.72em;height:.72em;vertical-align:baseline;margin-left:.16em;overflow:visible}
+h1 .inline-stk{width:.62em;height:.62em;margin-left:.22em;transform:translateY(-.12em) rotate(-8deg)}
+.sign .inline-stk{width:.62em;height:.62em;transform:translateY(-.06em) rotate(8deg)}
+</style>
+
+<div class="sheet">
+
+  <div class="stk stk-1" aria-hidden="true"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="36" fill="#FFE900" stroke="#fff" stroke-width="11" paint-order="stroke"/><circle cx="50" cy="50" r="36" fill="none" stroke="#111110" stroke-width="3"/><circle cx="39" cy="43" r="5" fill="#111110"/><circle cx="61" cy="43" r="5" fill="#111110"/><path d="M36 60q14 14 28 0" fill="none" stroke="#111110" stroke-width="4.5" stroke-linecap="round"/></svg></div>
+  <div class="stk stk-2" aria-hidden="true"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><path d="M58 6 26 56h18l-6 38 34-52H54z" fill="#F2553C" stroke="#fff" stroke-width="11" stroke-linejoin="round" paint-order="stroke"/><path d="M58 6 26 56h18l-6 38 34-52H54z" fill="none" stroke="#111110" stroke-width="3" stroke-linejoin="round"/></svg></div>
+  <div class="stk stk-3" aria-hidden="true"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#fff" stroke-width="11" paint-order="stroke"><rect x="16" y="16" width="68" height="68" rx="7" fill="#FF8A7A"/></g><rect x="16" y="16" width="68" height="68" rx="7" fill="none" stroke="#111110" stroke-width="3"/><g fill="#111110"><rect x="16" y="16" width="23" height="23"/><rect x="61" y="16" width="23" height="23"/><rect x="39" y="39" width="22" height="22"/><rect x="16" y="61" width="23" height="23"/><rect x="61" y="61" width="23" height="23"/></g></svg></div>
+  <div class="stk stk-4" aria-hidden="true"><svg class="" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6c4 24 16 36 40 40-24 4-36 16-40 40-4-24-16-36-40-40 24-4 36-16 40-40z" fill="#9B7BFF" stroke="#fff" stroke-width="11" stroke-linejoin="round" paint-order="stroke"/><path d="M50 6c4 24 16 36 40 40-24 4-36 16-40 40-4-24-16-36-40-40 24-4 36-16 40-40z" fill="none" stroke="#111110" stroke-width="3" stroke-linejoin="round"/></svg></div>
+
+  <div class="from">Lyla &rarr; Miky</div>
+
+  <h1>Hi Miky!<svg class="inline-stk" viewBox="0 0 100 100" aria-hidden="true"><g stroke="#fff" stroke-width="12" stroke-linejoin="round" paint-order="stroke"><path d="M94 8 6 46l34 13z" fill="#3D5BFF"/><path d="M94 8 40 59l7 33z" fill="#3D5BFF"/></g><path d="M94 8 6 46l34 13z" fill="#3D5BFF" stroke="#111110" stroke-width="3.5" stroke-linejoin="round"/><path d="M94 8 40 59l7 33z" fill="#2B44D8" stroke="#111110" stroke-width="3.5" stroke-linejoin="round"/></svg></h1>
+  <div class="rule"></div>
+
+  <p>I figured the best way to familiarise myself with the platform (and role) is to use it for real 'work'. So, I leveraged my 3 years of experience with a Singapore-based client, Scoot, for this little experiment.</p>
+
+  <p class="lbl">Background</p>
+  <p>Scoot is the low-cost carrier arm of Singapore Airlines. It operates globally with 13 key markets and 9 different languages. They run a mix of performance and branding campaigns that require both scale and personality.</p>
+
+  <p class="lbl">Marketing challenges, Magnific opportunities</p>
+  <ol>
+    <li>Mass illustration generation and contextualisation</li>
+    <li>Strategic messaging variations per marketing funnel stage</li>
+    <li>Transcreation across markets with different languages, air fares, destination matches, etc.</li>
+    <li>Stock image integration (Scoot was a Freepik client!)</li>
+  </ol>
+
+  <p class="lbl">Solution in a nutshell</p>
+  <ol>
+    <li><b>Illustration codified.</b> New replicable style with config, prompt and references locked.</li>
+    <li><b>Workflows &amp; spaces.</b> Performance campaign with 4 distinct funnels set up as a use-case example for scaled work.</li>
+  </ol>
+
+  <p>Results of both are encapsulated in the <a href="https://claude.ai/code/artifact/acadbb38-3849-498f-bc36-56ec79f36dd1" target="_blank" rel="noopener">Playbook</a> and the <a href="https://claude.ai/code/artifact/19853bf0-99bf-4e47-b780-b6b236e3fd6a" target="_blank" rel="noopener">Wave Board</a>.</p>
+
+  <p class="ps"><b>Happy to talk through the Spaces and proposals when we meet!</b></p>
+
+  <p class="sign">Lyla<svg class="inline-stk" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 6c4 24 16 36 40 40-24 4-36 16-40 40-4-24-16-36-40-40 24-4 36-16 40-40z" fill="#9B7BFF" stroke="#fff" stroke-width="11" stroke-linejoin="round" paint-order="stroke"/><path d="M50 6c4 24 16 36 40 40-24 4-36 16-40 40-4-24-16-36-40-40 24-4 36-16 40-40z" fill="none" stroke="#111110" stroke-width="3" stroke-linejoin="round"/></svg><span>Singapore</span></p>
+
+</div>

@@ -4345,6 +4345,25 @@ import FunPanel from '../components/FunPanel.astro';
 
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
+  /* Page showcase — standalone HTML docs in an iframe with prev/next nav */
+  .scp { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; }
+  .scp-bar {
+    flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 8px 12px; background: #111; color: #fff; border-bottom: 1px solid #333;
+    font-family: var(--font-mono);
+  }
+  .scp-arrow {
+    width: 34px; height: 34px; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08); color: #fff; border: 1px solid rgba(255,255,255,0.35);
+    border-radius: 50%; cursor: pointer; font-size: 1.2rem; line-height: 1; padding-bottom: 2px;
+  }
+  .scp-arrow:hover { background: rgba(255,255,255,0.18); }
+  .scp-meta { display: flex; flex-direction: column; align-items: center; gap: 2px; text-align: center; min-width: 0; }
+  .scp-count { font-size: 0.6rem; letter-spacing: 0.14em; color: rgba(255,255,255,0.55); }
+  .scp-count b { color: var(--orange); font-weight: 700; }
+  .scp-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60vw; }
+  .scp-frame { flex: 1 1 auto; width: 100%; border: 0; background: #fff; }
+
   /* Prev/next post arrows (multi-post showcases) — overlaid on the asset */
   .tok-nav {
     position: absolute; top: 50%; transform: translateY(-50%); z-index: 6;
