@@ -710,11 +710,6 @@ function openFromHash() {
     openShowcase(raw.slice('showcase-'.length));
     return;
   }
-  // Named public showcases that open from their bare hash (e.g. #magnific).
-  if (NAMED_SHOWCASES.indexOf(raw) !== -1) {
-    openShowcase(raw);
-    return;
-  }
   const id = SLUG_TO_ID[raw];
   if (!id) return;
   dismissLockForDeepLink();
@@ -733,8 +728,6 @@ function openFromHash() {
 // and nothing about any showcase ships in the public page HTML.
 let showcaseSoundOn = true; // showcase opens with sound on
 let showcaseLoadedToken = null;
-// Showcases that open from a plain hash (not the #showcase-<token> secret form).
-const NAMED_SHOWCASES = ['magnific'];
 
 async function openShowcase(token) {
   // Only allow simple slugs — no slashes/dots — so the token can't walk the filesystem.
