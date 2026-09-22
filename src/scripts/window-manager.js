@@ -49,8 +49,9 @@ function openWindow(id) {
     if ((id.endsWith('-detail') || id === 'duckgame' || id === 'films' || id === 'showcase') && !win.classList.contains('maximized')) {
       win.classList.add('maximized');
     }
-    // Only scatter if not already maximized, and skip detail windows (they have staggered positions)
-    if (!win.classList.contains('maximized') && !id.endsWith('-detail')) {
+    // Only scatter if not already maximized, and skip detail windows (they have
+    // staggered positions) and the download pop-up (it stays centered).
+    if (!win.classList.contains('maximized') && !id.endsWith('-detail') && id !== 'showcase-dl') {
       scatterWindow(win);
     }
     win.style.display = 'flex';
