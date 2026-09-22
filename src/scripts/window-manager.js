@@ -826,7 +826,7 @@ function openShowcaseDownloadWindow(data) {
   const win = document.querySelector('[data-window-id="showcase-dl"]');
   if (win) {
     const titleEl = win.querySelector('.os-window-title');
-    if (titleEl) titleEl.textContent = name + ' — Downloading...';
+    if (titleEl) titleEl.textContent = name;
     const nameEl = win.querySelector('[data-scd-name]'); if (nameEl) nameEl.textContent = name;
     const statusEl = win.querySelector('[data-scd-status]'); if (statusEl) statusEl.textContent = 'Downloading...';
     const barWrap = win.querySelector('.scd-bar');
@@ -884,7 +884,6 @@ function startShowcaseDownload(url, name) {
       document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(() => URL.revokeObjectURL(obj), 8000);
       setStatus('Downloaded ✓');
-      if (titleEl) titleEl.textContent = name + ' — Done';
     } catch (e) {
       // Streaming failed (network/memory/CORS) — let the browser handle it.
       setIndeterminate(false); setBar(100); setStatus('Downloading...');
