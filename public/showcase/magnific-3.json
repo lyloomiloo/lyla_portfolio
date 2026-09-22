@@ -1,0 +1,28 @@
+{
+  "title": "FOR YOU",
+  "profile": "Magnific",
+  "items": [
+    {
+      "type": "video",
+      "src": "/images/showcase/Omnilojo_Last%20Z.mp4",
+      "profile": "Omnilojo",
+      "loc": "Singapore",
+      "caption": "This 30-second User Acquisition concept for Last Z uses generative AI to replace standard gameplay recordings with high-fidelity cinematic storytelling. Selling the survival fantasy upfront elevates the title into a recognisable franchise, making in-game items feel vastly more valuable. Crucially, this AI-driven workflow supercharges performance marketing by enabling rapid A/B testing of distinct visual hooks, such as gritty horror versus explosive action, to maximise scroll-stopping engagement before seamlessly transitioning into core gameplay mechanics.",
+      "ai": true,
+      "likes": 2431
+    },
+    {
+      "type": "gallery",
+      "profile": "KrisShop",
+      "loc": "Singapore",
+      "caption": "This experiment started out with a question: Can a premium travel brand like Krisshop.com (Singapore Airlines' on-ground retailer) turn a simple souvenir into a luxury product? Here, I played with destination-inspired backdrops made of soft, fabric-textured backgrounds for a fun touch without losing the elegance of the brand.",
+      "ai": true,
+      "likes": 964,
+      "slides": [
+        { "type": "video", "src": "/images/showcase/Chicken-Sample%201.mp4" },
+        { "type": "image", "src": "/images/showcase/Chicken-Sample2.png" },
+        { "type": "image", "src": "/images/showcase/Chicken-Sample%203.png" }
+      ]
+    }
+  ]
+}

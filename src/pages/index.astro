@@ -4345,6 +4345,19 @@ import FunPanel from '../components/FunPanel.astro';
 
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
+  /* Download showcase — resume-style file preview that auto-downloads */
+  .scd {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px; padding: 24px;
+    text-align: center; color: #fff; font-family: var(--font-mono); background: #000;
+  }
+  .scd-icon { font-size: 3rem; line-height: 1; }
+  .scd-name { font-weight: 700; font-size: 1rem; max-width: 90%; word-break: break-word; }
+  .scd-status { color: rgba(255,255,255,0.6); font-size: 0.85rem; }
+  .scd-bar { width: min(70%, 260px); height: 6px; background: rgba(255,255,255,0.2); overflow: hidden; }
+  .scd-bar > i { display: block; height: 100%; width: 0; background: var(--orange); animation: loadFill 2s ease-out forwards; }
+  .scd-link { margin-top: 8px; font-size: 0.75rem; font-weight: 700; color: var(--orange); }
+
   /* Page showcase — standalone HTML docs in an iframe with prev/next nav */
   .scp { position: absolute; inset: 0; display: flex; flex-direction: column; background: #fff; }
   .scp-bar {

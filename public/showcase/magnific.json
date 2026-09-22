@@ -1,7 +1,6 @@
 {
-  "type": "pages",
-  "title": "SCOOT",
-  "pages": [
-    { "src": "/showcase/magnific/01-note-to-miky.html", "label": "Note to Miky" }
-  ]
+  "type": "download",
+  "title": "FOR DESIGUAL",
+  "file": "https://l6lw2x7kdcmvaczr.public.blob.vercel-storage.com/magnific-for-desigual.zip",
+  "name": "[Magnific] For Desigual.zip"
 }

@@ -801,7 +801,34 @@ function setupShowcasePages(feed, pages) {
   if (next) next.addEventListener('click', () => go(cur + 1));
 }
 
+// Download showcase: a simple file preview that auto-downloads on open, like
+// the resume window. { "type": "download", "file": "...", "name": "..." }
+function renderShowcaseDownload(data) {
+  const file = (data && data.file) || '';
+  const name = (data && data.name) || (file ? decodeURIComponent(file.split('/').pop()) : 'file');
+  const esc = (s) => String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = (data && data.title) ? data.title : 'DOWNLOAD'; });
+  const html = `<div class="scd">
+    <div class="scd-icon">&#128230;</div>
+    <div class="scd-name">${esc(name)}</div>
+    <div class="scd-status">Downloading&hellip;</div>
+    <div class="scd-bar"><i></i></div>
+    ${file ? `<a class="scd-link" href="${esc(file)}" download="${esc(name)}">Download didn&rsquo;t start? Click here</a>` : ''}
+  </div>`;
+  document.querySelectorAll('.js-showcase-feed').forEach(feed => { feed.innerHTML = html; });
+  // Kick off the download once (a viewer's click on the deep link is the gesture).
+  if (file) {
+    setTimeout(() => {
+      const a = document.createElement('a');
+      a.href = file; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    }, 600);
+  }
+}
+
 function renderShowcase(data) {
+  if (data && data.type === 'download') { renderShowcaseDownload(data); return; }
   if (data && (data.type === 'pages' || Array.isArray(data.pages))) { renderShowcasePages(data); return; }
   const items = (data && Array.isArray(data.items)) ? data.items : [];
   document.querySelectorAll('.js-showcase-title').forEach(t => {

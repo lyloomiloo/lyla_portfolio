@@ -23,3 +23,9 @@ pnpm-debug.log*
 # editor
 .vscode/
 .idea/
+
+# Large showcase asset — too big for git/Vercel, hosted externally
+public/showcase/magnific/magnific-for-desigual.zip
+public/showcase/magnific/*.zip
+.vercel
+.env*
