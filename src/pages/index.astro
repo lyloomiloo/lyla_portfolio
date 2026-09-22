@@ -121,7 +121,7 @@ import FunPanel from '../components/FunPanel.astro';
       <p class="scd-icon">&#128230;</p>
       <p class="scd-name" data-scd-name>file.zip</p>
       <p class="scd-status" data-scd-status>Downloading...</p>
-      <div class="scd-bar"><i></i></div>
+      <div class="scd-bar">{Array.from({ length: 20 }).map(() => <span class="scd-block"></span>)}</div>
       <a class="scd-link" data-scd-link href="#" rel="noopener">Download didn't start? Click here</a>
     </div>
   </Window>
@@ -4361,10 +4361,13 @@ import FunPanel from '../components/FunPanel.astro';
   .scd-icon { font-size: 2rem; line-height: 1; margin: 0 0 0.5rem; }
   .scd-name { font-weight: 700; font-size: 0.95rem; margin: 0; word-break: break-word; }
   .scd-status { color: var(--text-dim); font-size: 0.8rem; margin: 0.35rem 0 0; }
-  .scd-bar { width: 80%; margin: 1.1rem auto 0; height: 6px; background: var(--border); overflow: hidden; }
-  .scd-bar > i { display: block; height: 100%; width: 0; background: var(--orange); transition: width 0.25s ease; }
-  .scd-bar.indeterminate > i { width: 40%; transition: none; animation: scdIndet 1.1s ease-in-out infinite; }
-  @keyframes scdIndet { 0% { transform: translateX(-120%); } 100% { transform: translateX(370%); } }
+  /* retro segmented loader — blocks fill left to right, the leading one blinks */
+  .scd-bar { width: 82%; margin: 1.1rem auto 0; display: flex; gap: 3px; }
+  .scd-block { flex: 1 1 0; height: 13px; background: var(--border); }
+  .scd-block.on { background: var(--orange); }
+  .scd-block.blink { animation: scdBlink 0.42s steps(1, end) infinite; }
+  .scd-bar.indeterminate .scd-block { animation: scdBlink 0.6s steps(1, end) infinite; }
+  @keyframes scdBlink { 0%, 100% { background: var(--orange); } 50% { background: var(--border); } }
   .scd-link { display: inline-block; margin-top: 0.9rem; font-size: 0.7rem; color: var(--orange); }
 
   /* Page showcase — standalone HTML docs in an iframe with prev/next nav */

@@ -829,8 +829,8 @@ function openShowcaseDownloadWindow(data) {
     if (titleEl) titleEl.textContent = name + ' — Downloading...';
     const nameEl = win.querySelector('[data-scd-name]'); if (nameEl) nameEl.textContent = name;
     const statusEl = win.querySelector('[data-scd-status]'); if (statusEl) statusEl.textContent = 'Downloading...';
-    const barI = win.querySelector('.scd-bar > i'); if (barI) barI.style.width = '0%';
-    const barWrap = win.querySelector('.scd-bar'); if (barWrap) barWrap.classList.remove('indeterminate');
+    const barWrap = win.querySelector('.scd-bar');
+    if (barWrap) { barWrap.classList.remove('indeterminate'); barWrap.querySelectorAll('.scd-block').forEach(b => b.classList.remove('on', 'blink')); }
     const link = win.querySelector('[data-scd-link]'); if (link && file) { link.setAttribute('href', file); link.setAttribute('download', name); }
   }
   openWindow('showcase-dl');
@@ -842,11 +842,15 @@ function openShowcaseDownloadWindow(data) {
 // holding a large file in memory. Any failure falls back to a plain download.
 function startShowcaseDownload(url, name) {
   const win = document.querySelector('[data-window-id="showcase-dl"]');
-  const barI = win && win.querySelector('.scd-bar > i');
   const barWrap = win && win.querySelector('.scd-bar');
+  const blocks = barWrap ? [...barWrap.querySelectorAll('.scd-block')] : [];
   const statusEl = win && win.querySelector('[data-scd-status]');
   const titleEl = win && win.querySelector('.os-window-title');
-  const setBar = (pct) => { if (barI) barI.style.width = pct + '%'; };
+  const setBar = (pct) => {
+    const n = blocks.length; if (!n) return;
+    const filled = Math.round(pct / 100 * n);
+    blocks.forEach((b, i) => { b.classList.toggle('on', i < filled); b.classList.toggle('blink', i === filled && filled < n); });
+  };
   const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
   const setIndeterminate = (on) => { if (barWrap) barWrap.classList.toggle('indeterminate', on); };
   const nativeDownload = () => {
@@ -856,6 +860,7 @@ function startShowcaseDownload(url, name) {
   };
 
   setStatus('Downloading...');
+  setBar(0);
   (async () => {
     try {
       const resp = await fetch(url);
