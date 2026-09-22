@@ -118,7 +118,7 @@ import FunPanel from '../components/FunPanel.astro';
   <!-- Showcase download — small resume-style pop-up (desktop only, opened via #showcase-<download-token>) -->
   <Window id="showcase-dl" title="download — Downloading..." width="400px" height="248px" top="16vh" left="calc(50vw - 200px)">
     <div class="scd">
-      <p class="scd-icon">&#128230;</p>
+      <p class="scd-icon">&#128476;&#65039;</p>
       <p class="scd-name" data-scd-name>file.zip</p>
       <p class="scd-status" data-scd-status>Downloading...</p>
       <div class="scd-bar">{Array.from({ length: 20 }).map(() => <span class="scd-block"></span>)}</div>
@@ -4357,13 +4357,13 @@ import FunPanel from '../components/FunPanel.astro';
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
   /* Download pop-up — matches the resume window (cream card, mono, orange bar) */
-  .scd { font-family: var(--font-mono); text-align: center; color: var(--text); }
+  .scd { font-family: var(--font-mono); text-align: center; color: var(--text); font-size: 0.9rem; line-height: 1.8; }
   .scd-icon { font-size: 2rem; line-height: 1; margin: 0 0 0.5rem; }
-  .scd-name { font-weight: 700; font-size: 0.95rem; margin: 0; word-break: break-word; }
-  .scd-status { color: var(--text-dim); font-size: 0.8rem; margin: 0.35rem 0 0; }
+  .scd-name { font-weight: 700; margin: 0; word-break: break-word; }
+  .scd-status { color: var(--text-dim); font-size: 0.8rem; margin: 0.3rem 0 0; }
   /* retro segmented loader — blocks fill left to right, the leading one blinks */
-  .scd-bar { width: 82%; margin: 1.1rem auto 0; display: flex; gap: 3px; }
-  .scd-block { flex: 1 1 0; height: 13px; background: var(--border); }
+  .scd-bar { width: 42%; margin: 1rem auto 0; display: flex; gap: 2px; }
+  .scd-block { flex: 1 1 0; height: 7px; background: var(--border); }
   .scd-block.on { background: var(--orange); }
   .scd-block.blink { animation: scdBlink 0.42s steps(1, end) infinite; }
   .scd-bar.indeterminate .scd-block { animation: scdBlink 0.6s steps(1, end) infinite; }
