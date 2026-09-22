@@ -170,7 +170,7 @@ function closeWindow(id) {
   }
   updateTaskbar(null);
   // If the section we just closed owned the URL, drop the deep-link hash.
-  if (id === 'showcase' || ID_TO_SLUG[id] === location.hash.replace('#', '')) clearHash();
+  if (id === 'showcase' || id === 'showcase-dl' || ID_TO_SLUG[id] === location.hash.replace('#', '')) clearHash();
 }
 
 function focusWindow(id) {
@@ -729,26 +729,38 @@ function openFromHash() {
 let showcaseSoundOn = true; // showcase opens with sound on
 let showcaseLoadedToken = null;
 
+let showcaseTokenWindow = null; // which window a token uses: 'showcase' or 'showcase-dl'
+
 async function openShowcase(token) {
   // Only allow simple slugs — no slashes/dots — so the token can't walk the filesystem.
   if (!token || !/^[a-z0-9-]+$/i.test(token)) return;
   dismissLockForDeepLink();
-  openWindow('showcase');
 
-  const feeds = document.querySelectorAll('.js-showcase-feed');
-  if (showcaseLoadedToken === token) return; // already rendered this one
-  feeds.forEach(f => { f.innerHTML = '<div class="tok-empty">loading…</div>'; });
+  // Re-opening the same link just re-shows its window (no re-fetch, no re-download).
+  if (showcaseLoadedToken === token && showcaseTokenWindow) { openWindow(showcaseTokenWindow); return; }
 
+  let data = null, ok = false;
   try {
     const res = await fetch('/showcase/' + token + '.json', { cache: 'no-store' });
-    if (!res.ok) throw new Error('not found');
-    const data = await res.json();
-    renderShowcase(data);
-    showcaseLoadedToken = token;
-  } catch (e) {
-    feeds.forEach(f => { f.innerHTML = '<div class="tok-empty">This showcase link isn\'t available.</div>'; });
-    document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = 'FOR YOU'; });
+    if (res.ok) { data = await res.json(); ok = true; }
+  } catch (e) { /* handled below */ }
+
+  // Downloads open as a small resume-style pop-up, not the big showcase window.
+  if (ok && data && data.type === 'download') {
+    showcaseLoadedToken = token; showcaseTokenWindow = 'showcase-dl';
+    openShowcaseDownloadWindow(data);
+    return;
   }
+
+  showcaseTokenWindow = 'showcase';
+  openWindow('showcase');
+  if (!ok || !data) {
+    document.querySelectorAll('.js-showcase-feed').forEach(f => { f.innerHTML = '<div class="tok-empty">This showcase link isn\'t available.</div>'; });
+    document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = 'FOR YOU'; });
+    return;
+  }
+  renderShowcase(data);
+  showcaseLoadedToken = token;
 }
 
 // Page showcases: a manifest of standalone HTML documents shown one at a time
@@ -803,32 +815,80 @@ function setupShowcasePages(feed, pages) {
 
 // Download showcase: a simple file preview that auto-downloads on open, like
 // the resume window. { "type": "download", "file": "...", "name": "..." }
-function renderShowcaseDownload(data) {
+function openShowcaseDownloadWindow(data) {
   const file = (data && data.file) || '';
   const name = (data && data.name) || (file ? decodeURIComponent(file.split('/').pop()) : 'file');
-  const esc = (s) => String(s == null ? '' : s)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  document.querySelectorAll('.js-showcase-title').forEach(t => { t.textContent = (data && data.title) ? data.title : 'DOWNLOAD'; });
-  const html = `<div class="scd">
-    <div class="scd-icon">&#128230;</div>
-    <div class="scd-name">${esc(name)}</div>
-    <div class="scd-status">Downloading&hellip;</div>
-    <div class="scd-bar"><i></i></div>
-    ${file ? `<a class="scd-link" href="${esc(file)}" download="${esc(name)}">Download didn&rsquo;t start? Click here</a>` : ''}
-  </div>`;
-  document.querySelectorAll('.js-showcase-feed').forEach(feed => { feed.innerHTML = html; });
-  // Kick off the download once (a viewer's click on the deep link is the gesture).
-  if (file) {
-    setTimeout(() => {
-      const a = document.createElement('a');
-      a.href = file; a.download = name;
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    }, 600);
+  // Not offered on mobile — if somehow reached there, just hand off to the browser.
+  if (typeof isDesktop === 'function' && !isDesktop()) {
+    if (file) { const a = document.createElement('a'); a.href = file; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+    return;
   }
+  const win = document.querySelector('[data-window-id="showcase-dl"]');
+  if (win) {
+    const titleEl = win.querySelector('.os-window-title');
+    if (titleEl) titleEl.textContent = name + ' — Downloading...';
+    const nameEl = win.querySelector('[data-scd-name]'); if (nameEl) nameEl.textContent = name;
+    const statusEl = win.querySelector('[data-scd-status]'); if (statusEl) statusEl.textContent = 'Downloading...';
+    const barI = win.querySelector('.scd-bar > i'); if (barI) barI.style.width = '0%';
+    const barWrap = win.querySelector('.scd-bar'); if (barWrap) barWrap.classList.remove('indeterminate');
+    const link = win.querySelector('[data-scd-link]'); if (link && file) { link.setAttribute('href', file); link.setAttribute('download', name); }
+  }
+  openWindow('showcase-dl');
+  if (file) setTimeout(() => startShowcaseDownload(file, name), 400);
+}
+
+// Fetch the file as a stream so the bar reflects real bytes (0 -> 100%), then
+// save it. On phones we hand off to the browser's own downloader instead of
+// holding a large file in memory. Any failure falls back to a plain download.
+function startShowcaseDownload(url, name) {
+  const win = document.querySelector('[data-window-id="showcase-dl"]');
+  const barI = win && win.querySelector('.scd-bar > i');
+  const barWrap = win && win.querySelector('.scd-bar');
+  const statusEl = win && win.querySelector('[data-scd-status]');
+  const titleEl = win && win.querySelector('.os-window-title');
+  const setBar = (pct) => { if (barI) barI.style.width = pct + '%'; };
+  const setStatus = (t) => { if (statusEl) statusEl.textContent = t; };
+  const setIndeterminate = (on) => { if (barWrap) barWrap.classList.toggle('indeterminate', on); };
+  const nativeDownload = () => {
+    const a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  };
+
+  setStatus('Downloading...');
+  (async () => {
+    try {
+      const resp = await fetch(url);
+      if (!resp.ok || !resp.body) throw new Error('bad response');
+      const total = +(resp.headers.get('content-length') || 0);
+      if (!total) setIndeterminate(true);
+      const reader = resp.body.getReader();
+      const chunks = [];
+      let received = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        received += value.length;
+        if (total) setBar(Math.min(100, Math.round(received / total * 100)));
+      }
+      setIndeterminate(false); setBar(100);
+      const obj = URL.createObjectURL(new Blob(chunks));
+      const a = document.createElement('a');
+      a.href = obj; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(obj), 8000);
+      setStatus('Downloaded ✓');
+      if (titleEl) titleEl.textContent = name + ' — Done';
+    } catch (e) {
+      // Streaming failed (network/memory/CORS) — let the browser handle it.
+      setIndeterminate(false); setBar(100); setStatus('Downloading...');
+      nativeDownload();
+    }
+  })();
 }
 
 function renderShowcase(data) {
-  if (data && data.type === 'download') { renderShowcaseDownload(data); return; }
   if (data && (data.type === 'pages' || Array.isArray(data.pages))) { renderShowcasePages(data); return; }
   const items = (data && Array.isArray(data.items)) ? data.items : [];
   document.querySelectorAll('.js-showcase-title').forEach(t => {
