@@ -2,6 +2,19 @@
 // 10x10 pixel grids: _=transparent, O=orange, Y=yellow-fill, K=dark, G=green, W=white, B=blue, S=sun, P=purple, X=grey
 
 export const icons: Record<string, string[][]> = {
+  // Retro CRT computer — game.exe desktop icon (green screen on a dark frame)
+  computer: [
+    ['_','K','K','K','K','K','K','K','K','_'],
+    ['_','K','G','G','G','G','G','G','K','_'],
+    ['_','K','G','G','G','G','G','G','K','_'],
+    ['_','K','G','G','G','G','G','G','K','_'],
+    ['_','K','G','G','G','G','G','G','K','_'],
+    ['_','K','K','K','K','K','K','K','K','_'],
+    ['_','_','_','K','K','K','K','_','_','_'],
+    ['_','_','K','K','K','K','K','K','_','_'],
+    ['_','K','K','K','K','K','K','K','K','_'],
+    ['_','_','_','_','_','_','_','_','_','_'],
+  ],
   // "Just for fun" mobile app icons — simple, site palette
   // cozy collab — profile-photo silhouette (white on blue), neck joined to body
   cozycollab_app: [

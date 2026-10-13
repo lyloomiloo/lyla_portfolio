@@ -51,7 +51,7 @@ function openWindow(id) {
     }
     // Only scatter if not already maximized, and skip detail windows (they have
     // staggered positions) and the download pop-up (it stays centered).
-    if (!win.classList.contains('maximized') && !id.endsWith('-detail') && id !== 'showcase-dl') {
+    if (!win.classList.contains('maximized') && !id.endsWith('-detail') && id !== 'showcase-dl' && id !== 'game') {
       scatterWindow(win);
     }
     win.style.display = 'flex';
@@ -1188,6 +1188,13 @@ document.addEventListener('click', (e) => {
     }
     return;
   }
+});
+
+// NO VACANCY redirect warning — the "go" link is an <a target="_blank"> that
+// opens the game in a new window on its own; both buttons close the warning.
+document.addEventListener('click', (e) => {
+  if (e.target.closest('[data-nv-back]')) { closeWindow('game'); return; }
+  if (e.target.closest('[data-nv-go]')) { closeWindow('game'); }
 });
 
 // Expose globally
