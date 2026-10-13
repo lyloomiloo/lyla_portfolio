@@ -127,7 +127,7 @@ import FunPanel from '../components/FunPanel.astro';
   </Window>
 
   <!-- NO VACANCY launcher / redirect warning (desktop only) -->
-  <Window id="game" title="game.exe" width="420px" height="372px" top="calc(50vh - 186px)" left="calc(50vw - 210px)">
+  <Window id="game" title="game.exe" width="420px" height="372px" top="7vh" left="2.5vw">
     <div class="nv-wiz">
       <div class="nv-wiz-screen">
         <div class="nv-wiz-logo">NO VACANCY</div>
@@ -4376,15 +4376,15 @@ import FunPanel from '../components/FunPanel.astro';
   /* NO VACANCY launcher — retro game-boot wizard */
   .nv-wiz { font-family: var(--font-mono); text-align: center; color: var(--text); }
   .nv-wiz-screen {
-    background: #0d0d0d; border: 3px solid #000; box-shadow: inset 0 0 0 2px #2a2a2a;
+    background: #3d2566; border: 3px solid #999; box-shadow: inset 0 0 0 2px #5a3d7a;
     padding: 16px 14px 14px; margin: -0.5rem 0 1rem;
   }
   .nv-wiz-logo {
     font-family: var(--font-display); font-weight: 900; font-size: 1.55rem; letter-spacing: 0.02em;
-    line-height: 1; color: var(--green); text-shadow: 2px 2px 0 #0a4d16;
+    line-height: 1; color: var(--green); text-shadow: 2px 2px 0 #1a0f2e;
   }
-  .nv-wiz-tag { font-size: 0.6rem; letter-spacing: 0.1em; color: #888; margin-top: 7px; }
-  .nv-wiz-loader { width: 72%; height: 12px; margin: 15px auto 9px; background: #000; border: 2px solid #333; padding: 2px; overflow: hidden; }
+  .nv-wiz-tag { font-size: 0.6rem; letter-spacing: 0.1em; color: #b9a6d6; margin-top: 7px; }
+  .nv-wiz-loader { width: 72%; height: 12px; margin: 15px auto 9px; background: #1e1233; border: 2px solid #888; padding: 2px; overflow: hidden; }
   .nv-wiz-loader > i { display: block; height: 100%; width: 0; background: var(--green); animation: nvLoad 2s steps(16, end) infinite; }
   @keyframes nvLoad { 0% { width: 0; } 80%, 100% { width: 100%; } }
   .nv-wiz-ready { font-size: 0.58rem; letter-spacing: 0.2em; color: var(--green); animation: nvBlink 1s steps(1, end) infinite; }
@@ -4395,10 +4395,10 @@ import FunPanel from '../components/FunPanel.astro';
   /* chunky pixel buttons with a hard offset shadow + press effect */
   .nv-pbtn {
     font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
-    padding: 9px 16px; cursor: pointer; border: 2px solid #000; text-decoration: none; display: inline-block;
-    box-shadow: 3px 3px 0 #000; transition: transform 0.05s ease, box-shadow 0.05s ease;
+    padding: 9px 16px; cursor: pointer; border: 2px solid #999; text-decoration: none; display: inline-block;
+    box-shadow: 3px 3px 0 #999; transition: transform 0.05s ease, box-shadow 0.05s ease;
   }
-  .nv-pbtn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #000; }
+  .nv-pbtn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #999; }
   .nv-pbtn--quit { background: var(--bg-card); color: var(--text); }
   .nv-pbtn--start { background: var(--orange); color: #fff; }
 
