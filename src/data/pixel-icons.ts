@@ -2,13 +2,13 @@
 // 10x10 pixel grids: _=transparent, O=orange, Y=yellow-fill, K=dark, G=green, W=white, B=blue, S=sun, P=purple, X=grey
 
 export const icons: Record<string, string[][]> = {
-  // Retro CRT computer — game.exe desktop icon (purple screen on a grey frame)
+  // Retro CRT computer — game.exe desktop icon (grey frame, see-through screen)
   computer: [
     ['_','X','X','X','X','X','X','X','X','_'],
-    ['_','X','P','P','P','P','P','P','X','_'],
-    ['_','X','P','P','P','P','P','P','X','_'],
-    ['_','X','P','P','P','P','P','P','X','_'],
-    ['_','X','P','P','P','P','P','P','X','_'],
+    ['_','X','_','_','_','_','_','_','X','_'],
+    ['_','X','_','_','_','_','_','_','X','_'],
+    ['_','X','_','_','_','_','_','_','X','_'],
+    ['_','X','_','_','_','_','_','_','X','_'],
     ['_','X','X','X','X','X','X','X','X','_'],
     ['_','_','_','X','X','X','X','_','_','_'],
     ['_','_','X','X','X','X','X','X','_','_'],
