@@ -68,13 +68,6 @@ import FunPanel from '../components/FunPanel.astro';
     </div>
   </Window>
 
-  <Window id="selfie" title="selfie.jpg — Preview" width="220px" height="240px" top="22vh" left="42vw">
-    <div style="text-align: center; padding: 1rem;">
-      <div style="width: 80px; height: 80px; background: var(--dark); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 2rem; color: var(--orange);">:)</div>
-      <p style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dim);">close enough.</p>
-    </div>
-  </Window>
-
   <Window id="playlist" title="playlist.m3u" width="320px" height="auto" top="18vh" left="36vw">
     <div class="mp" style="margin:-1.5rem;">
       <div class="mp-title" id="playerTitle">Tití Me Preguntó</div>
@@ -127,10 +120,10 @@ import FunPanel from '../components/FunPanel.astro';
   </Window>
 
   <!-- NO VACANCY launcher — retro game title screen + redirect warning (desktop only) -->
-  <Window id="game" title="game.exe" darkMode={true} width="420px" height="392px" top="calc(50vh - 196px)" left="calc(50vw - 210px)">
+  <Window id="game" title="game.exe" darkMode={true} width="560px" height="420px" top="calc(50vh - 210px)" left="calc(50vw - 280px)">
     <div class="nv-title">
       <div class="nv-title-mark"><span></span></div>
-      <div class="nv-title-logo">NO VACANCY</div>
+      <div class="nv-title-sign"><div class="nv-title-logo">NO VACANCY</div></div>
       <div class="nv-title-sub">an escape room &middot; by lyla</div>
       <p class="nv-title-msg"><span class="nv-prompt">&gt;</span> Opens in a <b>new window</b>. Not done with my portfolio yet? Go back and finish exploring first.<span class="nv-cursor">&#9608;</span></p>
       <div class="nv-title-btns">
@@ -4372,36 +4365,51 @@ import FunPanel from '../components/FunPanel.astro';
 
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
-  /* NO VACANCY launcher — dark terminal game screen, matching about.exe */
-  [data-window-id="game"] .os-window-body { padding: 0; overflow: hidden; }
+  /* NO VACANCY launcher: a green phosphor CRT in the portfolio palette (--dark, --green, --orange,
+     like about.exe), with the game's VT323 type in a double-ruled sign box, scanlines and a vignette. */
+  [data-window-id="game"] .os-window-body { padding: 0; overflow: hidden; background: var(--dark); }
   .nv-title {
+    --nv-c: var(--green); --nv-glow: 0 0 4px rgba(57,255,20,.6), 0 0 14px rgba(57,255,20,.25);
     font-family: var(--font-mono); text-align: center; color: #cfcfcf;
     position: relative; height: 100%; padding: 22px 20px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: radial-gradient(ellipse at center, #262626 0%, var(--dark) 60%, #0e0e0e 100%);
+  }
+  .nv-title::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(180deg, rgba(0,0,0,.28) 0 1px, transparent 1px 3px);
   }
   .nv-title-mark {
-    width: 24px; height: 24px; border: 3px solid var(--green);
-    display: inline-flex; align-items: center; justify-content: center; margin-bottom: 11px;
+    width: 24px; height: 24px; border: 3px solid var(--nv-c); box-shadow: var(--nv-glow);
+    display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;
   }
-  .nv-title-mark span { width: 9px; height: 9px; background: var(--green); display: block; }
+  .nv-title-mark span { width: 9px; height: 9px; background: var(--nv-c); display: block; }
+  /* the sign: a double-ruled box, lit like the motel sign it is named after */
+  .nv-title-sign {
+    padding: 4px 16px 2px; border: 4px double var(--nv-c); box-shadow: var(--nv-glow), inset 0 0 12px rgba(57,255,20,.12);
+    animation: nvHum 7s steps(1, end) infinite;
+  }
   .nv-title-logo {
-    font-family: var(--font-display); font-weight: 900; font-size: 1.7rem; letter-spacing: 0.02em;
-    line-height: 1; color: var(--green); text-shadow: 2px 2px 0 #0a2e10;
+    font-family: 'VT323', var(--font-mono); font-weight: 400; font-size: 3.4rem; letter-spacing: 0.06em; line-height: 1;
+    color: var(--nv-c); text-shadow: var(--nv-glow), 3px 3px 0 #0a2e10;
   }
-  .nv-title-sub { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a8a; margin-top: 10px; }
-  .nv-title-msg { font-size: 0.72rem; line-height: 1.6; color: #c7c7c7; margin: 18px auto 0; max-width: 90%; }
+  /* a fluorescent flicker, now and then */
+  @keyframes nvHum { 0%, 91%, 93%, 95%, 100% { opacity: 1; } 92%, 94% { opacity: .5; } }
+  @media (prefers-reduced-motion: reduce) { .nv-title-sign { animation: none; } }
+  .nv-title-sub { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a8a; margin-top: 12px; }
+  .nv-title-msg { font-size: 0.72rem; line-height: 1.6; color: #c7c7c7; margin: 16px auto 0; max-width: 74%; }
   .nv-title-msg b { color: #fff; }
-  .nv-prompt { color: var(--green); font-weight: 700; margin-right: 3px; }
-  .nv-cursor { color: var(--green); margin-left: 1px; animation: nvBlink 0.9s steps(1, end) infinite; }
+  .nv-prompt { color: var(--nv-c); font-weight: 700; margin-right: 3px; }
+  .nv-cursor { color: var(--nv-c); margin-left: 1px; animation: nvBlink 0.9s steps(1, end) infinite; }
   @keyframes nvBlink { 50% { opacity: 0; } }
   .nv-title-copy { font-size: 0.5rem; letter-spacing: 0.1em; color: #666; margin-top: 15px; }
-  .nv-title-load { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #000; }
-  .nv-title-load > i { display: block; height: 100%; width: 0; background: var(--green); animation: nvLoad 2s steps(18, end) infinite; }
+  .nv-title-load { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #000; z-index: 1; }
+  .nv-title-load > i { display: block; height: 100%; width: 0; background: var(--nv-c); animation: nvLoad 2s steps(18, end) infinite; }
   @keyframes nvLoad { 0% { width: 0; } 82%, 100% { width: 100%; } }
-  .nv-title-btns { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }
-  /* chunky pixel buttons sitting on the dark screen */
+  .nv-title-btns { display: flex; gap: 12px; justify-content: center; margin-top: 20px; position: relative; z-index: 1; }
+  /* chunky pixel buttons sitting on the screen */
   .nv-pbtn {
-    font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
+    font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-shadow: none;
     padding: 9px 16px; cursor: pointer; border: 2px solid #777; text-decoration: none; display: inline-block;
     box-shadow: 3px 3px 0 #555; transition: transform 0.05s ease, box-shadow 0.05s ease;
   }
