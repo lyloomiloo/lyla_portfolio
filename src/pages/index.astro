@@ -126,17 +126,19 @@ import FunPanel from '../components/FunPanel.astro';
     </div>
   </Window>
 
-  <!-- NO VACANCY launcher / redirect warning (desktop only) -->
-  <Window id="game" title="game.exe" width="420px" height="372px" top="7vh" left="2.5vw">
-    <div class="nv-wiz">
-      <div class="nv-wiz-screen">
-        <div class="nv-wiz-logo">NO VACANCY</div>
-        <div class="nv-wiz-tag">// escape room &middot; built by lyla</div>
-        <div class="nv-wiz-loader"><i></i></div>
-        <div class="nv-wiz-ready">READY TO START</div>
+  <!-- NO VACANCY launcher — retro game title screen + redirect warning (desktop only) -->
+  <Window id="game" title="game.exe" width="420px" height="400px" top="calc(50vh - 200px)" left="calc(50vw - 210px)">
+    <div class="nv-title">
+      <div class="nv-title-screen">
+        <div class="nv-title-mark"><span></span></div>
+        <div class="nv-title-logo">NO VACANCY</div>
+        <div class="nv-title-sub">an escape room &middot; by lyla</div>
+        <div class="nv-title-press">&#9654; PRESS START</div>
+        <div class="nv-title-copy">&copy; 2026 LYLA HUANG</div>
+        <div class="nv-title-load"><i></i></div>
       </div>
-      <p class="nv-wiz-note">Opens in a <b>new window</b>. Not done with my portfolio yet? Go back and finish exploring first!</p>
-      <div class="nv-wiz-btns">
+      <p class="nv-title-note">Opens in a <b>new window</b>. Not done with my portfolio yet? Go back and finish exploring first!</p>
+      <div class="nv-title-btns">
         <button class="nv-pbtn nv-pbtn--quit" data-nv-back>&larr; GO BACK</button>
         <a class="nv-pbtn nv-pbtn--start" href="https://novacancyhere.vercel.app/" target="_blank" rel="noopener" data-nv-go>START &#9654;</a>
       </div>
@@ -4373,26 +4375,32 @@ import FunPanel from '../components/FunPanel.astro';
 
   .tok-empty { color: #bbb; font-family: var(--font-mono); font-size: 0.85rem; text-align: center; width: 100%; align-self: center; padding: 40px; }
 
-  /* NO VACANCY launcher — retro game-boot wizard */
-  .nv-wiz { font-family: var(--font-mono); text-align: center; color: var(--text); }
-  .nv-wiz-screen {
-    background: #3d2566; border: 3px solid #999; box-shadow: inset 0 0 0 2px #5a3d7a;
-    padding: 16px 14px 14px; margin: -0.5rem 0 1rem;
+  /* NO VACANCY launcher — retro game title screen (Game Boy vibe) + loading bar */
+  .nv-title { font-family: var(--font-mono); text-align: center; color: var(--text); }
+  .nv-title-screen {
+    position: relative; background: #16131c; border: 3px solid #999;
+    padding: 20px 14px 18px; margin: -0.5rem 0 1rem; overflow: hidden;
   }
-  .nv-wiz-logo {
-    font-family: var(--font-display); font-weight: 900; font-size: 1.55rem; letter-spacing: 0.02em;
-    line-height: 1; color: var(--green); text-shadow: 2px 2px 0 #1a0f2e;
+  .nv-title-mark {
+    width: 22px; height: 22px; border: 3px solid var(--green);
+    display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;
   }
-  .nv-wiz-tag { font-size: 0.6rem; letter-spacing: 0.1em; color: #b9a6d6; margin-top: 7px; }
-  .nv-wiz-loader { width: 72%; height: 12px; margin: 15px auto 9px; background: #1e1233; border: 2px solid #888; padding: 2px; overflow: hidden; }
-  .nv-wiz-loader > i { display: block; height: 100%; width: 0; background: var(--green); animation: nvLoad 2s steps(16, end) infinite; }
-  @keyframes nvLoad { 0% { width: 0; } 80%, 100% { width: 100%; } }
-  .nv-wiz-ready { font-size: 0.58rem; letter-spacing: 0.2em; color: var(--green); animation: nvBlink 1s steps(1, end) infinite; }
-  @keyframes nvBlink { 50% { opacity: 0.2; } }
-  .nv-wiz-note { font-size: 0.78rem; line-height: 1.55; margin: 0 0 1.1rem; color: var(--text-dim); }
-  .nv-wiz-note b { color: var(--text); }
-  .nv-wiz-btns { display: flex; gap: 12px; justify-content: center; }
-  /* chunky pixel buttons with a hard offset shadow + press effect */
+  .nv-title-mark span { width: 8px; height: 8px; background: var(--green); display: block; }
+  .nv-title-logo {
+    font-family: var(--font-display); font-weight: 900; font-size: 1.65rem; letter-spacing: 0.02em;
+    line-height: 1; color: var(--green); text-shadow: 2px 2px 0 #0a2e10;
+  }
+  .nv-title-sub { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; color: #9a8fb0; margin-top: 9px; }
+  .nv-title-press { font-size: 0.66rem; letter-spacing: 0.18em; color: var(--orange); margin-top: 18px; animation: nvBlink 0.9s steps(1, end) infinite; }
+  .nv-title-copy { font-size: 0.5rem; letter-spacing: 0.1em; color: #6a6080; margin-top: 14px; }
+  @keyframes nvBlink { 50% { opacity: 0; } }
+  .nv-title-load { position: absolute; left: 0; right: 0; bottom: 0; height: 5px; background: #000; }
+  .nv-title-load > i { display: block; height: 100%; width: 0; background: var(--green); animation: nvLoad 2s steps(18, end) infinite; }
+  @keyframes nvLoad { 0% { width: 0; } 82%, 100% { width: 100%; } }
+  .nv-title-note { font-size: 0.78rem; line-height: 1.55; margin: 0 0 1.1rem; color: var(--text-dim); }
+  .nv-title-note b { color: var(--text); }
+  .nv-title-btns { display: flex; gap: 12px; justify-content: center; }
+  /* chunky pixel buttons with a grey hard-offset shadow + press effect */
   .nv-pbtn {
     font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em;
     padding: 9px 16px; cursor: pointer; border: 2px solid #999; text-decoration: none; display: inline-block;
