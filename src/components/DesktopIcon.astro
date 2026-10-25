@@ -11,12 +11,18 @@ interface Props {
 
 const { id, label, icon, top, left } = Astro.props;
 const grid = icons[icon] || icons['notepad'];
+const nightGrid = icons[`${icon}-night`]; // optional Draft Yard variant
 ---
 
 <div class="desktop-icon" data-icon-id={id} style={`top:${top}; left:${left};`}>
-  <div class="desktop-icon-graphic">
+  <div class={`desktop-icon-graphic${nightGrid ? ' desktop-icon-graphic--day' : ''}`}>
     {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
   </div>
+  {nightGrid && (
+    <div class="desktop-icon-graphic desktop-icon-graphic--night">
+      {nightGrid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+    </div>
+  )}
   <span class="desktop-icon-label">{label}</span>
 </div>
 
@@ -55,8 +61,10 @@ const grid = icons[icon] || icons['notepad'];
   body.draft-yard .desktop-icon[data-icon-id="resume"] .desktop-icon-graphic,
   body.draft-yard .desktop-icon[data-icon-id="todo"] .desktop-icon-graphic,
   body.draft-yard .desktop-icon[data-icon-id="readme"] .desktop-icon-graphic { filter: invert(1) hue-rotate(180deg); }
-  /* contact (coffee mug) reads as a clean white silhouette at night */
-  body.draft-yard .desktop-icon[data-icon-id="contact"] .desktop-icon-graphic { filter: brightness(0) invert(1); }
+  /* icons with a Draft Yard variant swap to it at night (e.g. contact: white mug, yellow coffee) */
+  .desktop-icon-graphic--night { display: none; }
+  body.draft-yard .desktop-icon-graphic--day { display: none; }
+  body.draft-yard .desktop-icon-graphic--night { display: grid; }
   .desktop-icon-label {
     font-family: var(--font-mono);
     font-size: 0.7rem;

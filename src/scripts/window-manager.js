@@ -354,6 +354,12 @@ document.addEventListener('click', (e) => {
     return;
   }
 
+  // Clicking the wandering yard pumpkin opens the films window
+  if (e.target.closest('.yard-pumpkin')) {
+    openWindow('films');
+    return;
+  }
+
   // Desktop icons — single click opens
   const icon = e.target.closest('.desktop-icon');
   if (icon) {
