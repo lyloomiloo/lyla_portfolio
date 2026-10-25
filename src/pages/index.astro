@@ -339,7 +339,8 @@ import FunPanel from '../components/FunPanel.astro';
       <div class="films-nav-wrap">
         <button class="films-nav-arrow films-nav-prev" data-films-scroll="prev">&#x2039;</button>
         <div class="proj-nav films-nav-scroll">
-          <button class="proj-nav-tab active" data-film-tab="om">om_showreel.mp4 | ONWARD</button>
+          <button class="proj-nav-tab active" data-film-tab="nold">night_of_the_living_draft.mp4 | Magnific</button>
+          <button class="proj-nav-tab" data-film-tab="om">om_showreel.mp4 | ONWARD</button>
           <button class="proj-nav-tab" data-film-tab="runway">cover_video.mp4 | RUNWAY</button>
           <button class="proj-nav-tab" data-film-tab="brand">brand.mp4 | REROUTE</button>
           <button class="proj-nav-tab" data-film-tab="content">content.mp4 | REROUTE</button>
@@ -352,7 +353,12 @@ import FunPanel from '../components/FunPanel.astro';
         <button class="films-nav-arrow films-nav-next" data-films-scroll="next">&#x203A;</button>
       </div>
       <div class="films-content">
-        <div class="films-frame active" data-film-panel="om">
+        <div class="films-frame active" data-film-panel="nold">
+          <video data-lazy-src="/images/Ads/NOLD.mp4" loop muted playsinline preload="none"></video>
+          <span class="films-ai-badge">AI-GENERATED</span>
+          <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="films-frame" data-film-panel="om">
           <video data-lazy-src="/images/Ads/om_showreel.mp4" loop muted playsinline preload="none"></video>
           <span class="films-ai-badge">AI-GENERATED</span>
           <button class="films-sound-btn" data-sound-toggle>SOUND ON</button>
@@ -740,6 +746,30 @@ import FunPanel from '../components/FunPanel.astro';
 
   <MobilePanel id="films" title="" fullscreen>
     <div class="ig-feed">
+      <div class="ig-post">
+        <div class="ig-post-header">
+          <div class="ig-post-avatar">
+            <div class="ig-pixel-face">
+              <div></div><div></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div style="background:#222"></div><div></div><div></div>
+              <div></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#222"></div><div style="background:#F4C89A"></div><div></div>
+              <div></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div style="background:#FF6B00"></div><div style="background:#FF6B00"></div><div style="background:#F4C89A"></div><div style="background:#F4C89A"></div><div></div>
+            </div>
+          </div>
+          <div class="ig-post-user"><span class="ig-post-name">NOLD</span><span class="ig-post-loc">Magnific</span></div>
+          <span class="ig-ai-badge">AI-GENERATED</span>
+        </div>
+        <div class="ig-post-media ig-post-media--landscape" data-ig-fullscreen>
+          <video data-lazy-src="/images/Ads/NOLD.mp4" loop muted playsinline preload="none"></video>
+          <button class="ig-expand-btn" data-ig-fullscreen-btn>&#x2922;</button>
+          <button class="ig-sound-btn" data-sound-toggle>SOUND ON</button>
+        </div>
+        <div class="ig-post-actions"><button class="ig-action ig-like" data-ig-like>♥</button><button class="ig-action ig-comment-btn" data-ig-comment-toggle>◻</button><button class="ig-action ig-share" data-ig-share>↗</button><span class="ig-like-count" data-ig-like-count>666 likes</span></div>
+        <div class="ig-post-caption"><strong>NOLD</strong> Night of the Living Draft | An AI-generated short made with Magnific.</div>
+        <div class="ig-comments" data-ig-comments></div>
+        <div class="ig-comment-box" style="display:none"><input class="ig-comment-input" type="text" placeholder="Add a comment..." maxlength="140" data-ig-comment-input /><button class="ig-comment-post" data-ig-comment-post>Post</button></div>
+        <div class="ig-post-date">2026</div>
+      </div>
       <div class="ig-post">
         <div class="ig-post-header">
           <div class="ig-post-avatar">
