@@ -3,19 +3,30 @@ import DesktopIcon from './DesktopIcon.astro';
 import { icons, colorMap } from '../data/pixel-icons';
 const duckGrid = icons['duck'];
 
-// Pixel pumpkin king for the Draft Yard dark mode (Y=crown, O=orange, K=cut-outs)
+// Pixel pumpkin king for the Draft Yard dark mode
+// Y=crown/collar, O=orange pumpkin + belt, K=cut-outs/hands/legs, P=royal cloak
 const pumpkinKing = [
-  ['_','Y','_','Y','_','Y','_','_'],
-  ['_','Y','Y','Y','Y','Y','_','_'],
-  ['_','_','O','O','O','O','_','_'],
-  ['_','O','O','O','O','O','O','_'],
-  ['O','O','O','O','O','O','O','O'],
-  ['O','K','K','O','O','K','K','O'],
-  ['O','O','O','O','O','O','O','O'],
-  ['O','K','K','K','K','K','K','O'],
-  ['O','O','K','O','K','O','O','O'],
-  ['_','O','O','O','O','O','O','_'],
-  ['_','_','O','O','O','O','_','_'],
+  ['_','_','Y','_','Y','_','Y','_','_','_'],
+  ['_','_','Y','Y','Y','Y','Y','_','_','_'],
+  ['_','_','_','O','O','O','O','_','_','_'],
+  ['_','_','O','O','O','O','O','O','_','_'],
+  ['_','O','O','O','O','O','O','O','O','_'],
+  ['_','O','K','K','O','O','K','K','O','_'],
+  ['_','O','O','O','O','O','O','O','O','_'],
+  ['_','O','K','K','K','K','K','K','O','_'],
+  ['_','O','O','K','O','K','O','O','O','_'],
+  ['_','_','O','O','O','O','O','O','_','_'],
+  ['_','_','_','O','O','O','O','_','_','_'],
+  ['_','_','Y','Y','Y','Y','Y','Y','_','_'],
+  ['_','P','P','P','P','P','P','P','P','_'],
+  ['K','P','P','P','P','P','P','P','P','K'],
+  ['_','_','P','P','P','P','P','P','_','_'],
+  ['_','_','P','O','O','O','O','P','_','_'],
+  ['_','_','P','P','P','P','P','P','_','_'],
+  ['_','_','P','P','P','P','P','P','_','_'],
+  ['_','_','K','K','_','_','K','K','_','_'],
+  ['_','_','K','K','_','_','K','K','_','_'],
+  ['_','K','K','K','_','_','K','K','K','_'],
 ];
 ---
 
@@ -356,11 +367,11 @@ const pumpkinKing = [
   .tomb-3 { bottom: 30%; right: 16%; width: 30px; height: 36px; }
   /* pumpkin king */
   .yard-pumpkin {
-    position: absolute; bottom: 29%; left: 11%; z-index: 3;
-    grid-template-columns: repeat(8, 7px); grid-template-rows: repeat(11, 7px);
+    position: absolute; bottom: 24%; left: 9%; z-index: 3;
+    grid-template-columns: repeat(10, 6px); grid-template-rows: repeat(21, 6px);
     image-rendering: pixelated; filter: drop-shadow(0 0 9px rgba(255,120,0,0.5));
   }
-  .yard-pumpkin > div { width: 7px; height: 7px; }
+  .yard-pumpkin > div { width: 6px; height: 6px; }
   /* THE DRAFT YARD sign */
   .yard-sign {
     position: absolute; top: 19%; left: 50%; transform: translateX(-50%) rotate(-2deg); z-index: 2;
@@ -389,6 +400,8 @@ const pumpkinKing = [
   .draft-yard .flower::before { background: #3a2a52; }
   .draft-yard .yard-moon, .draft-yard .yard-stars, .draft-yard .tomb, .draft-yard .yard-sign, .draft-yard .yard-fog { display: block; }
   .draft-yard .yard-pumpkin { display: grid; }
+  /* the duck clocks out when the yard wakes up */
+  .draft-yard #deskDuck, .draft-yard .duck-counter { display: none !important; }
 
   /* ========== DESKTOP PET DUCK ========== */
   .duck {
