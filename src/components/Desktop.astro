@@ -7,20 +7,24 @@ const duckGrid = icons['duck'];
 // Y=crown/collar, O=orange pumpkin + belt, K=cut-outs/hands/legs, P=royal cloak
 // A tiny two-circle pumpkin that wanders the yard like the duck.
 // Y=crown, O=pumpkin, K=face. Head circle over a body circle.
+// Single stem on top; the back edge of the body is a purple cape (P). Because
+// the sprite is flipped with scaleX(dir), the cape always trails on the back.
+// Single stem on top; a small purple cape billows from the top-back only.
+// The sprite flips with scaleX(dir), so the cape always trails on the back.
 const pumpkinKing = [
-  ['_','_','_','Y','_','Y','_','_','_'],
-  ['_','_','O','O','O','O','O','_','_'],
-  ['_','O','O','O','O','O','O','O','_'],
-  ['_','O','O','K','O','K','O','O','_'],
-  ['_','O','O','O','O','O','O','O','_'],
-  ['_','_','O','K','K','K','O','_','_'],
-  ['_','_','O','O','O','O','O','_','_'],
-  ['K','O','O','O','O','O','O','O','K'],
-  ['O','O','O','O','O','O','O','O','O'],
-  ['O','O','O','O','O','O','O','O','O'],
-  ['_','O','O','O','O','O','O','O','_'],
-  ['_','_','O','O','O','O','O','_','_'],
-  ['_','_','K','K','_','K','K','_','_'],
+  ['_','_','_','_','_','_','Y','_','_','_','_','_','_'],
+  ['_','_','_','_','_','O','O','O','_','_','_','_','_'],
+  ['_','_','_','_','O','O','O','O','O','_','_','_','_'],
+  ['_','_','_','O','O','K','O','O','K','O','_','_','_'],
+  ['_','_','_','O','O','O','O','O','O','O','_','_','_'],
+  ['_','_','_','O','O','K','K','K','K','O','_','_','_'],
+  ['_','_','_','P','O','O','O','O','O','_','_','_','_'],
+  ['_','_','P','O','O','O','O','O','O','O','_','_','_'],
+  ['_','P','O','O','O','O','O','O','O','O','K','_','_'],
+  ['P','P','O','O','O','O','O','O','O','O','_','_','_'],
+  ['_','_','O','O','O','O','O','O','O','O','_','_','_'],
+  ['_','_','_','O','O','O','O','O','O','_','_','_','_'],
+  ['_','_','_','_','_','K','_','K','_','_','_','_','_'],
 ];
 ---
 
@@ -370,23 +374,21 @@ const pumpkinKing = [
   /* pumpkin — small, wanders the yard like the duck (left/facing set by JS) */
   .yard-pumpkin {
     position: absolute; bottom: 20%; left: 9%; z-index: 4;
-    grid-template-columns: repeat(9, 5px); grid-template-rows: repeat(13, 5px);
+    grid-template-columns: repeat(13, 5px); grid-template-rows: repeat(13, 5px);
     image-rendering: pixelated; filter: drop-shadow(0 0 7px rgba(255,120,0,0.5));
     will-change: left, bottom, transform; cursor: pointer;
   }
   body.draft-yard .yard-pumpkin:hover { filter: drop-shadow(0 0 11px rgba(255,150,40,0.9)); }
   .yard-pumpkin > div { width: 5px; height: 5px; }
   /* walk cycle — legs alternate stepping while moving (no vertical bounce) */
-  .yard-pumpkin.walking > div:nth-child(111),
-  .yard-pumpkin.walking > div:nth-child(112) { animation: pumpStepL 0.44s steps(1, end) infinite; }
-  .yard-pumpkin.walking > div:nth-child(114),
-  .yard-pumpkin.walking > div:nth-child(115) { animation: pumpStepR 0.44s steps(1, end) infinite; }
+  .yard-pumpkin.walking > div:nth-child(162) { animation: pumpStepL 0.44s steps(1, end) infinite; }
+  .yard-pumpkin.walking > div:nth-child(164) { animation: pumpStepR 0.44s steps(1, end) infinite; }
   @keyframes pumpStepL { 0%, 49.9% { transform: translateY(-2px); } 50%, 100% { transform: translateY(0); } }
   @keyframes pumpStepR { 0%, 49.9% { transform: translateY(0); } 50%, 100% { transform: translateY(-2px); } }
   /* drifting ground fog */
   .yard-fog {
-    position: absolute; left: -6%; right: -6%; bottom: 16%; height: 19%; pointer-events: none;
-    background: linear-gradient(to top, transparent, rgba(214,222,245,0.42) 42%, rgba(214,222,245,0.14) 74%, transparent);
+    position: absolute; left: -6%; right: -6%; bottom: 0; height: 40%; pointer-events: none;
+    background: linear-gradient(to top, rgba(214,222,245,0.28), rgba(214,222,245,0.4) 40%, rgba(214,222,245,0.14) 72%, transparent);
     animation: yardFog 9s ease-in-out infinite alternate;
   }
   @keyframes yardFog { from { transform: translateX(-2.5%); } to { transform: translateX(2.5%); } }
