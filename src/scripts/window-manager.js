@@ -165,36 +165,58 @@ function openWindow(id) {
 // Types out a short terminal session, then navigates to the piece. Closing the
 // window (or re-opening) cancels the pending redirect.
 let messageCliToken = 0;
+let messageKeyHandler = null;
+function stopMessageCli() {
+  messageCliToken++;
+  if (messageKeyHandler) { document.removeEventListener('keydown', messageKeyHandler); messageKeyHandler = null; }
+}
 function runMessageCli() {
   const win = document.querySelector('[data-window-id="message"]');
   const out = win && win.querySelector('.cli-out');
   if (!win || !out) return;
+  stopMessageCli();
   const myToken = ++messageCliToken;
+  const alive = () => myToken === messageCliToken && win.classList.contains('open');
   const url = 'https://messageinthewind.vercel.app/';
   const script =
-    'visitor@lyla ~ % open "message in the wind"\n\n' +
-    '> locating messageinthewind.vercel.app …\n' +
-    '> connection established\n' +
-    '> redirecting you now ';
+    'visitor@lyla ~ % open https://messageinthewind.vercel.app\n\n' +
+    '⚠ this will take you out of the portfolio.\n' +
+    'leave now? [y/n] ';
   out.textContent = '';
   let i = 0;
   const tick = () => {
-    if (myToken !== messageCliToken || !win.classList.contains('open')) return;
+    if (!alive()) return;
     out.textContent = script.slice(0, i);
     if (i < script.length) {
       const ch = script[i];
       i++;
-      setTimeout(tick, ch === '\n' ? 170 : 26);
+      setTimeout(tick, ch === '\n' ? 150 : 24);
     } else {
-      setTimeout(() => {
-        if (myToken === messageCliToken && win.classList.contains('open')) window.location.href = url;
-      }, 1100);
+      awaitLeaveAnswer(win, out, alive, url);
     }
   };
   tick();
 }
+// Wait for the visitor to press Y (leave -> redirect) or N / Esc (stay -> close).
+function awaitLeaveAnswer(win, out, alive, url) {
+  messageKeyHandler = (e) => {
+    if (!alive()) { stopMessageCli(); return; }
+    const k = (e.key || '').toLowerCase();
+    if (k === 'y') {
+      e.preventDefault(); stopMessageCli();
+      out.textContent += 'y\n\n↗ opening message in the wind …';
+      setTimeout(() => { if (win.classList.contains('open')) window.location.href = url; }, 750);
+    } else if (k === 'n' || k === 'escape') {
+      e.preventDefault(); stopMessageCli();
+      out.textContent += 'n\n\n> staying put. enjoy the rest of the portfolio!';
+      setTimeout(() => closeWindow('message'), 1700);
+    }
+  };
+  document.addEventListener('keydown', messageKeyHandler);
+}
 
 function closeWindow(id) {
+  if (id === 'message') stopMessageCli(); // cancel typing / the pending leave prompt
   if (isDesktop()) {
     const win = document.querySelector(`[data-window-id="${id}"]`);
     if (!win) return;

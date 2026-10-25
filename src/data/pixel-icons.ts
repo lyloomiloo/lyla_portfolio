@@ -2,18 +2,18 @@
 // 10x10 pixel grids: _=transparent, O=orange, Y=yellow-fill, K=dark, G=green, W=white, B=blue, S=sun, P=purple, X=grey
 
 export const icons: Record<string, string[][]> = {
-  // Terminal — message.sh desktop icon (black screen with a >_ prompt)
+  // Terminal — message.sh desktop icon (small black screen with a >_ prompt)
   cli: [
-    ['K','K','K','K','K','K','K','K','K','K'],
-    ['K','K','K','K','K','K','K','K','K','K'],
-    ['K','K','K','K','K','K','K','K','K','K'],
-    ['K','K','W','K','K','K','K','K','K','K'],
-    ['K','K','K','W','K','K','K','K','K','K'],
-    ['K','K','W','K','K','K','K','K','K','K'],
-    ['K','K','K','K','K','K','K','K','K','K'],
-    ['K','K','K','W','W','W','K','K','K','K'],
-    ['K','K','K','K','K','K','K','K','K','K'],
-    ['K','K','K','K','K','K','K','K','K','K'],
+    ['_','_','_','_','_','_','_','_','_','_'],
+    ['_','_','K','K','K','K','K','K','_','_'],
+    ['_','_','K','K','K','K','K','K','_','_'],
+    ['_','_','K','W','K','K','K','K','_','_'],
+    ['_','_','K','K','W','K','K','K','_','_'],
+    ['_','_','K','W','K','K','K','K','_','_'],
+    ['_','_','K','K','K','K','K','K','_','_'],
+    ['_','_','K','K','W','W','K','K','_','_'],
+    ['_','_','K','K','K','K','K','K','_','_'],
+    ['_','_','_','_','_','_','_','_','_','_'],
   ],
   // Retro CRT computer — game.exe desktop icon (green screen on a dark frame)
   computer: [
