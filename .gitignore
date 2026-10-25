@@ -29,3 +29,6 @@ public/showcase/magnific/magnific-for-desigual.zip
 public/showcase/magnific/*.zip
 .vercel
 .env*
+
+# Raw screen-capture originals — the site uses the compressed demo.mp4s
+*.mov
