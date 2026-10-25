@@ -81,6 +81,32 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['O','O','O','O','O','O','O','O'],
     ]
   },
+  // Retro CRT with a face — 8×8 (no vacancy)
+  novacancy: {
+    cols: 8, rows: 8, grid: [
+      ['K','K','K','K','K','K','K','K'],
+      ['K','G','G','G','G','G','G','K'],
+      ['K','G','K','G','G','K','G','K'],
+      ['K','G','G','G','G','G','G','K'],
+      ['K','G','K','K','K','K','G','K'],
+      ['K','K','K','K','K','K','K','K'],
+      ['_','_','K','K','K','K','_','_'],
+      ['_','K','K','K','K','K','K','_'],
+    ]
+  },
+  // Envelope with wind streaks — 8×8 (message in the wind)
+  messageinthewind: {
+    cols: 8, rows: 8, grid: [
+      ['_','_','K','K','K','K','K','K'],
+      ['_','_','K','O','K','K','O','K'],
+      ['B','_','K','K','O','O','K','K'],
+      ['_','B','K','K','K','K','K','K'],
+      ['B','_','K','K','K','K','K','K'],
+      ['_','_','K','K','K','K','K','K'],
+      ['_','_','_','_','_','_','_','_'],
+      ['_','_','_','_','_','_','_','_'],
+    ]
+  },
   // Sparkle / wonder — 8×8 (cozycollab)
   cozycollab: {
     cols: 8, rows: 8, grid: [
@@ -143,6 +169,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   cozycollab: { label: 'COZY COLLAB', type: 'browser', image: '/images/projects/cozycollab/cover.png' },
   mchach: { label: 'ESSAOUIRA', type: 'browser', image: '/images/projects/mchach/cover.jpg' },
   'mini-me': { label: 'MINI-ME', type: 'browser', image: '/images/projects/mini-me/cover.jpg' },
+  novacancy: { label: 'NO VACANCY', type: 'browser', image: '/images/projects/novacancy/cover.png' },
+  messageinthewind: { label: 'MESSAGE IN THE WIND', type: 'browser', image: '/images/projects/messageinthewind/cover.png' },
 };
 ---
 
