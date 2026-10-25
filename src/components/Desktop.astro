@@ -3,14 +3,9 @@ import DesktopIcon from './DesktopIcon.astro';
 import { icons, colorMap } from '../data/pixel-icons';
 const duckGrid = icons['duck'];
 
-// Pixel pumpkin king for the Draft Yard dark mode
-// Y=crown/collar, O=orange pumpkin + belt, K=cut-outs/hands/legs, P=royal cloak
-// A tiny two-circle pumpkin that wanders the yard like the duck.
-// Y=crown, O=pumpkin, K=face. Head circle over a body circle.
-// Single stem on top; the back edge of the body is a purple cape (P). Because
-// the sprite is flipped with scaleX(dir), the cape always trails on the back.
-// Single stem on top; a small purple cape billows from the top-back only.
-// The sprite flips with scaleX(dir), so the cape always trails on the back.
+// Draft Yard pumpkin. Y=stem, O=pumpkin body, K=face/arms/legs, P=cape.
+// Arms sit on both sides; the cape trails the back. The sprite flips with
+// scaleX(dir), so the cape/front always stay oriented to the walk direction.
 const pumpkinKing = [
   ['_','_','_','_','_','_','Y','_','_','_','_','_','_'],
   ['_','_','_','_','_','O','O','O','_','_','_','_','_'],
@@ -20,7 +15,7 @@ const pumpkinKing = [
   ['_','_','_','O','O','K','K','K','K','O','_','_','_'],
   ['_','_','_','P','O','O','O','O','O','_','_','_','_'],
   ['_','_','P','O','O','O','O','O','O','O','_','_','_'],
-  ['_','P','O','O','O','O','O','O','O','O','K','_','_'],
+  ['_','K','O','O','O','O','O','O','O','O','K','_','_'],
   ['P','P','O','O','O','O','O','O','O','O','_','_','_'],
   ['_','_','O','O','O','O','O','O','O','O','_','_','_'],
   ['_','_','_','O','O','O','O','O','O','_','_','_','_'],
@@ -623,29 +618,39 @@ const pumpkinKing = [
     });
   })();
 
-  // The pumpkin waddles around the yard like the desktop duck does the meadow.
+  // The pumpkin roams the whole meadow in 2D, the same way the desktop duck does:
+  // it walks toward random waypoints, pauses now and then, and faces its heading.
   (function () {
     const p = document.querySelector('.yard-pumpkin');
     if (!p) return;
-    const MIN = 6, MAX = 82, BASE = 19; // percent of the desktop
-    let x = 9, dir = 1, target = 60, pause = 600, last = performance.now();
+    const MINX = 5, MAXX = 85, MINY = 9, MAXY = 33; // percent of the desktop
+    let x = 20, y = 20, tx = 60, ty = 24, dir = 1, pause = 600, last = performance.now();
     const pick = () => {
-      target = MIN + Math.random() * (MAX - MIN);
-      dir = target >= x ? 1 : -1;
-      pause = 500 + Math.random() * 1400;
+      tx = MINX + Math.random() * (MAXX - MINX);
+      ty = MINY + Math.random() * (MAXY - MINY);
+      pause = 500 + Math.random() * 1600;
     };
+    const SPEED = 0.006;
     const frame = (now) => {
       const dt = Math.min(now - last, 50); last = now;
       if (document.body.classList.contains('draft-yard')) {
-        p.style.bottom = BASE + '%';
         if (pause > 0) {
           pause -= dt;
           p.classList.remove('walking');
         } else {
-          x += dir * 0.006 * dt;
-          if ((dir > 0 && x >= target) || (dir < 0 && x <= target)) { x = target; pick(); }
-          p.classList.add('walking');
-          p.style.left = x + '%';
+          const dx = tx - x, dy = ty - y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 0.7) {
+            pick();
+          } else {
+            x += (dx / dist) * SPEED * dt;
+            y += (dy / dist) * SPEED * 0.6 * dt; // slower vertical, like the duck
+            if (Math.abs(dx) > 0.1) dir = dx > 0 ? 1 : -1;
+            p.classList.add('walking');
+            p.style.left = x + '%';
+            p.style.bottom = y + '%';
+            if (Math.random() < 0.0012) pause = 600 + Math.random() * 1400; // occasional rest
+          }
         }
         p.style.transform = 'scaleX(' + dir + ')';
       }
