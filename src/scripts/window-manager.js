@@ -51,7 +51,7 @@ function openWindow(id) {
     }
     // Only scatter if not already maximized, and skip detail windows (they have
     // staggered positions) and the download pop-up (it stays centered).
-    if (!win.classList.contains('maximized') && !id.endsWith('-detail') && id !== 'showcase-dl' && id !== 'game') {
+    if (!win.classList.contains('maximized') && !id.endsWith('-detail') && id !== 'showcase-dl' && id !== 'game' && id !== 'message') {
       scatterWindow(win);
     }
     win.style.display = 'flex';
@@ -155,6 +155,43 @@ function openWindow(id) {
       document.body.removeChild(a);
     }, 500);
   }
+
+  // message.sh: a self-typing CLI that redirects to the portfolio piece.
+  if (id === 'message') {
+    setTimeout(() => runMessageCli(), 150);
+  }
+}
+
+// Types out a short terminal session, then navigates to the piece. Closing the
+// window (or re-opening) cancels the pending redirect.
+let messageCliToken = 0;
+function runMessageCli() {
+  const win = document.querySelector('[data-window-id="message"]');
+  const out = win && win.querySelector('.cli-out');
+  if (!win || !out) return;
+  const myToken = ++messageCliToken;
+  const url = 'https://messageinthewind.vercel.app/';
+  const script =
+    'visitor@lyla ~ % open "message in the wind"\n\n' +
+    '> locating messageinthewind.vercel.app …\n' +
+    '> connection established\n' +
+    '> redirecting you now ';
+  out.textContent = '';
+  let i = 0;
+  const tick = () => {
+    if (myToken !== messageCliToken || !win.classList.contains('open')) return;
+    out.textContent = script.slice(0, i);
+    if (i < script.length) {
+      const ch = script[i];
+      i++;
+      setTimeout(tick, ch === '\n' ? 170 : 26);
+    } else {
+      setTimeout(() => {
+        if (myToken === messageCliToken && win.classList.contains('open')) window.location.href = url;
+      }, 1100);
+    }
+  };
+  tick();
 }
 
 function closeWindow(id) {

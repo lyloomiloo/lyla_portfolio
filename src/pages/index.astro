@@ -135,6 +135,11 @@ import FunPanel from '../components/FunPanel.astro';
     </div>
   </Window>
 
+  <!-- Message in the Wind — self-typing CLI that redirects (desktop only) -->
+  <Window id="message" title="message.sh" darkMode={true} width="540px" height="208px" top="calc(50vh - 104px)" left="calc(50vw - 270px)">
+    <div class="cli"><span class="cli-out"></span><span class="cli-cursor">&#9608;</span></div>
+  </Window>
+
   <!-- Duck Runner Game — Desktop -->
   <Window id="duckgame" title="quack.exe" width="100vw" height="calc(100vh - 38px)" top="0" left="0">
     <canvas id="duckGameDesktop" style="width:100%; height:100%; display:block; image-rendering:pixelated; background:#87CEEB;"></canvas>
@@ -4416,6 +4421,15 @@ import FunPanel from '../components/FunPanel.astro';
   .nv-pbtn:active { transform: translate(3px, 3px); box-shadow: 0 0 0 #555; }
   .nv-pbtn--quit { background: #2a2a2a; color: #eee; }
   .nv-pbtn--start { background: var(--orange); color: #fff; }
+
+  /* message.sh — a self-typing terminal that redirects to the piece */
+  [data-window-id="message"] .os-window-body { padding: 0; overflow: hidden; background: var(--dark); }
+  .cli {
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.75; color: var(--green);
+    padding: 16px 18px; height: 100%; white-space: pre-wrap; word-break: break-word;
+    text-shadow: 0 0 5px rgba(57,255,20,.35);
+  }
+  .cli-cursor { color: var(--green); animation: nvBlink 0.9s steps(1, end) infinite; }
 
   /* Download pop-up — matches the resume window (cream card, mono, orange bar) */
   .scd { font-family: var(--font-mono); text-align: center; color: var(--text); font-size: 0.9rem; line-height: 1.8; }
