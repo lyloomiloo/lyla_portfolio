@@ -179,8 +179,12 @@ function runMessageCli() {
   const alive = () => myToken === messageCliToken && win.classList.contains('open');
   const url = 'https://messageinthewind.vercel.app/';
   const script =
+    'visitor@lyla ~ % cat message-in-the-wind.txt\n\n' +
+    'Words that were never spoken, messages that were never sent.\n' +
+    'Message in the Wind is an anthology series of fragmented\n' +
+    'memories and deep longings for a time that no longer exists.\n\n' +
     'visitor@lyla ~ % open https://messageinthewind.vercel.app\n\n' +
-    '⚠ this will take you out of the portfolio.\n' +
+    '⚠ this opens in a new tab outside of the portfolio.\n' +
     'leave now? [y/n] ';
   out.textContent = '';
   let i = 0;
@@ -190,7 +194,7 @@ function runMessageCli() {
     if (i < script.length) {
       const ch = script[i];
       i++;
-      setTimeout(tick, ch === '\n' ? 150 : 24);
+      setTimeout(tick, ch === '\n' ? 110 : 16);
     } else {
       awaitLeaveAnswer(win, out, alive, url);
     }
@@ -205,7 +209,8 @@ function awaitLeaveAnswer(win, out, alive, url) {
     if (k === 'y') {
       e.preventDefault(); stopMessageCli();
       out.textContent += 'y\n\n↗ opening message in the wind …';
-      setTimeout(() => { if (win.classList.contains('open')) window.location.href = url; }, 750);
+      window.open(url, '_blank', 'noopener'); // synchronous: keeps the keypress gesture so it isn't blocked
+      setTimeout(() => closeWindow('message'), 1400);
     } else if (k === 'n' || k === 'escape') {
       e.preventDefault(); stopMessageCli();
       out.textContent += 'n\n\n> staying put. enjoy the rest of the portfolio!';
