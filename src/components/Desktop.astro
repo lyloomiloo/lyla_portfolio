@@ -16,8 +16,10 @@ const pumpkinKing = [
   ['_','_','O','K','K','K','O','_','_'],
   ['_','_','_','O','O','O','_','_','_'],
   ['_','_','O','O','O','O','O','_','_'],
-  ['_','O','O','O','O','O','O','O','_'],
   ['K','O','O','O','O','O','O','O','K'],
+  ['O','O','O','O','O','O','O','O','O'],
+  ['O','O','O','O','O','O','O','O','O'],
+  ['_','O','O','O','O','O','O','O','_'],
   ['_','_','O','O','O','O','O','_','_'],
   ['_','_','K','K','_','K','K','_','_'],
 ];
@@ -356,7 +358,7 @@ const pumpkinKing = [
   /* pumpkin — small, wanders the yard like the duck (left/facing set by JS) */
   .yard-pumpkin {
     position: absolute; bottom: 20%; left: 9%; z-index: 4;
-    grid-template-columns: repeat(9, 5px); grid-template-rows: repeat(12, 5px);
+    grid-template-columns: repeat(9, 5px); grid-template-rows: repeat(14, 5px);
     image-rendering: pixelated; filter: drop-shadow(0 0 7px rgba(255,120,0,0.5));
     will-change: left, bottom, transform; cursor: pointer;
   }
