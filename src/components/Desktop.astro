@@ -18,15 +18,13 @@ const pumpkinKing = [
   ['_','_','O','O','O','O','O','O','_','_'],
   ['_','_','_','O','O','O','O','_','_','_'],
   ['_','_','Y','Y','Y','Y','Y','Y','_','_'],
-  ['_','P','P','P','P','P','P','P','P','_'],
-  ['K','P','P','P','P','P','P','P','P','K'],
+  ['_','_','_','P','P','P','P','_','_','_'],
   ['_','_','P','P','P','P','P','P','_','_'],
-  ['_','_','P','O','O','O','O','P','_','_'],
+  ['_','K','P','P','O','O','P','P','K','_'],
   ['_','_','P','P','P','P','P','P','_','_'],
-  ['_','_','P','P','P','P','P','P','_','_'],
+  ['_','_','_','P','P','P','P','_','_','_'],
+  ['_','_','_','K','_','_','K','_','_','_'],
   ['_','_','K','K','_','_','K','K','_','_'],
-  ['_','_','K','K','_','_','K','K','_','_'],
-  ['_','K','K','K','_','_','K','K','K','_'],
 ];
 ---
 
@@ -71,12 +69,6 @@ const pumpkinKing = [
     </div>
     <div class="yard-fog"></div>
   </div>
-
-  <!-- Dark-mode / Draft Yard toggle -->
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle the Draft Yard" title="Toggle the Draft Yard">
-    <span class="tt-moon"></span>
-    <span class="tt-sun"></span>
-  </button>
 
   <!-- Name tag -->
   <div class="desktop-nametag">
@@ -318,19 +310,19 @@ const pumpkinKing = [
   .f5 { bottom: 29%; left: 60%; background: #FF6B00; }
 
   /* ========== DRAFT YARD (dark mode) — pixel graveyard ========== */
+  /* toggle lives in the taskbar beside the clock */
   .theme-toggle {
-    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    z-index: 20; width: 40px; height: 40px; cursor: pointer; padding: 0;
-    background: rgba(255,255,255,0.5); border: 2px solid rgba(0,0,0,0.15); border-radius: 8px;
+    width: 26px; height: 20px; padding: 0; cursor: pointer; flex: none;
+    background: none; border: 1px solid #444; border-radius: 3px;
     display: flex; align-items: center; justify-content: center; image-rendering: pixelated;
+    transition: border-color 0.15s, background 0.15s;
   }
-  .theme-toggle:hover { background: rgba(255,255,255,0.78); }
-  .tt-moon { width: 18px; height: 18px; border-radius: 50%; background: #c9d6ef; box-shadow: inset -5px -3px 0 #a9b8d8; }
-  .tt-sun { display: none; width: 14px; height: 14px; border-radius: 50%; background: #FFD23F;
-    box-shadow: 0 -9px 0 -4px #FFD23F, 0 9px 0 -4px #FFD23F, -9px 0 0 -4px #FFD23F, 9px 0 0 -4px #FFD23F; }
-  .draft-yard .theme-toggle { background: rgba(26,16,48,0.6); border-color: rgba(255,255,255,0.25); }
-  .draft-yard .tt-moon { display: none; }
-  .draft-yard .tt-sun { display: block; }
+  .theme-toggle:hover { border-color: var(--orange); background: rgba(255,107,0,0.12); }
+  .tt-moon { width: 13px; height: 13px; border-radius: 50%; background: #c9d6ef; box-shadow: inset -4px -2px 0 #9aa8ca; }
+  .tt-sun { display: none; width: 10px; height: 10px; border-radius: 50%; background: #FFD23F;
+    box-shadow: 0 -7px 0 -3px #FFD23F, 0 7px 0 -3px #FFD23F, -7px 0 0 -3px #FFD23F, 7px 0 0 -3px #FFD23F; }
+  body.draft-yard .tt-moon { display: none; }
+  body.draft-yard .tt-sun { display: block; }
 
   /* yard elements — hidden in the meadow */
   .yard-moon, .yard-stars, .tomb, .yard-sign, .yard-pumpkin, .yard-fog { display: none; }
@@ -368,7 +360,7 @@ const pumpkinKing = [
   /* pumpkin king */
   .yard-pumpkin {
     position: absolute; bottom: 24%; left: 9%; z-index: 3;
-    grid-template-columns: repeat(10, 6px); grid-template-rows: repeat(21, 6px);
+    grid-template-columns: repeat(10, 6px); grid-template-rows: repeat(19, 6px);
     image-rendering: pixelated; filter: drop-shadow(0 0 9px rgba(255,120,0,0.5));
   }
   .yard-pumpkin > div { width: 6px; height: 6px; }
@@ -387,21 +379,21 @@ const pumpkinKing = [
   @keyframes yardFog { from { transform: translateX(-2.5%); } to { transform: translateX(2.5%); } }
 
   /* ===== the swap: meadow -> graveyard ===== */
-  .draft-yard .sky { background: linear-gradient(to bottom, #190f2e 0%, #3a1f5e 45%, #6a3a86 80%, #7d4a92 100%); }
-  .draft-yard .pixel-sun { display: none; }
-  .draft-yard .cloud, .draft-yard .cloud::before, .draft-yard .cloud::after { background: rgba(180,170,205,0.2); }
-  .draft-yard .hill-far { background: #2a2140; opacity: 0.6; }
-  .draft-yard .hill-mid { background: #241b38; opacity: 0.8; }
-  .draft-yard .hill-near { background: #1d1630; }
-  .draft-yard .ground { background: linear-gradient(to bottom, #2a2746 0%, #211f3a 40%, #171528 100%); }
-  .draft-yard .tree::before { background: #0e0b18; }
-  .draft-yard .tree::after { background: #15101f; border-radius: 40% 40% 30% 30%; box-shadow: 0 0 0 1px #0e0b18; }
-  .draft-yard .flower { background: #b06bd6; }
-  .draft-yard .flower::before { background: #3a2a52; }
-  .draft-yard .yard-moon, .draft-yard .yard-stars, .draft-yard .tomb, .draft-yard .yard-sign, .draft-yard .yard-fog { display: block; }
-  .draft-yard .yard-pumpkin { display: grid; }
+  body.draft-yard .sky { background: linear-gradient(to bottom, #190f2e 0%, #3a1f5e 45%, #6a3a86 80%, #7d4a92 100%); }
+  body.draft-yard .pixel-sun { display: none; }
+  body.draft-yard .cloud, body.draft-yard .cloud::before, body.draft-yard .cloud::after { background: rgba(180,170,205,0.2); }
+  body.draft-yard .hill-far { background: #2a2140; opacity: 0.6; }
+  body.draft-yard .hill-mid { background: #241b38; opacity: 0.8; }
+  body.draft-yard .hill-near { background: #1d1630; }
+  body.draft-yard .ground { background: linear-gradient(to bottom, #2a2746 0%, #211f3a 40%, #171528 100%); }
+  body.draft-yard .tree::before { background: #0e0b18; }
+  body.draft-yard .tree::after { background: #15101f; border-radius: 40% 40% 30% 30%; box-shadow: 0 0 0 1px #0e0b18; }
+  body.draft-yard .flower { background: #b06bd6; }
+  body.draft-yard .flower::before { background: #3a2a52; }
+  body.draft-yard .yard-moon, body.draft-yard .yard-stars, body.draft-yard .tomb, body.draft-yard .yard-sign, body.draft-yard .yard-fog { display: block; }
+  body.draft-yard .yard-pumpkin { display: grid; }
   /* the duck clocks out when the yard wakes up */
-  .draft-yard #deskDuck, .draft-yard .duck-counter { display: none !important; }
+  body.draft-yard #deskDuck, body.draft-yard .duck-counter { display: none !important; }
 
   /* ========== DESKTOP PET DUCK ========== */
   .duck {
@@ -580,16 +572,19 @@ const pumpkinKing = [
 
 <script>
   (function () {
-    const desktop = document.querySelector('.desktop');
+    const body = document.body;
     const btn = document.getElementById('themeToggle');
-    if (!desktop || !btn) return;
     const KEY = 'draftYard';
-    const apply = (on) => { desktop.classList.toggle('draft-yard', on); };
-    try { apply(localStorage.getItem(KEY) === '1'); } catch (e) {}
-    btn.addEventListener('click', () => {
-      const on = !desktop.classList.contains('draft-yard');
-      apply(on);
+    const mobile = window.matchMedia('(max-width: 768px)');
+    const wanted = () => { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
+    // Dark mode is desktop-only — never apply the Draft Yard on mobile.
+    const sync = () => body.classList.toggle('draft-yard', wanted() && !mobile.matches);
+    sync();
+    mobile.addEventListener('change', sync);
+    if (btn) btn.addEventListener('click', () => {
+      const on = !body.classList.contains('draft-yard');
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
+      sync();
     });
   })();
 </script>
