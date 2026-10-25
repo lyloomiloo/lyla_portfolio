@@ -170,6 +170,8 @@ function stopMessageCli() {
   messageCliToken++;
   if (messageKeyHandler) { document.removeEventListener('keydown', messageKeyHandler); messageKeyHandler = null; }
 }
+// A boot-log styled after about.exe: timestamped lines with INFO/OK/LOG/WARN
+// badges, each message typed out character by character.
 function runMessageCli() {
   const win = document.querySelector('[data-window-id="message"]');
   const out = win && win.querySelector('.cli-out');
@@ -178,42 +180,96 @@ function runMessageCli() {
   const myToken = ++messageCliToken;
   const alive = () => myToken === messageCliToken && win.classList.contains('open');
   const url = 'https://messageinthewind.vercel.app/';
-  const script =
-    'visitor@lyla ~ % cat message-in-the-wind.txt\n\n' +
-    'Words that were never spoken, messages that were never sent.\n' +
-    'Message in the Wind is an anthology series of fragmented\n' +
-    'memories and deep longings for a time that no longer exists.\n\n' +
-    'visitor@lyla ~ % open https://messageinthewind.vercel.app\n\n' +
-    '⚠ this opens in a new tab outside of the portfolio.\n' +
-    'leave now? [y/n] ';
-  out.textContent = '';
-  let i = 0;
-  const tick = () => {
-    if (!alive()) return;
-    out.textContent = script.slice(0, i);
-    if (i < script.length) {
-      const ch = script[i];
-      i++;
-      setTimeout(tick, ch === '\n' ? 110 : 16);
-    } else {
-      awaitLeaveAnswer(win, out, alive, url);
-    }
+  // segments: { t: text, c: optional class for colored spans }
+  const lines = [
+    { ts: '00:00:01', tag: 'INFO', cls: 'cli-info', seg: [{ t: 'Opening message-in-the-wind.sh...' }] },
+    { ts: '00:00:02', tag: 'OK', cls: 'cli-ok', seg: [{ t: 'Anthology loaded: ' }, { t: 'Message in the Wind', c: 'cli-accent' }] },
+    { ts: '00:00:03', tag: 'LOG', cls: 'cli-log', seg: [{ t: 'Words that were never spoken, messages that were never sent.' }] },
+    { ts: '00:00:04', tag: 'LOG', cls: 'cli-log', seg: [{ t: 'Fragmented memories, deep longings for a time that no longer exists.' }] },
+    { ts: '00:00:05', tag: 'INFO', cls: 'cli-info', seg: [{ t: 'Resolving ' }, { t: 'messageinthewind.vercel.app', c: 'cli-hl' }, { t: ' ...' }] },
+    { ts: '00:00:06', tag: 'WARN', cls: 'cli-warn', seg: [{ t: 'This opens in a new tab outside the portfolio.' }] },
+  ];
+  const CH = 16, LINE_GAP = 170;
+  out.innerHTML = '';
+
+  const el = (tag, cls, text) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
   };
-  tick();
+
+  let li = 0;
+  const typeLine = () => {
+    if (!alive()) return;
+    if (li >= lines.length) { promptLeave(); return; }
+    const data = lines[li];
+    const row = el('div', 'cli-line');
+    row.appendChild(el('span', 'cli-ts', data.ts));
+    row.appendChild(el('span', 'cli-tag ' + data.cls, data.tag));
+    const msg = el('span', 'cli-msg');
+    row.appendChild(msg);
+    out.appendChild(row);
+
+    let si = 0, ci = 0, span = null;
+    const typeChar = () => {
+      if (!alive()) return;
+      if (si >= data.seg.length) { li++; setTimeout(typeLine, LINE_GAP); return; }
+      const s = data.seg[si];
+      if (ci === 0 && s.c) { span = el('span', s.c); msg.appendChild(span); }
+      if (ci < s.t.length) {
+        if (s.c) span.textContent += s.t[ci];
+        else msg.appendChild(document.createTextNode(s.t[ci]));
+        ci++;
+        setTimeout(typeChar, CH);
+      } else { si++; ci = 0; setTimeout(typeChar, CH); }
+    };
+    typeChar();
+  };
+
+  const promptLeave = () => {
+    if (!alive()) return;
+    const row = el('div', 'cli-line cli-ask-row');
+    row.appendChild(el('span', 'cli-ts', '00:00:07'));
+    row.appendChild(el('span', 'cli-tag cli-ask', '?'));
+    const msg = el('span', 'cli-msg');
+    msg.appendChild(document.createTextNode('leave now? [y/n] '));
+    const cursor = el('span', 'cli-cursor', '█');
+    msg.appendChild(cursor);
+    row.appendChild(msg);
+    out.appendChild(row);
+    awaitLeaveAnswer(win, out, alive, url, msg, cursor);
+  };
+
+  typeLine();
 }
 // Wait for the visitor to press Y (leave -> redirect) or N / Esc (stay -> close).
-function awaitLeaveAnswer(win, out, alive, url) {
+function awaitLeaveAnswer(win, out, alive, url, msg, cursor) {
+  const addResult = (text, cls) => {
+    const row = document.createElement('div');
+    row.className = 'cli-line cli-result';
+    row.innerHTML = '<span class="cli-ts"></span><span class="cli-tag ' + cls + '">&gt;</span>';
+    const m = document.createElement('span');
+    m.className = 'cli-msg';
+    m.textContent = text;
+    row.appendChild(m);
+    out.appendChild(row);
+  };
   messageKeyHandler = (e) => {
     if (!alive()) { stopMessageCli(); return; }
     const k = (e.key || '').toLowerCase();
     if (k === 'y') {
       e.preventDefault(); stopMessageCli();
-      out.textContent += 'y\n\n↗ opening message in the wind …';
+      if (cursor) cursor.remove();
+      msg.appendChild(document.createTextNode('y'));
+      addResult('opening message in the wind …', 'cli-ok');
       window.open(url, '_blank', 'noopener'); // synchronous: keeps the keypress gesture so it isn't blocked
       setTimeout(() => closeWindow('message'), 1400);
     } else if (k === 'n' || k === 'escape') {
       e.preventDefault(); stopMessageCli();
-      out.textContent += 'n\n\n> staying put. enjoy the rest of the portfolio!';
+      if (cursor) cursor.remove();
+      msg.appendChild(document.createTextNode('n'));
+      addResult('staying put — enjoy the rest of the portfolio.', 'cli-info');
       setTimeout(() => closeWindow('message'), 1700);
     }
   };

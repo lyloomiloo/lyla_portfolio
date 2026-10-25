@@ -137,7 +137,7 @@ import FunPanel from '../components/FunPanel.astro';
 
   <!-- Message in the Wind — self-typing CLI that redirects (desktop only) -->
   <Window id="message" title="message.sh" darkMode={true} width="560px" height="328px" top="calc(50vh - 164px)" left="calc(50vw - 280px)">
-    <div class="cli"><span class="cli-out"></span><span class="cli-cursor">&#9608;</span></div>
+    <div class="cli"><div class="cli-out"></div></div>
   </Window>
 
   <!-- Duck Runner Game — Desktop -->
@@ -4424,11 +4424,24 @@ import FunPanel from '../components/FunPanel.astro';
 
   /* message.sh — a self-typing terminal that redirects to the piece */
   [data-window-id="message"] .os-window-body { padding: 0; overflow: hidden; background: var(--dark); }
+  /* message.sh — a boot log styled after about.exe, typed out line by line */
   .cli {
-    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.75; color: var(--green);
-    padding: 16px 18px; height: 100%; white-space: pre-wrap; word-break: break-word;
-    text-shadow: 0 0 5px rgba(57,255,20,.35);
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.7; color: #ccc;
+    padding: 16px 18px; height: 100%; overflow-y: auto; word-break: break-word;
   }
+  .cli-line { display: flex; gap: 0.6rem; align-items: baseline; margin-bottom: 0.32rem; }
+  .cli-ts { color: #555; font-size: 0.7rem; flex-shrink: 0; min-width: 7ch; }
+  .cli-tag { font-size: 0.62rem; font-weight: 700; padding: 1px 6px; flex-shrink: 0; text-transform: uppercase; align-self: center; }
+  .cli-info { background: #333; color: #aaa; }
+  .cli-ok { background: var(--green); color: var(--dark); }
+  .cli-warn { background: var(--orange); color: #fff; }
+  .cli-log { background: transparent; color: #555; border: 1px solid #444; }
+  .cli-ask { background: transparent; color: var(--green); border: 1px solid var(--green); }
+  .cli-msg { color: #ccc; }
+  .cli-hl { color: var(--green); font-weight: 600; }
+  .cli-accent { color: var(--orange); font-weight: 600; }
+  .cli-result .cli-tag { color: #777; border: none; background: transparent; padding-left: 0; }
+  .cli-result .cli-msg { color: #888; }
   .cli-cursor { color: var(--green); animation: nvBlink 0.9s steps(1, end) infinite; }
 
   /* Download pop-up — matches the resume window (cream card, mono, orange bar) */
