@@ -181,16 +181,16 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   <!-- Tab navigation -->
   {totalPages > 1 && (
     <div class="pw-tabs">
-      <button class="pw-tab active" data-pw-page="1">Highlights</button>
-      <button class="pw-tab" data-pw-page="2">Others</button>
-      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">For fun 01</button>}
-      {page4.length > 0 && <button class="pw-tab" data-pw-page="4">For fun 02</button>}
+      {page3.length > 0 && <button class="pw-tab active" data-pw-page="3">For fun</button>}
+      <button class="pw-tab" data-pw-page="1">Apps</button>
+      {page4.length > 0 && <button class="pw-tab" data-pw-page="4">Websites</button>}
+      <button class="pw-tab" data-pw-page="2">Tools</button>
       <span class="pw-page-indicator">1/{totalPages}</span>
     </div>
   )}
 
   <!-- Page 1 -->
-  <div class="pw-page active" data-pw-content="1">
+  <div class="pw-page" data-pw-content="1">
     <div class="pw-grid">
       {page1.map(p => {
         const icon = pixelIcons[p.data.slug];
@@ -337,7 +337,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
 
   <!-- Page 3 — RANDOM (external links, no detail page) -->
   {page3.length > 0 && (
-    <div class="pw-page" data-pw-content="3">
+    <div class="pw-page active" data-pw-content="3">
       <div class="pw-grid">
         {page3.map(p => {
           const icon = pixelIcons[p.data.slug];
@@ -514,7 +514,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
         pages.forEach(p => p.classList.remove('active'));
         tab.classList.add('active');
         document.querySelector(`[data-pw-content="${page}"]`)?.classList.add('active');
-        if (indicator) indicator.textContent = `${page}/${pages.length}`;
+        if (indicator) indicator.textContent = `${[...tabs].indexOf(tab) + 1}/${tabs.length}`;
       });
     });
 

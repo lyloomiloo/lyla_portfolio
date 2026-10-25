@@ -606,7 +606,8 @@ const pumpkinKing = [
     const btn = document.getElementById('themeToggle');
     const KEY = 'draftYard';
     const mobile = window.matchMedia('(max-width: 768px)');
-    const wanted = () => { try { return localStorage.getItem(KEY) === '1'; } catch (e) { return false; } };
+    // Default to the Draft Yard on first load; respect an explicit toggle afterwards.
+    const wanted = () => { try { const v = localStorage.getItem(KEY); return v === null ? true : v === '1'; } catch (e) { return true; } };
     // Dark mode is desktop-only — never apply the Draft Yard on mobile.
     const sync = () => body.classList.toggle('draft-yard', wanted() && !mobile.matches);
     sync();
