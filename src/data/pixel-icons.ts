@@ -55,6 +55,32 @@ export const icons: Record<string, string[][]> = {
     ['_','_','O','O','O','O','O','O','_','_'],
     ['_','_','_','O','O','O','O','_','_','_'],
   ],
+  // no vacancy — retro CRT (dark-grey frame, light-grey screen), shifted down a row
+  novacancy_app: [
+    ['_','_','_','_','_','_','_','_','_','_'],
+    ['_','Z','Z','Z','Z','Z','Z','Z','Z','_'],
+    ['_','Z','L','L','L','L','L','L','Z','_'],
+    ['_','Z','L','L','L','L','L','L','Z','_'],
+    ['_','Z','L','L','L','L','L','L','Z','_'],
+    ['_','Z','L','L','L','L','L','L','Z','_'],
+    ['_','Z','Z','Z','Z','Z','Z','Z','Z','_'],
+    ['_','_','_','Z','Z','Z','Z','_','_','_'],
+    ['_','_','Z','Z','Z','Z','Z','Z','_','_'],
+    ['_','Z','Z','Z','Z','Z','Z','Z','Z','_'],
+  ],
+  // message in the wind — white letter with wind streaks trailing off it
+  messagewind_app: [
+    ['_','_','_','_','_','_','_','_','_','_'],
+    ['_','_','_','W','W','W','W','W','W','_'],
+    ['_','_','_','W','K','W','W','K','W','_'],
+    ['_','X','_','W','W','K','K','W','W','_'],
+    ['X','_','_','W','W','W','W','W','W','_'],
+    ['_','X','_','W','W','W','W','W','W','_'],
+    ['X','_','_','W','W','W','W','W','W','_'],
+    ['_','X','_','W','W','W','W','W','W','_'],
+    ['_','_','_','W','W','W','W','W','W','_'],
+    ['_','_','_','_','_','_','_','_','_','_'],
+  ],
   // mini-me — hot-pink standing figure, black outline + eyes (symmetric)
   'mini-me_app': [
     ['_','_','_','K','K','K','K','K','_','_'],
@@ -580,4 +606,6 @@ export const colorMap: Record<string, string> = {
   'D': '#0A8F3F',
   'H': '#F4C89A',
   'M': '#FF4FA3',
+  'Z': '#4A4A4A',
+  'L': '#C8C8C8',
 };

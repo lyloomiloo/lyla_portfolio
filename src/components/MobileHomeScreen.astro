@@ -28,6 +28,8 @@ const funApps = [
   { icon: 'cozycollab_app', label: 'cozy collab', id: 'cozycollab-fun', bg: '#4A9EFF' },
   { icon: 'mchach_app', label: 'mchach', id: 'mchach-fun', bg: '#FFC93C' },
   { icon: 'mini-me_app', label: 'mini-me', id: 'mini-me-fun', bg: '#4CB963' },
+  { icon: 'novacancy_app', label: 'no vacancy', id: 'novacancy-fun', bg: '#FFC93C', url: 'https://novacancyhere.vercel.app/' },
+  { icon: 'messagewind_app', label: 'message in the wind', id: 'messagewind-fun', bg: '#6E8FB8', url: 'https://messageinthewind.vercel.app/' },
 ];
 
 const dockApps = [
@@ -175,8 +177,9 @@ const dockApps = [
       <div class="phone-folder-grid">
         {funApps.map(app => {
           const grid = icons[app.icon] || icons['notepad'];
+          const ext = (app as any).url;
           return (
-            <button class="phone-app" data-open-app={app.id} data-close-fun-folder>
+            <button class="phone-app" data-open-app={ext ? undefined : app.id} data-ext-url={ext} data-close-fun-folder>
               <div class="phone-app-icon" style={`background:${app.bg};`}>
                 <div class="phone-app-pixels">
                   {grid.flat().map(c => <div style={`background:${colorMap[c]};`} />)}

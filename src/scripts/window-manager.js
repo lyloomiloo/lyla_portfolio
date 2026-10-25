@@ -714,6 +714,18 @@ document.addEventListener('click', (e) => {
   }
 });
 
+// External "for fun" apps open their own site in a new tab, with a heads-up.
+document.addEventListener('click', (e) => {
+  const ext = e.target.closest('[data-ext-url]');
+  if (!ext) return;
+  e.preventDefault();
+  const url = ext.dataset.extUrl;
+  const name = (ext.querySelector('.phone-app-label')?.textContent || 'this project').trim();
+  if (window.confirm('"' + name + '" opens in a new tab, outside the portfolio.\n\nLeave now?')) {
+    window.open(url, '_blank', 'noopener'); // synchronous: keeps the tap gesture
+  }
+});
+
 // --- Swipe-down to close fullscreen mobile panels ---
 let swipeStartY = 0;
 let swipePanel = null;
