@@ -5,26 +5,28 @@ const duckGrid = icons['duck'];
 
 // Pixel pumpkin king for the Draft Yard dark mode
 // Y=crown/collar, O=orange pumpkin + belt, K=cut-outs/hands/legs, P=royal cloak
+// Head on top, big round ORANGE body (bigger than the head), purple cape
+// behind, stubby K hands + legs. Y=crown, O=pumpkin/body, K=face/limbs, P=cape
 const pumpkinKing = [
-  ['_','_','Y','_','Y','_','Y','_','_','_'],
-  ['_','_','Y','Y','Y','Y','Y','_','_','_'],
-  ['_','_','_','O','O','O','O','_','_','_'],
-  ['_','_','O','O','O','O','O','O','_','_'],
-  ['_','O','O','O','O','O','O','O','O','_'],
-  ['_','O','K','K','O','O','K','K','O','_'],
-  ['_','O','O','O','O','O','O','O','O','_'],
-  ['_','O','K','K','K','K','K','K','O','_'],
-  ['_','O','O','K','O','K','O','O','O','_'],
-  ['_','_','O','O','O','O','O','O','_','_'],
-  ['_','_','_','O','O','O','O','_','_','_'],
-  ['_','_','Y','Y','Y','Y','Y','Y','_','_'],
-  ['_','_','_','P','P','P','P','_','_','_'],
-  ['_','_','P','P','P','P','P','P','_','_'],
-  ['_','K','P','P','O','O','P','P','K','_'],
-  ['_','_','P','P','P','P','P','P','_','_'],
-  ['_','_','_','P','P','P','P','_','_','_'],
-  ['_','_','_','K','_','_','K','_','_','_'],
-  ['_','_','K','K','_','_','K','K','_','_'],
+  ['_','_','_','Y','_','Y','_','Y','_','_','_','_'],
+  ['_','_','_','Y','Y','Y','Y','Y','_','_','_','_'],
+  ['_','_','_','_','O','O','O','O','_','_','_','_'],
+  ['_','_','_','O','O','O','O','O','O','_','_','_'],
+  ['_','_','O','O','O','O','O','O','O','O','_','_'],
+  ['_','_','O','K','K','O','O','K','K','O','_','_'],
+  ['_','_','O','O','O','O','O','O','O','O','_','_'],
+  ['_','_','O','K','K','K','K','K','K','O','_','_'],
+  ['_','_','O','O','K','O','K','O','O','O','_','_'],
+  ['_','_','_','O','O','O','O','O','O','_','_','_'],
+  ['_','_','_','_','O','O','O','O','_','_','_','_'],
+  ['_','_','P','P','P','P','P','P','P','P','_','_'],
+  ['_','O','O','O','O','O','O','O','O','O','O','_'],
+  ['K','O','O','O','O','O','O','O','O','O','O','K'],
+  ['P','O','O','O','O','O','O','O','O','O','O','P'],
+  ['P','O','O','O','O','O','O','O','O','O','O','P'],
+  ['_','O','O','O','O','O','O','O','O','O','O','_'],
+  ['P','P','_','O','O','O','O','O','O','_','P','P'],
+  ['_','_','_','K','K','_','_','K','K','_','_','_'],
 ];
 ---
 
@@ -63,7 +65,6 @@ const pumpkinKing = [
     <div class="tomb tomb-1"></div>
     <div class="tomb tomb-2"></div>
     <div class="tomb tomb-3"></div>
-    <div class="yard-sign"><span>THE DRAFT YARD</span></div>
     <div class="yard-pumpkin">
       {pumpkinKing.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
     </div>
@@ -325,7 +326,7 @@ const pumpkinKing = [
   body.draft-yard .tt-sun { display: block; }
 
   /* yard elements — hidden in the meadow */
-  .yard-moon, .yard-stars, .tomb, .yard-sign, .yard-pumpkin, .yard-fog { display: none; }
+  .yard-moon, .yard-stars, .tomb, .yard-pumpkin, .yard-fog { display: none; }
 
   .yard-moon {
     position: absolute; top: 9%; left: 13%; width: 54px; height: 54px; border-radius: 50%;
@@ -360,16 +361,10 @@ const pumpkinKing = [
   /* pumpkin king */
   .yard-pumpkin {
     position: absolute; bottom: 24%; left: 9%; z-index: 3;
-    grid-template-columns: repeat(10, 6px); grid-template-rows: repeat(19, 6px);
+    grid-template-columns: repeat(12, 6px); grid-template-rows: repeat(19, 6px);
     image-rendering: pixelated; filter: drop-shadow(0 0 9px rgba(255,120,0,0.5));
   }
   .yard-pumpkin > div { width: 6px; height: 6px; }
-  /* THE DRAFT YARD sign */
-  .yard-sign {
-    position: absolute; top: 19%; left: 50%; transform: translateX(-50%) rotate(-2deg); z-index: 2;
-    background: #b98b55; border: 3px solid #7d5a33; padding: 4px 12px; box-shadow: 3px 4px 0 rgba(0,0,0,0.3);
-  }
-  .yard-sign span { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.08em; font-size: 0.72rem; color: #2a1d10; }
   /* drifting ground fog */
   .yard-fog {
     position: absolute; left: -6%; right: -6%; bottom: 23%; height: 17%; pointer-events: none;
@@ -390,7 +385,7 @@ const pumpkinKing = [
   body.draft-yard .tree::after { background: #15101f; border-radius: 40% 40% 30% 30%; box-shadow: 0 0 0 1px #0e0b18; }
   body.draft-yard .flower { background: #b06bd6; }
   body.draft-yard .flower::before { background: #3a2a52; }
-  body.draft-yard .yard-moon, body.draft-yard .yard-stars, body.draft-yard .tomb, body.draft-yard .yard-sign, body.draft-yard .yard-fog { display: block; }
+  body.draft-yard .yard-moon, body.draft-yard .yard-stars, body.draft-yard .tomb, body.draft-yard .yard-fog { display: block; }
   body.draft-yard .yard-pumpkin { display: grid; }
   /* the duck clocks out when the yard wakes up */
   body.draft-yard #deskDuck, body.draft-yard .duck-counter { display: none !important; }

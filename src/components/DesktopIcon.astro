@@ -51,8 +51,10 @@ const grid = icons[icon] || icons['notepad'];
     width: 5px;
     height: 5px;
   }
-  /* Draft Yard: invert the icon art so bright cards don't glare at night */
-  body.draft-yard .desktop-icon-graphic { filter: invert(1) hue-rotate(180deg); }
+  /* Draft Yard: invert the bright document icons so they don't glare at night */
+  body.draft-yard .desktop-icon[data-icon-id="resume"] .desktop-icon-graphic,
+  body.draft-yard .desktop-icon[data-icon-id="todo"] .desktop-icon-graphic,
+  body.draft-yard .desktop-icon[data-icon-id="readme"] .desktop-icon-graphic { filter: invert(1) hue-rotate(180deg); }
   .desktop-icon-label {
     font-family: var(--font-mono);
     font-size: 0.7rem;
