@@ -55,6 +55,8 @@ const grid = icons[icon] || icons['notepad'];
   body.draft-yard .desktop-icon[data-icon-id="resume"] .desktop-icon-graphic,
   body.draft-yard .desktop-icon[data-icon-id="todo"] .desktop-icon-graphic,
   body.draft-yard .desktop-icon[data-icon-id="readme"] .desktop-icon-graphic { filter: invert(1) hue-rotate(180deg); }
+  /* contact (coffee mug) reads as a clean white silhouette at night */
+  body.draft-yard .desktop-icon[data-icon-id="contact"] .desktop-icon-graphic { filter: brightness(0) invert(1); }
   .desktop-icon-label {
     font-family: var(--font-mono);
     font-size: 0.7rem;

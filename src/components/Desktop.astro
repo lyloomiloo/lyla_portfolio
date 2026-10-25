@@ -5,28 +5,19 @@ const duckGrid = icons['duck'];
 
 // Pixel pumpkin king for the Draft Yard dark mode
 // Y=crown/collar, O=orange pumpkin + belt, K=cut-outs/hands/legs, P=royal cloak
-// Head on top, big round ORANGE body (bigger than the head), purple cape
-// behind, stubby K hands + legs. Y=crown, O=pumpkin/body, K=face/limbs, P=cape
+// A tiny two-circle pumpkin that wanders the yard like the duck.
+// Y=crown, O=pumpkin, K=face. Head circle over a body circle.
 const pumpkinKing = [
-  ['_','_','_','Y','_','Y','_','Y','_','_','_','_'],
-  ['_','_','_','Y','Y','Y','Y','Y','_','_','_','_'],
-  ['_','_','_','_','O','O','O','O','_','_','_','_'],
-  ['_','_','_','O','O','O','O','O','O','_','_','_'],
-  ['_','_','O','O','O','O','O','O','O','O','_','_'],
-  ['_','_','O','K','K','O','O','K','K','O','_','_'],
-  ['_','_','O','O','O','O','O','O','O','O','_','_'],
-  ['_','_','O','K','K','K','K','K','K','O','_','_'],
-  ['_','_','O','O','K','O','K','O','O','O','_','_'],
-  ['_','_','_','O','O','O','O','O','O','_','_','_'],
-  ['_','_','_','_','O','O','O','O','_','_','_','_'],
-  ['_','_','P','P','P','P','P','P','P','P','_','_'],
-  ['_','O','O','O','O','O','O','O','O','O','O','_'],
-  ['K','O','O','O','O','O','O','O','O','O','O','K'],
-  ['P','O','O','O','O','O','O','O','O','O','O','P'],
-  ['P','O','O','O','O','O','O','O','O','O','O','P'],
-  ['_','O','O','O','O','O','O','O','O','O','O','_'],
-  ['P','P','_','O','O','O','O','O','O','_','P','P'],
-  ['_','_','_','K','K','_','_','K','K','_','_','_'],
+  ['_','_','Y','_','Y','_','_'],
+  ['_','O','O','O','O','O','_'],
+  ['O','O','K','O','K','O','O'],
+  ['O','O','O','O','O','O','O'],
+  ['_','O','K','K','K','O','_'],
+  ['_','_','O','O','O','_','_'],
+  ['_','O','O','O','O','O','_'],
+  ['O','O','O','O','O','O','O'],
+  ['O','O','O','O','O','O','O'],
+  ['_','O','O','O','O','O','_'],
 ];
 ---
 
@@ -319,9 +310,11 @@ const pumpkinKing = [
     transition: border-color 0.15s, background 0.15s;
   }
   .theme-toggle:hover { border-color: var(--orange); background: rgba(255,107,0,0.12); }
-  .tt-moon { width: 13px; height: 13px; border-radius: 50%; background: #c9d6ef; box-shadow: inset -4px -2px 0 #9aa8ca; }
-  .tt-sun { display: none; width: 10px; height: 10px; border-radius: 50%; background: #FFD23F;
-    box-shadow: 0 -7px 0 -3px #FFD23F, 0 7px 0 -3px #FFD23F, -7px 0 0 -3px #FFD23F, 7px 0 0 -3px #FFD23F; }
+  /* moon/sun colored to match the taskbar — muted grey in day, orange at night */
+  .tt-moon { width: 13px; height: 13px; border-radius: 50%; background: #9ba1ab; box-shadow: inset -4px -2px 0 #5a5f68; }
+  .theme-toggle:hover .tt-moon { background: var(--orange); box-shadow: inset -4px -2px 0 #a8450a; }
+  .tt-sun { display: none; width: 10px; height: 10px; border-radius: 50%; background: var(--orange);
+    box-shadow: 0 -7px 0 -3px var(--orange), 0 7px 0 -3px var(--orange), -7px 0 0 -3px var(--orange), 7px 0 0 -3px var(--orange); }
   body.draft-yard .tt-moon { display: none; }
   body.draft-yard .tt-sun { display: block; }
 
@@ -358,13 +351,14 @@ const pumpkinKing = [
   .tomb-1 { bottom: 31%; left: 40%; }
   .tomb-2 { bottom: 29%; left: 58%; width: 28px; height: 32px; }
   .tomb-3 { bottom: 30%; right: 16%; width: 30px; height: 36px; }
-  /* pumpkin king */
+  /* pumpkin — small, wanders the yard like the duck (left/facing set by JS) */
   .yard-pumpkin {
-    position: absolute; bottom: 24%; left: 9%; z-index: 3;
-    grid-template-columns: repeat(12, 6px); grid-template-rows: repeat(19, 6px);
-    image-rendering: pixelated; filter: drop-shadow(0 0 9px rgba(255,120,0,0.5));
+    position: absolute; bottom: 20%; left: 9%; z-index: 4;
+    grid-template-columns: repeat(7, 4px); grid-template-rows: repeat(10, 4px);
+    image-rendering: pixelated; filter: drop-shadow(0 0 7px rgba(255,120,0,0.5));
+    will-change: left, bottom, transform;
   }
-  .yard-pumpkin > div { width: 6px; height: 6px; }
+  .yard-pumpkin > div { width: 4px; height: 4px; }
   /* drifting ground fog */
   .yard-fog {
     position: absolute; left: -6%; right: -6%; bottom: 23%; height: 17%; pointer-events: none;
@@ -581,5 +575,39 @@ const pumpkinKing = [
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
       sync();
     });
+  })();
+
+  // The pumpkin waddles around the yard like the desktop duck does the meadow.
+  (function () {
+    const p = document.querySelector('.yard-pumpkin');
+    if (!p) return;
+    const MIN = 6, MAX = 82, BASE = 19; // percent of the desktop
+    let x = 9, dir = 1, target = 60, pause = 600, last = performance.now();
+    const pick = () => {
+      target = MIN + Math.random() * (MAX - MIN);
+      dir = target >= x ? 1 : -1;
+      pause = 500 + Math.random() * 1400;
+    };
+    const frame = (now) => {
+      const dt = Math.min(now - last, 50); last = now;
+      if (document.body.classList.contains('draft-yard')) {
+        if (pause > 0) {
+          pause -= dt;
+          p.style.bottom = BASE + '%';
+          p.style.transform = 'scaleX(' + dir + ')';
+        } else {
+          x += dir * 0.006 * dt;
+          if ((dir > 0 && x >= target) || (dir < 0 && x <= target)) { x = target; pick(); }
+          const bob = Math.abs(Math.sin(now / 150)) * 1.6;
+          const waddle = Math.sin(now / 150) * 5;
+          p.style.left = x + '%';
+          p.style.bottom = (BASE + bob) + '%';
+          p.style.transform = 'scaleX(' + dir + ') rotate(' + waddle + 'deg)';
+        }
+      }
+      requestAnimationFrame(frame);
+    };
+    pick();
+    requestAnimationFrame(frame);
   })();
 </script>
