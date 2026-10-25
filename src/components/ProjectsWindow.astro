@@ -95,16 +95,16 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['_','K','K','K','K','K','K','_'],
     ]
   },
-  // Envelope with wind streaks — 8×8 (message in the wind)
+  // Paper plane in greys — 8×8 (message in the wind)
   messageinthewind: {
     cols: 8, rows: 8, grid: [
-      ['_','_','K','K','K','K','K','K'],
-      ['_','_','K','O','K','K','O','K'],
-      ['B','_','K','K','O','O','K','K'],
-      ['_','B','K','K','K','K','K','K'],
-      ['B','_','K','K','K','K','K','K'],
-      ['_','_','K','K','K','K','K','K'],
       ['_','_','_','_','_','_','_','_'],
+      ['X','_','_','_','_','_','_','_'],
+      ['X','X','X','_','_','_','_','_'],
+      ['X','X','X','X','X','_','_','_'],
+      ['N','N','N','N','N','N','N','N'],
+      ['N','N','N','N','_','_','_','_'],
+      ['N','N','_','_','_','_','_','_'],
       ['_','_','_','_','_','_','_','_'],
     ]
   },
@@ -158,6 +158,8 @@ const iconColors: Record<string, string> = {
   'K': '#222',
   'D': '#0A8F3F',
   'S': '#F4C89A',
+  'X': '#AEAEAE',
+  'N': '#6E6E6E',
 };
 
 // Mockup preview config per project
@@ -181,8 +183,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     <div class="pw-tabs">
       <button class="pw-tab active" data-pw-page="1">Highlights</button>
       <button class="pw-tab" data-pw-page="2">Others</button>
-      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">For fun p1</button>}
-      {page4.length > 0 && <button class="pw-tab" data-pw-page="4">For fun p2</button>}
+      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">For fun 01</button>}
+      {page4.length > 0 && <button class="pw-tab" data-pw-page="4">For fun 02</button>}
       <span class="pw-page-indicator">1/{totalPages}</span>
     </div>
   )}
@@ -370,7 +372,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 target={p.data.download ? undefined : '_blank'}
                 rel="noopener"
                 download={p.data.download ? '' : undefined}
-              >{p.data.cta ?? 'VISIT SITE →'}</a>
+              >VIEW PROJECT →</a>
 
               {mockup && (
                 <div class="pw-preview">
@@ -452,7 +454,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 target={p.data.download ? undefined : '_blank'}
                 rel="noopener"
                 download={p.data.download ? '' : undefined}
-              >{p.data.cta ?? 'VISIT SITE →'}</a>
+              >VIEW PROJECT →</a>
 
               {mockup && (
                 <div class="pw-preview">
