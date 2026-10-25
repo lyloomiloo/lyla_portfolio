@@ -2,6 +2,21 @@
 import DesktopIcon from './DesktopIcon.astro';
 import { icons, colorMap } from '../data/pixel-icons';
 const duckGrid = icons['duck'];
+
+// Pixel pumpkin king for the Draft Yard dark mode (Y=crown, O=orange, K=cut-outs)
+const pumpkinKing = [
+  ['_','Y','_','Y','_','Y','_','_'],
+  ['_','Y','Y','Y','Y','Y','_','_'],
+  ['_','_','O','O','O','O','_','_'],
+  ['_','O','O','O','O','O','O','_'],
+  ['O','O','O','O','O','O','O','O'],
+  ['O','K','K','O','O','K','K','O'],
+  ['O','O','O','O','O','O','O','O'],
+  ['O','K','K','K','K','K','K','O'],
+  ['O','O','K','O','K','O','O','O'],
+  ['_','O','O','O','O','O','O','_'],
+  ['_','_','O','O','O','O','_','_'],
+];
 ---
 
 <div class="desktop">
@@ -32,7 +47,25 @@ const duckGrid = icons['duck'];
     <div class="flower f3"></div>
     <div class="flower f4"></div>
     <div class="flower f5"></div>
+
+    <!-- Draft Yard (dark mode) — pixel graveyard, hidden until toggled -->
+    <div class="yard-moon"></div>
+    <div class="yard-stars"></div>
+    <div class="tomb tomb-1"></div>
+    <div class="tomb tomb-2"></div>
+    <div class="tomb tomb-3"></div>
+    <div class="yard-sign"><span>THE DRAFT YARD</span></div>
+    <div class="yard-pumpkin">
+      {pumpkinKing.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
+    </div>
+    <div class="yard-fog"></div>
   </div>
+
+  <!-- Dark-mode / Draft Yard toggle -->
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle the Draft Yard" title="Toggle the Draft Yard">
+    <span class="tt-moon"></span>
+    <span class="tt-sun"></span>
+  </button>
 
   <!-- Name tag -->
   <div class="desktop-nametag">
@@ -273,6 +306,90 @@ const duckGrid = icons['duck'];
   .f4 { bottom: 26%; right: 15%; background: #FFE066; }
   .f5 { bottom: 29%; left: 60%; background: #FF6B00; }
 
+  /* ========== DRAFT YARD (dark mode) — pixel graveyard ========== */
+  .theme-toggle {
+    position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+    z-index: 20; width: 40px; height: 40px; cursor: pointer; padding: 0;
+    background: rgba(255,255,255,0.5); border: 2px solid rgba(0,0,0,0.15); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; image-rendering: pixelated;
+  }
+  .theme-toggle:hover { background: rgba(255,255,255,0.78); }
+  .tt-moon { width: 18px; height: 18px; border-radius: 50%; background: #c9d6ef; box-shadow: inset -5px -3px 0 #a9b8d8; }
+  .tt-sun { display: none; width: 14px; height: 14px; border-radius: 50%; background: #FFD23F;
+    box-shadow: 0 -9px 0 -4px #FFD23F, 0 9px 0 -4px #FFD23F, -9px 0 0 -4px #FFD23F, 9px 0 0 -4px #FFD23F; }
+  .draft-yard .theme-toggle { background: rgba(26,16,48,0.6); border-color: rgba(255,255,255,0.25); }
+  .draft-yard .tt-moon { display: none; }
+  .draft-yard .tt-sun { display: block; }
+
+  /* yard elements — hidden in the meadow */
+  .yard-moon, .yard-stars, .tomb, .yard-sign, .yard-pumpkin, .yard-fog { display: none; }
+
+  .yard-moon {
+    position: absolute; top: 9%; left: 13%; width: 54px; height: 54px; border-radius: 50%;
+    background: #dfe8ff;
+    box-shadow: 0 0 0 4px rgba(223,232,255,0.28), 0 0 44px 10px rgba(180,200,255,0.4), inset -8px -5px 0 #c3d0f0;
+  }
+  .yard-stars {
+    position: absolute; left: 0; right: 0; top: 0; height: 55%; pointer-events: none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 22% 18%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 35% 32%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 60% 12%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 72% 26%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 85% 15%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 48% 22%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 9% 30%, #fff, transparent);
+  }
+  /* tombstones */
+  .tomb {
+    position: absolute; width: 34px; height: 40px; background: #6c6b86;
+    border-radius: 50% 50% 0 0 / 42% 42% 0 0;
+    box-shadow: inset -4px 0 0 rgba(0,0,0,0.2), inset 4px 0 0 rgba(255,255,255,0.08);
+    image-rendering: pixelated;
+  }
+  .tomb::before {
+    content: ''; position: absolute; top: 13px; left: 50%; transform: translateX(-50%);
+    width: 13px; height: 3px; background: rgba(0,0,0,0.28); box-shadow: 0 5px 0 rgba(0,0,0,0.28);
+  }
+  .tomb-1 { bottom: 31%; left: 40%; }
+  .tomb-2 { bottom: 29%; left: 58%; width: 28px; height: 32px; }
+  .tomb-3 { bottom: 30%; right: 16%; width: 30px; height: 36px; }
+  /* pumpkin king */
+  .yard-pumpkin {
+    position: absolute; bottom: 29%; left: 11%; z-index: 3;
+    grid-template-columns: repeat(8, 7px); grid-template-rows: repeat(11, 7px);
+    image-rendering: pixelated; filter: drop-shadow(0 0 9px rgba(255,120,0,0.5));
+  }
+  .yard-pumpkin > div { width: 7px; height: 7px; }
+  /* THE DRAFT YARD sign */
+  .yard-sign {
+    position: absolute; top: 19%; left: 50%; transform: translateX(-50%) rotate(-2deg); z-index: 2;
+    background: #b98b55; border: 3px solid #7d5a33; padding: 4px 12px; box-shadow: 3px 4px 0 rgba(0,0,0,0.3);
+  }
+  .yard-sign span { font-family: var(--font-display); font-weight: 800; letter-spacing: 0.08em; font-size: 0.72rem; color: #2a1d10; }
+  /* drifting ground fog */
+  .yard-fog {
+    position: absolute; left: -6%; right: -6%; bottom: 23%; height: 17%; pointer-events: none;
+    background: linear-gradient(to top, rgba(214,222,245,0.5), rgba(214,222,245,0.12) 55%, transparent);
+    animation: yardFog 9s ease-in-out infinite alternate;
+  }
+  @keyframes yardFog { from { transform: translateX(-2.5%); } to { transform: translateX(2.5%); } }
+
+  /* ===== the swap: meadow -> graveyard ===== */
+  .draft-yard .sky { background: linear-gradient(to bottom, #190f2e 0%, #3a1f5e 45%, #6a3a86 80%, #7d4a92 100%); }
+  .draft-yard .pixel-sun { display: none; }
+  .draft-yard .cloud, .draft-yard .cloud::before, .draft-yard .cloud::after { background: rgba(180,170,205,0.2); }
+  .draft-yard .hill-far { background: #2a2140; opacity: 0.6; }
+  .draft-yard .hill-mid { background: #241b38; opacity: 0.8; }
+  .draft-yard .hill-near { background: #1d1630; }
+  .draft-yard .ground { background: linear-gradient(to bottom, #2a2746 0%, #211f3a 40%, #171528 100%); }
+  .draft-yard .tree::before { background: #0e0b18; }
+  .draft-yard .tree::after { background: #15101f; border-radius: 40% 40% 30% 30%; box-shadow: 0 0 0 1px #0e0b18; }
+  .draft-yard .flower { background: #b06bd6; }
+  .draft-yard .flower::before { background: #3a2a52; }
+  .draft-yard .yard-moon, .draft-yard .yard-stars, .draft-yard .tomb, .draft-yard .yard-sign, .draft-yard .yard-fog { display: block; }
+  .draft-yard .yard-pumpkin { display: grid; }
+
   /* ========== DESKTOP PET DUCK ========== */
   .duck {
     position: absolute;
@@ -443,6 +560,23 @@ const duckGrid = icons['duck'];
     .desktop-nametag { display: none !important; }
     .duck-counter { display: none !important; }
     #deskDuck { display: none !important; }
+    .theme-toggle { display: none !important; }
     .sky { height: 80%; }
   }
 </style>
+
+<script>
+  (function () {
+    const desktop = document.querySelector('.desktop');
+    const btn = document.getElementById('themeToggle');
+    if (!desktop || !btn) return;
+    const KEY = 'draftYard';
+    const apply = (on) => { desktop.classList.toggle('draft-yard', on); };
+    try { apply(localStorage.getItem(KEY) === '1'); } catch (e) {}
+    btn.addEventListener('click', () => {
+      const on = !desktop.classList.contains('draft-yard');
+      apply(on);
+      try { localStorage.setItem(KEY, on ? '1' : '0'); } catch (e) {}
+    });
+  })();
+</script>
