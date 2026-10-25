@@ -6,8 +6,9 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 // Group by page
 const page1 = projects.filter(p => p.data.page === 1);
 const page2 = projects.filter(p => p.data.page === 2);
-const page3 = projects.filter(p => p.data.page === 3); // RANDOM — external, no detail page
-const totalPages = page3.length > 0 ? 3 : page2.length > 0 ? 2 : 1;
+const page3 = projects.filter(p => p.data.page === 3); // RANDOM — external, no detail page (For fun p1)
+const page4 = projects.filter(p => p.data.page === 4); // RANDOM — external, no detail page (For fun p2)
+const totalPages = page4.length > 0 ? 4 : page3.length > 0 ? 3 : page2.length > 0 ? 2 : 1;
 
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
@@ -180,7 +181,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     <div class="pw-tabs">
       <button class="pw-tab active" data-pw-page="1">Highlights</button>
       <button class="pw-tab" data-pw-page="2">Others</button>
-      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">For fun</button>}
+      {page3.length > 0 && <button class="pw-tab" data-pw-page="3">For fun p1</button>}
+      {page4.length > 0 && <button class="pw-tab" data-pw-page="4">For fun p2</button>}
       <span class="pw-page-indicator">1/{totalPages}</span>
     </div>
   )}
@@ -336,6 +338,88 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     <div class="pw-page" data-pw-content="3">
       <div class="pw-grid">
         {page3.map(p => {
+          const icon = pixelIcons[p.data.slug];
+          const mockup = mockupConfig[p.data.slug];
+          return (
+            <div
+              class="pw-card pw-card--random"
+              data-pw-expand={mockup?.image}
+              data-pw-video={p.data.video}
+              data-pw-title={`${p.data.slug}.app`}
+            >
+              {icon && (
+                <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+                  {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                </div>
+              )}
+              <span class="pw-num">0{p.data.order}</span>
+              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              {p.data.hook.includes('|') ? (
+                <div class="pw-hook">
+                  <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+                  <p>{p.data.hook.split('|')[1]}</p>
+                </div>
+              ) : (
+                <p class="pw-hook">{p.data.hook}</p>
+              )}
+              {(p.data.location ?? p.data.type) && <div class="pw-location">{p.data.location ?? p.data.type}</div>}
+              <div class="pw-meta">{p.data.status}</div>
+              <a
+                class="pw-arrow"
+                href={p.data.link}
+                target={p.data.download ? undefined : '_blank'}
+                rel="noopener"
+                download={p.data.download ? '' : undefined}
+              >{p.data.cta ?? 'VISIT SITE →'}</a>
+
+              {mockup && (
+                <div class="pw-preview">
+                  {mockup.type === 'phone' ? (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-phone">
+                        <div class="pw-phone-notch"></div>
+                        <div class="pw-phone-screen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-browser">
+                        <div class="pw-bbar">
+                          <span class="pw-bdot" style="background:#FF6B00"></span>
+                          <span class="pw-bdot" style="background:#39FF14"></span>
+                          <span class="pw-bdot" style="background:#666"></span>
+                          <span class="pw-burl">{p.data.slug}.app</span>
+                        </div>
+                        <div class="pw-bscreen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )}
+
+  <!-- Page 4 — RANDOM (For fun p2) -->
+  {page4.length > 0 && (
+    <div class="pw-page" data-pw-content="4">
+      <div class="pw-grid">
+        {page4.map(p => {
           const icon = pixelIcons[p.data.slug];
           const mockup = mockupConfig[p.data.slug];
           return (

@@ -12,8 +12,8 @@ status: "Live · Jul 2026"
 year: "2026"
 tags: ["Interactive", "Illustration", "Web Toy", "For Fun"]
 thumbnail: "/images/projects/mchach/cover.jpg"
-order: 6
-page: 3
+order: 9
+page: 4
 video: "/images/projects/mchach/demo.mp4"
 link: "https://mchach.vercel.app/"
 ---

@@ -11,7 +11,7 @@ status: "Live · 2026"
 year: "2026"
 tags: ["Anthology", "Writing", "For Fun"]
 thumbnail: "/images/projects/messageinthewind/cover.png"
-order: 9
+order: 5
 page: 3
 link: "https://messageinthewind.vercel.app/"
 cta: "READ →"

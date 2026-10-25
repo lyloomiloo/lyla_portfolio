@@ -11,7 +11,7 @@ status: "Live · 2026"
 year: "2026"
 tags: ["Game", "Escape Room", "For Fun"]
 thumbnail: "/images/projects/novacancy/cover.png"
-order: 8
+order: 6
 page: 3
 link: "https://novacancyhere.vercel.app/"
 cta: "PLAY →"
