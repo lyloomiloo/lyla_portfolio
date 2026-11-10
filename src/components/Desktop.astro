@@ -62,17 +62,20 @@ const firs: [string, number][] = [
   ['bottom:33%; right:20%;', 3],
   ['bottom:35%; right:35%;', 4],
 ];
-// A few small wrapped boxes dotted on the snow. S=ribbon, the arg colours the box.
+// Small wrapped boxes scattered on the snow, in the fairy-light colours. W=ribbon.
 const gift = (c: string) => [
-  `${c}${c}S${c}${c}`,
-  'SSSSS',
-  `${c}${c}S${c}${c}`,
-  `${c}${c}S${c}${c}`,
+  `${c}${c}W${c}${c}`,
+  'WWWWW',
+  `${c}${c}W${c}${c}`,
+  `${c}${c}W${c}${c}`,
 ].map(r => r.split(''));
 const gifts: [string[][], string, number][] = [
-  [gift('R'), 'bottom:19%; left:40%;', 4],
-  [gift('D'), 'bottom:18.5%; left:43.5%;', 4],
-  [gift('R'), 'bottom:20%; left:14%;', 3],
+  [gift('R'), 'bottom:21%; left:11%;', 3],
+  [gift('G'), 'bottom:19%; left:24%;', 4],
+  [gift('O'), 'bottom:20.5%; left:41%;', 3],
+  [gift('B'), 'bottom:18.5%; left:56%;', 4],
+  [gift('R'), 'bottom:21%; left:70%;', 3],
+  [gift('G'), 'bottom:19.5%; left:85%;', 4],
 ];
 ---
 
@@ -609,8 +612,6 @@ const gifts: [string[][], string, number][] = [
   .yard-snowman > div { width: 5px; height: 5px; }
   body.snow-yard .yard-snowman { display: grid; }
   body.snow-yard .yard-snowman:hover { filter: drop-shadow(0 2px 0 rgba(60,80,130,0.35)) drop-shadow(0 0 12px rgba(255,214,120,0.95)); }
-  .yard-snowman.walking { animation: snowHop 0.5s steps(2, end) infinite; }
-  @keyframes snowHop { 0% { translate: 0 0; } 50% { translate: 0 -3px; } 100% { translate: 0 0; } }
 
   /* ========== DESKTOP PET DUCK ========== */
   .duck {
@@ -819,11 +820,12 @@ const gifts: [string[][], string, number][] = [
 
   // The pumpkin roams the whole meadow in 2D, the same way the desktop duck does:
   // it walks toward random waypoints, pauses now and then, and faces its heading.
-  function roam(sel, bodyClass) {
+  function roam(sel, bodyClass, bounce) {
     const p = document.querySelector(sel);
     if (!p) return;
     const MINX = 5, MAXX = 85, MINY = 9, MAXY = 33; // percent of the desktop
     let x = 20, y = 20, tx = 60, ty = 24, dir = 1, pause = 600, last = performance.now();
+    let bPhase = 0, bH = 2.5, bPeriod = 260, bRest = 0; // irregular ball-bounce state
     const pick = () => {
       tx = MINX + Math.random() * (MAXX - MINX);
       ty = MINY + Math.random() * (MAXY - MINY);
@@ -847,10 +849,27 @@ const gifts: [string[][], string, number][] = [
             if (Math.abs(dx) > 0.1) dir = dx > 0 ? 1 : -1;
             p.classList.add('walking');
             p.style.left = x + '%';
-            p.style.bottom = y + '%';
             if (Math.random() < 0.0012) pause = 600 + Math.random() * 1400; // occasional rest
           }
         }
+        // a little ball-like bounce with no fixed cadence: each hop gets its own
+        // random height and speed, with the odd rest on the ground between hops.
+        let by = y;
+        if (bounce) {
+          if (bRest > 0) {
+            bRest -= dt;
+          } else {
+            bPhase += (dt / bPeriod) * Math.PI;
+            if (bPhase >= Math.PI) {
+              bPhase = 0;
+              bH = 1.2 + Math.random() * 3.3;
+              bPeriod = 160 + Math.random() * 300;
+              bRest = Math.random() < 0.35 ? 60 + Math.random() * 520 : 0;
+            }
+            by = y + Math.sin(bPhase) * bH;
+          }
+        }
+        p.style.bottom = by + '%';
         p.style.transform = 'scaleX(' + dir + ')';
       }
       requestAnimationFrame(frame);
@@ -859,5 +878,5 @@ const gifts: [string[][], string, number][] = [
     requestAnimationFrame(frame);
   }
   roam('.yard-pumpkin', 'draft-yard');
-  roam('.yard-snowman', 'snow-yard');
+  roam('.yard-snowman', 'snow-yard', true);
 </script>

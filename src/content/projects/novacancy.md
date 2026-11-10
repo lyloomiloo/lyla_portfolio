@@ -1,7 +1,7 @@
 ---
 title: "No Vacancy"
 slug: "novacancy"
-displayTitle: "NO VACANCY"
+displayTitle: "NO<br>VACANCY"
 tagline: "Check in. Find your way out."
 hook: "Escape Room Game|A browser escape room I built. Check in — then see if you can check out."
 type: "Game"

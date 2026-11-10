@@ -193,7 +193,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   'mini-me': { label: 'MINI-ME', type: 'browser', image: '/images/projects/mini-me/cover.jpg' },
   novacancy: { label: 'NO VACANCY', type: 'browser', image: '/images/projects/novacancy/cover.png' },
   messageinthewind: { label: 'MESSAGE IN THE WIND', type: 'browser', image: '/images/projects/messageinthewind/cover.png' },
-  snowglobe: { label: 'SEASONS GREETINGS', type: 'browser', image: '/images/projects/snowglobe/cover.png' },
+  snowglobe: { label: 'SNOW GLOBE ATELIER', type: 'browser', image: '/images/projects/snowglobe/cover.png' },
 };
 ---
 
@@ -224,7 +224,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
               </div>
             )}
             <span class="pw-num">0{p.data.order}</span>
-            <h3 class="pw-title">{p.data.displayTitle}</h3>
+            <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
             {p.data.hook.includes('|') ? (
               <div class="pw-hook">
                 <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
@@ -297,7 +297,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 </div>
               )}
               <span class="pw-num">0{p.data.order}</span>
-              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
                   <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
@@ -376,7 +376,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 </div>
               )}
               <span class="pw-num">0{p.data.order}</span>
-              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
                   <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
@@ -463,7 +463,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 </div>
               )}
               <span class="pw-num">0{p.data.order}</span>
-              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
                   <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
@@ -545,7 +545,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 </div>
               )}
               <span class="pw-num">0{p.data.order}</span>
-              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
                   <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
