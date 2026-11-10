@@ -62,20 +62,18 @@ const firs: [string, number][] = [
   ['bottom:33%; right:20%;', 3],
   ['bottom:35%; right:35%;', 4],
 ];
-// Small wrapped boxes scattered on the snow. S=gold ribbon, the arg colours the box.
-const gift = (c: string) => [
-  `${c}${c}S${c}${c}`,
-  'SSSSS',
-  `${c}${c}S${c}${c}`,
-  `${c}${c}S${c}${c}`,
-].map(r => r.split(''));
-const gifts: [string[][], string, number][] = [
-  [gift('R'), 'bottom:21%; left:11%;', 3],
-  [gift('D'), 'bottom:19%; left:24%;', 4],
-  [gift('R'), 'bottom:20.5%; left:41%;', 3],
-  [gift('D'), 'bottom:18.5%; left:56%;', 4],
-  [gift('R'), 'bottom:21%; left:70%;', 3],
-  [gift('D'), 'bottom:19.5%; left:85%;', 4],
+// Small colourful dots scattered on the snow. [pos, colour, size(px)]
+const dots: [string, string, number][] = [
+  ['bottom:20%; left:10%;', '#CC0000', 6],
+  ['bottom:18%; left:18%;', '#0A8F3F', 5],
+  ['bottom:21%; left:27%;', '#F0B429', 5],
+  ['bottom:17%; left:35%;', '#4A9EFF', 6],
+  ['bottom:20%; left:44%;', '#CC0000', 5],
+  ['bottom:19%; left:53%;', '#0A8F3F', 6],
+  ['bottom:17%; left:62%;', '#F0B429', 5],
+  ['bottom:21%; left:71%;', '#4A9EFF', 5],
+  ['bottom:18%; left:79%;', '#CC0000', 6],
+  ['bottom:20%; left:88%;', '#0A8F3F', 5],
 ];
 ---
 
@@ -126,10 +124,8 @@ const gifts: [string[][], string, number][] = [
           {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
         </div>
       ))}
-      {gifts.map(([g, pos, px]) => (
-        <div class="vs" style={`${pos} --px:${px}px; --cols:${g[0].length};`}>
-          {g.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
-        </div>
+      {dots.map(([pos, color, size]) => (
+        <div class="snow-dot" style={`${pos} width:${size}px; height:${size}px; background:${color};`} />
       ))}
     </div>
     <!-- Snow Yard: a string of fairy lights swagged across the top -->
@@ -596,6 +592,9 @@ const gifts: [string[][], string, number][] = [
     position: absolute; display: grid; image-rendering: pixelated;
     grid-template-columns: repeat(var(--cols), var(--px)); grid-auto-rows: var(--px);
   }
+  /* scattered colourful dots on the snow */
+  .snow-dot { display: none; position: absolute; border-radius: 50%; z-index: 1; }
+  body.snow-yard .snow-dot { display: block; }
   /* the meadow's green trees step aside for porcelain firs */
   body.snow-yard .tree { display: none; }
   /* the duck clocks out in winter too */
