@@ -1,0 +1,9 @@
+---
+// lylahuang.com/xmas/ — the Maison Hiver snow globe. The app itself is a static build
+// (public/xmas/app.html, made by the globe repo's build-web.py); this page serves it at /xmas/.
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
+
+const html = (await readFile(path.join(process.cwd(), 'public', 'xmas', 'app.html'), 'utf8')).replace(/^<!doctype html>\s*/i, '');
+---
+<Fragment set:html={html} />

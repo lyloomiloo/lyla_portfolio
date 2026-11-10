@@ -12,7 +12,7 @@ year: "2026"
 tags: ["Gift", "Desktop Toy", "Made with Claude"]
 thumbnail: "/images/projects/mini-me/cover.jpg"
 order: 7
-page: 3
+page: 5
 video: "/images/projects/mini-me/demo.mp4"
 link: "/images/projects/mini-me/Mini%20Me%20Kit.zip"
 download: true

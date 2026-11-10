@@ -7,12 +7,28 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 const page1 = projects.filter(p => p.data.page === 1);
 const page2 = projects.filter(p => p.data.page === 2);
 const page3 = projects.filter(p => p.data.page === 3); // RANDOM — external, no detail page (For fun p1)
-const page4 = projects.filter(p => p.data.page === 4); // RANDOM — external, no detail page (For fun p2)
+const page4 = projects.filter(p => p.data.page === 4); // RANDOM — external, no detail page (Websites)
+const page5 = projects.filter(p => p.data.page === 5); // RANDOM — external, no detail page (For fun 02)
 const totalPages = page4.length > 0 ? 4 : page3.length > 0 ? 3 : page2.length > 0 ? 2 : 1;
 
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
 const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
+  // Snow globe — 10×10 (maison hiver)
+  snowglobe: {
+    cols: 10, rows: 10, grid: [
+      ['_','_','_','B','B','B','B','_','_','_'],
+      ['_','_','B','_','_','_','_','B','_','_'],
+      ['_','B','_','_','_','B','_','_','B','_'],
+      ['B','_','_','_','B','B','B','_','_','B'],
+      ['B','_','_','B','B','B','B','B','_','B'],
+      ['B','_','_','_','_','B','_','_','_','B'],
+      ['_','B','B','B','B','B','B','B','B','_'],
+      ['_','O','O','O','O','O','O','O','O','_'],
+      ['O','O','O','O','O','O','O','O','O','O'],
+      ['_','_','_','_','_','_','_','_','_','_'],
+    ]
+  },
   // Plumbob diamond — 8×10 (reroute 2.0)
   reroute2: {
     cols: 8, rows: 10, grid: [
@@ -174,6 +190,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   'mini-me': { label: 'MINI-ME', type: 'browser', image: '/images/projects/mini-me/cover.jpg' },
   novacancy: { label: 'NO VACANCY', type: 'browser', image: '/images/projects/novacancy/cover.png' },
   messageinthewind: { label: 'MESSAGE IN THE WIND', type: 'browser', image: '/images/projects/messageinthewind/cover.png' },
+  snowglobe: { label: 'MAISON HIVER', type: 'browser' },
 };
 ---
 
@@ -181,11 +198,12 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   <!-- Tab navigation -->
   {totalPages > 1 && (
     <div class="pw-tabs">
-      {page3.length > 0 && <button class="pw-tab active" data-pw-page="3">For fun</button>}
+      {page3.length > 0 && <button class="pw-tab active" data-pw-page="3">{page5.length > 0 ? 'For fun 01' : 'For fun'}</button>}
+      {page5.length > 0 && <button class="pw-tab" data-pw-page="5">For fun 02</button>}
       <button class="pw-tab" data-pw-page="1">Apps</button>
       {page4.length > 0 && <button class="pw-tab" data-pw-page="4">Websites</button>}
       <button class="pw-tab" data-pw-page="2">Tools</button>
-      <span class="pw-page-indicator">1/{totalPages}</span>
+      <span class="pw-page-indicator">1/{2 + (page3.length > 0 ? 1 : 0) + (page4.length > 0 ? 1 : 0) + (page5.length > 0 ? 1 : 0)}</span>
     </div>
   )}
 
@@ -344,8 +362,8 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
           const mockup = mockupConfig[p.data.slug];
           return (
             <div
-              class="pw-card pw-card--random"
-              data-pw-expand={mockup?.image}
+              class={`pw-card pw-card--random${p.data.embed ? ' pw-card--live' : ''}`}
+              data-pw-expand={p.data.embed ? undefined : mockup?.image}
               data-pw-video={p.data.video}
               data-pw-title={`${p.data.slug}.app`}
             >
@@ -399,7 +417,12 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                           <span class="pw-burl">{p.data.slug}.app</span>
                         </div>
                         <div class="pw-bscreen">
-                          {mockup.image ? (
+                          {p.data.embed ? (
+                            <a class="pw-live" href={p.data.link} target="_blank" rel="noopener" aria-label={`Open ${p.data.displayTitle}`}>
+                              <iframe data-live-src={p.data.embed} title={`${p.data.displayTitle} live preview`} loading="lazy" tabindex="-1"></iframe>
+                              <span class="pw-live-tag">LIVE</span>
+                            </a>
+                          ) : mockup.image ? (
                             <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
                           ) : (
                             <span>{mockup.label}</span>
@@ -498,6 +521,88 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
       </div>
     </div>
   )}
+
+  <!-- Page 5 — RANDOM (For fun 02) -->
+  {page5.length > 0 && (
+    <div class="pw-page" data-pw-content="5">
+      <div class="pw-grid">
+        {page5.map(p => {
+          const icon = pixelIcons[p.data.slug];
+          const mockup = mockupConfig[p.data.slug];
+          return (
+            <div
+              class="pw-card pw-card--random"
+              data-pw-expand={mockup?.image}
+              data-pw-video={p.data.video}
+              data-pw-title={`${p.data.slug}.app`}
+            >
+              {icon && (
+                <div class="pw-pixel-icon" style={`grid-template-columns:repeat(${icon.cols},5px);grid-template-rows:repeat(${icon.rows},5px);`}>
+                  {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
+                </div>
+              )}
+              <span class="pw-num">0{p.data.order}</span>
+              <h3 class="pw-title">{p.data.displayTitle}</h3>
+              {p.data.hook.includes('|') ? (
+                <div class="pw-hook">
+                  <p class="pw-hook-tagline"><em>{p.data.hook.split('|')[0]}</em></p>
+                  <p>{p.data.hook.split('|')[1]}</p>
+                </div>
+              ) : (
+                <p class="pw-hook">{p.data.hook}</p>
+              )}
+              {(p.data.location ?? p.data.type) && <div class="pw-location">{p.data.location ?? p.data.type}</div>}
+              <div class="pw-meta">{p.data.status}</div>
+              <a
+                class="pw-arrow"
+                href={p.data.link}
+                target={p.data.download ? undefined : '_blank'}
+                rel="noopener"
+                download={p.data.download ? '' : undefined}
+              >VIEW PROJECT →</a>
+
+              {mockup && (
+                <div class="pw-preview">
+                  {mockup.type === 'phone' ? (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-phone">
+                        <div class="pw-phone-notch"></div>
+                        <div class="pw-phone-screen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-phone-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="pw-phone-wrap">
+                      <div class="pw-browser">
+                        <div class="pw-bbar">
+                          <span class="pw-bdot" style="background:#FF6B00"></span>
+                          <span class="pw-bdot" style="background:#39FF14"></span>
+                          <span class="pw-bdot" style="background:#666"></span>
+                          <span class="pw-burl">{p.data.slug}.app</span>
+                        </div>
+                        <div class="pw-bscreen">
+                          {mockup.image ? (
+                            <img src={mockup.image} alt={mockup.label} class="pw-browser-img" />
+                          ) : (
+                            <span>{mockup.label}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  )}
 </div>
 
 <script>
@@ -517,6 +622,20 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
         if (indicator) indicator.textContent = `${[...tabs].indexOf(tab) + 1}/${tabs.length}`;
       });
     });
+
+    // Live previews (e.g. the snow globe): only run the iframe while it's actually on screen,
+    // and unload it when the window closes / the tab changes so WebGL doesn't idle in the background.
+    const liveFrames = document.querySelectorAll<HTMLIFrameElement>('iframe[data-live-src]');
+    if ('IntersectionObserver' in window && liveFrames.length) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((en) => {
+          const f = en.target as HTMLIFrameElement;
+          if (en.isIntersecting) { if (!f.src || f.src === 'about:blank') f.src = f.dataset.liveSrc!; }
+          else if (f.src && f.src !== 'about:blank') f.src = 'about:blank';
+        });
+      });
+      liveFrames.forEach((f) => io.observe(f));
+    }
 
     // RANDOM cards: clicking the SCREENSHOT expands it in the shared browser-framed lightbox
     // (screen recording if there is one, otherwise the still cover).
@@ -764,6 +883,18 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+
+  /* live preview card (iframe of the real page) */
+  .pw-card--live .pw-preview { cursor: pointer; }
+  .pw-card--live .pw-preview::after { display: none; }
+  .pw-live { position: relative; display: block; width: 100%; height: 100%; }
+  .pw-live iframe { width: 100%; height: 100%; border: 0; display: block; pointer-events: none; background: #120d0a; }
+  .pw-live-tag {
+    position: absolute; top: 6px; left: 6px; padding: 2px 5px;
+    font-family: var(--font-mono); font-size: 0.45rem; letter-spacing: 0.1em;
+    color: #fff; background: rgba(204,0,0,0.85); border-radius: 2px;
   }
 
   @media (max-width: 768px) {

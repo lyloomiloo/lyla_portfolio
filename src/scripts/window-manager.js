@@ -354,6 +354,12 @@ document.addEventListener('click', (e) => {
     return;
   }
 
+  // Snow Yard: clicking the snowman opens the snow globe as its own page
+  if (e.target.closest('.yard-snowman')) {
+    window.open('/xmas/', '_blank', 'noopener');
+    return;
+  }
+
   // Clicking the wandering yard pumpkin opens the films window
   if (e.target.closest('.yard-pumpkin')) {
     openWindow('films');
@@ -844,6 +850,8 @@ function dismissLockForDeepLink() {
 
 function openFromHash() {
   const raw = location.hash.replace('#', '');
+  // lylahuang.com/#xmas -> the snow globe, which lives on its own page
+  if (raw === 'xmas') { location.replace('/xmas/'); return; }
   // Secret per-viewer showcase: #showcase-<token> -> /showcase/<token>.json
   if (raw.indexOf('showcase-') === 0) {
     openShowcase(raw.slice('showcase-'.length));
