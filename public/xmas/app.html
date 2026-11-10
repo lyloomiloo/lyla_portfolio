@@ -1907,7 +1907,7 @@ const atelierSheet = document.getElementById('atelierSheet');
 const OPTS = {
   base: [['caramel', 'Light brown'], ['pink', 'Pink'], ['white', 'White'], ['darkbrown', 'Dark brown']],
   snow: ['snow', 'gold', 'petals'].map(k => [k, SNOW_TYPES[k].label]),
-  tune: [0, 1, 3, 4, 2].map(i => [i, TUNES[i].label]),
+  tune: [0, 4, 1, 3, 2].map(i => [i, TUNES[i].label]), // waltz, sleigh bells, lullaby, jazz, off
 };
 function renderSegs() {
   atelierSheet.querySelectorAll('.seg').forEach(seg => {
