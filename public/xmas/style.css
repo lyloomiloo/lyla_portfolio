@@ -307,3 +307,28 @@
 #veil p { margin: 0; font-family: "Jost", sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,240,220,0.7); }
 @keyframes veilBreathe { from { opacity: 0.75; } to { opacity: 1; } }
 .embed #veil { display: none; }
+
+/* ===== receiver view: overlay controls, no shake/snow buttons ===== */
+body.view #viewBar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 6;
+  background: transparent; padding: 0 16px calc(18px + env(safe-area-inset-bottom));
+  pointer-events: none;
+}
+body.view #viewBar button { pointer-events: auto; }
+body.view #viewBar button.primary {
+  background: rgba(255,255,255,0.92); color: var(--ink); border-color: transparent;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.35); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+body.view #zoomCtl [data-z="shake"] { display: none; }
+/* the note sits above the overlay button */
+body.view #viewMsg { bottom: calc(76px + env(safe-area-inset-bottom)); }
+
+/* "shake" prompt — fades in after the dome settles, fades out by itself */
+#shakePrompt {
+  position: absolute; left: 50%; top: 18%; transform: translate(-50%, 6px); z-index: 5;
+  padding: 9px 16px; border-radius: 999px; white-space: nowrap; pointer-events: none;
+  font-family: var(--sans); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: #fff; background: rgba(20,14,10,0.45); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  opacity: 0; transition: opacity 0.7s ease, transform 0.7s ease;
+}
+#shakePrompt.on { opacity: 1; transform: translate(-50%, 0); }

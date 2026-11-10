@@ -41,6 +41,7 @@
 
 <div id="stage">
   <div id="hint">Drag a treasure into the globe</div>
+  <div id="shakePrompt" aria-live="polite"></div>
   <div id="toolbar">
     <button data-act="rotate">Turn</button>
         <button data-act="dup">Copy</button>
@@ -61,7 +62,6 @@
 </div>
 
 <div id="viewBar">
-  <button id="shakeBtn">Shake</button>
   <button class="primary" id="makeBackBtn">Make one back</button>
 </div>
 
@@ -1627,7 +1627,7 @@ stage.addEventListener('pointerdown', e => {
 }, true);
 window.addEventListener('pointermove', e => {
   if (drag && !drag.isNew) { moveDrag(e); return; }
-  if (pending && pending.item && Math.hypot(e.clientX - pending.x, e.clientY - pending.y) > 6) {
+  if (pending && pending.item && mode !== 'view' && Math.hypot(e.clientX - pending.x, e.clientY - pending.y) > 6) {
     const it = pending.item; pending = null; startDrag(it, false); moveDrag(e);
   }
 });
@@ -1636,7 +1636,7 @@ window.addEventListener('pointerup', e => {
   if (pending) {
     const moved = Math.hypot(e.clientX - pending.x, e.clientY - pending.y) > 6;
     if (!moved) {
-      if (pending.tapShake) { if (isDoubleTap(pending.item)) focusOn(pending.item); else shakeSnow(0.9); }
+      if (pending.tapShake) { if (isDoubleTap(pending.item)) focusOn(pending.item); else { hideShakePrompt(); shakeSnow(0.9); } }
       else if (pending.item) {
         if (isDoubleTap(pending.item)) { select(pending.item); focusOn(pending.item); }
         else { select(selected === pending.item ? null : pending.item); sfx.pick(); }
@@ -1765,6 +1765,15 @@ document.getElementById('saveBtn').onclick = async () => {
 
 function toast(t) { const el = document.getElementById('toast'); el.textContent = t; el.style.opacity = 1; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.opacity = 0, 1800); }
 
+// receiver: a gentle "shake" prompt that fades on its own (or as soon as they shake / tap)
+function showShakePrompt() {
+  const el = document.getElementById('shakePrompt'); if (!el) return;
+  el.textContent = PHONE ? 'Shake your phone to make it snow' : 'Tap the globe to make it snow';
+  el.classList.add('on');
+  clearTimeout(showShakePrompt.t); showShakePrompt.t = setTimeout(() => el.classList.remove('on'), 4200);
+}
+function hideShakePrompt() { const el = document.getElementById('shakePrompt'); if (el) el.classList.remove('on'); }
+
 // device shake
 let motionAsked = false, lastAcc = null, lastShake = 0;
 function requestMotion() {
@@ -1779,7 +1788,7 @@ function listenMotion() {
     if (lastAcc) {
       const d = Math.abs(a.x - lastAcc.x) + Math.abs(a.y - lastAcc.y) + Math.abs(a.z - lastAcc.z);
       const now = performance.now();
-      if (d > 22 && now - lastShake > 700 && mode !== 'edit') { lastShake = now; shakeSnow(Math.min(1.6, d / 22)); }
+      if (d > 22 && now - lastShake > 700 && mode !== 'edit') { lastShake = now; hideShakePrompt(); shakeSnow(Math.min(1.6, d / 22)); }
     }
     lastAcc = { x: a.x, y: a.y, z: a.z };
   });
@@ -1946,7 +1955,7 @@ async function openFromHash() {
         audio(); requestMotion();
         document.getElementById('gate').classList.remove('open');
         domeGroup.visible = false;
-        lowerDome(() => { setTimeout(() => shakeSnow(1.1), 250); playTune(state.tune); if (state.text) setTimeout(() => { msg.style.display = 'block'; sfx.paper(); }, 2500); });
+        lowerDome(() => { setTimeout(() => shakeSnow(1.1), 250); playTune(state.tune); showShakePrompt(); if (state.text) setTimeout(() => { msg.style.display = 'block'; sfx.paper(); }, 2500); });
       };
       controls.autoRotate = false; // the view is framed like a photo now
     }
@@ -1998,7 +2007,6 @@ const STARTER = { s: ['caramel', 'gold', 'day', 0, ''], i: [
   requestAnimationFrame(() => requestAnimationFrame(liftVeil));
 })();
 
-document.getElementById('shakeBtn').onclick = () => { audio(); requestMotion(); shakeSnow(1.1); };
 document.getElementById('makeBackBtn').onclick = () => {
   if (WEB) { location.href = '/xmas/'; return; }
   try { location.hash = ''; } catch {}
