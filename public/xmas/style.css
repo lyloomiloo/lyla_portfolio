@@ -351,3 +351,6 @@ body.view #viewMsg { bottom: calc(76px + env(safe-area-inset-bottom)); }
   #atelierSheet .sheet { max-height: 46vh; border-radius: 16px 16px 0 0; padding-top: 18px; }
   #atelierSheet .sheet h2 { margin-bottom: 4px; }
 }
+
+/* share sheet: breathing room between the heading and the globe picture */
+#shareSheet h2 { margin-bottom: 20px; }
