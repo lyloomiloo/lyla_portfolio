@@ -15,7 +15,6 @@ order: 4
 page: 3
 link: "/xmas/"
 cta: "MAKE ONE →"
-embed: "/xmas/?embed=1"
 ---
 
 A cosy WebGL snow globe maker. Every object was generated with Magnific (image to 3D, then PBR retexture), the snow is a small liquid-physics shader, and each sealed globe gets its own short link.

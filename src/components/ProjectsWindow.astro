@@ -14,18 +14,18 @@ const totalPages = page4.length > 0 ? 4 : page3.length > 0 ? 3 : page2.length > 
 // Pixel art icons — clean, recognizable shapes, 2 colors max (fill + transparent)
 // G=#00CC55(green), O=#FF6B00(orange), B=#0038FF(blue)
 const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] }> = {
-  // Ornament — 10×10 (flurry): minimal orange bauble with a dark cap
+  // Ornament — 10×10 (flurry): minimal neon-outline bauble
   snowglobe: {
     cols: 10, rows: 10, grid: [
-      ['_','_','_','_','K','_','_','_','_','_'],
-      ['_','_','_','K','K','K','_','_','_','_'],
-      ['_','_','O','O','O','O','O','_','_','_'],
-      ['_','O','O','O','O','O','O','O','_','_'],
-      ['_','O','O','O','O','O','O','O','_','_'],
-      ['_','O','O','O','O','O','O','O','_','_'],
-      ['_','O','O','O','O','O','O','O','_','_'],
-      ['_','_','O','O','O','O','O','_','_','_'],
-      ['_','_','_','O','O','O','_','_','_','_'],
+      ['_','_','_','_','E','_','_','_','_','_'],
+      ['_','_','_','E','E','E','_','_','_','_'],
+      ['_','_','E','E','E','E','E','_','_','_'],
+      ['_','E','E','_','_','_','E','E','_','_'],
+      ['E','E','_','_','_','_','_','E','E','_'],
+      ['E','_','_','_','_','_','_','_','E','_'],
+      ['E','E','_','_','_','_','_','E','E','_'],
+      ['_','E','E','_','_','_','E','E','_','_'],
+      ['_','_','E','E','E','E','E','_','_','_'],
       ['_','_','_','_','_','_','_','_','_','_'],
     ]
   },
@@ -176,6 +176,7 @@ const iconColors: Record<string, string> = {
   'S': '#F4C89A',
   'X': '#AEAEAE',
   'N': '#6E6E6E',
+  'E': '#39FF14',
 };
 
 // Mockup preview config per project
@@ -190,7 +191,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   'mini-me': { label: 'MINI-ME', type: 'browser', image: '/images/projects/mini-me/cover.jpg' },
   novacancy: { label: 'NO VACANCY', type: 'browser', image: '/images/projects/novacancy/cover.png' },
   messageinthewind: { label: 'MESSAGE IN THE WIND', type: 'browser', image: '/images/projects/messageinthewind/cover.png' },
-  snowglobe: { label: 'FLURRY', type: 'browser' },
+  snowglobe: { label: 'FLURRY', type: 'browser', image: '/images/projects/snowglobe/cover.png' },
 };
 ---
 

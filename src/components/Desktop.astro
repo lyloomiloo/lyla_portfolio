@@ -62,6 +62,19 @@ const firs: [string, number][] = [
   ['bottom:33%; right:20%;', 3],
   ['bottom:35%; right:35%;', 4],
 ];
+// A few wrapped presents dotted on the snow. S=ribbon, the arg colours the box.
+const gift = (c: string) => [
+  '___SS__',
+  `_${c}${c}S${c}${c}_`,
+  `${c}${c}${c}S${c}${c}${c}`,
+  `${c}${c}${c}S${c}${c}${c}`,
+  `${c}${c}${c}S${c}${c}${c}`,
+].map(r => r.split(''));
+const gifts: [string[][], string, number][] = [
+  [gift('R'), 'bottom:19%; left:40%;', 4],
+  [gift('D'), 'bottom:18%; left:44.5%;', 4],
+  [gift('R'), 'bottom:20%; left:14%;', 3],
+];
 ---
 
 <div class="desktop">
@@ -109,6 +122,11 @@ const firs: [string, number][] = [
       {firs.map(([pos, px]) => (
         <div class="vs" style={`${pos} --px:${px}px; --cols:${fir[0].length};`}>
           {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
+        </div>
+      ))}
+      {gifts.map(([g, pos, px]) => (
+        <div class="vs" style={`${pos} --px:${px}px; --cols:${g[0].length};`}>
+          {g.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
         </div>
       ))}
     </div>
