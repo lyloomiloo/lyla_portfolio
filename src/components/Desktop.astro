@@ -62,17 +62,16 @@ const firs: [string, number][] = [
   ['bottom:33%; right:20%;', 3],
   ['bottom:35%; right:35%;', 4],
 ];
-// A few wrapped presents dotted on the snow. S=ribbon, the arg colours the box.
+// A few small wrapped boxes dotted on the snow. S=ribbon, the arg colours the box.
 const gift = (c: string) => [
-  '___SS__',
-  `_${c}${c}S${c}${c}_`,
-  `${c}${c}${c}S${c}${c}${c}`,
-  `${c}${c}${c}S${c}${c}${c}`,
-  `${c}${c}${c}S${c}${c}${c}`,
+  `${c}${c}S${c}${c}`,
+  'SSSSS',
+  `${c}${c}S${c}${c}`,
+  `${c}${c}S${c}${c}`,
 ].map(r => r.split(''));
 const gifts: [string[][], string, number][] = [
   [gift('R'), 'bottom:19%; left:40%;', 4],
-  [gift('D'), 'bottom:18%; left:44.5%;', 4],
+  [gift('D'), 'bottom:18.5%; left:43.5%;', 4],
   [gift('R'), 'bottom:20%; left:14%;', 3],
 ];
 ---

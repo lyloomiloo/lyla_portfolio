@@ -1,7 +1,7 @@
 ---
-title: "Flurry"
+title: "Seasons Greetings"
 slug: "snowglobe"
-displayTitle: "FLURRY"
+displayTitle: "SEASONS GREETINGS"
 tagline: "Make someone a snow globe."
 hook: "Seasonal · Xmas 2026|Fill a glass globe with tiny porcelain treasures, seal it, give it a shake, and send it with a handwritten note."
 type: "WebGL"
