@@ -40,6 +40,28 @@ const snowman = [
   ['_','_','W','W','W','W','W','W','L','_','_'],
   ['_','_','_','L','L','L','L','L','_','_','_'],
 ];
+// Snow Yard — a few snowy porcelain firs (same ivory + gold as the Maison Hiver 3D firs).
+// I=ivory, C=ivory shade, G=gold, g=dark gold, W=snow.
+const V: Record<string, string> = { '_': 'transparent', I: '#f3e9d6', C: '#d9c4a0', G: '#c9a15a', g: '#9c7638', W: '#ffffff' };
+const fir = [
+  '____W____',
+  '___WIW___',
+  '___IIC___',
+  '__WWIWW__',
+  '__IIIIC__',
+  '_WWWWIWW_',
+  '_IIIIIIC_',
+  'WWWWWWWWW',
+  'IIIIIIIIC',
+  '____g____',
+].map(r => r.split(''));
+// Same spots as the meadow's .tree-1…4, so winter just dresses the existing trees.
+const firs: [string, number][] = [
+  ['bottom:34%; left:8%;', 3],
+  ['bottom:36%; left:25%;', 4],
+  ['bottom:33%; right:20%;', 3],
+  ['bottom:35%; right:35%;', 4],
+];
 ---
 
 <div class="desktop">
@@ -84,16 +106,13 @@ const snowman = [
 
     <!-- Snow Yard (winter season) — falling snow + a wandering snowman, hidden until toggled -->
     <div class="village">
-      <div class="cottage" style="--wall:#b8342c; left:6%; bottom:39%;"><span class="eave-lights"></span></div>
-      <div class="cottage cottage--tall" style="--wall:#2f6b45; left:21%; bottom:40%;"><span class="eave-lights"></span></div>
-      <div class="cottage" style="--wall:#e9dcc0; left:38%; bottom:41%;"><span class="eave-lights"></span></div>
-      <div class="village-tree" style="left:47%; bottom:27%;"></div>
-      <div class="cottage cottage--tall" style="--wall:#8a4b2f; left:64%; bottom:40%;"><span class="eave-lights"></span></div>
-      <div class="cottage" style="--wall:#b8342c; left:84%; bottom:39%;"><span class="eave-lights"></span></div>
-      <div class="garland"></div>
+      {firs.map(([pos, px]) => (
+        <div class="vs" style={`${pos} --px:${px}px; --cols:${fir[0].length};`}>
+          {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
+        </div>
+      ))}
     </div>
-    <div class="snow-fall snow-fall--far"></div>
-    <div class="snow-fall snow-fall--near"></div>
+    <div class="snow-fall"></div>
     <div class="yard-snowman" title="Make someone a snow globe">
       {snowman.flat().map(c => <div style={`background:${colorMap[c]};`} />)}
     </div>
@@ -496,119 +515,42 @@ const snowman = [
       linear-gradient(to bottom, #a3b3d4 0%, #8798c0 100%);
   }
   /* pines stay green, with a cap of snow on top */
-  body.snow-yard .tree::before { background: #4a3324; }
-  body.snow-yard .tree::after { background: #1f5a3a; box-shadow: inset 0 5px 0 #f4f7fc; }
   body.snow-yard .flower { display: none; }
   body.snow-yard .nametag-desc { color: #e3e9f6; }
 
   /* falling snow — two tiled layers of square pixel flakes, drifting at different speeds */
   body.snow-yard .snow-fall { display: block; }
-  .snow-fall { position: absolute; inset: 0; pointer-events: none; z-index: 2; background-repeat: repeat; }
-  .snow-fall--far {
-    opacity: 0.55;
+  /* minimal snowfall: one sparse layer of soft flakes, falling slowly with a gentle sway.
+     Each tile moves down exactly one tile height per loop, so it never jumps. */
+  .snow-fall {
+    position: absolute; inset: -20px; pointer-events: none; z-index: 2; opacity: 0.85;
     background-image:
-      radial-gradient(#fff 0 1px, transparent 1.2px), radial-gradient(#fff 0 1px, transparent 1.2px),
-      radial-gradient(#fff 0 1px, transparent 1.2px), radial-gradient(#fff 0 1px, transparent 1.2px);
-    background-size: 160px 160px, 210px 210px, 130px 130px, 240px 240px;
-    background-position: 10px 20px, 90px 60px, 40px 110px, 150px 5px;
-    animation: snowFar 14s linear infinite;
+      radial-gradient(#fff 0 1.6px, transparent 2px),
+      radial-gradient(#fff 0 2px, transparent 2.4px),
+      radial-gradient(#fff 0 1.3px, transparent 1.7px);
+    background-size: 240px 240px, 340px 340px, 290px 290px;
+    background-position: 30px 0, 190px 120px, 110px 60px;
+    animation: snowFall 22s linear infinite, snowSway 6s ease-in-out infinite alternate;
   }
-  .snow-fall--near {
-    opacity: 0.9;
-    background-image:
-      radial-gradient(#fff 0 1.8px, transparent 2px), radial-gradient(#fff 0 1.8px, transparent 2px),
-      radial-gradient(#fff 0 2.2px, transparent 2.4px);
-    background-size: 260px 260px, 330px 330px, 410px 410px;
-    background-position: 40px 0, 200px 120px, 120px 260px;
-    animation: snowNear 9s linear infinite;
+  @keyframes snowFall {
+    from { background-position: 30px 0, 190px 120px, 110px 60px; }
+    to { background-position: 30px 480px, 190px 800px, 110px 640px; }
   }
-  @keyframes snowFar {
-    from { background-position: 10px 20px, 90px 60px, 40px 110px, 150px 5px; }
-    to { background-position: 30px 180px, 110px 270px, 60px 240px, 170px 245px; }
-  }
-  @keyframes snowNear {
-    from { background-position: 40px 0, 200px 120px, 120px 260px; }
-    to { background-position: 80px 260px, 240px 450px, 170px 670px; }
-  }
+  @keyframes snowSway { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
   @media (prefers-reduced-motion: reduce) { .snow-fall { animation: none !important; } }
 
 
-  /* ---- the village: lit cottages, eave lights, a big tree, a garland ---- */
+  /* ---- Snow Yard: a string of lights + a few snowy firs, nothing else ---- */
   body.snow-yard .village { display: block; }
   .village { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
-  .cottage {
-    position: absolute; width: 46px; height: 30px; background: var(--wall);
-    box-shadow: inset -6px 0 0 rgba(0,0,0,0.18);
-    background-image:
-      linear-gradient(#ffd56e, #ffd56e), linear-gradient(#ffd56e, #ffd56e), linear-gradient(#5a2f22, #5a2f22);
-    background-size: 9px 8px, 9px 8px, 9px 15px;
-    background-position: 6px 7px, 31px 7px, 18px 15px;
-    background-repeat: no-repeat;
-    filter: drop-shadow(0 0 7px rgba(255,196,90,0.45));
+  .vs {
+    position: absolute; display: grid; image-rendering: pixelated;
+    grid-template-columns: repeat(var(--cols), var(--px)); grid-auto-rows: var(--px);
   }
-  .cottage--tall { height: 40px; background-position: 6px 8px, 31px 8px, 18px 25px; }
-  /* snowy pitched roof */
-  .cottage::before {
-    content: ''; position: absolute; left: -7px; bottom: 100%; width: 60px; height: 22px;
-    background: linear-gradient(to bottom, #f6f8fd 0 55%, #6b3426 55%);
-    clip-path: polygon(50% 0, 100% 100%, 0 100%);
-  }
-  /* chimney */
-  .cottage::after {
-    content: ''; position: absolute; right: 7px; bottom: calc(100% + 8px); width: 7px; height: 14px;
-    background: linear-gradient(to bottom, #f6f8fd 0 3px, #7a3b2b 3px);
-  }
-  .eave-lights {
-    position: absolute; left: -6px; right: -6px; top: -3px; height: 4px;
-    background-image:
-      radial-gradient(circle, #ff4a4a 0 1.6px, transparent 2px),
-      radial-gradient(circle, #ffe066 0 1.6px, transparent 2px),
-      radial-gradient(circle, #4ade80 0 1.6px, transparent 2px);
-    background-size: 18px 4px; background-position: 0 0, 6px 0, 12px 0; background-repeat: repeat-x;
-    animation: twinkle 1.6s steps(2, end) infinite;
-  }
-  .cottage:nth-child(2n) .eave-lights { animation-delay: -0.8s; }
-  @keyframes twinkle { 0% { opacity: 1; } 50% { opacity: 0.45; } 100% { opacity: 1; } }
-
-  /* the big village tree with ornaments and a star */
-  .village-tree {
-    position: absolute; width: 64px; height: 92px;
-    background:
-      radial-gradient(circle at 38% 40%, #ff4a4a 0 2.5px, transparent 3px),
-      radial-gradient(circle at 60% 55%, #ffe066 0 2.5px, transparent 3px),
-      radial-gradient(circle at 44% 70%, #6fb6ff 0 2.5px, transparent 3px),
-      radial-gradient(circle at 66% 78%, #ff4a4a 0 2.5px, transparent 3px),
-      radial-gradient(circle at 30% 82%, #ffe066 0 2.5px, transparent 3px),
-      radial-gradient(circle at 54% 30%, #6fb6ff 0 2.5px, transparent 3px),
-      linear-gradient(#1f5a3a, #174a2f);
-    clip-path: polygon(50% 0, 66% 30%, 58% 30%, 78% 58%, 68% 58%, 92% 88%, 8% 88%, 32% 58%, 22% 58%, 42% 30%, 34% 30%);
-    filter: drop-shadow(0 0 8px rgba(255,214,110,0.5));
-    animation: twinkle 2.2s steps(2, end) infinite;
-  }
-  .village-tree::after {
-    content: ''; position: absolute; left: 28px; bottom: 0; width: 8px; height: 11px; background: #4a3324;
-  }
-  .village-tree::before {
-    content: ''; position: absolute; left: 25px; top: -12px; width: 14px; height: 14px; background: #ffd23f;
-    clip-path: polygon(50% 0, 62% 38%, 100% 38%, 69% 60%, 80% 100%, 50% 76%, 20% 100%, 31% 60%, 0 38%, 38% 38%);
-  }
-  /* a garland of lights swagging across the village */
-  .garland {
-    position: absolute; left: 0; right: 0; bottom: 47%; height: 26px;
-    background-image:
-      radial-gradient(circle, #ff4a4a 0 2px, transparent 2.5px),
-      radial-gradient(circle, #ffe066 0 2px, transparent 2.5px),
-      radial-gradient(circle, #4ade80 0 2px, transparent 2.5px),
-      radial-gradient(circle, #6fb6ff 0 2px, transparent 2.5px);
-    background-size: 48px 26px; background-position: 0 4px, 12px 12px, 24px 20px, 36px 12px; background-repeat: repeat-x;
-    opacity: 0.85; animation: twinkle 1.2s steps(2, end) infinite;
-  }
-  /* meadow trees become little decorated firs */
-  body.snow-yard .tree::after {
-    background: radial-gradient(circle at 30% 60%, #ff4a4a 0 1.5px, transparent 2px),
-                radial-gradient(circle at 70% 70%, #ffe066 0 1.5px, transparent 2px), #1f5a3a;
-  }
-  @media (prefers-reduced-motion: reduce) { .eave-lights, .village-tree, .garland { animation: none !important; } }
+  /* the meadow's green trees step aside for porcelain firs */
+  body.snow-yard .tree { display: none; }
+  /* the duck clocks out in winter too */
+  body.snow-yard #deskDuck, body.snow-yard .duck-counter { display: none !important; }
 
   /* snowman — hops around the snow like the pumpkin wanders the yard (left/facing set by JS) */
   .yard-snowman {

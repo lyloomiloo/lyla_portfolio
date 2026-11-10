@@ -899,7 +899,7 @@ const room = new THREE.Group(); scene.add(room);
 const texLoader = new THREE.TextureLoader();
 function wall(file, x, z, rotY) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(ROOM.half * 2, ROOM.height),
-    new THREE.MeshBasicMaterial({ color: 0x8c8c8c, toneMapped: false })); // dimmed so the globe glows
+    new THREE.MeshBasicMaterial({ color: 0xa8a8a8, toneMapped: false })); // a little dimmed so the globe glows
   texLoader.load(file, t => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; m.material.map = t; m.material.needsUpdate = true; });
   m.position.set(x, ROOM.floor + ROOM.height / 2, z); m.rotation.y = rotY; room.add(m);
 }
@@ -1208,7 +1208,7 @@ function stopTune() {
 
 /* ---------------- settings ---------------- */
 const TIMES = {
-  day:   { label: 'Day',   hemi: [0xfff0dc, 0x5a4232, 0.3], sun: [0xffe2bf, 1.35], env: 0.8, bg: 1.0,  bokeh: 0.15, win: 0.35, glow: 0.6, rim: 0xffe9d0, exp: 0.9 },
+  day:   { label: 'Day',   hemi: [0xfff0dc, 0x5a4232, 0.42], sun: [0xffe2bf, 1.45], env: 0.92, bg: 1.0,  bokeh: 0.15, win: 0.35, glow: 0.6, rim: 0xffe9d0, exp: 1.05 },
   dusk:  { label: 'Dusk',  hemi: [0xffc6a0, 0x4c3a63, 0.4],  sun: [0xff9a6a, 1.1], env: 0.55, bg: 0.75, bokeh: 0.3, win: 1.4,  glow: 2.2, rim: 0xffd9c0, exp: 1.0 },
   night: { label: 'Night', hemi: [0x5b6aa0, 0x120f1a, 0.16], sun: [0xffd6a0, 0.95], env: 0.3,  bg: 0.5,  bokeh: 0.45, win: 2.4, glow: 1.4, rim: 0xb8c8ff, exp: 0.92 },
 };
