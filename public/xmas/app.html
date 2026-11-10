@@ -1049,6 +1049,28 @@ function shakeSnow(strength = 1) {
   snow.active = 1;
   sfx.whoosh();
 }
+// Snow already suspended mid-fall (no burst): flakes spread through the water, a share
+// still resting on the ground, with just a little drift. Used when a shared globe opens.
+function floatSnow(restShare = 0.3) {
+  if (!snow) return;
+  const { pos, vel, settled, moving } = snow;
+  const top = C + R - 0.35;
+  for (let i = 0; i < settled.length; i++) {
+    const k = i * 3;
+    if (Math.random() < restShare) continue;            // leave some on the ground
+    const y = 0.15 + Math.random() * (top - 0.15);
+    const rmax = Math.max(0.2, Math.min(G - 0.1, Math.sqrt(Math.max(0, R * R - (y - C) * (y - C))) - 0.15));
+    const a = Math.random() * Math.PI * 2, r = Math.sqrt(Math.random()) * rmax;
+    pos[k] = Math.cos(a) * r; pos[k + 1] = y; pos[k + 2] = Math.sin(a) * r;
+    vel[k] = (Math.random() - 0.5) * 0.08; vel[k + 1] = -Math.random() * 0.05; vel[k + 2] = (Math.random() - 0.5) * 0.08;
+    settled[i] = 0; moving[i] = 1;
+  }
+  snow.points.geometry.attributes.position.needsUpdate = true;
+  snow.points.geometry.attributes.moving.needsUpdate = true;
+  swirl = Math.max(swirl, 0.35);
+  obstaclesDirty = true;
+  snow.active = 1;
+}
 function flowAt(x, y, z, t, out) {
   // toroidal loop: up the middle, out across the top, down the glass, back IN along the bottom (balanced: no net drift to the rim)
   const ry = y - C, r = Math.hypot(x, z), rn = Math.min(1, r / R);
@@ -1953,8 +1975,8 @@ async function openFromHash() {
       document.getElementById('openBtn').onclick = () => {
         audio(); requestMotion();
         document.getElementById('gate').classList.remove('open');
-        // the globe is already sealed: no dome drop, it just starts snowing
-        setTimeout(() => shakeSnow(1.1), 250); playTune(state.tune); showShakePrompt();
+        // the globe is already sealed: no dome drop, and the snow is already drifting (no burst)
+        floatSnow(); playTune(state.tune); showShakePrompt();
         if (state.text) setTimeout(() => { msg.style.display = 'block'; sfx.paper(); }, 2500);
       };
       controls.autoRotate = false; // the view is framed like a photo now
