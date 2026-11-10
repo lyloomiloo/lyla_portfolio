@@ -1,5 +1,8 @@
 import type { APIRoute } from 'astro';
 import { redis, globeKey, cleanId, type Globe } from '../../../lib/globes';
+// The app's HTML is bundled into this function at build time (fetching our own domain
+// from inside the function failed on Vercel).
+import template from '../../../../public/xmas/app.html?raw';
 
 export const prerender = false;
 
@@ -9,8 +12,7 @@ const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt
 // so WhatsApp / iMessage / socials show the globe's own picture.
 export const GET: APIRoute = async ({ params, url }) => {
   const id = cleanId(params.id);
-  const tplRes = await fetch(new URL('/xmas/app.html', url.origin));
-  let html = await tplRes.text();
+  let html: string = template;
   // the app uses relative asset paths; anchor them to /xmas/
   html = html.replace('<head>', '<head>\n<base href="/xmas/" />');
 
