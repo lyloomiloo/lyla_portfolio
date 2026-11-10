@@ -519,12 +519,15 @@ const glassReal = new THREE.MeshPhysicalMaterial({
   attenuationColor: new THREE.Color(0xeef6ff), attenuationDistance: 6,
   specularIntensity: 0.6, clearcoat: 1, clearcoatRoughness: 0.0, envMapIntensity: 0.7, depthWrite: false,
 });
-// cheap fallback for slow phones
+// clear glass, used everywhere: transmission re-renders the scene behind the dome through a
+// softened buffer, which read as frosted / murky. This keeps the inside crisp and lets
+// sharp reflections and the rim sell the glass.
+const GLASS_OPACITY = 0.05;
 const glassLite = new THREE.MeshPhysicalMaterial({
-  color: 0xffffff, roughness: 0.02, metalness: 0, transparent: true, opacity: 0.1,
-  clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 2.2, depthWrite: false,
+  color: 0xffffff, roughness: 0.0, metalness: 0, transparent: true, opacity: GLASS_OPACITY,
+  specularIntensity: 1, clearcoat: 1, clearcoatRoughness: 0.0, envMapIntensity: 1.6, depthWrite: false,
 });
-const glass = new THREE.Mesh(domeGeo, LOW ? glassLite : glassReal);
+const glass = new THREE.Mesh(domeGeo, glassLite);
 glass.position.y = C;
 glass.renderOrder = 10;
 domeGroup.add(glass);
@@ -534,7 +537,7 @@ const rim = new THREE.Mesh(domeGeo, new THREE.ShaderMaterial({
   vertexShader: `varying vec3 vN; varying vec3 vV;
     void main(){ vec4 mv = modelViewMatrix*vec4(position,1.0); vN = normalize(normalMatrix*normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix*mv; }`,
   fragmentShader: `uniform vec3 tint; varying vec3 vN; varying vec3 vV;
-    void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 3.0); gl_FragColor = vec4(tint, f*0.35); }`,
+    void main(){ float f = pow(1.0 - abs(dot(vN, vV)), 3.0); gl_FragColor = vec4(tint, f*0.22); }`,
 }));
 rim.position.y = C; rim.renderOrder = 11;
 domeGroup.add(rim);
@@ -1797,11 +1800,12 @@ function lowerDome(cb) {
   glass.material.opacity = 0; rim.material.uniforms.tint.value.setHex(GLASSES[state.glass].rim ?? TIMES[state.time].rim);
   tween(0.9, t => {
     domeGroup.position.y = 4.5 * (1 - easeOutCubic(t));
-    glass.material.opacity = 0.1 * t;
+    glass.material.opacity = GLASS_OPACITY * t;
   }, () => { domeGroup.position.y = 0; sfx.clink(); puff(new THREE.Vector3(0, 1.2, 0), 0xffd27a, 70, 0.07, 2.2); cb && cb(); });
 }
 function seal() {
   select(null);
+  atelierSheet.classList.remove('open'); styleSheet.classList.remove('open'); // panels close as the globe seals
   hint.textContent = 'Tap the globe to make it snow'; hint.style.opacity = 1;
   mode = 'sealed';
   requestMotion();
@@ -1815,7 +1819,7 @@ function unseal() {
   stopTune();
   hint.textContent = 'Drag a treasure into the globe';
   mode = 'edit';
-  tween(0.5, t => { domeGroup.position.y = 4.5 * t * t; glass.material.opacity = 0.1 * (1 - t); }, () => { domeGroup.visible = false; });
+  tween(0.5, t => { domeGroup.position.y = 4.5 * t * t; glass.material.opacity = GLASS_OPACITY * (1 - t); }, () => { domeGroup.visible = false; });
 }
 // Share image: a square portrait of the WHOLE globe on its trunk, rendered with its own framing
 // (independent of where the viewer has zoomed), then the live view is restored.
@@ -2050,7 +2054,7 @@ async function openFromHash() {
       mode = 'view';
       document.body.classList.add('view');
       load(data);
-      domeGroup.visible = true; glass.material.opacity = 0.1;
+      domeGroup.visible = true; glass.material.opacity = GLASS_OPACITY;
       document.getElementById('gate').classList.add('open');
       const msg = document.getElementById('viewMsg');
       if (state.text) { document.getElementById('viewMsgText').textContent = state.text; }
@@ -2092,7 +2096,7 @@ const STARTER = { s: ['caramel', 'gold', 'day', 0, ''], i: [
     await loadSetPieces();
     load(STARTER);
     mode = 'sealed';
-    domeGroup.visible = true; domeGroup.position.y = 0; glass.material.opacity = 0.1;
+    domeGroup.visible = true; domeGroup.position.y = 0; glass.material.opacity = GLASS_OPACITY;
     controls.enabled = false;
     resize(); loop(); liftVeil();
     shakeSnow(1);
