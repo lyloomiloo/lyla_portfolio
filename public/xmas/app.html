@@ -91,15 +91,14 @@
 <!-- Share sheet -->
 <div class="sheet-wrap" id="shareSheet">
   <div class="sheet">
-    <div class="kicker">Sealed with care</div><h2>Your globe is ready</h2>
+    <div class="kicker">Sealed with care</div><h2>Ready to share the magic</h2>
     <img id="shareImg" alt="Preview of your snow globe" />
     <div class="linkbox" id="linkBox" hidden></div>
     <div class="actions">
-      <button class="primary" id="shareBtn">Send</button>
-      <button id="copyBtn">Copy link</button>
+      <button id="unsealBtn">Back</button>
+      <button class="primary" id="copyBtn">Copy link</button>
       <button id="saveBtn">Save image</button>
     </div>
-    <div class="actions"><button id="unsealBtn">Keep decorating</button></div>
   </div>
 </div>
 
@@ -354,30 +353,76 @@ for (const sx of [-1, 1]) { const h = tmesh(new THREE.TorusGeometry(0.32, 0.05, 
 // brass collar the dome sits in
 tmesh(new THREE.CylinderGeometry(2.32, 2.44, -TOP + 0.005, 96), trimMat, 0, TOP / 2, 0).userData.keep = true; // collar stays when the model loads // top sits just under the snow
 const base = trunk;
-// engraved brass nameplate on the trunk front
-const plaqueCanvas = document.createElement('canvas');
-plaqueCanvas.width = 1024; plaqueCanvas.height = 200;
-const plaqueTex = new THREE.CanvasTexture(plaqueCanvas);
-plaqueTex.colorSpace = THREE.SRGBColorSpace; plaqueTex.anisotropy = 4;
-const plaque = new THREE.Mesh(new THREE.PlaneGeometry(2.0, 0.39), new THREE.MeshStandardMaterial({ map: plaqueTex, metalness: 0.9, roughness: 0.3, transparent: true }));
-plaque.position.set(0, BOT + 0.5, TD / 2 + 0.012);
-scene.add(plaque);
-function drawPlaque(text) {
-  const g = plaqueCanvas.getContext('2d');
-  g.clearRect(0, 0, 1024, 200);
-  plaque.visible = !!text;
-  if (!text) return;
-  const grad = g.createLinearGradient(0, 0, 0, 200);
-  const PL = { brass: ['#f2dc9c', '#c99b42', '#a37828', '#3e2810'], silver: ['#f4f6f9', '#bcc3cc', '#8f98a4', '#2a2e33'],
-    rosegold: ['#f7d3c0', '#d89c80', '#b4775c', '#4a2618'], noir: ['#4b4644', '#2c2826', '#1b1817', '#e6d6b4'] }[state.hw] || ['#f2dc9c', '#c99b42', '#a37828', '#3e2810'];
-  grad.addColorStop(0, PL[0]); grad.addColorStop(0.5, PL[1]); grad.addColorStop(1, PL[2]);
-  g.fillStyle = grad; g.beginPath(); g.roundRect(8, 8, 1008, 184, 18); g.fill();
-  g.strokeStyle = 'rgba(80,50,15,0.6)'; g.lineWidth = 3; g.beginPath(); g.roundRect(26, 26, 972, 148, 10); g.stroke();
-  g.fillStyle = PL[3]; g.textAlign = 'center'; g.textBaseline = 'middle';
-  if (state.font === 'roman') { g.font = '500 70px Jost, "Futura", sans-serif'; g.letterSpacing = '14px'; g.fillText(text.toUpperCase(), 512, 106, 900); g.letterSpacing = '0px'; }
-  else { g.font = 'italic 500 92px "Cormorant Garamond", Georgia, serif'; g.fillText(text, 512, 104, 900); }
-  plaqueTex.needsUpdate = true;
+// engraved nameplate: a real bevelled metal plate with rivets, the name cut into it
+// (canvas -> colour + bump + roughness maps on a thin decal over the plate face),
+// mounted flush on the 3D trunk's measured front surface (see placePlaque).
+const PLATE_W = 1.15, PLATE_H = 0.27, PLATE_D = 0.028;
+const plaque = new THREE.Group();
+const plateMetal = new THREE.MeshPhysicalMaterial({ color: 0xc9a35a, metalness: 1, roughness: 0.26, clearcoat: 0.35, clearcoatRoughness: 0.18, envMapIntensity: 1.1 });
+const plateBody = new THREE.Mesh(new RoundedBoxGeometry(PLATE_W, PLATE_H, PLATE_D, 4, 0.012), plateMetal);
+plateBody.castShadow = true; plaque.add(plateBody);
+for (const sx of [-1, 1]) {                                   // two domed rivets
+  const rv = new THREE.Mesh(new THREE.SphereGeometry(0.018, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), plateMetal);
+  rv.rotation.x = Math.PI / 2; rv.position.set(sx * (PLATE_W / 2 - 0.055), 0, PLATE_D / 2); plaque.add(rv);
 }
+const plaqueCanvas = document.createElement('canvas');
+plaqueCanvas.width = 2048; plaqueCanvas.height = 480;
+const bumpCanvas = document.createElement('canvas');
+bumpCanvas.width = 2048; bumpCanvas.height = 480;
+const plaqueTex = new THREE.CanvasTexture(plaqueCanvas), bumpTex = new THREE.CanvasTexture(bumpCanvas);
+plaqueTex.colorSpace = THREE.SRGBColorSpace; plaqueTex.anisotropy = 8; bumpTex.anisotropy = 8;
+const engraveMat = new THREE.MeshPhysicalMaterial({
+  map: plaqueTex, transparent: true, metalness: 0.75, roughness: 0.55, bumpMap: bumpTex, bumpScale: 1.4,
+  polygonOffset: true, polygonOffsetFactor: -2, envMapIntensity: 0.9,
+});
+const engraveFace = new THREE.Mesh(new THREE.PlaneGeometry(PLATE_W - 0.02, PLATE_H - 0.02), engraveMat);
+engraveFace.position.z = PLATE_D / 2 + 0.0008; plaque.add(engraveFace);
+plaque.visible = false;
+scene.add(plaque);
+const HW_TINT = { brass: 0xc9a35a, silver: 0xc4c9d0, rosegold: 0xd49a7f, noir: 0x2d2826 };
+function drawPlaque(text) {
+  plaque.visible = !!text;
+  plateMetal.color.setHex(HW_TINT[state.hw] || HW_TINT.brass);
+  const W = 2048, H = 480, g = plaqueCanvas.getContext('2d'), b = bumpCanvas.getContext('2d');
+  g.clearRect(0, 0, W, H);
+  b.fillStyle = '#ffffff'; b.fillRect(0, 0, W, H);           // bump: white = plate surface, dark = cut
+  if (!text) { plaqueTex.needsUpdate = bumpTex.needsUpdate = true; return; }
+  const roman = state.font === 'roman';
+  const font = roman ? '500 150px "Cormorant Garamond", Georgia, serif' : 'italic 500 210px "Cormorant Garamond", Georgia, serif';
+  const shown = roman ? text.toUpperCase() : text;
+  const draw = (ctx, style, dy) => {
+    ctx.font = font; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = style;
+    if (roman) ctx.letterSpacing = '22px';
+    ctx.fillText(shown, W / 2, H / 2 + dy + (roman ? 6 : 10), W - 360);
+    ctx.letterSpacing = '0px';
+  };
+  // a fine engraved border line inside the bevel
+  for (const [ctx, col] of [[g, 'rgba(70,46,16,0.55)'], [b, '#5a5a5a']]) {
+    ctx.strokeStyle = col; ctx.lineWidth = 5; ctx.beginPath(); ctx.roundRect(150, 46, W - 300, H - 92, 14); ctx.stroke();
+  }
+  draw(g, 'rgba(255,238,196,0.55)', 4);                       // light catching the lower lip of the cut
+  draw(g, roman || state.hw !== 'noir' ? '#4a3212' : '#e6d6b4', 0); // the cut itself, darker and duller
+  draw(b, '#000000', 0);
+  plaqueTex.needsUpdate = bumpTex.needsUpdate = true;
+}
+// mount the plate on the trunk's real front face, a little below the lid
+const plaqueRay = new THREE.Raycaster();
+function placePlaque() {
+  const y = TOP - 0.42;
+  let z = TD / 2;
+  if (trunkModel) {
+    trunkModel.updateMatrixWorld(true);
+    let front = -Infinity;
+    for (const sx of [-0.45, -0.2, 0, 0.2, 0.45]) for (const sy of [-0.1, 0, 0.1]) {
+      plaqueRay.set(new THREE.Vector3(sx, y + sy, 20), new THREE.Vector3(0, 0, -1));
+      const hit = plaqueRay.intersectObject(trunkModel, true)[0];
+      if (hit) front = Math.max(front, hit.point.z);
+    }
+    if (front > -Infinity) z = front;
+  }
+  plaque.position.set(0, y, z + PLATE_D / 2 + 0.002);
+}
+// (first placement happens in showTrunk, once the trunk model exists)
 // fake contact shadow under the trunk
 {
   const c = document.createElement('canvas'); c.width = c.height = 128;
@@ -758,6 +803,7 @@ async function showTrunk(key) {
     Object.entries(trunkCache).forEach(([f, m]) => m.visible = f === file);
     trunk.children.forEach(c => { if (!c.userData.keep) c.visible = false; });
     trunkModel = trunkCache[file];
+    placePlaque();
   } catch (e) { console.warn('trunk model missing, keeping coded trunk', file); }
 }
 
@@ -909,7 +955,7 @@ const room = new THREE.Group(); scene.add(room);
 const texLoader = new THREE.TextureLoader();
 function wall(file, x, z, rotY) {
   const m = new THREE.Mesh(new THREE.PlaneGeometry(ROOM.half * 2, ROOM.height),
-    new THREE.MeshBasicMaterial({ color: 0xa8a8a8, toneMapped: false })); // a little dimmed so the globe glows
+    new THREE.MeshBasicMaterial({ color: 0xb8b8b8, toneMapped: false })); // a little dimmed so the globe glows
   texLoader.load(file, t => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; m.material.map = t; m.material.needsUpdate = true; });
   m.position.set(x, ROOM.floor + ROOM.height / 2, z); m.rotation.y = rotY; room.add(m);
 }
@@ -991,7 +1037,7 @@ const snowMat = new THREE.ShaderMaterial({
       gl_FragColor = vec4(col, alpha);
     }`,
 });
-let snow = null, swirl = 0, obstacles = [], obstaclesDirty = true;
+let snow = null, swirl = 0, obstaclesDirty = true;
 const markSnowDirty = () => { obstaclesDirty = true; };
 function buildSnow(type) {
   if (snow) { scene.remove(snow.points); snow.points.geometry.dispose(); }
@@ -1016,14 +1062,51 @@ function buildSnow(type) {
   scene.add(points);
   snow = { points, pos, vel, settled, sink, moving, T, active: 0 };
 }
+// Snow can rest on the items' real surfaces. A top-down height map of the figurines is
+// rendered on the GPU (orthographic camera, height packed into RG) whenever items change;
+// a flake rests only where the surface is filled, faces up and is fairly flat, so pointed
+// tips and steep sides shed their snow. Bobbing items (the balloon) are left out.
+const HM_N = 128, HM_E = 2.3, HM_Y0 = -0.5, HM_H = 4;
+const hmTarget = new THREE.WebGLRenderTarget(HM_N, HM_N, { depthBuffer: true });
+const hmCam = new THREE.OrthographicCamera(-HM_E, HM_E, HM_E, -HM_E, 0.1, 12);
+hmCam.position.set(0, 8, 0); hmCam.up.set(0, 0, -1); hmCam.lookAt(0, 0, 0); hmCam.updateMatrixWorld();
+const hmMat = new THREE.ShaderMaterial({
+  side: THREE.DoubleSide, toneMapped: false,
+  vertexShader: 'varying float vY; void main(){ vec4 w = modelMatrix * vec4(position, 1.0); vY = w.y; gl_Position = projectionMatrix * viewMatrix * w; }',
+  fragmentShader: `varying float vY; void main(){ float h = clamp((vY - (${HM_Y0.toFixed(2)})) / ${HM_H.toFixed(2)}, 0.0, 1.0) * 255.0; gl_FragColor = vec4(floor(h) / 255.0, fract(h), 0.0, 1.0); }`,
+});
+const hmPix = new Uint8Array(HM_N * HM_N * 4);
+let hm = null; // { h: Float32Array, rest: Uint8Array }
 function computeObstacles() {
-  obstacles = [];
-  const box = new THREE.Box3(), sz = new THREE.Vector3(), ctr = new THREE.Vector3();
+  const swapped = [], hidden = [];
   itemsGroup.traverse(o => {
-    if (!o.userData.isItem) return;
-    box.setFromObject(o); box.getSize(sz); box.getCenter(ctr);
-    obstacles.push({ x: ctr.x, z: ctr.z, r: Math.min(sz.x, sz.z) * 0.42, top: box.max.y });
+    if (o.userData.isItem && o.userData.bob) { if (o.visible) { o.visible = false; hidden.push(o); } }
+    if (o.isMesh) { swapped.push([o, o.material]); o.material = hmMat; }
   });
+  const prevTarget = renderer.getRenderTarget(), prevAlpha = renderer.getClearAlpha(), prevColor = renderer.getClearColor(new THREE.Color());
+  renderer.setRenderTarget(hmTarget);
+  renderer.setClearColor(0x000000, 0); renderer.clear(true, true, false);
+  renderer.render(itemsGroup, hmCam);
+  renderer.readRenderTargetPixels(hmTarget, 0, 0, HM_N, HM_N, hmPix);
+  renderer.setRenderTarget(prevTarget); renderer.setClearColor(prevColor, prevAlpha);
+  for (const [o, m] of swapped) o.material = m;
+  for (const o of hidden) o.visible = true;
+  const h = new Float32Array(HM_N * HM_N).fill(-99), rest = new Uint8Array(HM_N * HM_N);
+  for (let i = 0; i < HM_N * HM_N; i++) if (hmPix[i * 4 + 3] > 0) h[i] = HM_Y0 + (hmPix[i * 4] + hmPix[i * 4 + 1] / 255) / 255 * HM_H;
+  const px = 2 * HM_E / HM_N, maxStep = px * 1.1;            // ~48° max slope for snow to stay
+  for (let y = 1; y < HM_N - 1; y++) for (let x = 1; x < HM_N - 1; x++) {
+    const i = y * HM_N + x, c = h[i]; if (c < -50) continue;
+    const n = [h[i - 1], h[i + 1], h[i - HM_N], h[i + HM_N]];
+    if (n.some(v => v < -50 || Math.abs(v - c) > maxStep)) continue; // edge of an item, or too steep
+    rest[i] = 1;
+  }
+  hm = { h, rest };
+}
+// world xz -> height-map cell (camera looks down with screen-up = -z; readPixels rows go bottom-up,
+// so row 0 is +z)
+function hmCell(x, z) {
+  const cx = Math.floor((x + HM_E) / (2 * HM_E) * HM_N), cy = Math.floor((HM_E - z) / (2 * HM_E) * HM_N);
+  return cx < 0 || cy < 0 || cx >= HM_N || cy >= HM_N ? -1 : cy * HM_N + cx;
 }
 function wakeSettled(onlyRaised) {
   if (!snow) return;
@@ -1090,7 +1173,7 @@ function stepSnow(dt, time) {
   snowMat.uniforms.camPos.value.copy(camera.position);
   snowMat.uniforms.scale.value = renderer.domElement.height / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)));
   if (!snow) return;
-  if (obstaclesDirty) { computeObstacles(); obstaclesDirty = false; wakeSettled(true); }
+  if (obstaclesDirty && performance.now() - (stepSnow.hmAt || 0) > 250) { stepSnow.hmAt = performance.now(); computeObstacles(); obstaclesDirty = false; wakeSettled(true); }
   swirl *= Math.exp(-dt / 3.6);
   if (!snow.active) return;
   const { pos, vel, settled, sink, moving } = snow;
@@ -1120,13 +1203,14 @@ function stepSnow(dt, time) {
       if (vn > 0) { vel[k] -= 1.6 * vn * nx; vel[k + 1] -= 1.6 * vn * ny; vel[k + 2] -= 1.6 * vn * nz; }
       pos[k] -= nx * 0.02; pos[k + 2] -= nz * 0.02;
     }
-    // slide around figurines on the way down. Flakes never rest on them: the hit shape is a
-    // cylinder up to the item's highest point, so resting there left glitter hovering above
-    // pointed or floating pieces (balloon, fir tips).
-    if (vel[k + 1] < 0.05) for (const o of obstacles) {
-      const dx = pos[k] - o.x, dz = pos[k + 2] - o.z, dd = dx * dx + dz * dz;
-      if (dd > o.r * o.r) continue;
-      if (pos[k + 1] < o.top - 0.12) { const s = o.r / Math.sqrt(dd || 1e-6); pos[k] = o.x + dx * s * 1.02; pos[k + 2] = o.z + dz * s * 1.02; }
+    // rest on a figurine's real top surface (flat, upward-facing spots only); anywhere else the
+    // flake keeps falling, hidden inside/behind the piece, and settles on the ground
+    if (hm && vel[k + 1] < 0.05) {
+      const ci = hmCell(pos[k], pos[k + 2]);
+      if (ci >= 0 && hm.rest[ci]) {
+        const top = hm.h[ci];
+        if (pos[k + 1] <= top + 0.01 && pos[k + 1] > top - 0.1) { pos[k + 1] = top + 0.006; settled[i] = 1; moving[i] = 0; vel[k] = vel[k + 1] = vel[k + 2] = 0; }
+      }
     }
     if (settled[i]) continue;
     const r = Math.hypot(pos[k], pos[k + 2]), gy = groundY(r) + 0.01;
@@ -1241,7 +1325,7 @@ function stopTune() {
 
 /* ---------------- settings ---------------- */
 const TIMES = {
-  day:   { label: 'Day',   hemi: [0xfff0dc, 0x5a4232, 0.42], sun: [0xffe2bf, 1.45], env: 0.92, bg: 1.0,  bokeh: 0.15, win: 0.35, glow: 0.6, rim: 0xffe9d0, exp: 1.05 },
+  day:   { label: 'Day',   hemi: [0xfff0dc, 0x5a4232, 0.5], sun: [0xffe2bf, 1.5], env: 1.0, bg: 1.0,  bokeh: 0.15, win: 0.35, glow: 0.6, rim: 0xffe9d0, exp: 1.15 },
   dusk:  { label: 'Dusk',  hemi: [0xffc6a0, 0x4c3a63, 0.4],  sun: [0xff9a6a, 1.1], env: 0.55, bg: 0.75, bokeh: 0.3, win: 1.4,  glow: 2.2, rim: 0xffd9c0, exp: 1.0 },
   night: { label: 'Night', hemi: [0x5b6aa0, 0x120f1a, 0.16], sun: [0xffd6a0, 0.95], env: 0.3,  bg: 0.5,  bokeh: 0.45, win: 2.4, glow: 1.4, rim: 0xb8c8ff, exp: 0.92 },
 };
@@ -1769,12 +1853,8 @@ sealBtn.onclick = () => { audio(); requestMotion(); seal(); };
 document.getElementById('unsealBtn').onclick = () => { shareSheet.classList.remove('open'); unseal(); };
 shareSheet.addEventListener('click', e => { if (e.target === shareSheet) shareSheet.classList.remove('open'); });
 document.getElementById('copyBtn').onclick = async () => {
-  try { await navigator.clipboard.writeText(shareURL()); toast('Link copied'); } catch { toast('Press and hold the link above to copy it'); }
-};
-document.getElementById('shareBtn').onclick = async () => {
-  const url = shareURL();
-  try { await navigator.share({ title: 'A snow globe for you', text: 'I made you a snow globe', url }); return; } catch {}
-  try { await navigator.clipboard.writeText(url); toast('Link copied. Paste it into a message'); } catch { toast('Press and hold the link above to copy it'); }
+  try { await navigator.clipboard.writeText(shareURL()); toast('Link copied'); }
+  catch { document.getElementById('linkBox').hidden = false; toast('Press and hold the link to copy it'); }
 };
 document.getElementById('saveBtn').onclick = async () => {
   const url = snapshot();
@@ -1833,7 +1913,7 @@ function renderSegs() {
       if (String(state[key]) === String(val)) b.classList.add('on');
       b.onclick = () => {
         state[key] = key === 'tune' ? +val : val; applySettings(); renderSegs();
-        if (key === 'tune') { sfx.windup(); playTune(state.tune); setTimeout(() => mode === 'edit' && stopTune(), 6000); }
+        if (key === 'tune') { sfx.windup(); playTune(state.tune); } // keeps playing while the Atelier is open; stops on Done
         if (key === 'snow') shakeSnow(0.7);
       };
       seg.appendChild(b);
@@ -1941,7 +2021,7 @@ function watchPerf(dt) {
   }
 }
 
-window.__dbg = { shakeSnow: v => shakeSnow(v), stepSnow: (dt, t) => stepSnow(dt, t), snowRings: () => { const b=[0,0,0,0,0]; for (let i=0;i<snow.settled.length;i++){ if(!snow.settled[i]) continue; const r=Math.hypot(snow.pos[i*3],snow.pos[i*3+2])/2.2; b[Math.min(4,Math.floor(r*5))]++; } return b; }, snowInfo: () => snow && { active: snow.active, settled: snow.settled.reduce((a, b) => a + b, 0), n: snow.settled.length }, camera, controls, applySettings, load: d => load(d), flyTo: (x, y, z, dist) => flyTo(new THREE.Vector3(x, y, z), dist, 0.01), packCompact: m => packCompact(m), unpackCompact: c => unpackCompact(c), state, snap: () => snapshot(), select: it => select(it), THREE, scene, renderer, composer, bloom, glass, glassLite, glassReal, table, ground, domeGroup };
+window.__dbg = { hm: () => hm, hmCell: (x, z) => hmCell(x, z), itemsGroup, computeObstacles: () => computeObstacles(), shakeSnow: v => shakeSnow(v), stepSnow: (dt, t) => stepSnow(dt, t), snowRings: () => { const b=[0,0,0,0,0]; for (let i=0;i<snow.settled.length;i++){ if(!snow.settled[i]) continue; const r=Math.hypot(snow.pos[i*3],snow.pos[i*3+2])/2.2; b[Math.min(4,Math.floor(r*5))]++; } return b; }, snowInfo: () => snow && { active: snow.active, settled: snow.settled.reduce((a, b) => a + b, 0), n: snow.settled.length }, camera, controls, applySettings, load: d => load(d), flyTo: (x, y, z, dist) => flyTo(new THREE.Vector3(x, y, z), dist, 0.01), packCompact: m => packCompact(m), unpackCompact: c => unpackCompact(c), state, snap: () => snapshot(), select: it => select(it), THREE, scene, renderer, composer, bloom, glass, glassLite, glassReal, table, ground, domeGroup };
 
 async function openFromHash() {
   if (mode === 'view') return;
