@@ -1120,11 +1120,12 @@ function stepSnow(dt, time) {
       if (vn > 0) { vel[k] -= 1.6 * vn * nx; vel[k + 1] -= 1.6 * vn * ny; vel[k + 2] -= 1.6 * vn * nz; }
       pos[k] -= nx * 0.02; pos[k + 2] -= nz * 0.02;
     }
-    // land on figurines / roofs, or slide around their sides
+    // slide around figurines on the way down. Flakes never rest on them: the hit shape is a
+    // cylinder up to the item's highest point, so resting there left glitter hovering above
+    // pointed or floating pieces (balloon, fir tips).
     if (vel[k + 1] < 0.05) for (const o of obstacles) {
       const dx = pos[k] - o.x, dz = pos[k + 2] - o.z, dd = dx * dx + dz * dz;
       if (dd > o.r * o.r) continue;
-      if (pos[k + 1] <= o.top && pos[k + 1] > o.top - 0.12) { pos[k + 1] = o.top + 0.004; settled[i] = 1; moving[i] = 0; break; }
       if (pos[k + 1] < o.top - 0.12) { const s = o.r / Math.sqrt(dd || 1e-6); pos[k] = o.x + dx * s * 1.02; pos[k + 2] = o.z + dz * s * 1.02; }
     }
     if (settled[i]) continue;
