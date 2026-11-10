@@ -42,15 +42,15 @@ const snowman = [
 ];
 // Snow Yard — a few snowy porcelain firs (same ivory + gold as the Maison Hiver 3D firs).
 // I=ivory, C=ivory shade, G=gold, g=dark gold, W=snow.
-const V: Record<string, string> = { '_': 'transparent', I: '#f3e9d6', C: '#d9c4a0', G: '#c9a15a', g: '#9c7638', W: '#ffffff' };
+const V: Record<string, string> = { '_': 'transparent', I: '#f3e9d6', C: '#d9c4a0', G: '#c9a15a', g: '#9c7638', W: '#ffffff', r: '#ff5d5d', y: '#ffd24a', e: '#5fd873' };
 const fir = [
-  '____W____',
+  '____y____',
   '___WIW___',
-  '___IIC___',
-  '__WWIWW__',
+  '___IrC___',
+  '__WWIeW__',
   '__IIIIC__',
-  '_WWWWIWW_',
-  '_IIIIIIC_',
+  '_WWrWIWW_',
+  '_IIIIyIC_',
   'WWWWWWWWW',
   'IIIIIIIIC',
   '____g____',
@@ -111,6 +111,10 @@ const firs: [string, number][] = [
           {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
         </div>
       ))}
+    </div>
+    <!-- Snow Yard: a string of fairy lights swagged across the top -->
+    <div class="garland" aria-hidden="true">
+      {Array.from({ length: 15 }).map((_, i) => <span class="bulb" style={`--i:${i}`} />)}
     </div>
     <div class="snow-fall"></div>
     <div class="yard-snowman" title="Make someone a snow globe">
@@ -497,6 +501,11 @@ const firs: [string, number][] = [
   body.snow-yard .sky { background: linear-gradient(to bottom, #172246 0%, #2c3d6e 50%, #5b6f9f 85%, #7385b2 100%); }
   body.snow-yard .pixel-sun { display: none; }
   body.snow-yard .yard-moon, body.snow-yard .yard-stars { display: block; }
+  /* a warm, cosy moon to take the chill off the blue */
+  body.snow-yard .yard-moon {
+    background: #fde6bb;
+    box-shadow: 0 0 0 4px rgba(253,230,187,0.25), 0 0 46px 12px rgba(255,214,140,0.5), inset -8px -5px 0 #eccf9a;
+  }
   body.snow-yard .cloud, body.snow-yard .cloud::before, body.snow-yard .cloud::after { background: rgba(235,240,255,0.35); }
   body.snow-yard .hill-far { background: #7d90bd; opacity: 0.8; }
   body.snow-yard .hill-mid { background: #8e9fc6; opacity: 0.95; }
@@ -539,6 +548,26 @@ const firs: [string, number][] = [
   @keyframes snowSway { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
   @media (prefers-reduced-motion: reduce) { .snow-fall { animation: none !important; } }
 
+  /* fairy lights strung across the top — the main festive cue */
+  body.snow-yard .garland { display: flex; }
+  .garland {
+    display: none; position: absolute; top: 0; left: 0; right: 0; height: 28px;
+    justify-content: space-around; align-items: flex-start; padding: 0 1.5%;
+    z-index: 3; pointer-events: none;
+  }
+  .garland::before { content: ''; position: absolute; top: 5px; left: 0; right: 0; height: 2px; background: rgba(26,36,64,0.6); }
+  .bulb {
+    position: relative; width: 7px; height: 9px; margin-top: 7px; border-radius: 2px 2px 3px 3px;
+    image-rendering: pixelated;
+    animation: twinkle 2.8s ease-in-out infinite; animation-delay: calc(var(--i) * 0.17s);
+  }
+  .bulb::before { content: ''; position: absolute; top: -5px; left: 50%; width: 2px; height: 5px; background: rgba(26,36,64,0.55); transform: translateX(-50%); }
+  .bulb:nth-child(4n+1) { background: #ff5d5d; box-shadow: 0 0 9px 2px rgba(255,93,93,0.75); }
+  .bulb:nth-child(4n+2) { background: #ffd24a; box-shadow: 0 0 9px 2px rgba(255,210,74,0.75); }
+  .bulb:nth-child(4n+3) { background: #5fd873; box-shadow: 0 0 9px 2px rgba(95,216,115,0.75); }
+  .bulb:nth-child(4n)   { background: #5aa6ff; box-shadow: 0 0 9px 2px rgba(90,166,255,0.75); }
+  @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+  @media (prefers-reduced-motion: reduce) { .bulb { animation: none !important; } }
 
   /* ---- Snow Yard: a string of lights + a few snowy firs, nothing else ---- */
   body.snow-yard .village { display: block; }
