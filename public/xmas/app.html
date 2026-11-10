@@ -1767,7 +1767,7 @@ function toast(t) { const el = document.getElementById('toast'); el.textContent 
 // receiver: a gentle "shake" prompt that fades on its own (or as soon as they shake / tap)
 function showShakePrompt() {
   const el = document.getElementById('shakePrompt'); if (!el) return;
-  el.textContent = PHONE ? 'Shake your phone to make it snow' : 'Tap the globe to make it snow';
+  el.textContent = 'Shake';
   el.classList.add('on');
   clearTimeout(showShakePrompt.t); showShakePrompt.t = setTimeout(() => el.classList.remove('on'), 4200);
 }
@@ -1953,8 +1953,9 @@ async function openFromHash() {
       document.getElementById('openBtn').onclick = () => {
         audio(); requestMotion();
         document.getElementById('gate').classList.remove('open');
-        domeGroup.visible = false;
-        lowerDome(() => { setTimeout(() => shakeSnow(1.1), 250); playTune(state.tune); showShakePrompt(); if (state.text) setTimeout(() => { msg.style.display = 'block'; sfx.paper(); }, 2500); });
+        // the globe is already sealed: no dome drop, it just starts snowing
+        setTimeout(() => shakeSnow(1.1), 250); playTune(state.tune); showShakePrompt();
+        if (state.text) setTimeout(() => { msg.style.display = 'block'; sfx.paper(); }, 2500);
       };
       controls.autoRotate = false; // the view is framed like a photo now
     }
