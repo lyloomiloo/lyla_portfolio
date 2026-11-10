@@ -360,3 +360,6 @@ body.view #viewMsg { bottom: calc(76px + env(safe-area-inset-bottom)); }
   #shareSheet { align-items: center; padding: 24px; }
   #shareSheet .sheet { border-radius: 16px; max-height: calc(100vh - 48px); padding-bottom: 24px; }
 }
+
+/* panel headlines in the same hand script as the gate ("A little magic, just for you") */
+.sheet h2 { font-family: var(--hand); font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 50px; line-height: 1.05; }
