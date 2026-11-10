@@ -62,20 +62,20 @@ const firs: [string, number][] = [
   ['bottom:33%; right:20%;', 3],
   ['bottom:35%; right:35%;', 4],
 ];
-// Small wrapped boxes scattered on the snow, in the fairy-light colours. W=ribbon.
+// Small wrapped boxes scattered on the snow. S=gold ribbon, the arg colours the box.
 const gift = (c: string) => [
-  `${c}${c}W${c}${c}`,
-  'WWWWW',
-  `${c}${c}W${c}${c}`,
-  `${c}${c}W${c}${c}`,
+  `${c}${c}S${c}${c}`,
+  'SSSSS',
+  `${c}${c}S${c}${c}`,
+  `${c}${c}S${c}${c}`,
 ].map(r => r.split(''));
 const gifts: [string[][], string, number][] = [
   [gift('R'), 'bottom:21%; left:11%;', 3],
-  [gift('G'), 'bottom:19%; left:24%;', 4],
-  [gift('O'), 'bottom:20.5%; left:41%;', 3],
-  [gift('B'), 'bottom:18.5%; left:56%;', 4],
+  [gift('D'), 'bottom:19%; left:24%;', 4],
+  [gift('R'), 'bottom:20.5%; left:41%;', 3],
+  [gift('D'), 'bottom:18.5%; left:56%;', 4],
   [gift('R'), 'bottom:21%; left:70%;', 3],
-  [gift('G'), 'bottom:19.5%; left:85%;', 4],
+  [gift('D'), 'bottom:19.5%; left:85%;', 4],
 ];
 ---
 
@@ -521,10 +521,10 @@ const gifts: [string[][], string, number][] = [
   body.snow-yard .sky { background: linear-gradient(to bottom, #172246 0%, #2c3d6e 50%, #5b6f9f 85%, #7385b2 100%); }
   body.snow-yard .pixel-sun { display: none; }
   body.snow-yard .yard-moon, body.snow-yard .yard-stars { display: block; }
-  /* a warm, cosy moon to take the chill off the blue */
+  /* a warm, cosy moon to take the chill off the blue — no glow */
   body.snow-yard .yard-moon {
     background: #fde6bb;
-    box-shadow: 0 0 0 4px rgba(253,230,187,0.25), 0 0 46px 12px rgba(255,214,140,0.5), inset -8px -5px 0 #eccf9a;
+    box-shadow: inset -8px -5px 0 #eccf9a;
   }
   body.snow-yard .cloud, body.snow-yard .cloud::before, body.snow-yard .cloud::after { background: rgba(235,240,255,0.35); }
   body.snow-yard .hill-far { background: #7d90bd; opacity: 0.8; }
@@ -825,7 +825,7 @@ const gifts: [string[][], string, number][] = [
     if (!p) return;
     const MINX = 5, MAXX = 85, MINY = 9, MAXY = 33; // percent of the desktop
     let x = 20, y = 20, tx = 60, ty = 24, dir = 1, pause = 600, last = performance.now();
-    let bPhase = 0, bH = 2.5, bPeriod = 260, bRest = 0; // irregular ball-bounce state
+    let bPhase = 0, bH = 1.2, bPeriod = 700, bRest = 0; // irregular ball-bounce state
     const pick = () => {
       tx = MINX + Math.random() * (MAXX - MINX);
       ty = MINY + Math.random() * (MAXY - MINY);
@@ -862,9 +862,9 @@ const gifts: [string[][], string, number][] = [
             bPhase += (dt / bPeriod) * Math.PI;
             if (bPhase >= Math.PI) {
               bPhase = 0;
-              bH = 1.2 + Math.random() * 3.3;
-              bPeriod = 160 + Math.random() * 300;
-              bRest = Math.random() < 0.35 ? 60 + Math.random() * 520 : 0;
+              bH = 0.6 + Math.random() * 1.4;
+              bPeriod = 500 + Math.random() * 560;
+              bRest = Math.random() < 0.35 ? 80 + Math.random() * 640 : 0;
             }
             by = y + Math.sin(bPhase) * bH;
           }
