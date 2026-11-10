@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<base href="/xmas/" />
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
 <title>Maison Hiver — make someone a snow globe</title>
@@ -2026,7 +2027,7 @@ const STARTER = { s: ['caramel', 'gold', 'day', 0, ''], i: [
   if (mode === 'edit') load(STARTER); // a small starter scene so the globe isn't empty
   resize();
   loop();
-  requestAnimationFrame(() => requestAnimationFrame(liftVeil));
+  requestAnimationFrame(() => requestAnimationFrame(liftVeil)); setTimeout(liftVeil, 600); // timer too, in case frames are paused
 })();
 
 document.getElementById('makeBackBtn').onclick = () => {

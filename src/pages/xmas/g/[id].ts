@@ -16,8 +16,7 @@ export const GET: APIRoute = async ({ params, url, request }) => {
   const origin = host ? `https://${host}` : url.origin;
   const id = cleanId(params.id);
   let html: string = template;
-  // the app uses relative asset paths; anchor them to /xmas/
-  html = html.replace('<head>', '<head>\n<base href="/xmas/" />');
+  // (app.html already carries <base href="/xmas/"> so its relative asset paths resolve)
 
   let row: Globe | null = null;
   try { row = id ? await redis.get<Globe>(globeKey(id)) : null; } catch {}
