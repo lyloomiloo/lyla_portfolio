@@ -24,6 +24,11 @@
 </script>
 </head>
 <body data-time="day">
+<div id="veil" aria-live="polite">
+  <img class="veil-lockup" src="lockup.png" alt="Maison Hiver" width="1227" height="189" />
+  <div class="veil-bar"><i id="veilFill"></i></div>
+  <p id="veilText">Unwrapping the atelier…</p>
+</div>
 <header>
   <div class="hl"><button class="icon" id="soundBtn" title="Sound">♪</button></div>
   <div class="brand"><img class="lockup" src="lockup.png" alt="Maison Hiver, the little winter atelier" width="1227" height="189" /></div>
@@ -128,6 +133,11 @@ const WEB = HOST === 'web';
 const EMBED = WEB && /[?&]embed=1/.test(location.search); // live preview inside the portfolio's Projects window
 if (EMBED) document.documentElement.classList.add('embed');
 const gltfLoader = () => new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
+// loading veil: three's default manager counts every model + texture request
+THREE.DefaultLoadingManager.onProgress = (_u, done, total) => {
+  const f = document.getElementById('veilFill'); if (f) f.style.width = Math.round(done / Math.max(total, 1) * 100) + '%';
+};
+function liftVeil() { const v = document.getElementById('veil'); if (!v) return; v.classList.add('gone'); setTimeout(() => v.remove(), 900); }
 const PHONE = matchMedia('(pointer: coarse)').matches || Math.min(screen.width, screen.height) < 820;
 const LOW = EMBED || /[?&]q=low/.test(location.search) || (PHONE && !/[?&]q=high/.test(location.search));
 const HDRI = 'https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/1k/christmas_photo_studio_04_1k.hdr'; // CC0, Poly Haven
@@ -1971,7 +1981,7 @@ const STARTER = { s: ['caramel', 'gold', 'day', 0, ''], i: [
     mode = 'sealed';
     domeGroup.visible = true; domeGroup.position.y = 0; glass.material.opacity = 0.1;
     controls.enabled = false;
-    resize(); loop();
+    resize(); loop(); liftVeil();
     shakeSnow(1);
     setInterval(() => { if (!document.hidden) shakeSnow(0.9); }, 9000);
     document.addEventListener('click', () => window.open('/xmas/', '_blank', 'noopener'));
@@ -1985,6 +1995,7 @@ const STARTER = { s: ['caramel', 'gold', 'day', 0, ''], i: [
   if (mode === 'edit') load(STARTER); // a small starter scene so the globe isn't empty
   resize();
   loop();
+  requestAnimationFrame(() => requestAnimationFrame(liftVeil));
 })();
 
 document.getElementById('shakeBtn').onclick = () => { audio(); requestMotion(); shakeSnow(1.1); };

@@ -293,3 +293,17 @@
 /* ===== embed: live preview inside lylahuang.com Projects ===== */
 .embed header, .embed #tray, .embed #zoomCtl, .embed #hint, .embed .sheet-wrap, .embed #gate, .embed #toast { display: none !important; }
 .embed body { cursor: pointer; }
+
+/* ===== loading veil (models + textures stream in on phones) ===== */
+#veil {
+  position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px;
+  background: radial-gradient(ellipse at 50% 40%, #3a2618 0%, #1a110b 60%, #0f0a07 100%);
+  transition: opacity 0.8s ease, visibility 0.8s;
+}
+#veil.gone { opacity: 0; visibility: hidden; }
+.veil-lockup { width: min(320px, 66vw); height: auto; animation: veilBreathe 2.4s ease-in-out infinite alternate; }
+.veil-bar { width: min(220px, 52vw); height: 2px; background: rgba(255,255,255,0.15); border-radius: 2px; overflow: hidden; }
+.veil-bar i { display: block; height: 100%; width: 4%; background: #e8c98a; transition: width 0.3s ease; }
+#veil p { margin: 0; font-family: "Jost", sans-serif; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,240,220,0.7); }
+@keyframes veilBreathe { from { opacity: 0.75; } to { opacity: 1; } }
+.embed #veil { display: none; }
