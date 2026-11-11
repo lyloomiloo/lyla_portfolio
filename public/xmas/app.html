@@ -19,8 +19,8 @@
 <link rel="stylesheet" href="style.css" />
 <script type="importmap">
 { "imports": {
-  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  "three": "/xmas/vendor/three/build/three.module.js",
+  "three/addons/": "/xmas/vendor/three/examples/jsm/"
 } }
 </script>
 </head>
@@ -29,7 +29,27 @@
   <img class="veil-lockup" src="lockup.png" alt="Maison Hiver" width="1227" height="189" />
   <div class="veil-bar"><i id="veilFill"></i></div>
   <p id="veilText">Unwrapping the atelier…</p>
+  <button id="veilRetry" hidden onclick="location.reload()">Try again</button>
 </div>
+<script>
+/* If 3D can't start (WebGL off, a blocked script, an error during boot) or loading stalls,
+   say so on the loading screen instead of hanging on it forever. */
+(function () {
+  function fail(msg) {
+    var v = document.getElementById('veil'); if (!v || v.classList.contains('gone')) return;
+    v.classList.add('failed');
+    document.getElementById('veilText').textContent = msg;
+    document.getElementById('veilRetry').hidden = false;
+  }
+  window.__veilFail = fail;
+  var c = document.createElement('canvas'), gl = null;
+  try { gl = c.getContext('webgl2') || c.getContext('webgl'); } catch (e) {}
+  if (!gl) { fail('This browser has 3D turned off. In Chrome: Settings, System, turn on “Use graphics acceleration”, then reopen this page.'); return; }
+  window.addEventListener('error', function (e) { if (document.getElementById('veil')) fail('Something stopped the atelier from opening. Try again, or open it in another browser.'); });
+  window.addEventListener('unhandledrejection', function () { if (document.getElementById('veil')) fail('Something stopped the atelier from opening. Try again, or open it in another browser.'); });
+  setTimeout(function () { if (document.getElementById('veil')) fail('This is taking longer than usual. Check your connection and try again.'); }, 40000);
+})();
+</script>
 <header>
   <div class="hl"><button class="icon" id="soundBtn" title="Sound">♪</button></div>
   <div class="brand"><img class="lockup" src="lockup.png" alt="Maison Hiver, the little winter atelier" width="1227" height="189" /></div>
@@ -215,6 +235,12 @@ const groundY = r => 0.06 * Math.max(0, 1 - (r / 2.2) ** 2);
 /* ---------------- renderer / scene ---------------- */
 const stage = document.getElementById('stage');
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+// low-memory phones can drop the 3D context mid-session: offer a reload instead of a black box
+renderer.domElement.addEventListener('webglcontextlost', e => {
+  e.preventDefault();
+  toast('The 3D view was interrupted. Tap to reload.');
+  document.addEventListener('pointerup', () => location.reload(), { once: true });
+});
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping; // warmer, richer than AgX for this scene

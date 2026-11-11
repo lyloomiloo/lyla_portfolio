@@ -363,3 +363,8 @@ body.view #viewMsg { bottom: calc(76px + env(safe-area-inset-bottom)); }
 
 /* panel headlines in the same hand script as the gate ("A little magic, just for you") */
 .sheet h2 { font-family: var(--hand); font-style: normal; font-weight: 400; letter-spacing: 0; text-transform: none; font-size: 50px; line-height: 1.05; }
+
+/* loading screen when 3D can't start: readable message + retry */
+#veil.failed .veil-bar { display: none; }
+#veil.failed p { max-width: 320px; text-align: center; line-height: 1.6; letter-spacing: 0.12em; }
+#veilRetry { margin-top: 4px; background: rgba(255,255,255,0.14); color: #fff; border: 1px solid rgba(255,255,255,0.45); }
