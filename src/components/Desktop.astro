@@ -124,8 +124,8 @@ const dots: [string, string, number][] = [
           {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
         </div>
       ))}
-      {dots.map(([pos, color, size]) => (
-        <div class="snow-dot" style={`${pos} width:${size}px; height:${size}px; background:${color};`} />
+      {dots.map(([pos, color, size], i) => (
+        <div class={`snow-dot${i % 2 ? ' snow-dot--m-hide' : ''}`} style={`${pos} width:${size}px; height:${size}px; background:${color};`} />
       ))}
     </div>
     <!-- Snow Yard: a string of fairy lights swagged across the top -->
@@ -784,6 +784,10 @@ const dots: [string, string, number][] = [
     #deskDuck { display: none !important; }
     .theme-toggle { display: none !important; }
     .sky { height: 80%; }
+    /* Snow Yard on mobile: no roaming duck, smaller firs, fewer scattered dots */
+    body.snow-yard #mobileDuck { display: none !important; }
+    body.snow-yard .vs { transform: scale(0.6); transform-origin: bottom center; }
+    body.snow-yard .snow-dot--m-hide { display: none !important; }
   }
 </style>
 
