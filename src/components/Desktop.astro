@@ -119,8 +119,8 @@ const dots: [string, string, number][] = [
 
     <!-- Snow Yard (winter season) — falling snow + a wandering snowman, hidden until toggled -->
     <div class="village">
-      {firs.map(([pos, px]) => (
-        <div class="vs" style={`${pos} --px:${px}px; --cols:${fir[0].length};`}>
+      {firs.map(([pos, px], i) => (
+        <div class={`vs${i % 2 ? ' vs--m-hide' : ''}`} style={`${pos} --px:${px}px; --cols:${fir[0].length};`}>
           {fir.flat().map(c => <div style={`background:${V[c]};`} />)}
         </div>
       ))}
@@ -784,9 +784,10 @@ const dots: [string, string, number][] = [
     #deskDuck { display: none !important; }
     .theme-toggle { display: none !important; }
     .sky { height: 80%; }
-    /* Snow Yard on mobile: no roaming duck, smaller firs, fewer scattered dots */
+    /* Snow Yard on mobile: no roaming duck, fewer but larger firs, fewer scattered dots */
     body.snow-yard #mobileDuck { display: none !important; }
-    body.snow-yard .vs { transform: scale(0.6); transform-origin: bottom center; }
+    body.snow-yard .vs { transform: scale(0.85); transform-origin: bottom center; }
+    body.snow-yard .vs--m-hide { display: none !important; }
     body.snow-yard .snow-dot--m-hide { display: none !important; }
   }
 </style>
