@@ -163,6 +163,19 @@ const pixelIcons: Record<string, { cols: number; rows: number; grid: string[][] 
       ['_','_','_','_','_','_','_','_'],
     ]
   },
+  // Sailboat — 8×8 (agios kirykos): sea-blue sail, deep-navy hull
+  agioskirykos: {
+    cols: 8, rows: 8, grid: [
+      ['_','_','_','A','_','_','_','_'],
+      ['_','_','_','A','A','A','_','_'],
+      ['_','_','_','A','A','A','A','_'],
+      ['_','_','_','A','A','A','A','A'],
+      ['_','_','_','A','A','A','_','_'],
+      ['_','_','_','A','_','_','_','_'],
+      ['J','J','J','J','J','J','J','J'],
+      ['_','J','J','J','J','J','J','_'],
+    ]
+  },
 };
 
 const iconColors: Record<string, string> = {
@@ -179,6 +192,8 @@ const iconColors: Record<string, string> = {
   'E': '#39FF14',
   'R': '#E23744',
   'W': '#FFFFFF',
+  'A': '#3E8ED0',
+  'J': '#1F4E79',
 };
 
 // Mockup preview config per project
@@ -194,6 +209,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
   novacancy: { label: 'NO VACANCY', type: 'browser', image: '/images/projects/novacancy/cover.png' },
   messageinthewind: { label: 'MESSAGE IN THE WIND', type: 'browser', image: '/images/projects/messageinthewind/cover.png' },
   snowglobe: { label: 'SNOW GLOBE ATELIER', type: 'browser', image: '/images/projects/snowglobe/cover.png' },
+  agioskirykos: { label: 'AGIOS KIRYKOS', type: 'browser', image: '/images/projects/agioskirykos/cover.jpg' },
 };
 ---
 
@@ -223,7 +239,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                 {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
               </div>
             )}
-            <span class="pw-num">0{p.data.order}</span>
+            <span class="pw-num">{String(p.data.order).padStart(2, '0')}</span>
             <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
             {p.data.hook.includes('|') ? (
               <div class="pw-hook">
@@ -296,7 +312,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                   {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
                 </div>
               )}
-              <span class="pw-num">0{p.data.order}</span>
+              <span class="pw-num">{String(p.data.order).padStart(2, '0')}</span>
               <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
@@ -375,7 +391,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                   {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
                 </div>
               )}
-              <span class="pw-num">0{p.data.order}</span>
+              <span class="pw-num">{String(p.data.order).padStart(2, '0')}</span>
               <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
@@ -462,7 +478,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                   {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
                 </div>
               )}
-              <span class="pw-num">0{p.data.order}</span>
+              <span class="pw-num">{String(p.data.order).padStart(2, '0')}</span>
               <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">
@@ -544,7 +560,7 @@ const mockupConfig: Record<string, { label: string; type: 'phone' | 'browser'; i
                   {icon.grid.flat().map(c => <div style={`background:${iconColors[c]};`} />)}
                 </div>
               )}
-              <span class="pw-num">0{p.data.order}</span>
+              <span class="pw-num">{String(p.data.order).padStart(2, '0')}</span>
               <h3 class="pw-title" set:html={p.data.displayTitle}></h3>
               {p.data.hook.includes('|') ? (
                 <div class="pw-hook">

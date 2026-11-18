@@ -12,6 +12,7 @@
   <button class="taskbar-tab" data-tab="contact">contact.txt</button>
   <div class="taskbar-spacer"></div>
   <div class="taskbar-clock" data-taskbar-clock></div>
+  <button class="music-toggle" id="musicToggle" aria-label="Play Christmas music" title="Play Christmas music" aria-pressed="false"><span class="mt-note">&#9834;</span></button>
   <button class="theme-toggle" id="themeToggle" aria-label="Toggle the Draft Yard" title="Toggle the Draft Yard">
     <span class="tt-moon"></span>
     <span class="tt-sun"></span>
@@ -30,6 +31,97 @@
   }
   updateClock();
   setInterval(updateClock, 30000);
+</script>
+
+<script>
+  // Seasonal chiptune — a soft 8-bit "Jingle Bells" (melody is public domain, 1857),
+  // synthesised live with the Web Audio API (same toolkit as the duck quack + game sfx).
+  // No audio files, no autoplay: it only starts on a click, and only shows in Xmas season.
+  (function () {
+    const btn = document.getElementById('musicToggle');
+    if (!btn) return;
+
+    const F = { C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392.0, A: 440.0, B: 493.88, R: 0 };
+    // [note, beats] — R = rest; a quarter note is 1 beat.
+    const MELODY = [
+      ['E',1],['E',1],['E',2], ['E',1],['E',1],['E',2],
+      ['E',1],['G',1],['C',1],['D',1],['E',4],
+      ['F',1],['F',1],['F',1],['F',1], ['F',1],['E',1],['E',1],['E',0.5],['E',0.5],
+      ['E',1],['D',1],['D',1],['E',1],['D',2],['G',2],
+      ['E',1],['E',1],['E',2], ['E',1],['E',1],['E',2],
+      ['E',1],['G',1],['C',1],['D',1],['E',4],
+      ['F',1],['F',1],['F',1],['F',1], ['F',1],['E',1],['E',1],['E',0.5],['E',0.5],
+      ['G',1],['G',1],['F',1],['D',1],['C',4],
+      ['R',2],
+    ];
+    const BEAT = 0.34;        // seconds per quarter note
+    const NOTE_PEAK = 0.2;    // per-note amplitude (kept low so it stays in the background)
+
+    let ctx = null, master = null, timer = null, playing = false, voices = [];
+
+    function playNote(freq, start, dur) {
+      if (!freq) return;
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      const end = start + dur;
+      g.gain.setValueAtTime(0, start);
+      g.gain.linearRampToValueAtTime(NOTE_PEAK, start + 0.012);
+      g.gain.exponentialRampToValueAtTime(0.0008, end);
+      osc.connect(g).connect(master);
+      osc.start(start);
+      osc.stop(end + 0.02);
+      voices.push(osc);
+      osc.onended = () => { voices = voices.filter((v) => v !== osc); };
+    }
+
+    function scheduleLoop() {
+      let t = ctx.currentTime + 0.06;
+      for (const [n, beats] of MELODY) {
+        const dur = beats * BEAT;
+        playNote(F[n], t, dur * 0.9); // small gap between notes -> plucky, bell-like
+        t += dur;
+      }
+      const loopMs = (t - ctx.currentTime) * 1000;
+      timer = setTimeout(() => { if (playing) scheduleLoop(); }, loopMs - 140);
+    }
+
+    function start() {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      if (ctx.state === 'suspended') ctx.resume();
+      if (!master) { master = ctx.createGain(); master.connect(ctx.destination); }
+      master.gain.cancelScheduledValues(ctx.currentTime);
+      master.gain.setValueAtTime(0.0001, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.12);
+      playing = true;
+      scheduleLoop();
+      btn.classList.add('is-playing');
+      btn.setAttribute('aria-pressed', 'true');
+      btn.setAttribute('title', 'Mute Christmas music');
+      btn.setAttribute('aria-label', 'Mute Christmas music');
+    }
+
+    function stop() {
+      playing = false;
+      if (timer) { clearTimeout(timer); timer = null; }
+      if (ctx && master) {
+        master.gain.cancelScheduledValues(ctx.currentTime);
+        master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+        master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
+      }
+      setTimeout(() => { voices.forEach((v) => { try { v.stop(); } catch (e) {} }); voices = []; }, 180);
+      btn.classList.remove('is-playing');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('title', 'Play Christmas music');
+      btn.setAttribute('aria-label', 'Play Christmas music');
+    }
+
+    btn.addEventListener('click', () => { playing ? stop() : start(); });
+
+    // Don't keep playing in a backgrounded tab.
+    document.addEventListener('visibilitychange', () => { if (document.hidden && playing) stop(); });
+  })();
 </script>
 
 <style is:global>
@@ -87,6 +179,21 @@
     color: #888;
     padding: 0 10px;
   }
+
+  /* Seasonal music toggle — only shown in the Xmas season (same scope as the Snow Yard) */
+  .music-toggle {
+    width: 26px; height: 20px; padding: 0; margin-right: 4px; cursor: pointer; flex: none;
+    background: none; border: 1px solid #444; border-radius: 3px;
+    display: none; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1; color: #9ba1ab;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+  }
+  body.season-xmas .music-toggle { display: inline-flex; }
+  .music-toggle:hover { border-color: var(--orange); background: rgba(255,107,0,0.12); color: var(--orange); }
+  .music-toggle.is-playing { color: var(--green); border-color: var(--green); }
+  .music-toggle .mt-note { display: block; }
+  .music-toggle.is-playing .mt-note { animation: mt-bob 0.85s ease-in-out infinite; }
+  @keyframes mt-bob { 0%, 100% { transform: translateY(1px); } 50% { transform: translateY(-2px); } }
 
   @media (max-width: 768px) {
     .taskbar { display: none !important; }

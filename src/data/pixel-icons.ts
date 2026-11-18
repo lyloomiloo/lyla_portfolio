@@ -94,6 +94,19 @@ export const icons: Record<string, string[][]> = {
     ['_','_','_','K','M','K','M','K','_','_'],
     ['_','_','_','K','K','_','K','K','_','_'],
   ],
+  // agios kirykos — white sailboat + little sun, for the Aegean-blue tile
+  agioskirykos_app: [
+    ['_','_','_','_','_','_','_','_','_','_'],
+    ['_','_','W','_','_','_','_','S','S','_'],
+    ['_','_','W','W','_','_','S','S','S','S'],
+    ['_','_','W','W','W','_','_','S','S','_'],
+    ['_','_','W','W','W','W','_','_','_','_'],
+    ['_','_','W','W','W','W','W','_','_','_'],
+    ['_','_','W','_','_','_','_','_','_','_'],
+    ['W','W','W','W','W','W','W','W','W','_'],
+    ['_','W','W','W','W','W','W','W','_','_'],
+    ['_','_','_','_','_','_','_','_','_','_'],
+  ],
   // Snow globe — snowglobe.exe, shown on the desktop only in the winter Snow Yard
   // Santa hat (seasons greetings) on the dark tile
   snowglobe: [
