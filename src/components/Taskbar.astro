@@ -47,10 +47,11 @@
       C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, R: 0,
     };
     // Each track is a public-domain carol melody as [note, beats] pairs (quarter note = 1 beat,
-    // R = rest). They play as a medley — a full carol, a short breath, then the next, looping.
+    // R = rest). `beat` sets that carol's tempo in seconds per beat — the rhythm and tempo are
+    // what make a tune recognisable, so each gets its own. They play as a medley: a full carol,
+    // a breath, then the next, looping round.
     const TRACKS = [
-      { name: 'Jingle Bells', seq: [
-        // chorus
+      { name: 'Jingle Bells', beat: 0.32, seq: [
         ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
         ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
         ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
@@ -60,25 +61,22 @@
         ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
         ['G4',1],['G4',1],['F4',1],['D4',1],['C4',4],
       ] },
-      { name: 'Joy to the World', seq: [
-        ['C5',1.5],['B4',0.5],['A4',1],['G4',2],['F4',1],['E4',1],['D4',1],['C4',2],     // Joy to the world, the Lord is come
-        ['G4',1],['A4',1],['A4',1],['B4',1],['B4',1],['C5',3],                            // Let earth receive her King
-        ['C5',1],['C5',1],['B4',1],['A4',1],['G4',1],['G4',1],['F4',1],['E4',1],          // Let ev'ry heart prepare him room
-        ['F4',1],['F4',1],['E4',1],['E4',1],['D4',1],['D4',1],['C4',3],                   // and heaven and nature sing
+      { name: 'Joy to the World', beat: 0.42, seq: [
+        ['C5',1.5],['B4',0.5],['A4',1],['G4',1.5],['F4',0.5],['E4',1],['D4',1],['C4',3], // Joy to the world, the Lord is come
+        ['G4',1],['A4',1],['A4',1],['B4',1],['B4',1],['C5',3],                           // Let earth receive her King
       ] },
-      { name: 'Deck the Halls', seq: [
-        ['G4',1],['F4',1],['E4',1],['D4',1], ['C4',1],['D4',1],['E4',1],['C4',2],         // Deck the hall with boughs of holly
-        ['D4',1],['E4',1],['F4',1],['E4',1], ['D4',1],['C4',1],['B3',1],['C4',2],         // 'Tis the season to be jolly
-        ['E4',1],['F4',1],['G4',1],['E4',1], ['F4',1],['E4',1],['D4',1],['C4',2],         // Don we now our gay apparel
-        ['G4',1],['A4',1],['G4',1],['F4',1], ['E4',1],['F4',0.5],['E4',0.5],['D4',1],['C4',2], // Fa la la la la, la la la la
+      { name: 'Deck the Halls', beat: 0.36, seq: [
+        ['G4',1],['F4',1],['E4',1],['D4',1], ['C4',1],['D4',1],['E4',1],['C4',2],        // Deck the hall with boughs of holly
+        ['D4',1],['E4',1],['F4',1],['E4',1], ['D4',1],['C4',1],['B3',1],['C4',2],        // 'Tis the season to be jolly
+        ['G4',1],['A4',0.5],['G4',0.5],['F4',1],['E4',1], ['D4',0.5],['C4',0.5],['D4',1],['C4',2], // Fa la la la la, la la la la
       ] },
-      { name: 'We Wish You a Merry Christmas', seq: [
-        ['C4',1], ['F4',1],['F4',1],['G4',1],['F4',1],['E4',1],['D4',2],                  // We wish you a merry Christmas
-        ['D4',1], ['G4',1],['G4',1],['A4',1],['G4',1],['F4',1],['E4',2],                  // We wish you a merry Christmas
-        ['E4',1], ['A4',1],['A4',1],['B4',1],['A4',1],['G4',1],['F4',2],                  // We wish you a merry Christmas
-        ['D4',1],['D4',1],['E4',1],['D4',1],['G4',1],['E4',1],['C4',3],                   // and a happy new year
+      { name: 'We Wish You a Merry Christmas', beat: 0.4, seq: [
+        ['C4',1], ['F4',1],['F4',1],['G4',1],['F4',1],['E4',1],['D4',2],                 // We wish you a merry Christmas
+        ['D4',1], ['G4',1],['G4',1],['A4',1],['G4',1],['F4',1],['E4',2],                 // We wish you a merry Christmas
+        ['E4',1], ['A4',1],['A4',1],['B4',1],['A4',1],['G4',1],['F4',2],                 // We wish you a merry Christmas
+        ['D4',1],['C4',1],['A4',1],['F4',1],['G4',1],['E4',1],['F4',2],                  // and a happy new year
       ] },
-      { name: 'Silent Night', seq: [
+      { name: 'Silent Night', beat: 0.4, seq: [
         ['G4',1.5],['A4',0.5],['G4',1],['E4',2], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Silent night, holy night
         ['D5',2],['D5',1],['B4',3], ['C5',2],['C5',1],['G4',3],                           // All is calm, all is bright
         ['A4',2],['A4',1],['C5',1],['B4',1],['A4',1], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Round yon virgin, mother and child
@@ -87,7 +85,7 @@
         ['C5',2],['G4',1],['E4',1],['G4',1],['F4',1],['D4',1],['C4',4],                   // Christ the Saviour is born
       ] },
     ];
-    const GAP_BEATS = 2;      // breath between carols
+    const GAP_SECONDS = 1.0;  // breath between carols, so they don't blur together
     const BEAT = 0.34;        // seconds per quarter note
     const NOTE_PEAK = 0.2;    // per-note amplitude (kept low so it stays in the background)
 
@@ -111,13 +109,16 @@
     }
 
     function scheduleTrack() {
+      const track = TRACKS[trackIdx];
+      const beat = track.beat || BEAT;
       let t = ctx.currentTime + 0.08;
-      for (const [n, beats] of TRACKS[trackIdx].seq) {
-        const dur = beats * BEAT;
+      for (const [n, beats] of track.seq) {
+        const dur = beats * beat;
         playNote(F[n], t, dur * 0.9); // small gap between notes -> plucky, bell-like
         t += dur;
       }
-      t += GAP_BEATS * BEAT; // breath before the next carol
+      t += GAP_SECONDS; // breath before the next carol
+      btn.setAttribute('title', '♪ ' + track.name + ' (click to mute)');
       const nextMs = (t - ctx.currentTime) * 1000;
       timer = setTimeout(() => {
         if (!playing) return;
@@ -134,11 +135,10 @@
       master.gain.setValueAtTime(0.0001, ctx.currentTime);
       master.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.12);
       playing = true;
-      scheduleTrack();
       btn.classList.add('is-playing');
       btn.setAttribute('aria-pressed', 'true');
-      btn.setAttribute('title', 'Mute Christmas music');
       btn.setAttribute('aria-label', 'Mute Christmas music');
+      scheduleTrack(); // sets the title to the current carol's name
     }
 
     function stop() {
