@@ -42,64 +42,37 @@
     if (!btn) return;
 
     const F = {
-      C3: 130.81, D3: 146.83, E3: 164.81, F3: 174.61, G3: 196.0, A3: 220.0, B3: 246.94,
+      B3: 246.94,
       C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88,
       C5: 523.25, D5: 587.33, E5: 659.25, F5: 698.46, R: 0,
     };
-    // Each track is a public-domain carol: a `seq` melody and a `bass` chord-root line (both
-    // [note, beats] pairs, quarter note = 1 beat, R = rest) that must sum to the same length.
-    // `beat` sets the tempo in seconds per beat. They play as a medley — a full carol, a breath,
-    // then the next, looping round.
+    // Each track is a public-domain carol melody as [note, beats] pairs (quarter note = 1 beat,
+    // R = rest). `beat` sets that carol's tempo in seconds per beat — the rhythm and tempo are
+    // what make a tune recognisable, so each gets its own. They play as a medley: a full carol,
+    // a breath, then the next, looping round.
     const TRACKS = [
-      { name: 'Jingle Bells', beat: 0.32,
-        seq: [
-          ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
-          ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
-          ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
-          ['E4',1],['D4',1],['D4',1],['E4',1],['D4',2],['G4',2],
-          ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
-          ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
-          ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
-          ['G4',1],['G4',1],['F4',1],['D4',1],['C4',4],
-        ],
-        bass: [
-          ['C3',8], ['C3',8], ['F3',4],['C3',4], ['G3',4],['C3',4],
-          ['C3',8], ['C3',8], ['F3',4],['C3',4], ['G3',4],['C3',4],
-        ] },
-      { name: 'Joy to the World', beat: 0.42,
-        seq: [
-          ['C5',1.5],['B4',0.5],['A4',1],['G4',1.5],['F4',0.5],['E4',1],['D4',1],['C4',3], // Joy to the world, the Lord is come
-          ['G4',1],['A4',1],['A4',1],['B4',1],['B4',1],['C5',3],                           // Let earth receive her King
-        ],
-        bass: [ ['C3',4.5],['G3',2.5],['C3',3], ['G3',5],['C3',3] ] },
-      { name: 'Deck the Halls', beat: 0.36,
-        seq: [
-          ['G4',1],['F4',1],['E4',1],['D4',1], ['C4',1],['D4',1],['E4',1],['C4',2],        // Deck the hall with boughs of holly
-          ['D4',1],['E4',1],['F4',1],['E4',1], ['D4',1],['C4',1],['B3',1],['C4',2],        // 'Tis the season to be jolly
-          ['G4',1],['A4',0.5],['G4',0.5],['F4',1],['E4',1], ['D4',0.5],['C4',0.5],['D4',1],['C4',2], // Fa la la la la, la la la la
-        ],
-        bass: [ ['C3',5],['G3',2],['C3',2], ['C3',5],['G3',2],['C3',2], ['C3',4],['G3',2],['C3',2] ] },
-      { name: 'We Wish You a Merry Christmas', beat: 0.4,
-        seq: [
-          ['C4',1], ['F4',1],['F4',1],['G4',1],['F4',1],['E4',1],['D4',2],                 // We wish you a merry Christmas
-          ['D4',1], ['G4',1],['G4',1],['A4',1],['G4',1],['F4',1],['E4',2],                 // We wish you a merry Christmas
-          ['E4',1], ['A4',1],['A4',1],['B4',1],['A4',1],['G4',1],['F4',2],                 // We wish you a merry Christmas
-          ['D4',2],['E4',1],['F4',1],['E4',1],['D4',1],['C4',2],                           // and a happy new year
-        ],
-        bass: [ ['C3',1],['F3',4],['C3',3], ['C3',8], ['F3',4],['C3',4], ['C3',4],['G3',2],['C3',2] ] },
-      { name: 'Silent Night', beat: 0.4,
-        seq: [
-          ['G4',1.5],['A4',0.5],['G4',1],['E4',2], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Silent night, holy night
-          ['D5',2],['D5',1],['B4',3], ['C5',2],['C5',1],['G4',3],                           // All is calm, all is bright
-          ['A4',2],['A4',1],['C5',1],['B4',1],['A4',1], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Round yon virgin, mother and child
-          ['A4',2],['A4',1],['C5',1],['B4',1],['A4',1], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Holy infant so tender and mild
-          ['D5',2],['D5',1],['F5',1.5],['D5',0.5],['B4',1],['C5',3],                        // Sleep in heavenly peace
-          ['C5',2],['G4',1],['E4',1],['G4',1],['F4',1],['D4',1],['C4',4],                   // Christ the Saviour is born
-        ],
-        bass: [
-          ['C3',10], ['G3',6],['C3',6], ['F3',6],['C3',5], ['F3',6],['C3',5],
-          ['G3',6],['C3',3], ['C3',4],['G3',3],['C3',4],
-        ] },
+      { name: 'Jingle Bells', beat: 0.32, seq: [
+        ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
+        ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
+        ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
+        ['E4',1],['D4',1],['D4',1],['E4',1],['D4',2],['G4',2],
+        ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
+        ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
+        ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
+        ['G4',1],['G4',1],['F4',1],['D4',1],['C4',4],
+      ] },
+      { name: 'Joy to the World', beat: 0.42, seq: [
+        ['C5',1.5],['B4',0.5],['A4',1],['G4',1.5],['F4',0.5],['E4',1],['D4',1],['C4',3], // Joy to the world, the Lord is come
+        ['G4',1],['A4',1],['A4',1],['B4',1],['B4',1],['C5',3],                           // Let earth receive her King
+      ] },
+      { name: 'Silent Night', beat: 0.4, seq: [
+        ['G4',1.5],['A4',0.5],['G4',1],['E4',2], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Silent night, holy night
+        ['D5',2],['D5',1],['B4',3], ['C5',2],['C5',1],['G4',3],                           // All is calm, all is bright
+        ['A4',2],['A4',1],['C5',1],['B4',1],['A4',1], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Round yon virgin, mother and child
+        ['A4',2],['A4',1],['C5',1],['B4',1],['A4',1], ['G4',1.5],['A4',0.5],['G4',1],['E4',2], // Holy infant so tender and mild
+        ['D5',2],['D5',1],['F5',1.5],['D5',0.5],['B4',1],['C5',3],                        // Sleep in heavenly peace
+        ['C5',2],['G4',1],['E4',1],['G4',1],['F4',1],['D4',1],['C4',4],                   // Christ the Saviour is born
+      ] },
     ];
     const GAP_SECONDS = 1.0;  // breath between carols, so they don't blur together
     const BEAT = 0.34;        // seconds per quarter note
@@ -124,24 +97,6 @@
       osc.onended = () => { voices = voices.filter((v) => v !== osc); };
     }
 
-    function playBass(freq, start, dur) {
-      if (!freq) return;
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.value = freq;
-      const end = start + dur;
-      g.gain.setValueAtTime(0, start);
-      g.gain.linearRampToValueAtTime(0.14, start + 0.03);
-      g.gain.setValueAtTime(0.14, end - 0.07);
-      g.gain.linearRampToValueAtTime(0.0001, end); // sustained, so it beds the melody
-      osc.connect(g).connect(master);
-      osc.start(start);
-      osc.stop(end + 0.02);
-      voices.push(osc);
-      osc.onended = () => { voices = voices.filter((v) => v !== osc); };
-    }
-
     function scheduleTrack() {
       const track = TRACKS[trackIdx];
       const beat = track.beat || BEAT;
@@ -150,14 +105,6 @@
         const dur = beats * beat;
         playNote(F[n], t, dur * 0.9); // small gap between notes -> plucky, bell-like
         t += dur;
-      }
-      if (track.bass) { // chord-root bass under the melody, from the same start point
-        let tb = ctx.currentTime + 0.08;
-        for (const [n, beats] of track.bass) {
-          const dur = beats * beat;
-          playBass(F[n], tb, dur);
-          tb += dur;
-        }
       }
       t += GAP_SECONDS; // breath before the next carol
       btn.setAttribute('title', '♪ ' + track.name + ' (click to mute)');
