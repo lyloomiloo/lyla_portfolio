@@ -41,23 +41,46 @@
     const btn = document.getElementById('musicToggle');
     if (!btn) return;
 
-    const F = { C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392.0, A: 440.0, B: 493.88, R: 0 };
-    // [note, beats] — R = rest; a quarter note is 1 beat.
-    const MELODY = [
-      ['E',1],['E',1],['E',2], ['E',1],['E',1],['E',2],
-      ['E',1],['G',1],['C',1],['D',1],['E',4],
-      ['F',1],['F',1],['F',1],['F',1], ['F',1],['E',1],['E',1],['E',0.5],['E',0.5],
-      ['E',1],['D',1],['D',1],['E',1],['D',2],['G',2],
-      ['E',1],['E',1],['E',2], ['E',1],['E',1],['E',2],
-      ['E',1],['G',1],['C',1],['D',1],['E',4],
-      ['F',1],['F',1],['F',1],['F',1], ['F',1],['E',1],['E',1],['E',0.5],['E',0.5],
-      ['G',1],['G',1],['F',1],['D',1],['C',4],
-      ['R',2],
+    const F = {
+      B3: 246.94,
+      C4: 261.63, D4: 293.66, E4: 329.63, F4: 349.23, G4: 392.0, A4: 440.0, B4: 493.88,
+      C5: 523.25, D5: 587.33, R: 0,
+    };
+    // Each track is a public-domain carol melody as [note, beats] pairs (quarter note = 1 beat,
+    // R = rest). They play as a medley: one carol, a short breath, then the next, looping round.
+    const TRACKS = [
+      { name: 'Jingle Bells', seq: [
+        ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
+        ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
+        ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
+        ['E4',1],['D4',1],['D4',1],['E4',1],['D4',2],['G4',2],
+        ['E4',1],['E4',1],['E4',2], ['E4',1],['E4',1],['E4',2],
+        ['E4',1],['G4',1],['C4',1],['D4',1],['E4',4],
+        ['F4',1],['F4',1],['F4',1],['F4',1], ['F4',1],['E4',1],['E4',1],['E4',0.5],['E4',0.5],
+        ['G4',1],['G4',1],['F4',1],['D4',1],['C4',4],
+      ] },
+      { name: 'Joy to the World', seq: [
+        ['C5',1.5],['B4',0.5],['A4',1],['G4',3],['F4',1],['E4',1],['D4',1],['C4',3],
+      ] },
+      { name: 'Deck the Halls', seq: [
+        ['G4',1],['F4',1],['E4',1],['D4',1], ['C4',1],['D4',1],['E4',1],['C4',1],
+        ['D4',1],['E4',1],['F4',1],['E4',1], ['D4',1],['C4',1],['B3',1],['C4',2],
+      ] },
+      { name: 'We Wish You a Merry Christmas', seq: [
+        ['C4',1], ['F4',1],['F4',1],['G4',1],['F4',1],['E4',1],['D4',2],
+        ['D4',1], ['G4',1],['G4',1],['A4',1],['G4',1],['F4',1],['E4',2],
+        ['E4',1], ['A4',1],['A4',1],['B4',1],['A4',1],['G4',1],['F4',2],
+      ] },
+      { name: 'Silent Night', seq: [
+        ['G4',1.5],['A4',0.5],['G4',1],['E4',2], ['G4',1.5],['A4',0.5],['G4',1],['E4',2],
+        ['D5',2],['D5',1],['B4',3], ['C5',2],['C5',1],['G4',3],
+      ] },
     ];
+    const GAP_BEATS = 2;      // breath between carols
     const BEAT = 0.34;        // seconds per quarter note
     const NOTE_PEAK = 0.2;    // per-note amplitude (kept low so it stays in the background)
 
-    let ctx = null, master = null, timer = null, playing = false, voices = [];
+    let ctx = null, master = null, timer = null, playing = false, voices = [], trackIdx = 0;
 
     function playNote(freq, start, dur) {
       if (!freq) return;
@@ -76,15 +99,20 @@
       osc.onended = () => { voices = voices.filter((v) => v !== osc); };
     }
 
-    function scheduleLoop() {
-      let t = ctx.currentTime + 0.06;
-      for (const [n, beats] of MELODY) {
+    function scheduleTrack() {
+      let t = ctx.currentTime + 0.08;
+      for (const [n, beats] of TRACKS[trackIdx].seq) {
         const dur = beats * BEAT;
         playNote(F[n], t, dur * 0.9); // small gap between notes -> plucky, bell-like
         t += dur;
       }
-      const loopMs = (t - ctx.currentTime) * 1000;
-      timer = setTimeout(() => { if (playing) scheduleLoop(); }, loopMs - 140);
+      t += GAP_BEATS * BEAT; // breath before the next carol
+      const nextMs = (t - ctx.currentTime) * 1000;
+      timer = setTimeout(() => {
+        if (!playing) return;
+        trackIdx = (trackIdx + 1) % TRACKS.length; // cycle through the medley
+        scheduleTrack();
+      }, nextMs - 140);
     }
 
     function start() {
@@ -95,7 +123,7 @@
       master.gain.setValueAtTime(0.0001, ctx.currentTime);
       master.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.12);
       playing = true;
-      scheduleLoop();
+      scheduleTrack();
       btn.classList.add('is-playing');
       btn.setAttribute('aria-pressed', 'true');
       btn.setAttribute('title', 'Mute Christmas music');
@@ -104,6 +132,7 @@
 
     function stop() {
       playing = false;
+      trackIdx = 0; // next play starts the medley from the top
       if (timer) { clearTimeout(timer); timer = null; }
       if (ctx && master) {
         master.gain.cancelScheduledValues(ctx.currentTime);
@@ -117,7 +146,36 @@
       btn.setAttribute('aria-label', 'Play Christmas music');
     }
 
-    btn.addEventListener('click', () => { playing ? stop() : start(); });
+    const PKEY = 'xmasMusic';
+    const muted = () => { try { return localStorage.getItem(PKEY) === '0'; } catch (e) { return false; } };
+    const setPref = (on) => { try { localStorage.setItem(PKEY, on ? '1' : '0'); } catch (e) {} };
+    const isXmasSeason = () => {
+      const forced = new URLSearchParams(location.search).get('season');
+      if (forced) return forced === 'xmas';
+      const n = new Date(), mo = n.getMonth(), d = n.getDate();
+      return mo === 10 || mo === 11 || (mo === 0 && d <= 10);
+    };
+    const wantAutoplay = () => isXmasSeason() && !muted();
+
+    btn.addEventListener('click', () => {
+      if (playing) { stop(); setPref(false); }
+      else { start(); setPref(true); }
+    });
+
+    // Play by default. Browsers block autoplay with sound, so arm the carol to begin on
+    // the first interaction anywhere on the page — the lock-screen "Log In" click counts,
+    // so on a first visit it starts the moment you enter the desktop. A stored mute ('0')
+    // is respected, and clicks on the music toggle itself are left to its own handler.
+    if (wantAutoplay()) {
+      const EVTS = ['pointerdown', 'keydown', 'touchstart'];
+      const cleanup = () => EVTS.forEach((ev) => window.removeEventListener(ev, kick, true));
+      function kick(e) {
+        if (e && e.target && e.target.closest && e.target.closest('#musicToggle')) return;
+        if (!playing && wantAutoplay()) start();
+        cleanup();
+      }
+      EVTS.forEach((ev) => window.addEventListener(ev, kick, { capture: true }));
+    }
 
     // Don't keep playing in a backgrounded tab.
     document.addEventListener('visibilitychange', () => { if (document.hidden && playing) stop(); });
