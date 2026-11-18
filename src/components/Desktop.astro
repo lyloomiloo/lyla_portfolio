@@ -807,8 +807,8 @@ const dots: [string, string, number][] = [
     }
     // Default the seasonal scene on at first load; respect an explicit toggle afterwards.
     const wanted = () => { try { const v = localStorage.getItem(KEY); return v === null ? true : v === '1'; } catch (e) { return true; } };
-    // Seasonal modes are desktop-only — never apply them on mobile.
-    const sync = () => body.classList.toggle(THEME, wanted() && !mobile.matches);
+    // The Snow Yard (Xmas) runs on mobile too; the Draft Yard (Halloween) stays desktop-only.
+    const sync = () => body.classList.toggle(THEME, wanted() && (THEME === 'snow-yard' || !mobile.matches));
     sync();
     mobile.addEventListener('change', sync);
     if (btn) btn.addEventListener('click', () => {
